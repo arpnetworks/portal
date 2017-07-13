@@ -45,3 +45,4 @@ group :development do
 end
 
 gem 'activemerchant'
+gem 'netaddr'
