@@ -2,16 +2,16 @@ class DnsRecord < ActiveRecord::Base
   class EmptyNibbleError < StandardError
   end
 
-  establish_connection "powerdns_#{RAILS_ENV}"
-  set_table_name "records"
-  set_inheritance_column "inheritance_type"
+  establish_connection "powerdns_#{ENV['RAILS_ENV']}"
+  self.table_name = "records"
+  self.inheritance_column = "inheritance_type"
 
   belongs_to :dns_domain, :foreign_key => 'domain_id'
   alias :domain :dns_domain
 
   validates_presence_of :content
   validates_format_of   :content,
-    :with => /^[0-9a-zA-Z\.\-]*$/,
+    :with => /\A[0-9a-zA-Z\.\-]*\z/,
     :message => 'can only contain numbers, letters, dashes and \'.\'',
     :if => Proc.new { |dns_record|
       if dns_record.type =~ /(PTR|NS|CNAME)/
@@ -20,7 +20,7 @@ class DnsRecord < ActiveRecord::Base
   }
 
   validates_format_of   :name,
-    :with => /^([0-9a-fA-F]\.){1,32}ip6\.arpa$/,
+    :with => /\A([0-9a-fA-F]\.){1,32}ip6\.arpa\z/,
     :message => 'has bad format',
     :if => Proc.new { |dns_record|
       if dns_record.name =~ /\.ip6\.arpa$/
@@ -28,7 +28,7 @@ class DnsRecord < ActiveRecord::Base
       end
   }
   validates_format_of   :name,
-    :with => /^([0-9a-fA-F]\.){32}ip6\.arpa$/,
+    :with => /\A([0-9a-fA-F]\.){32}ip6\.arpa\z/,
     :message => 'has bad format (did you include all trailing zeros?)',
     :if => Proc.new { |dns_record|
       if dns_record.type == 'PTR' && dns_record.name =~ /\.ip6\.arpa$/
@@ -36,7 +36,7 @@ class DnsRecord < ActiveRecord::Base
       end
   }
   validates_format_of   :name,
-    :with => /^([0-9]+\.){4}in-addr\.arpa$/,
+    :with => /\A([0-9]+\.){4}in-addr\.arpa\z/,
     :message => 'has bad format',
     :if => Proc.new { |dns_record|
       if dns_record.type == 'PTR' && dns_record.name =~ /\.in-addr\.arpa$/

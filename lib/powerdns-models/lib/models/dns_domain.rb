@@ -1,7 +1,7 @@
 class DnsDomain < ActiveRecord::Base
-  establish_connection "powerdns_#{RAILS_ENV}"
-  set_table_name "domains"
-  set_inheritance_column "inheritance_type"
+  establish_connection "powerdns_#{ENV['RAILS_ENV']}"
+  self.table_name = "domains"
+  self.inheritance_column = "inheritance_type"
 
   has_many :dns_records, :foreign_key => 'domain_id'
   alias :records :dns_records
