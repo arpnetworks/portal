@@ -61,10 +61,10 @@ if defined?(describe)
   describe Format do
     describe "money()" do
       it "should return 'Free' for amount of 0.00" do
-        money(0.00).should == 'Free'
+        expect(money(0.00)).to eq('Free')
       end
       it "should return 'Free' for amount of nil" do
-        money(nil).should == 'Free'
+        expect(money(nil)).to eq('Free')
       end
     end
   end
