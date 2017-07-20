@@ -34,6 +34,9 @@ group :development, :test do
   gem 'byebug'
   # Use Capistrano for deployment
   gem 'capistrano-rails'
+
+  gem 'rspec'
+  gem 'rspec-rails'
 end
 
 group :development do
