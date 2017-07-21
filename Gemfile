@@ -47,5 +47,6 @@ group :development do
   gem 'spring'
 end
 
+gem 'aasm'
 gem 'activemerchant'
 gem 'netaddr'
