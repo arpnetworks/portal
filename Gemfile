@@ -50,3 +50,4 @@ end
 gem 'aasm'
 gem 'activemerchant'
 gem 'netaddr'
+gem 'redcarpet'
