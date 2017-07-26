@@ -1,8 +1,13 @@
 module Resourceable
+  extend ActiveSupport::Concern
+
   def self.included(base)
     base.module_eval do
       has_one :resource, :as => :assignable, :dependent => :destroy
     
+      after_create :assign_service
+      after_update :update_service
+
       include InstanceMethods
     end
   end
@@ -26,7 +31,7 @@ module Resourceable
 
     protected
 
-    def after_create
+    def assign_service
       super
 
       # If a service ID is defined, assign the resource to that service
@@ -35,7 +40,7 @@ module Resourceable
       end
     end
 
-    def after_update
+    def update_service
       super
 
       # If a service ID is defined, assign the resource to that service
