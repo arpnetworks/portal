@@ -9,7 +9,7 @@ class IpBlock < ActiveRecord::Base
 
   textilizable :notes
 
-  named_scope :superblocks, :conditions => "ip_block_id IS NULL", :order => 'seq, network'
+  scope :superblocks, -> { where("ip_block_id IS NULL").order('seq, network') }
 
   def cidr_obj
     @cidr_obj ||= NetAddr::CIDR.create(cidr)
@@ -265,9 +265,7 @@ class IpBlock < ActiveRecord::Base
       raise ArgumentError
     end
 
-    possible_parents = IpBlock.all(
-      :conditions => "cidr like '#{lhs}%' and vlan >= 105"
-    )
+    possible_parents = IpBlock.where("cidr like '#{lhs}%' and vlan >= 105")
 
     @parent_net = nil
     possible_parents.each do |ip_block|
@@ -281,7 +279,7 @@ class IpBlock < ActiveRecord::Base
 
   protected
 
-  def before_save
+  before_save do
     self.network = cidr_obj.to_i(:network)
     @cidr_obj = nil # Flush memoization
   end
