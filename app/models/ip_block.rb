@@ -217,8 +217,7 @@ class IpBlock < ActiveRecord::Base
       return "Location not found"
     end
 
-    find_all_by_available(true, :conditions => "cidr like '%/#{prefixlen}'",
-                                :order      => "id").each do |ip_block|
+    where("available is true and cidr like '%/#{prefixlen}'").order('id').each do |ip_block|
       if ip_block.location == location
         return ip_block
       end
