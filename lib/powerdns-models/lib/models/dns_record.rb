@@ -76,7 +76,7 @@ class DnsRecord < ActiveRecord::Base
     end
   end
 
-  def before_save
+  before_save do
     if type == 'PTR'
       if content
         self.content = content.sub(/\.+$/, '') + '.'
@@ -92,14 +92,14 @@ class DnsRecord < ActiveRecord::Base
     end
   end
 
-  def after_save
+  after_save do
     if type != 'SOA'
       # Update serial number in domain's SOA
       domain.increment_serial!
     end
   end
 
-  def after_destroy
+  after_destroy do
     if type != 'SOA'
       # Update serial number in domain's SOA
       domain.increment_serial!
