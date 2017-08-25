@@ -61,9 +61,9 @@ class IpBlock < ActiveRecord::Base
     cidr_obj.version == 4 ? cidr_obj.broadcast(opts) : 'N/A' if cidr
   end
 
-  def subnets(opts = {})
+  def subnets(includes = {})
     # All blocks who have me as a parent
-    IpBlock.all({:conditions => ["ip_block_id = ?", id], :order => 'seq, network'}.merge(opts))
+    IpBlock.includes(includes).where(["ip_block_id = ?", id]).order('seq, network')
   end
 
   def subnets_available(prefixlen, opts = {})
