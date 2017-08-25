@@ -1,0 +1,31 @@
+super:
+  id: 1
+  cidr: 208.79.88.0/21
+  vlan: 102
+super2:
+  id: 2
+  cidr: 206.125.168.0/21
+  vlan: 104
+smaller: 
+  id: 3
+  cidr: 208.79.88.0/24
+  vlan: 105
+other:
+  id: 4
+  cidr: 10.0.0.0/24
+  vlan: 440
+available:
+  id: 5
+  cidr: 172.16.1.0/29
+  vlan: 106
+  available: true
+available_2:
+  id: 6
+  cidr: 172.16.1.8/30
+  vlan: 107
+  available: true
+available_3:
+  id: 7
+  cidr: 172.16.1.16/30
+  vlan: 108
+  available: true

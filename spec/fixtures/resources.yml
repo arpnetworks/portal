@@ -1,0 +1,20 @@
+assignment:
+  id: 1
+  service_id: 1
+  assignable_id: 1
+  assignable_type: VirtualMachine
+assignment2:
+  id: 2
+  service_id: 2
+  assignable_id: 2
+  assignable_type: VirtualMachine
+assignment3:
+  id: 3
+  service_id: 3
+  assignable_id: 1
+  assignable_type: IpBlock
+assignment4:
+  id: 4
+  service_id: 6
+  assignable_id: 1
+  assignable_type: BackupQuota

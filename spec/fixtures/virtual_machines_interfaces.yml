@@ -1,0 +1,5 @@
+vm:
+  id: 1
+  virtual_machine_id: 1
+  ip_address: "10.0.0.1"
+  ipv6_address: "fe80::2"

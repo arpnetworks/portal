@@ -1,0 +1,16 @@
+vlan_1:
+  id: 1
+  vlan: 1
+  label: Native VLAN
+vlan_100:
+  id: 2
+  vlan: 100
+  label: Any2 IX
+vlan_101:
+  id: 3
+  vlan: 101
+  label: VLAN 101
+vlan_440:
+  id: 4
+  vlan: 440
+  label: VLAN 440

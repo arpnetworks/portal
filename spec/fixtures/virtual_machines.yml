@@ -1,0 +1,14 @@
+vm:
+  id: 1
+  uuid: 3e571d60-413a-012c-cef9-00163ec95f4c
+  console_login: johndoe
+  label: johndoe
+garrys_vm:
+  id: 2
+  uuid: uniq2
+  console_login: garry
+  label: garrys-vm
+vm_number_three:
+  id: 3
+  uuid: uniq3
+  label: vm-number-three

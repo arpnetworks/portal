@@ -1,0 +1,9 @@
+garrys_quota:
+  id: 1
+  server: backup01.cust.arpnetworks.com
+  username: garry
+  group: sftpusers
+  quota: 20000000
+  home_dir: /home/sftpusers/home/garry
+  chroot_dir: /home/sftpusers/home
+  notes:

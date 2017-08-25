@@ -1,0 +1,6 @@
+service_code_1:
+  id: 1
+  name: VPS
+service_code_2:
+  id: 2
+  name: IP_BLOCK

@@ -1,0 +1,35 @@
+vps:
+  id: 1
+  account_id: 1
+  service_code_id: 1
+  title: VPS
+  billing_amount: 50.00
+  billing_interval: 1
+garrys_vps:
+  id: 2
+  account_id: 2
+  service_code_id: 1
+  title: VPS
+  description: The Best VPS!
+  billing_amount: 25.00
+  billing_interval: 1
+ips:
+  id: 3
+  account_id: 2
+deleted_service:
+  id: 4
+  account_id: 2
+  deleted_at: 2008-02-01
+garrys_ips:
+  id: 5
+  account_id: 2
+  service_code_id: 2
+  title: IP Assignments
+  description:
+  billing_amount: 5.00
+  billing_interval: 1
+backup_service:
+  id: 6
+  account_id: 2
+  service_code_id: 2
+  title: space
