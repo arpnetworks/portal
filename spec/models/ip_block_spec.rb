@@ -294,25 +294,25 @@ BLOCK
   context "available_for_allocation()" do
     context "for IPv4" do
       specify "smallest subnet is a /30" do
-        IpBlock.available_for_allocation(32).should == "Only /30 and larger blocks are supported"
+        IpBlock.available_for_allocation(32, 'lax').should == "Only /30 and larger blocks are supported"
       end
 
       specify "should find a /29" do
-        IpBlock.available_for_allocation(29).should == ip_blocks(:available)
+        IpBlock.available_for_allocation(29, 'lax').should == ip_blocks(:available)
       end
 
       specify "should find a /30" do
-        IpBlock.available_for_allocation(30).should == ip_blocks(:available_2)
+        IpBlock.available_for_allocation(30, 'lax').should == ip_blocks(:available_2)
       end
 
       specify "should not find a /27" do
-        IpBlock.available_for_allocation(27).should == nil
+        IpBlock.available_for_allocation(27, 'lax').should == nil
       end
     end
 
     context "for IPv6" do
       specify "does not apply to IPv6" do
-        IpBlock.available_for_allocation(48).should == "Not applicable to IPv6"
+        IpBlock.available_for_allocation(48, 'lax').should == "Not applicable to IPv6"
       end
     end
   end
