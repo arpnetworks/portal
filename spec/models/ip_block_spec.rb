@@ -293,16 +293,24 @@ BLOCK
 
   context "available_for_allocation()" do
     context "for IPv4" do
+      let(:location_lax) { build :location }
+
+      before do
+        allow(Location).to receive(:find_by_code).and_return(location_lax)
+      end
+
       specify "smallest subnet is a /30" do
         IpBlock.available_for_allocation(32, 'lax').should == "Only /30 and larger blocks are supported"
       end
 
       specify "should find a /29" do
-        IpBlock.available_for_allocation(29, 'lax').should == ip_blocks(:available)
+        ipb = create :ip_block, :available, cidr: '172.16.1.0/29', vlan: 106
+        IpBlock.available_for_allocation(29, 'lax').should == ipb
       end
 
       specify "should find a /30" do
-        IpBlock.available_for_allocation(30, 'lax').should == ip_blocks(:available_2)
+        ipb = create :ip_block, :available, cidr: '172.16.1.8/30', vlan: 107
+        IpBlock.available_for_allocation(30, 'lax').should == ipb
       end
 
       specify "should not find a /27" do
@@ -341,7 +349,7 @@ BLOCK
     it "should pass message to cidr_obj" do
       arg = 'foo'
 
-      cidr_obj = mock(:cidr_obj)
+      cidr_obj = double(:cidr_obj)
       cidr_obj.should_receive(:contains?).with(arg)
 
       ip = IpBlock.new
