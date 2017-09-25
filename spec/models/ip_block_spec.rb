@@ -358,10 +358,10 @@ BLOCK
       context "with parent found" do
         before do
           @account = Account.new
-          @ip_blocks[0].stub!(:contains?).and_return(false)
-          @ip_blocks[1].stub!(:contains?).and_return(true)
-          @ip_blocks[1].stub!(:account).and_return(@account)
-          @ip_blocks[2].stub!(:contains?).and_return(false)
+          @ip_blocks[0].stub(:contains?).and_return(false)
+          @ip_blocks[1].stub(:contains?).and_return(true)
+          @ip_blocks[1].stub(:account).and_return(@account)
+          @ip_blocks[2].stub(:contains?).and_return(false)
         end
 
         it "should return account" do
@@ -372,9 +372,9 @@ BLOCK
       context "without parent found" do
         before do
           @account = Account.new
-          @ip_blocks[0].stub!(:contains?).and_return(false)
-          @ip_blocks[1].stub!(:contains?).and_return(false)
-          @ip_blocks[2].stub!(:contains?).and_return(false)
+          @ip_blocks[0].stub(:contains?).and_return(false)
+          @ip_blocks[1].stub(:contains?).and_return(false)
+          @ip_blocks[2].stub(:contains?).and_return(false)
         end
 
         it "should return nil" do
@@ -393,8 +393,8 @@ BLOCK
       end
 
       it "should search for possible matches" do
-        IpBlock.should_receive(:all).with(\
-          :conditions => "cidr like '10.0.0.%' and vlan >= 105").\
+        IpBlock.should_receive(:where).with(\
+          "cidr like '10.0.0.%' and vlan >= 105").\
           and_return([])
         go
       end
@@ -406,7 +406,7 @@ BLOCK
             IpBlock.new(:cidr => '10.0.0.8/29'),
             IpBlock.new(:cidr => '10.0.0.16/28'),
           ]
-          IpBlock.stub!(:all).and_return(@ip_blocks)
+          IpBlock.stub(:where).and_return(@ip_blocks)
         end
 
         it "should iterate each for containment" do
@@ -427,8 +427,8 @@ BLOCK
       end
 
       it "should search for possible matches" do
-        IpBlock.should_receive(:all).with(\
-          :conditions => "cidr like '2607:f2f8:c123:%' and vlan >= 105").\
+        IpBlock.should_receive(:where).with(\
+          "cidr like '2607:f2f8:c123:%' and vlan >= 105").\
           and_return([])
         go
       end
@@ -440,7 +440,7 @@ BLOCK
             IpBlock.new(:cidr => '2607:f2f8:c123::/48'),
             IpBlock.new(:cidr => '2607:f2f8:c400::/48'),
           ]
-          IpBlock.stub!(:all).and_return(@ip_blocks)
+          IpBlock.stub(:where).and_return(@ip_blocks)
         end
 
         it "should iterate each for containment" do
