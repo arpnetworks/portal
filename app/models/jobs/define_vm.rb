@@ -29,6 +29,11 @@ class Jobs::DefineVM < Job
       case os_version
       when /^9\./
         iso = 'FreeBSD-9.3-RELEASE-amd64-disc1.iso'
+
+        if cluster =~ /^[ks]ct/
+          opt_params[:cache] = 'writeback'
+          opt_params[:io]    = 'threads'
+        end
       when /^10\./
         iso = 'FreeBSD-10.3-RELEASE-amd64-disc1.iso'
       when /^11\./
