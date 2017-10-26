@@ -32,8 +32,6 @@ module Resourceable
     protected
 
     def assign_service
-      super
-
       # If a service ID is defined, assign the resource to that service
       if @service_id
         create_service_assignment(@service_id)
@@ -41,8 +39,6 @@ module Resourceable
     end
 
     def update_service
-      super
-
       # If a service ID is defined, assign the resource to that service
       if @service_id
         if resource 
