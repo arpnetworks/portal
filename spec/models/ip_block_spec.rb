@@ -19,12 +19,12 @@ describe "IpBlock class with fixtures loaded" do
 
     specify "should add an error" do
       @ip_block2.save
-      @ip_block2.errors.should_not be_empty
-      @ip_block2.errors.on(:parent_block).should_not be_nil
+      expect(@ip_block2.errors).to not_be_empty
+      expect(@ip_block2.errors.on(:parent_block)).to not_be_nil
     end
     specify "should not be valid" do
       @ip_block2.save
-      @ip_block2.valid?.should be_false
+      expect(@ip_block2.valid?).to be_false
     end
   end
 
@@ -35,43 +35,43 @@ describe "IpBlock class with fixtures loaded" do
     end
     specify "should be valid" do
       @ip_block.save
-      @ip_block.valid?.should be_true
+      expect(@ip_block.valid?).to be_true
     end
   end
 
   context "gateway()" do
     specify "should return gateway" do
-      @ip_block.gateway.should == '10.0.0.1'
+      expect(@ip_block.gateway).to eq('10.0.0.1')
     end
   end
 
   context "netmask()" do
     specify "should return netmask in common format for IPv4" do
-      @ip_block.netmask.should == '255.255.255.0'
+      expect(@ip_block.netmask).to eq('255.255.255.0')
     end
     specify "should return 'N/A' for IPv6" do
-      @ip_block6.netmask.should == 'N/A'
+      expect(@ip_block6.netmask).to eq('N/A')
     end
   end
 
   context "broadcast()" do
     specify "should return broadcast for IPv4" do
-      @ip_block.broadcast.should == '10.0.0.255'
+      expect(@ip_block.broadcast).to eq('10.0.0.255')
     end
     specify "should return 'N/A' for IPv6" do
-      @ip_block6.broadcast.should == 'N/A'
+      expect(@ip_block6.broadcast).to eq('N/A')
     end
   end
 
   context "ip_first()" do
     specify "should return the first IP" do
-      @ip_block.ip_first.should == '10.0.0.2'
+      expect(@ip_block.ip_first).to eq('10.0.0.2')
     end
   end
 
   context "ip_range_usable()" do
     specify "should return the usable IP range for IPv4" do
-      @ip_block.ip_range_usable.should == '10.0.0.2 - 10.0.0.254'
+      expect(@ip_block.ip_range_usable).to eq('10.0.0.2 - 10.0.0.254')
     end
     specify "should return 'N/A' for IPv6" do
       @ip_block6.ip_range_usable.should == 'All except gateway (::1)'
@@ -468,7 +468,7 @@ BLOCK
       end
 
       it "should return nil" do
-        IpBlock.account(@ip).should == nil
+        expect(IpBlock.account(@ip)).to eq(nil)
       end
     end
 
@@ -478,7 +478,7 @@ BLOCK
       end
 
       it "should return return nil" do
-        IpBlock.account(@ip).should == nil
+        expect(IpBlock.account(@ip)).to eq(nil)
       end
     end
   end
