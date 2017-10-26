@@ -192,12 +192,6 @@ describe "IpBlock class with fixtures loaded" do
     end
   end
 
-  context "account()" do
-    specify "should return account that owns this IP block" do
-      ip_blocks(:super).account.should == accounts(:garry)
-    end
-  end
-
   context "account_name()" do
     specify "should return display_account_name for account that owns this IP block" do
       ip_blocks(:super).account_name.should == "Garry Dolley"
