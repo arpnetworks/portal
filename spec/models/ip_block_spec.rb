@@ -193,8 +193,15 @@ describe "IpBlock class with fixtures loaded" do
   end
 
   context "account_name()" do
+    let(:ip_block) do
+      create :ip_block do |ipb|
+        ipb.resource.service.account.first_name = 'John'
+        ipb.resource.service.account.last_name = 'Doe'
+      end
+    end
+
     specify "should return display_account_name for account that owns this IP block" do
-      ip_blocks(:super).account_name.should == "Garry Dolley"
+      ip_block.account_name.should == "John Doe"
     end
   end
 
