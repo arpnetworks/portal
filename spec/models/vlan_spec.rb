@@ -1,7 +1,20 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.dirname(__FILE__) + '/../rails_helper'
 
 context "Vlan class with fixtures loaded" do
-  fixtures :vlans, :ip_blocks
+  before(:all) do
+    @code = 'lax'
+    @lax = create :location, code: @code
+    create :ip_block, vlan: 102, location: @lax
+    create :ip_block, vlan: 104, location: @lax
+    create :ip_block, vlan: 105, location: @lax
+    create :ip_block, vlan: 106, location: @lax, available: true
+    create :ip_block, vlan: 107, location: @lax, available: true
+    create :ip_block, vlan: 108, location: @lax, available: true
+    create :vlan, vlan: 1, label: 'Native VLAN',  location: @lax
+    create :vlan, vlan: 100, label: 'FidoNet',  location: @lax
+    create :vlan, vlan: 101, label: 'VLAN 101', location: @lax
+    create :vlan, vlan: 440, label: 'VLAN 440', location: @lax
+  end
 
   context "next_available()" do
     specify "should return next available VLAN" do
@@ -24,7 +37,7 @@ context "Vlan class with fixtures loaded" do
 
   context "in_use()" do
     before do
-      @in_use = Vlan.in_use
+      @in_use = Vlan.in_use(@lax.id)
     end
 
     specify "should include all VLANs assigned in IpBlock's" do

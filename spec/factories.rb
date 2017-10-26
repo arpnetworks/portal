@@ -48,6 +48,11 @@ FactoryGirl.define do
     end
   end
 
+  factory :vlan do
+    location
+    vlan 100
+  end
+
   factory :virtual_machine do
     uuid '682950e4-4af8-11e0-8cea-001c25748b20'
     label 'foo'
