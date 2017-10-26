@@ -6,6 +6,7 @@ class IpBlock < ActiveRecord::Base
   belongs_to :location
 
   validates_presence_of :cidr
+  validate :proper_parent_block
 
   textilizable :notes
 
@@ -283,7 +284,7 @@ class IpBlock < ActiveRecord::Base
     @cidr_obj = nil # Flush memoization
   end
 
-  def validate
+  def proper_parent_block
     if parent_block
       unless NetAddr::CIDR.create(parent_block.cidr).contains?(cidr)
         errors.add(:parent_block, "does not contain (is a supernet of) #{cidr}")
