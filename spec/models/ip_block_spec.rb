@@ -131,8 +131,8 @@ describe "IpBlock class with fixtures loaded" do
     context "subnets_available()" do
       context "shallow spec" do
         before do
-          @mock_ip_allocator = mock(IPAllocator)
-          IPAllocator.should_receive(:new)\
+          @mock_ip_allocator = double(IPAllocator)
+          expect(IPAllocator).to receive(:new)\
             .with(@parent_block.cidr_obj, [@child1.cidr_obj, @child2.cidr_obj])\
             .and_return(@mock_ip_allocator)
 
@@ -140,7 +140,7 @@ describe "IpBlock class with fixtures loaded" do
         end
 
         specify "should ask for available blocks" do
-          @mock_ip_allocator.should_receive(:available).with(@prefixlen, {}).and_return([])
+          expect(@mock_ip_allocator).to receive(:available).with(@prefixlen, {}).and_return([])
           @parent_block.subnets_available(@prefixlen)
         end
       end
@@ -350,10 +350,10 @@ BLOCK
       arg = 'foo'
 
       cidr_obj = double(:cidr_obj)
-      cidr_obj.should_receive(:contains?).with(arg)
+      expect(cidr_obj).to receive(:contains?).with(arg)
 
       ip = IpBlock.new
-      ip.should_receive(:cidr_obj).and_return(cidr_obj)
+      expect(ip).to receive(:cidr_obj).and_return(cidr_obj)
 
       ip.contains?('foo')
     end
@@ -366,10 +366,10 @@ BLOCK
       context "with parent found" do
         before do
           @account = Account.new
-          @ip_blocks[0].stub(:contains?).and_return(false)
-          @ip_blocks[1].stub(:contains?).and_return(true)
-          @ip_blocks[1].stub(:account).and_return(@account)
-          @ip_blocks[2].stub(:contains?).and_return(false)
+          allow(@ip_blocks[0]).to receive(:contains?).and_return(false)
+          allow(@ip_blocks[1]).to receive(:contains?).and_return(true)
+          allow(@ip_blocks[1]).to receive(:account).and_return(@account)
+          allow(@ip_blocks[2]).to receive(:contains?).and_return(false)
         end
 
         it "should return account" do
@@ -380,9 +380,9 @@ BLOCK
       context "without parent found" do
         before do
           @account = Account.new
-          @ip_blocks[0].stub(:contains?).and_return(false)
-          @ip_blocks[1].stub(:contains?).and_return(false)
-          @ip_blocks[2].stub(:contains?).and_return(false)
+          allow(@ip_blocks[0]).to receive(:contains?).and_return(false)
+          allow(@ip_blocks[1]).to receive(:contains?).and_return(false)
+          allow(@ip_blocks[2]).to receive(:contains?).and_return(false)
         end
 
         it "should return nil" do
@@ -401,7 +401,7 @@ BLOCK
       end
 
       it "should search for possible matches" do
-        IpBlock.should_receive(:where).with(\
+        expect(IpBlock).to receive(:where).with(\
           "cidr like '10.0.0.%' and vlan >= 105").\
           and_return([])
         go
@@ -414,12 +414,12 @@ BLOCK
             IpBlock.new(:cidr => '10.0.0.8/29'),
             IpBlock.new(:cidr => '10.0.0.16/28'),
           ]
-          IpBlock.stub(:where).and_return(@ip_blocks)
+          allow(IpBlock).to receive(:where).and_return(@ip_blocks)
         end
 
         it "should iterate each for containment" do
           @ip_blocks.each do |ip_block|
-            ip_block.should_receive(:contains?).with(@ip)
+            expect(ip_block).to receive(:contains?).with(@ip)
           end
 
           go
@@ -435,7 +435,7 @@ BLOCK
       end
 
       it "should search for possible matches" do
-        IpBlock.should_receive(:where).with(\
+        expect(IpBlock).to receive(:where).with(\
           "cidr like '2607:f2f8:c123:%' and vlan >= 105").\
           and_return([])
         go
@@ -448,12 +448,12 @@ BLOCK
             IpBlock.new(:cidr => '2607:f2f8:c123::/48'),
             IpBlock.new(:cidr => '2607:f2f8:c400::/48'),
           ]
-          IpBlock.stub(:where).and_return(@ip_blocks)
+          allow(IpBlock).to receive(:where).and_return(@ip_blocks)
         end
 
         it "should iterate each for containment" do
           @ip_blocks.each do |ip_block|
-            ip_block.should_receive(:contains?).with(@ip)
+            expect(ip_block).to receive(:contains?).with(@ip)
           end
           go
         end
