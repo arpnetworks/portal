@@ -1,11 +1,6 @@
 require File.dirname(__FILE__) + '/../rails_helper'
-#require File.dirname(__FILE__) + '/../my_spec_helper'
-#TODO
 
 describe "IpBlock class with fixtures loaded" do
-  #fixtures :ip_blocks, :services, :resources, :accounts
-  #TODO
-
   before do
     @ip_block  = IpBlock.new(:cidr => '10.0.0.0/24')
     @ip_block6 = IpBlock.new(:cidr => '2002::/64')
@@ -359,8 +354,6 @@ BLOCK
   end
 
   context "self.account()" do
-    #describe "finding containing network", :shared => true do
-    #TODO
     RSpec.shared_examples "finding containing network" do
       context "with parent found" do
         before do
