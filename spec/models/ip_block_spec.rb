@@ -19,12 +19,12 @@ describe "IpBlock class with fixtures loaded" do
 
     specify "should add an error" do
       @ip_block2.save
-      expect(@ip_block2.errors).to not_be_empty
-      expect(@ip_block2.errors.on(:parent_block)).to not_be_nil
+      expect(@ip_block2.errors).to_not be_empty
+      expect(@ip_block2.errors[:parent_block]).to_not be_nil
     end
     specify "should not be valid" do
       @ip_block2.save
-      expect(@ip_block2.valid?).to be_false
+      expect(@ip_block2.valid?).to eq(false)
     end
   end
 
@@ -35,7 +35,7 @@ describe "IpBlock class with fixtures loaded" do
     end
     specify "should be valid" do
       @ip_block.save
-      expect(@ip_block.valid?).to be_true
+      expect(@ip_block.valid?).to eq(true)
     end
   end
 
