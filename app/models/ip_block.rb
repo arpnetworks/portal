@@ -197,7 +197,11 @@ class IpBlock < ActiveRecord::Base
     when 6
       cidr_with_32_prefix = cidr_obj.resize(32)
       if cidr_with_32_prefix.network(:Short => true) == "2607:f2f8::"
-        cidr_with_32_prefix.arpa.chomp('.')
+        return cidr_with_32_prefix.arpa.chomp('.')
+      end
+      cidr_with_29_prefix = cidr_obj.resize(29)
+      if cidr_with_29_prefix.network(:Short => true) == "2a07:12c0::"
+        return cidr_with_29_prefix.arpa.chomp('.')
       end
     end
   end

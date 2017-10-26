@@ -332,6 +332,11 @@ BLOCK
         expect(@ip_block.reverse_dns_zone_name).to eq("8.f.2.f.7.0.6.2.ip6.arpa")
       end
 
+      specify "should return text of zone name within ARP Networks /29" do
+        @ip_block = IpBlock.new(:cidr => '2a07:12c0:beef::/48')
+        expect(@ip_block.reverse_dns_zone_name).to eq("c.2.1.7.0.a.2.ip6.arpa")
+      end
+
       specify "should not return text of zone name if outside of ARP Networks /32" do
         @ip_block = IpBlock.new(:cidr => 'fe80::/64')
         expect(@ip_block.reverse_dns_zone_name).to eq(nil)
