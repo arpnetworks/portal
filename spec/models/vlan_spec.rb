@@ -18,20 +18,20 @@ context "Vlan class with fixtures loaded" do
 
   context "next_available()" do
     specify "should return next available VLAN" do
-      Vlan.next_available.should == [103]
+      expect(Vlan.next_available).to eq [103]
     end
 
     specify "should not return a VLAN already in the VLAN database" do
-      Vlan.next_available.should_not == [101]
+      expect(Vlan.next_available).to_not eq([101])
     end
 
     specify "should respect limit" do
-      Vlan.next_available(:limit => 3).should == [103, 109, 110]
+      expect(Vlan.next_available(:limit => 3)).to eq [103, 109, 110]
     end
 
     specify "should respect start_at" do
-      Vlan.next_available(:start_at => 400).should == [400]
-      Vlan.next_available(:start_at => 440).should == [441]
+      expect(Vlan.next_available(:start_at => 400)).to eq [400]
+      expect(Vlan.next_available(:start_at => 440)).to eq [441]
     end
   end
 
@@ -41,15 +41,15 @@ context "Vlan class with fixtures loaded" do
     end
 
     specify "should include all VLANs assigned in IpBlock's" do
-      (@in_use & [102, 104, 105]).should == [102, 104, 105]
+      expect((@in_use & [102, 104, 105])).to eq [102, 104, 105]
     end
 
     specify "should include all VLANs assigned in VLAN database" do
-      (@in_use & [1, 101, 440]).should == [1, 101, 440]
+      expect((@in_use & [1, 101, 440])).to eq [1, 101, 440]
     end
 
     specify "should be sorted and not return duplicates" do
-      @in_use.should == [1, 100, 101, 102, 104, 105, 106, 107, 108, 440]
+      expect(@in_use).to eq [1, 100, 101, 102, 104, 105, 106, 107, 108, 440]
     end
   end
 end
