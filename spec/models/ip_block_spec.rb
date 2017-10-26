@@ -297,12 +297,6 @@ BLOCK
 
   context "available_for_allocation()" do
     context "for IPv4" do
-      let(:location_lax) { build :location }
-
-      before do
-        allow(Location).to receive(:find_by_code).and_return(location_lax)
-      end
-
       specify "smallest subnet is a /30" do
         expect(IpBlock.available_for_allocation(32, 'lax')).to eq("Only /30 and larger blocks are supported")
       end
@@ -318,6 +312,7 @@ BLOCK
       end
 
       specify "should not find a /27" do
+        create :ip_block
         expect(IpBlock.available_for_allocation(27, 'lax')).to eq(nil)
       end
     end
