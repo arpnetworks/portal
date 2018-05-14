@@ -1,0 +1,6 @@
+development:
+  secret: foobar
+  host: support.example.com
+test:
+  secret: barbaz
+  host: support.example.com

@@ -18,3 +18,4 @@
 
 config/database.yml
 config/arp/password_encryption.yml
+config/arp/tender.yml
