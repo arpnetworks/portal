@@ -1,0 +1,6 @@
+development:
+  iso_base: foo/bar
+  payment_system_disabled_lockfile: lock-it.tmp
+test:
+  iso_base: foo/bar
+  payment_system_disabled_lockfile: lock-it.tmp
