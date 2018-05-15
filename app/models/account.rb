@@ -586,7 +586,7 @@ class Account < ActiveRecord::Base
     # Authenticates a user by their login name and unencrypted password.
     # Returns the user or nil.
     def authenticate(login, password)
-      u = find_by_login(login, :conditions => ['active = ?', true])
+      u = find_by(login: login, active: true)
       u && u.authenticated?(password) ? u : nil
     end
   end
