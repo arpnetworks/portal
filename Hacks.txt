@@ -1,0 +1,5 @@
+# MySQL
+# -----
+
+# To create PowerDNS test DB structure from regular DB structure
+mysqldump -u <user> -p <pass> -d powerdns | mysql -u <user> -p <pass> -D powerdns_test
