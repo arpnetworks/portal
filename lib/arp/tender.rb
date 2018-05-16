@@ -21,7 +21,7 @@ module Tender
 
   module InstanceMethods
     def tender_token(expiry)
-      method = OpenSSL::Digest::Digest.new("SHA1")
+      method = OpenSSL::Digest.new("SHA1")
       string = "#{TENDER_HOST}/#{email}/#{expiry}"
       OpenSSL::HMAC.hexdigest(method, TENDER_SECRET, string)
     end
