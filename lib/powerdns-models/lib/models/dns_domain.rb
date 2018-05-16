@@ -1,5 +1,5 @@
 class DnsDomain < ActiveRecord::Base
-  establish_connection "powerdns_#{ENV['RAILS_ENV']}"
+  establish_connection "powerdns_#{ENV['RAILS_ENV']}".to_sym
   self.table_name = "domains"
   self.inheritance_column = "inheritance_type"
 
