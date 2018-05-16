@@ -5,7 +5,7 @@ describe Account do
   # TODO
 
   let(:account) do
-    build :account do |a|
+    create :account do |a|
       a.login = 'garry2'
       a.first_name = 'Garry'
       a.last_name = 'Dolley'
@@ -83,50 +83,40 @@ describe Account do
 
   describe "find_virtual_machine_by_id()" do
     before do
-      Account.delete_all("id > 2")
-
-      @account = Factory.create(:account_garry)
-      @garrys_vm = Factory.create(:virtual_machine)
-      Factory.create(:service,
-                     :account => @account,
-                     :virtual_machines => [@garrys_vm])
+      @garrys_vm = create :virtual_machine
+      create :service, account: account, virtual_machines: [@garrys_vm]
     end
 
     context "when it is my VM" do
       it "should find my VM" do
-        @account.find_virtual_machine_by_id(@garrys_vm.id).should == \
-          @garrys_vm
+        expect(account.find_virtual_machine_by_id(@garrys_vm.id)).to \
+          eq(@garrys_vm)
       end
     end
 
     context "when it is not my VM" do
       it "should return nil" do
-        @account.find_virtual_machine_by_id(1).should == nil
+        expect(account.find_virtual_machine_by_id(1)).to eq(nil)
       end
     end
   end
 
   describe "find_backup_quota_by_id()" do
     before do
-      Account.delete_all("id > 2")
-
-      @account = Factory.create(:account_garry)
-      @garrys_bq = Factory.create(:backup_quota)
-      Factory.create(:service,
-                     :account => @account,
-                     :backup_quotas => [@garrys_bq])
+      @garrys_bq = create :backup_quota
+      create :service, account: account, backup_quotas: [@garrys_bq]
     end
 
     context "when it is my VM" do
       it "should find my VM" do
-        @account.find_backup_quota_by_id(@garrys_bq.id).should == \
-          @garrys_bq
+        expect(account.find_backup_quota_by_id(@garrys_bq.id)).to \
+          eq(@garrys_bq)
       end
     end
 
     context "when it is not my VM" do
       it "should return nil" do
-        @account.find_backup_quota_by_id(1).should == nil
+        expect(account.find_backup_quota_by_id(1)).to eq(nil)
       end
     end
   end
