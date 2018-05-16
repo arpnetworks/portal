@@ -75,6 +75,7 @@ FactoryGirl.define do
 
   factory :dns_domain do
     name '0.0.10.in-addr.arpa'
+    type 'MASTER'
   end
 
   factory :dns_record do
