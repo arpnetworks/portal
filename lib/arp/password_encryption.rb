@@ -1,6 +1,9 @@
 module PasswordEncryption
   @config = YAML.load(File.read(File.join(File.dirname(__FILE__), '..', '..', 'config', 'arp', 'password_encryption.yml')))
-  SALT = @config[ENV['RAILS_ENV']]['salt']
+
+  if conf = @config[ENV['RAILS_ENV']]
+    SALT = conf['salt']
+  end
 
   def self.included(base)
     base.extend(ClassMethods)

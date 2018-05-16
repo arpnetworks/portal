@@ -1,7 +1,10 @@
 module Tender
   @config = YAML.load(File.read(File.join(File.dirname(__FILE__), '..', '..', 'config', 'arp', 'tender.yml')))
-  TENDER_SECRET = @config[ENV['RAILS_ENV']]['secret']
-  TENDER_HOST   = @config[ENV['RAILS_ENV']]['host']
+
+  if conf = @config[ENV['RAILS_ENV']]
+    TENDER_SECRET = conf['secret']
+    TENDER_HOST   = conf['host']
+  end
 
   def self.included(base)
     base.extend(ClassMethods)

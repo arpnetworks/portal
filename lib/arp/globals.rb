@@ -4,11 +4,13 @@
 # ExceptionNotifier.email_prefix = "[ARP Networks Portal] "
 # ExceptionNotifier.sender_address = %("Application Error" <info@arpnetworks.com>)
 
-# CD-ROM ISOs
-$ISO_BASE = @config[ENV['RAILS_ENV']]['iso_base']
+if conf = @config[ENV['RAILS_ENV']]
+  # CD-ROM ISOs
+  $ISO_BASE = conf['iso_base']
 
-# To disable online payments
-$PAYMENT_SYSTEM_DISABLED_LOCKFILE = @config[ENV['RAILS_ENV']]['payment_system_disabled_lockfile']
+  # To disable online payments
+  $PAYMENT_SYSTEM_DISABLED_LOCKFILE = conf['payment_system_disabled_lockfile']
+end
 
 # Retrieve IRR password
 $IRR_PASSWORD = File.read(File.join(File.dirname(__FILE__), 'irr.txt')) rescue ''
