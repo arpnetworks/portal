@@ -1,48 +1,49 @@
-require File.dirname(__FILE__) + '/../spec_helper'
-require File.dirname(__FILE__) + '/../my_spec_helper'
+require File.dirname(__FILE__) + '/../rails_helper'
 
 describe Account do
-  fixtures :accounts, :service_codes, :services, :resources, :virtual_machines
+  # fixtures :accounts, :service_codes, :services, :resources, :virtual_machines
+  # TODO
 
-  Factory.define :account_garry, :parent => :account do |a|
-    a.login 'garry2'
-    a.first_name 'Garry'
-    a.last_name 'Dolley'
-    a.email 'garry2@garry.com'
-    a.password '76dfcef085f1664858228a075da17af9d0c3610b'
+  let(:account) do
+    build :account do |a|
+      a.login = 'garry2'
+      a.first_name = 'Garry'
+      a.last_name = 'Dolley'
+      a.email = 'garry2@garry.com'
+      a.password = '76dfcef085f1664858228a075da17af9d0c3610b'
+    end
   end
 
   describe "display_name()" do
     before do
       @first_name = 'FooBar'
       @company    = 'myBiz'
-      @account    = Factory.build(:account_garry)
     end
 
     it "should use company instead of first_name or login if not nil" do
-      @account.company = @company
-      @account.display_name.should == @company
+      account.company = @company
+      expect(account.display_name).to eq(@company)
     end
 
     it "should use first_name instead of login if not nil" do
-      @account.first_name = @first_name
-      @account.display_name.should == @first_name
+      account.first_name = @first_name
+      expect(account.display_name).to eq(@first_name)
     end
 
     it "should use login if first_name is nil" do
-      @account.first_name = nil
-      @account.display_name.should == @account.login
+      account.first_name = nil
+      expect(account.display_name).to eq(account.login)
     end
 
     it "should not use a blank company name" do
-      @account.first_name = @first_name
-      @account.company = ""
-      @account.display_name.should == @first_name
+      account.first_name = @first_name
+      account.company = ""
+      expect(account.display_name).to eq(@first_name)
     end
 
     it "should not use a blank first_name name" do
-      @account.first_name = ""
-      @account.display_name.should == @account.login
+      account.first_name = ""
+      expect(account.display_name).to eq(account.login)
     end
   end
 
@@ -50,34 +51,33 @@ describe Account do
     before do
       @first_name = 'FooBar'
       @company    = 'myBiz'
-      @account    = Factory.build(:account_garry)
-      @last_name  = @account.last_name
+      @last_name  = account.last_name
     end
 
     it "should use company instead of first_name or login if not nil" do
-      @account.company = @company
-      @account.display_account_name.should == @company
+      account.company = @company
+      expect(account.display_account_name).to eq(@company)
     end
 
     it "should use first_name + last_name instead of login if not nil" do
-      @account.first_name = @first_name
-      @account.display_account_name.should == "#{@first_name} #{@last_name}"
+      account.first_name = @first_name
+      expect(account.display_account_name).to eq("#{@first_name} #{@last_name}")
     end
 
     it "should use login if first_name is nil" do
-      @account.first_name = nil
-      @account.display_account_name.should == @account.login
+      account.first_name = nil
+      expect(account.display_account_name).to eq(account.login)
     end
 
     it "should not use a blank company name" do
-      @account.first_name = @first_name
-      @account.company = ""
-      @account.display_account_name.should == "#{@first_name} #{@last_name}"
+      account.first_name = @first_name
+      account.company = ""
+      expect(account.display_account_name).to eq("#{@first_name} #{@last_name}")
     end
 
     it "should not use a blank first_name name" do
-      @account.first_name = ""
-      @account.display_account_name.should == @account.login
+      account.first_name = ""
+      expect(account.display_account_name).to eq(account.login)
     end
   end
 
