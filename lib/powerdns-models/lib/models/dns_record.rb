@@ -2,7 +2,7 @@ class DnsRecord < ActiveRecord::Base
   class EmptyNibbleError < StandardError
   end
 
-  establish_connection "powerdns_#{ENV['RAILS_ENV']}".to_sym
+  establish_connection "powerdns_#{ENV['RAILS_ENV'] || 'development'}".to_sym
   self.table_name = "records"
   self.inheritance_column = "inheritance_type"
 
