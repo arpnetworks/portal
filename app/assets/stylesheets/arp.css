@@ -1322,7 +1322,7 @@ span.credit-card, div.credit-card {
 }
 
 /* Rails */
-#errorExplanation {
+#error_explanation {
   margin-left: auto;
   margin-right: auto;
   width: 40%;
@@ -1332,7 +1332,7 @@ span.credit-card, div.credit-card {
   background-color: #f0f0f0;
 }
 
-#errorExplanation h2 {
+#error_explanation h2 {
   text-align: left;
   font-weight: bold;
   padding: 5px 5px 5px 15px;
@@ -1343,17 +1343,17 @@ span.credit-card, div.credit-card {
   color: #fff;
 }
 
-#errorExplanation p {
+#error_explanation p {
   color: #333;
   margin-bottom: 0;
   padding: 5px;
 }
 
-#errorExplanation ul li {
+#error_explanation ul li {
   font-size: 13px;
 }
 
-div.fieldWithErrors {
+div.field_with_errors {
   background-repeat: no-repeat;
   background-image: url(/images/icons/exclamation.png);
   padding-left: 18px;
