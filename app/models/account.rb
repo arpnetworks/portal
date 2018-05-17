@@ -52,7 +52,7 @@ class Account < ActiveRecord::Base
   end
 
   def gravatar_url(options = {:size => 60 })
-    "https://secure.gravatar.com/avatar/#{MD5::md5((email||'').downcase)}?s=#{options[:size]}"
+    "https://secure.gravatar.com/avatar/#{Digest::MD5.hexdigest((email||'').downcase)}?s=#{options[:size]}"
   end
 
   # An account that has its VLAN in 'shutdown' state is suspended
