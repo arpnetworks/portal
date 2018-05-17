@@ -1,6 +1,14 @@
 development:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
+  admins:
+    - admin
+    - john
+  irr_password: foo
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
+  admins:
+    - admin
+    - john
+  irr_password: foo

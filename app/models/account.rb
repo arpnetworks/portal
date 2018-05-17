@@ -55,6 +55,10 @@ class Account < ActiveRecord::Base
     "https://secure.gravatar.com/avatar/#{Digest::MD5.hexdigest((email||'').downcase)}?s=#{options[:size]}"
   end
 
+  def arp_admin?
+    $ADMINS.include?(login)
+  end
+
   # An account that has its VLAN in 'shutdown' state is suspended
   def suspended?
     vlan_shutdown
