@@ -1,0 +1,40 @@
+<table class="job_detail">
+  <caption>Job Detail</caption>
+  <thead></thead>
+  <tbody>
+    <tr>
+      <td>
+        <pre style='line-height: 1.3em'>
+ID: <%= @job.id %>
+jid: <%= @job.jid %>
+dependent_id: <%= @job.dependent_id %>
+Account: <%= link_to(h(@job.account.display_account_name), admin_account_path(@job.account)) %>
+Code: <%= @job.code %>
+Created at: <%= @job.created_at %>
+State: <%= @job.aasm_state %>
+Return Value: <%= @job.retval %>
+Reason: <%= @job.reason %>
+Arguments: <%= @job.args && JSON.pretty_generate(JSON.parse(@job.args)) %>
+        </pre>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="1">
+
+        <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"),
+                    admin_job_path(@job.id),
+                    :method  => :delete,
+                    :confirm => 'Are you sure you want to delete this Job?  THIS CANNOT BE UNDONE.',
+                    :style   => 'padding-top: 3px; float: left') %>
+
+        <%= link_to(image_tag('/images/icons/pencil_go.png', :alt => "Retry"),
+                    retry_admin_job_path(@job.id),
+                    :method  => :post,
+                    :confirm => 'Are you sure you want to retry this Job?  THIS CANNOT BE UNDONE.',
+                    :style   => 'padding-top: 3px; padding-left: 3px; float: left') %>
+      </td>
+    </tr>
+  </tfoot>
+</table>
