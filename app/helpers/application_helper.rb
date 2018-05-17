@@ -4,9 +4,17 @@ module ApplicationHelper
 
   def render_flash(custom_flash = nil)
     message = custom_flash || flash
-    flash_types = [:error, :warning, :notice]
+    flash_types = %w(error warning notice)
     flash_type = flash_types.detect { |a| message.keys.include?(a) }
-    "<div id='flash_%s_div' class='flash_%s rounded'>%s</div>" % [flash_type.to_s, flash_type.to_s, message[flash_type]] if flash_type
+    if flash_type
+      html = "<div id='flash_#{flash_type}_div' class='flash_#{flash_type} rounded'>".html_safe
+      html << message[flash_type]
+      html << "</div>".html_safe
+    else
+      html = ''
+    end
+
+    html
   end
 
   def billing_interval_in_words(number_of_months)
