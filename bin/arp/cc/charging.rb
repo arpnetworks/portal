@@ -1,15 +1,29 @@
+#!/usr/bin/env ruby
+
 # Author: Garry
 # Date  : 01-14-2012
 #
 # Charge credit cards for all unpaid invoices
 
-$REPORT = $ARGV[0]
-$SHOW_SR = $ARGV[1]
-$EMAIL_DN = $ARGV[2]
-$ONLY_RECENTS = $ARGV[3]
-$SUSPEND_MODE = $ARGV[4]
+# Rails
+APP_PATH = File.expand_path('../../../../config/application', __FILE__)
+require_relative '../../../config/boot'
+require APP_PATH
+Rails.application.require_environment!
 
-if $ARGV[0] == '--help'
+require 'date'
+
+$REPORT       = ARGV[0]
+$SHOW_SR      = ARGV[1]
+$EMAIL_DN     = ARGV[2]
+$ONLY_RECENTS = ARGV[3]
+$SUSPEND_MODE = ARGV[4]
+
+def usage
+  puts "./charging.rb [report_only] [show_sales_receipts] [email_decline_notice] [only_recents] [suspend_mode]"
+end
+
+if ARGV[0] == '--help'
   usage
   exit 1
 end
@@ -26,10 +40,6 @@ $RECENT_CC_UPDATE_INTERVAL = 14
 # Suspend mode forces report only
 if $SUSPEND_MODE
   $REPORT = true
-end
-
-def usage
-  puts "./script/runner charging.rb [report_only] [show_sales_receipts] [email_decline_notice] [only_recents] [suspend_mode]"
 end
 
 def unlock_cc
