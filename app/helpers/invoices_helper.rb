@@ -16,6 +16,6 @@ module InvoicesHelper
       text = "Unpaid"
     end
 
-    "<span class='#{css_class}'>#{text}</span>"
+    "<span class='#{css_class}'>#{text}</span>".html_safe
   end
 end
