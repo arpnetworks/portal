@@ -1,0 +1,16 @@
+<table class="vlans">
+  <caption>
+    <div>&nbsp;
+      <div class="title">
+        VLAN Database
+      </div>
+      <div class="actions">
+        <%= link_to("New VLAN", new_admin_vlan_path, :class => "add_item") %>
+      </div>
+    </div>
+  </caption>
+
+  <%= render :partial => 'table_data' %>
+</table>
+
+&laquo; <%= link_to('Back to Head Quarters', admin_path) %>

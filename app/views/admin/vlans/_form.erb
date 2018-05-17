@@ -1,0 +1,23 @@
+<tbody>
+  <tr>
+    <td colspan="2">
+      <h3></h3>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">VLAN:</td>
+    <td class="required"><%= f.text_field :vlan %></td>
+  </tr>
+  <tr>
+    <td class="label">VLAN Label:</td>
+    <td class="required"><%= f.text_field :label %></td>
+  </tr>
+  <tr>
+    <td class="label">Location:</td>
+
+    <td class="required"><%= collection_select(:vlan, :location_id,
+                                               Location.all, :id,
+                                               :display_name,
+                                               { :include_blank => false }) %></td>
+  </tr>
+</tbody>
