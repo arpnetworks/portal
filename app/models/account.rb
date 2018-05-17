@@ -514,7 +514,7 @@ class Account < ActiveRecord::Base
                               :sold_to => sold_to)
         sr.line_items.build(line_items)
 
-        tmail = BillingSystemModels::Mailer.create_sales_receipt(sr)
+        tmail = BillingSystemModels::Mailer.sales_receipt(sr)
 
         puts ""
         puts tmail.body

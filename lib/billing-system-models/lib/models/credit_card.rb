@@ -148,13 +148,13 @@ class CreditCard < ActiveRecord::Base
       end
 
       if email_sales_receipt && sr
-        BillingSystemModels::Mailer.sales_receipt(sr, charge_rec)
+        BillingSystemModels::Mailer.sales_receipt(sr, charge_rec).deliver_now
       end
 
       return [charge_rec, sr]
     else
       if email_decline_notice
-        BillingSystemModels::Mailer.decline_notice(account)
+        BillingSystemModels::Mailer.decline_notice(account).deliver_now
         nil
       end
     end
