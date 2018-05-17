@@ -21,3 +21,8 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    attributes:
+      account:
+        email2: Alternative Email
+        email_billing: Billing Email
