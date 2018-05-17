@@ -10,11 +10,11 @@ class MyAccountController < ProtectedController
     # If we wanted all unpaid invoices to appear on top
     # @invoices = @account.invoices.active.find(:all, :order => 'paid asc, date desc', :limit => 5)
 
-    @invoices = @account.invoices.active.find(:all, :order => 'date desc', :limit => 5)
+    @invoices = @account.invoices.active.order('date desc').limit(5)
     @unpaid_invoices = @account.invoices_unpaid
     @enable_summary_view = true
 
-    @jobs = @account.jobs.recent.find(:all, :order => 'created_at desc', :limit => 5)
+    @jobs = @account.jobs.recent.order('created_at desc').limit(5)
   end
 
   protected
