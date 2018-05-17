@@ -52,6 +52,8 @@ end
 
 gem 'aasm'
 gem 'activemerchant'
+gem 'dynamic_form', git: 'https://github.com/joelmoss/dynamic_form.git'
 gem 'netaddr', '~> 1.0'
 gem 'redcarpet'
 gem 'will_paginate'
+

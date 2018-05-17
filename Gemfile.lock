@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/joelmoss/dynamic_form.git
+  revision: 844251c86109d0c156986cec12c11bc6576480c7
+  specs:
+    dynamic_form (1.1.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -218,6 +224,7 @@ DEPENDENCIES
   byebug
   capistrano-rails
   coffee-rails (~> 4.1.0)
+  dynamic_form!
   factory_bot
   factory_bot_rails
   jbuilder (~> 2.0)
