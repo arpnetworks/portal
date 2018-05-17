@@ -68,7 +68,7 @@ module ApplicationHelper
 
   def services_table_onClick(service)
     unless @enable_pending_view
-      "onClick=\"location.href='" + (@enable_admin_view ? admin_service_path(service.id) : account_service_path(@account, service.id)) + "'\""
+      String.new("onClick=\"location.href='" + (@enable_admin_view ? admin_service_path(service.id) : account_service_path(@account, service.id)) + "'\"").html_safe
     else
       ""
     end
@@ -78,7 +78,7 @@ module ApplicationHelper
     if vlan.new_record?
       ""
     else
-      "onClick=\"location.href='" + edit_admin_vlan_path(vlan.id) + "'\""
+      String.new("onClick=\"location.href='" + edit_admin_vlan_path(vlan.id) + "'\"").html_safe
     end
   end
 
@@ -92,7 +92,7 @@ module ApplicationHelper
 
   def dns_records_table_onClick(account, record)
     if account.owns_dns_record?(record)
-      "onClick=\"location.href='" + edit_account_dns_record_path(account.id, record.id) + "'\""
+      String.new("onClick=\"location.href='" + edit_account_dns_record_path(account.id, record.id) + "'\"").html_safe
     else
       ""
     end
@@ -100,7 +100,7 @@ module ApplicationHelper
 
   def invoices_table_onClick(invoice)
     unless @enable_pending_view
-      "onClick=\"location.href='" + (@enable_admin_view ? admin_invoice_path(invoice.id) : account_invoice_path(@account, invoice.id)) + "'\""
+      String.new("onClick=\"location.href='" + (@enable_admin_view ? admin_invoice_path(invoice.id) : account_invoice_path(@account, invoice.id)) + "'\"").html_safe
     else
       ""
     end
@@ -108,7 +108,7 @@ module ApplicationHelper
 
   def jobs_table_onClick(job)
     if @enable_admin_view
-      "onClick=\"location.href='" + admin_job_path(job.id) + "'\""
+      String.new("onClick=\"location.href='" + admin_job_path(job.id) + "'\"").html_safe
     else
       ""
     end
