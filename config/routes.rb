@@ -102,17 +102,17 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'admin', controller: 'admin/head_quarters', action: 'index'
+  get 'admin',         controller: 'admin/head_quarters', action: 'index'
 
   # Switch user and search
-  post 'admin/su', controller: 'admin/head_quarters', action: 'su'
+  post 'admin/su',     controller: 'admin/head_quarters', action: 'su'
   get  'admin/search', controller: 'admin/head_quarters', action: 'search'
+
+  # Other
+  get "admin/whoami",  controller: 'admin/head_quarters', action: 'whoami'
 
   # Reports
   get "admin/reports/services", controller: 'admin/reports', action: 'services'
-
-  # Other
-  get "admin/whoami", controller: 'admin/head_quarters', action: 'whoami'
 
   # # Internal API
   # map.namespace(:api) do |api|
