@@ -4,7 +4,7 @@
 # ExceptionNotifier.email_prefix = "[ARP Networks Portal] "
 # ExceptionNotifier.sender_address = %("Application Error" <info@arpnetworks.com>)
 
-if conf = @config[ENV['RAILS_ENV']]
+if conf = @config[Rails.env]
   # CD-ROM ISOs
   $ISO_BASE = conf['iso_base']
 
