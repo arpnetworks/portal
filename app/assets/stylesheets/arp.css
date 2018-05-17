@@ -1,0 +1,1378 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11pt;
+  line-height: 1.2; /* 12px */
+}
+
+img { border: none }
+
+div.main-container { 
+  width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+hr {
+  clear: both;
+  visibility: hidden;
+}
+
+/* img, div, a, ul, li, p, span { behavior: url(iepngfix.htc) } */
+
+div.logo {
+  float: left;
+}
+
+div.logo-features {
+  float: right;
+}
+
+div.logo-caption {
+  text-align: right;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+div.basic-nav-links {
+  text-align: right;
+}
+
+div.basic-nav-links a {
+  text-decoration: none;
+  font-weight: normal;
+  font-family: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+}
+
+div.logo-divider {
+  margin: 0px; 
+  padding-bottom: 10px; 
+  clear: both;
+}
+
+div.squares {
+  float: left;
+  font-family: Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+
+div.squares img {
+  margin-left: 20px;
+}
+
+pre {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1;
+  margin: 0;
+}
+
+div.footer {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  padding-top: 0px;
+  margin-top: 100px;
+  border-top: 1px solid #006;
+}
+
+div.footer div.copyright {
+  float: right;
+  text-align: right;
+  padding-top: 5px;
+  margin: 0px;
+}
+
+div.footer div.attribution {
+  float: left;
+  text-align: left;
+  padding-top: 5px;
+  margin: 0px;
+}
+
+div.footer div.tos {
+  float: left;
+  text-align: left;
+  padding-top: 5px;
+  margin: 0px;
+}
+
+div.title2 {
+  text-align: left;
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 1.33333333333333;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+  border-bottom: 2px solid #669; 
+}
+
+/***************************************************
+ * Info design
+ **************************************************/
+.flash_error {
+  color: red;  
+  text-align: center;
+}
+
+.flash_notice {
+  color: green;
+  text-align: center;
+}
+
+.flash_warning {
+  color: green;
+  text-align: center;
+}
+
+.center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+div.notice-cool {
+  padding: 1em;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #C6AEC7;
+  background-color: #E3E4FA;
+}
+
+div.notice-warm, div.notice {
+  padding: 1em;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #FAD163;
+  background-color: #FFF7D7;
+}
+
+div.notice-warning {
+  padding: 1em;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #C10B0B;
+  background-color: #F2A4A4;
+  font-weight: bold;
+}
+
+div.notice-green {
+  padding: 1em;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #019C0B;
+  background-color: #D2F7D7;
+}
+
+div.notice-transparent {
+  padding: 1em;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #fff;
+  background-color: #fff;
+}
+
+
+/***************************************************
+ * Tables
+ **************************************************/
+
+table {
+  margin: 0px;
+  line-height: 0.85;
+  width: 100%;
+  border: 1px solid #999;
+  margin-bottom: 10px;
+}
+
+table caption {
+  text-align: left;
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 1.33333333333333;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+  border-bottom: 2px solid #669; 
+}
+
+table caption div.title {
+  float: left;
+}
+
+table caption div.actions {
+  float: right;
+  font-size: 12pt;
+  font-weight: normal;
+  padding-top: 8px;
+}
+
+table caption div.actions a {
+  text-decoration: none;
+}
+
+table th, table td {
+  text-align: left;
+  padding: 0.3em;
+}
+
+table th, table td.th {
+  background-color: #669;
+  color: #fff;
+  font-weight: bold;
+}
+
+table td.th-minor {
+  border-bottom: 1px solid #999;
+  background-color: #fff;
+  color: #000;
+  font-weight: bold;
+}
+
+table .even td {
+  background-color: #ddf;
+}
+
+table td.money, table th.money {
+  width: 5em;
+}
+
+table td.valign-top {
+  vertical-align: top;
+}
+
+table td.info {
+  line-height: 1.2;
+}
+
+table td.pagination {
+  background-color: #F8F8F8;
+}
+
+table td.pagination a {
+  text-decoration: none;
+}
+
+table td.pagination span.page-entries-info {
+  float: left;
+  text-align: left;
+}
+
+table td.pagination span.page-links {
+  float: right;
+  text-align: right;
+}
+
+/*
+table td.action, table th.action {
+  width: 1em; / * Minimum * /
+}
+*/
+
+/* Services table */
+table.services td.code, table.services th.code {
+  width: 1em; /* Minimum */
+}
+
+table.services td.interval, table.services th.interval {
+  width: 5em;
+}
+
+table td.account, table th.account {
+  width: 9em;
+}
+
+table.services td.totals {
+  text-align: right;
+}
+
+table.services td.totals-label {
+  border-top: 1px solid black;
+  font-weight: bold;
+}
+
+table.services tr.totals-label {
+  background-color: #fff;
+}
+
+table.services tr.totals {
+  background-color: #d4f3ae;
+}
+
+table.service_detail tfoot {
+  border-top: 1px solid #999;
+  vertical-align: top;
+  text-align: left;
+}
+
+table.service_detail tfoot tr td {
+}
+
+table.service_detail pre {
+  padding: 15px 5px 5px 5px;
+  width: 850px;
+}
+
+table.services tr.odd, table.services tr.even {
+  cursor: pointer;
+}
+
+table.services tr.odd:hover td, table.services tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.services tr.no_highlight {
+  cursor: default;
+}
+
+table.services tr.no_highlight:hover td {
+  background-color: #fff;
+}
+
+/* Order new service */
+table.services.new {
+  border: none;
+  line-height: 1.2em;
+}
+
+table.services.new li {
+  list-style: none;
+}
+
+label.disabled {
+  color: #999;
+}
+
+/* Service codes table */
+
+table.service_codes tr.odd, table.service_codes tr.even {
+  cursor: pointer;
+}
+
+table.service_codes tr.odd:hover td, table.service_codes tr.even:hover td {
+  background-color: #ffc;
+}
+
+/* VLANs table */
+
+table.vlans tr.odd, table.vlans tr.even {
+  cursor: pointer;
+}
+
+table.vlans tr.odd:hover td, table.vlans tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.vlans td.vlan, table.vlans th.vlan {
+  width: 4em;
+}
+
+table.vlans td.vlan_location, table.vlans th.vlan_location {
+  width: 1em;
+}
+
+table.vlans tr.no_highlight {
+  cursor: default;
+}
+
+/* Accounts table */
+
+table.accounts caption {
+  border-bottom: 2px solid #669; 
+}
+
+table.accounts th {
+  background-color: #3c8743;
+  color: #fff;
+}
+
+table.accounts .even td {
+  background-color: #d2ead1;
+}
+
+table.accounts td.action, table.accounts th.action {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.accounts td.account, table.accounts th.account {
+  width: 15em;
+}
+
+table.accounts td.login, table.accounts th.login {
+  width: 8em;
+}
+
+table.accounts tr.odd, table.accounts tr.even {
+  cursor: pointer;
+}
+
+table.accounts tr.odd:hover td, table.accounts tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.accounts tr.suspended td {
+  background-color: #F2A4A4;
+}
+
+/* Virtual Machines table */
+
+table.virtual_machines .vlan,
+table.virtual_machines .ram,
+table.virtual_machines .storage {
+  width: 1em;
+  white-space: nowrap;
+}
+
+table.virtual_machines tr.odd, table.virtual_machines tr.even {
+  cursor: pointer;
+}
+
+table.virtual_machines tr.odd:hover td, table.virtual_machines tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.virtual_machine_detail div.vm-action-buttons {
+  background-color: #ccf;
+}
+
+table.virtual_machine_detail div.vm-action-buttons div {
+  display: inline;
+}
+
+table.virtual_machine_detail div.vm-action-buttons form {
+  display: inline;
+}
+
+table.virtual_machine_detail div.vm-action-buttons input {
+  margin: 5px;
+}
+
+table.virtual_machine_detail div.vm-action-buttons button {
+  margin: 5px;
+}
+
+table.virtual_machine_detail div.vm-action-buttons-notes {
+  margin-top: 10px;
+}
+
+table.virtual_machine_detail td.cd-rom {
+  background-color: #fff8e1
+}
+
+table.virtual_machine_detail td.advanced-parameters {
+  background-color: #fbe9e7
+}
+
+/* IP blocks table */
+
+/*
+table.ip_blocks .network,
+table.ip_blocks .gateway,
+table.ip_blocks .netmask,
+table.ip_blocks .broadcast
+{
+  width: 1em;
+  white-space: nowrap;
+}
+*/
+
+table.ip_blocks .vlan {
+  width: 1em;
+  white-space: nowrap;
+}
+
+table.ip_blocks tr.odd, table.ip_blocks tr.even {
+  cursor: pointer;
+}
+
+table.ip_blocks tr.odd td, table.ip_blocks tr.even td {
+  vertical-align: top;
+}
+
+table.ip_blocks tr.odd:hover td, table.ip_blocks tr.even:hover td {
+  background-color: #ffc;
+}
+
+/* Reverse DNS table */
+
+table.reverse-dns tr.odd, table.reverse-dns tr.even {
+  cursor: pointer;
+}
+
+table.reverse-dns th {
+}
+
+table.reverse-dns .even td {
+}
+
+table.reverse-dns tr.odd:hover td, table.reverse-dns tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.reverse-dns tr.no_highlight {
+  cursor: default;
+}
+
+table.reverse-dns td.action, table.reverse-dns th.action {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.reverse-dns td.type, table.reverse-dns th.type {
+  width: 1em;
+}
+
+table.reverse-dns td.name, table.reverse-dns th.name {
+  white-space: nowrap;
+  width: 5em;
+}
+
+/* Bandwith Quotas table */
+
+table.bandwidth-quotas tr.odd, table.bandwidth-quotas tr.even {
+  cursor: pointer;
+}
+
+table.bandwidth-quotas th {
+}
+
+table.bandwidth-quotas .even td {
+}
+
+table.bandwidth-quotas tr.odd:hover td, table.bandwidth-quotas tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.bandwidth-quotas tr.no_highlight {
+  cursor: default;
+}
+
+table.bandwidth-quotas td.action, table.bandwidth-quotas th.action {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.bandwidth-quotas td.commit, table.bandwidth-quotas th.commit {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.bandwidth-quotas td.overage, table.bandwidth-quotas th.overage {
+}
+
+/* Backup Quotas table */
+
+table.backup-quotas tr.odd, table.backup-quotas tr.even {
+  cursor: pointer;
+}
+
+table.backup-quotas th {
+}
+
+table.backup-quotas .even td {
+}
+
+table.backup-quotas tr.odd:hover td, table.backup-quotas tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.backup-quotas tr.no_highlight {
+  cursor: default;
+}
+
+table.backup-quotas td.action, table.backup-quotas th.action {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.backup-quotas td.commit, table.backup-quotas th.commit {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.backup-quotas td.overage, table.backup-quotas th.overage {
+}
+
+/* BGP sessions table */
+
+table.bgp-sessions tr.odd, table.bgp-sessions tr.even {
+  cursor: pointer;
+}
+
+table.bgp-sessions th {
+}
+
+table.bgp-sessions .even td {
+}
+
+table.bgp-sessions tr.odd:hover td, table.bgp-sessions tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.bgp-sessions tr.no_highlight {
+  cursor: default;
+}
+
+table.bgp-sessions td.action, table.bgp-sessions th.action {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.bgp-sessions td.asn, table.bgp-sessions th.asn {
+  width: 1em;
+}
+
+table.bgp-sessions td.multihop, table.bgp-sessions th.multihop {
+  width: 1em;
+}
+
+table.bgp-sessions td.as_set, table.bgp-sessions th.as_set {
+  width: 5em;
+}
+
+/* BGP sessions prefixes table */
+
+table.bgp-sessions-prefixes tr.odd, table.bgp-sessions-prefixes tr.even {
+  cursor: pointer;
+}
+
+table.bgp-sessions-prefixes th {
+}
+
+table.bgp-sessions-prefixes .even td {
+}
+
+table.bgp-sessions-prefixes tr.odd:hover td, table.bgp-sessions-prefixes tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.bgp-sessions-prefixes tr.no_highlight {
+  cursor: default;
+}
+
+table.bgp-sessions-prefixes td.action, table.bgp-sessions-prefixes th.action {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.bgp-sessions-prefixes td.prefixlen_min, table.bgp-sessions-prefixes th.prefixlen_min {
+  width: 1em;
+}
+
+table.bgp-sessions-prefixes td.prefixlen_max, table.bgp-sessions-prefixes th.prefixlen_max {
+  width: 1em;
+}
+
+/* Jobs table */
+
+table.jobs tr.odd, table.jobs tr.even {
+}
+
+table.jobs tr.cursor {
+  cursor: pointer;
+}
+
+table.jobs th {
+}
+
+table.jobs .even td {
+}
+
+table.jobs tr.cursor:hover td {
+  background-color: #ffc;
+}
+
+table.jobs tr.no_highlight {
+  cursor: default;
+}
+
+table.jobs td.action, table.jobs th.action {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.jobs td.created_at, table.jobs th.created_at {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.jobs td.jid, table.jobs th.jid {
+  width: 1em;
+}
+
+table.jobs td.state, table.jobs th.state {
+  width: 1em;
+}
+
+table.jobs td.code, table.jobs th.code {
+  width: 1em;
+}
+
+table.jobs tr.failed.even td {
+  background-color: #F2A4A4;
+}
+table.jobs tr.failed.odd td {
+  background-color: #fcc9c9;
+}
+
+table.jobs tr.running td.state {
+  padding 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/ellipsis.gif);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.jobs tr.done td.state {
+  padding 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/done.png);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.jobs tr.ready td.state, table.jobs tr.waiting td.state {
+  padding 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/clock-simple-green.png);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.jobs tr.failed td.state {
+  padding 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/failed.png);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.jobs td {
+  vertical-align: center;
+  line-height: 1.0em;
+}
+
+table.jobs div.additional-note {
+  font-size: 8pt;
+}
+
+table.jobs.legend {
+  padding-left: 11px;
+  width: 100%;
+  border: none;
+}
+
+table.legend td.icon {
+  width: 1em;
+}
+
+/* Invoices table */
+table.invoices th {
+  background-color: #014C0B;
+  color: #fff;
+}
+
+table.invoices .even td {
+  background-color: #D2F7D7;
+}
+
+table.invoices td.date, table.invoices th.date {
+  width: 6em;
+}
+
+table.invoices td.number, table.invoices th.number {
+  white-space: nowrap;
+  width: 1em;
+}
+
+table.invoices td.total, table.invoices th.total {
+  width: 5em;
+}
+
+table.invoices td.paid, table.invoices th.paid {
+  width: 5em;
+}
+
+table.invoices td.balance, table.invoices th.balance {
+  width: 5em;
+}
+
+table.invoices td.status, table.invoices th.status {
+  width: 3em;
+}
+
+table.invoices tr.odd, table.invoices tr.even {
+  cursor: pointer;
+}
+
+table.invoices tr.odd:hover td, table.invoices tr.even:hover td {
+  background-color: #ffc;
+}
+
+table.invoices td.summary div {
+  line-height: 1.2em;
+}
+
+table.invoices td.summary div.additional-note {
+  font-size: 9pt;
+}
+
+table.invoices tr.no_highlight {
+  cursor: default;
+}
+
+table.invoices tr.no_highlight:hover td {
+  background-color: #D2F7D7;
+}
+
+table.invoice_detail tr.totals {
+  background-color: #D2F7D7;
+}
+
+table.invoice_detail td.totals {
+  text-align: right;
+}
+
+table.invoice_detail tr.totals-label {
+  background-color: #fff;
+}
+
+table.invoice_detail td.totals-label {
+  border-top: 1px solid black;
+  font-weight: bold;
+}
+
+table.invoice_detail tfoot {
+  border-top: 1px solid #999;
+  vertical-align: top;
+  text-align: left;
+}
+
+table.invoice_detail td.header {
+  background-color: #fff;
+}
+
+table.invoice_detail td.header div.bill_to {
+  margin-top: 12px;
+  clear: both;
+}
+table.invoice_detail td.header div.bill_to span.label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+table.invoice_detail tr.line-items-heading td {
+  font-weight: bold;
+  /* border-bottom: 1px solid #999; */
+  background-color: #9cf;
+}
+
+table.invoice_detail div.company {
+  float: left;
+}
+
+table.invoice_detail div.stats {
+  float: right;
+  text-align: right;
+}
+
+table.invoice_detail div.stats div.date {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+table.invoice_detail div.stats div {
+  margin-bottom: 3px;
+}
+
+table.invoice_detail div.message {
+  float: left;
+}
+
+table.invoice_detail div.terms {
+  float: right;
+}
+
+table.invoice_detail td.date,
+table.invoice_detail th.date {
+  width: 6em;
+}
+
+table.invoice_detail td.code,
+table.invoice_detail th.code {
+  width: 4em;
+}
+
+table.invoice_detail td.amount,
+table.invoice_detail th.amount {
+  width: 7em;
+}
+
+table.invoices span.paid,
+table.invoice_detail span.paid {
+  color: green;
+  font-weight: bold;
+}
+
+table.invoices span.unpaid,
+table.invoice_detail span.unpaid {
+  color: orange;
+  font-weight: bold;
+}
+
+/* Entry forms */
+table.entry_form {
+  border: 1px solid #999;
+  background-color: #eee;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table.entry_form .label {
+  vertical-align: middle;
+  text-align: right;
+}
+
+/* Entry form, IP block */
+table.edit_ip_block {
+  width: 100%;
+}
+
+/* Login form */
+
+table.login {
+  width: 50%;
+}
+
+/* Register form */
+
+table.register {
+  width: 80%;
+}
+
+/* Edit account form */
+
+table.edit_account {
+  width: 80%;
+}
+
+/* Admin forms */
+
+table.edit_service, table.new_service {
+  width: 90%
+}
+
+/* Reverse DNS form */
+
+table.edit_dns_record {
+  border: 1px solid #BBCCFF;
+  background-color: #F6F9FC;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.resource-record {
+  padding: 1em;
+  border: 1px solid #FAD163;
+  background-color: #FFF7D7;
+}
+
+div.dns-record-tips {
+  padding: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #C6AEC7;
+  background-color: #E3E4FA;
+}
+
+div.dns-record-tips ul {
+  line-height: 1.2em;
+}
+
+/* Credit Card form */
+
+table.edit_credit_card {
+  background-color: #EAFEE2;
+  width: 90%;
+}
+
+
+div.credit-card-tips {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #1FCB4A;
+  background-color: #CAFEB8;
+}
+
+div.credit-card-tips ul {
+  line-height: 1.2em;
+}
+
+/* Other */
+
+table.small-note {
+  padding-top: 5px;
+  border: none;
+  line-height: 1.1em;
+}
+
+table.small-note td, table.small-note tr {
+  vertical-align: top;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  padding-top: 0;
+  padding-bottom: 10px;
+}
+
+table.small-note td.caption {
+  vertical-align: top;
+  width: 1em;
+}
+
+div.form-section-header {
+  font-size: 14px;
+  padding-top: 3px;
+  padding-bottom: 10px;
+}
+
+div.note {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+td.note {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  padding-top: 0;
+  padding-bottom: 10px;
+}
+
+td.no_records {
+  text-align: center;
+}
+
+tr.deleted_row {
+  color: #999;
+}
+
+tr.pending_row {
+  color: #c713f8;
+}
+
+/* Changelog */
+
+#HW_badge_cont {
+  margin-left: 89%;
+}
+
+/* Switch User */
+div.su {
+  float: left;
+  padding-top: 10px;
+  width: 30px;
+  text-align: center;
+}
+
+form.su input {
+  margin: 3px;
+}
+
+/***************************************************
+ * Dashboard
+ **************************************************/
+
+div.main-menu {
+  float: left;
+  width: 22%;
+  height: 400px;
+  margin: 5px;
+  margin-top: 0.5em;
+  border: 1px dashed #060;
+  background-color: #ffffe0;
+}
+
+div.main-menu .title {
+  font-size: 14pt;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 0.5em;
+}
+
+div.main-menu li.admin {
+  list-style-image: url(/images/icons/bricks.png);
+}
+
+div.main-menu li.edit-profile {
+  list-style-image: url(/images/icons/user.png);
+}
+
+div.main-menu li.my-services {
+  list-style-image: url(/images/icons/cog.png);
+}
+
+div.main-menu li.reverse-dns {
+  list-style-image: url(/images/icons/database_table.png);
+}
+
+div.main-menu li.credit-card {
+  list-style-image: url(/images/icons/creditcards.png);
+}
+
+div.main-menu li.invoice {
+  list-style-image: url(/images/icons/money_dollar.png);
+}
+
+div.main-menu li.jobs {
+  list-style-image: url(/images/icons/bell.png);
+}
+
+div.main-menu li.help {
+  list-style-image: url(/images/icons/help.png);
+}
+
+div.main-menu div.menu-item {
+  padding: 5px;
+  text-align: center;
+}
+
+div.dashboard-summaries {
+  float: right;
+  width: 75%;
+}
+
+/***************************************************
+ * Admin Dashboard
+ **************************************************/
+  
+div.main-menu li.all-accounts {
+  list-style-image: url(/images/icons/group.png);
+}
+
+div.main-menu li.all-jobs {
+  list-style-image: url(/images/icons/film.png);
+}
+
+div.main-menu li.all-services {
+  list-style-image: url(/images/icons/cog.png);
+}
+
+div.main-menu li.all-service-codes {
+  list-style-image: url(/images/icons/flag_blue.png);
+}
+
+div.main-menu li.vlans {
+  list-style-image: url(/images/icons/table.png);
+}
+
+div.main-menu li.virtual-machines {
+  list-style-image: url(/images/icons/computer.png);
+}
+
+div.main-menu li.ip-blocks {
+  list-style-image: url(/images/icons/world_link.png);
+}
+
+div.main-menu li.bandwidth-quotas {
+  list-style-image: url(/images/icons/transmit.png);
+}
+
+div.main-menu li.backup-quotas {
+  list-style-image: url(/images/icons/drive.png);
+}
+
+div.main-menu li.bgp-sessions {
+  list-style-image: url(/images/icons/link.png);
+}
+
+div.main-menu li.reports {
+  list-style-image: url(/images/icons/chart_bar.png);
+}
+
+/***************************************************
+ * Subnet Wizard
+ **************************************************/
+ 
+.subnet-wizard table {
+  background-color: #ffc;
+  line-height: 1.1em;
+}
+
+/***************************************************
+ * SSH Key Submission
+ **************************************************/
+ 
+textarea.ssh-key-submission {
+ width: 860px;
+ white-space: nowrap;
+ overflow:    scroll;
+ overflow-y:  hidden;
+ overflow-x:  scroll;
+ overflow:    -moz-scrollbars-horizontal;
+}
+
+/***************************************************
+ * Uncategorized
+ **************************************************/
+
+.add_item {
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/add.png);
+  background-color: #fff;
+  cursor: pointer;
+  padding-left: 18px;
+  background-position: 0px 0px;
+}
+
+a.logout {
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/door_out.png);
+  background-color: #fff;
+  cursor: pointer;
+  padding-left: 19px;
+  padding-bottom: 3px;
+}
+
+a.register {
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/pencil_go.png);
+  background-color: #fff;
+  cursor: pointer;
+  padding-left: 19px;
+  padding-bottom: 1px;
+}
+
+a.login {
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/world.png);
+  background-color: #fff;
+  cursor: pointer;
+  padding-left: 19px;
+  padding-bottom: 1px;
+}
+
+a, a:visited {
+/*  color: #009; */
+}
+
+a.btn {
+  text-decoration: none;
+}
+
+div.very_strong {
+  padding: 1em;
+  font-size: 16pt;
+  text-align: center;
+}
+
+hr {
+  border: 0;
+  color: #999;
+  background-color: #999;
+  height: 1px;
+}
+
+div.banner {
+  background-color: yellow;
+  font-size: 14pt;
+}
+
+span.money, div.money {
+  font-size: 14pt;
+  font-weight: bold;
+  color: green;
+}
+
+span.outstanding, div.outstanding {
+  color: red;
+}
+
+span.credit-card, div.credit-card {
+  font-size: 14pt;
+  font-weight: bold;
+  color: black;
+}
+
+/* Rails */
+#errorExplanation {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  border: 1px solid #c00;
+  padding: 7px 7px 7px 7px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  font-family: Arial, Helvetica, san-serif;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 13px;
+}
+
+div.fieldWithErrors {
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/exclamation.png);
+  padding-left: 18px;
+  background-position: 0px 3px;
+}
+
+div.simple-error, span.simple-error {
+  color: red;
+}
+
+.cursor-normal {
+  cursor: default;
+}
+
+.vote {
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/flag_green.png);
+  background-color: #fff;
+  cursor: pointer;
+  padding-left: 18px;
+  background-position: 0px 3px;
+}
