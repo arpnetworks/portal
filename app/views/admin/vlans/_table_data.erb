@@ -22,8 +22,7 @@
         <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"), 
                     admin_vlan_path(vlan.id), 
                     :method => :delete,
-                    :confirm => 'Are you sure you want to delete this service code?  THIS CANNOT BE UNDONE.',
-                    :class => 'no-event-bubble-up') %>
+                    :data   => { :confirm => 'Are you sure you want to delete this service code?  THIS CANNOT BE UNDONE.' }) %>
         <% end %>
       <td class="vlan"><%= vlan.vlan %></td>
       <td class="vlan_label"><%= vlan.label %></td>
