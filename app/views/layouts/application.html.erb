@@ -1,14 +1,72 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Portal</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>ARP Networks Control Panel</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= yield %>
+<div class="main-container">
+  <div class="logo">
+    <a href='<%= dashboard_path %>'><img src='/images/logo-small.png' width='100' height='91' alt='Logo' class="logo" align="top"/></a>
+  </div>
+  <div class="squares">
+    <img src="/images/squares-2.gif" alt='Squares' align='middle' />
+    All the Right Pieces
+  </div>
+  <div class="logo-features">
+    <div class="logo-caption">
+      Customer Control Panel
+    </div>
+    <div class="basic-nav-links">
+    <% if session[:account_id] %>
+      <%= link_to('Logout', logout_accounts_path, :class => "logout") %>
+      <span id="changelog"></span>
+    <% else %>
+      <%= link_to('Register', new_account_path, :class => "register") %>
+
+      &nbsp;
+      &nbsp;
+      <%= link_to('Login', login_accounts_path, :class => "login") %>
+
+    <% end %>
+    </div>
+  </div>
+
+  <div class="logo-divider"></div>
+
+  <%= render_flash %>
+
+  <div class="main-content">
+    <%= yield :layout %>
+  </div>
+
+  <div class="footer">
+    <div class="copyright">
+      Copyright &copy; 1999 - 2018 ARP Networks, Inc.  All Rights Reserved.
+    </div>
+    <div class="attribution">
+      Icons provided by <a href='http://www.famfamfam.com/'>famfamfam</a>, <a href='http://www.freepik.com/'>Freepik</a>, <a href='http://www.flaticon.com/'>Flaticon</a>, and <a href='http://www.free-country-flags.com/'>Free Country Flags</a>
+    </div>
+  </div>
+</div>
+
+<script type='text/javascript'>
+  $(document).ready(function() {
+    $(".no-event-bubble-up").each(function() {
+      $(this).click(function(e) {
+        e.stopPropagation();
+      });
+    });
+  });
+  <%= yield :js %>
+  $(window).konami(function(){ alert('Download more RAM! Free, Fast, and Instant!\nhttp://www.downloadmoreram.com/')})
+</script>
 
 </body>
 </html>
