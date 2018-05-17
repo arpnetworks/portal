@@ -64,7 +64,7 @@ class Admin::AccountsController < Admin::HeadQuartersController
         params[:account].delete(:password_confirmation)
       end
 
-      if @account.update_attributes(params[:account])
+      if @account.update_attributes(account_params)
         flash[:notice] = "Changes saved."
         redirect_to last_location and return
       end
@@ -101,5 +101,27 @@ class Admin::AccountsController < Admin::HeadQuartersController
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Could not find account with ID #{params[:id]}"
     redirect_to(admin_accounts_path)
+  end
+
+  private
+
+  def account_params
+    params.require(:account).permit(
+      :login,
+      :email,
+      :email2,
+      :email_billing,
+      :password,
+      :password_confirmation,
+      :company,
+      :first_name,
+      :last_name,
+      :address1,
+      :address2,
+      :city,
+      :state,
+      :zip,
+      :country
+    )
   end
 end
