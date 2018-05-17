@@ -79,13 +79,13 @@ Rails.application.routes.draw do
 
   # Switch user and search
   post 'admin/su', controller: 'admin/head_quarters', action: 'su'
-  # map.connect "admin/search", :controller => 'admin/head_quarters', :action => 'search'
+  get  'admin/search', controller: 'admin/head_quarters', action: 'search'
 
-  # # Reports
-  # map.connect "admin/reports/services", :controller => 'admin/reports', :action => 'services'
+  # Reports
+  get "admin/reports/services", controller: 'admin/reports', action: 'services'
 
-  # # Other
-  # map.connect "admin/whoami", :controller => 'admin/head_quarters', :action => 'whoami'
+  # Other
+  get "admin/whoami", controller: 'admin/head_quarters', action: 'whoami'
 
   # # Internal API
   # map.namespace(:api) do |api|
@@ -117,7 +117,7 @@ Rails.application.routes.draw do
   #   end
   # end
 
-  root :controller => 'accounts', :action => 'login'
+  root controller: 'accounts', action: 'login'
 
   # =========================
   # END: Copy from old Portal
