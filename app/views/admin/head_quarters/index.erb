@@ -1,0 +1,52 @@
+<h1>Administration Dashboard</h1>
+
+<div class="main-menu">
+  <div class="title">Main Menu</div>
+  <ul>
+    <li class="all-accounts"><%= link_to('All Accounts', admin_accounts_path) %></li>
+    <li class="all-jobs"><%= link_to('All Jobs', admin_jobs_path) %></li>
+    <li class="all-services"><%= link_to('All Services', admin_services_path) %></li>
+    <li class="all-service-codes"><%= link_to('All Service Codes', admin_service_codes_path) %></li>
+    <li class="virtual-machines"><%= link_to('All Virtual Machines', admin_virtual_machines_path) %></li>
+
+    <li class="ip-blocks"><%= link_to('All IP Blocks', tree_admin_ip_blocks_path) %>
+      <ul>
+        <li style='list-style-image: none'><%= link_to("List View", admin_ip_blocks_path) %></li>
+      </ul>
+    </li>
+    <li class="bandwidth-quotas"><%= link_to('All Bandwidth Quotas', admin_bandwidth_quotas_path) %></li>
+    <li class="backup-quotas"><%= link_to('All Backup Quotas', admin_backup_quotas_path) %></li>
+    <li class="bgp-sessions">BGP Sessions
+      <ul>
+        <li style='list-style-image: none'><%= link_to('Sessions', admin_bgp_sessions_path) %></li>
+        <li style='list-style-image: none'><%= link_to('Prefixes', admin_bgp_sessions_prefixes_path) %></li>
+      </ul>
+    </li>
+
+    <li class="reports">Reports
+      <ul>
+        <li style='list-style-image: none'><%= link_to('Services', '/admin/reports/services') %></li>
+      </ul>
+    </li>
+    <li class="invoice"><%= link_to 'All Invoices', admin_invoices_path %></li>
+    <li class="vlans"><%= link_to('VLAN Database', admin_vlans_path) %></li>
+  </ul>
+</div>
+
+<div class="su">
+  <div>
+  <form action="/admin/su" method="POST" class="su">
+    <%= select(:user, :login, Account.find(:all).map { |a| [truncate(a.display_account_name, :length => 25), a.login] }.sort, { :include_blank => true }) %>
+    <input type="submit" value="Switch User">
+  </form>
+  </div>
+
+  <div>
+  <form action="/admin/search" method="GET">
+    Find: <input type="text" name="query" size="25">
+    <input type='submit' value="Search">
+  </form>
+</div>
+</div>
+
+<hr />
