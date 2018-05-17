@@ -3,79 +3,106 @@ Rails.application.routes.draw do
   # BEGIN: Copy from old Portal
   # ===========================
 
-  # resources :accounts, :collection => { :forgot_password      => :get,
-  #                                       :forgot_password_post => :post,
-  #                                       :login                => :get,
-  #                                       :login_attempt        => :post,
-  #                                       :logout               => :get
-  #                                     } do
-  #   resources :services, {
-  #     :collection => {
-  #       :confirm      => :post,
-  #       :confirm_done => :post,
-  #       :remove       => :get
-  #     },
-  #     :member => {
-  #       :update_label => :put }} do |services|
-  #     services.resources :virtual_machines, :member => {
-  #       :boot          => :post,
-  #       :shutdown      => :post,
-  #       :shutdown_hard => :post,
-  #       :ssh_key       => :get,
-  #       :ssh_key_post  => :post,
-  #       :iso_change    => :post,
-  #       :advanced_parameter => :post
-  #     }
-  #     services.resources :ip_blocks
-  #     services.resources :bandwidth_quotas
-  #     services.resources :backup_quotas, :member => {
-  #       :ssh_key       => :get,
-  #       :ssh_key_post  => :post
-  #     }
-  #     services.resources :bgp_sessions
-  #   end
+  resources :accounts do
+    collection do
+      get  'forgot_password'
+      post 'forgot_password_post'
+      get  'login'
+      post 'login_attempt'
+      get  'logout'
+    end
 
-  #   accounts.resources :dns_records, :collection => {
-  #     :reverse_dns => :get
-  #   }
+    resources :services do
+      collection do
+        post 'confirm'
+        post 'confirm_done'
+        get  'remove'
+      end
 
-  #   accounts.resources :credit_cards
-  #   accounts.resources :invoices, :collection => {
-  #     :pay         => :get,
-  #     :pay_confirm => :post
-  #   }
-  #   accounts.resources :jobs
-  # end
+      member do
+        put  'update_label'
+      end
 
-  # map.connect '/noVNC/console', :controller => 'virtual_machines', :action => 'console'
+      resources :virtual_machines do
+        member do
+          post 'boot'
+          post 'shutdown'
+          post 'shutdown_hard'
+          get  'ssh_key'
+          post 'ssh_key_post'
+          post 'iso_change'
+          post 'advanced_parameter'
+        end
+      end
+      resources :ip_blocks
+      resources :bandwidth_quotas
+      resources :backup_quotas do
+        member do
+          get  'ssh_key'
+          post 'ssh_key_post'
+        end
+      end
+      resources :bgp_sessions
+    end
 
-  # map.dashboard '/dashboard', :controller => 'my_account', :action => 'dashboard'
+    resources :dns_records do
+      collection do
+        get  'reverse_dns'
+      end
+    end
+    resources :credit_cards
+    resources :invoices do
+      collection do
+        get  'pay'
+        post 'pay_confirm'
+      end
+    end
+    resources :jobs
+  end
 
-  # map.namespace(:admin) do |admin|
-  #   admin.resources :accounts
-  #   admin.resources :invoices
-  #   admin.resources :services
-  #   admin.resources :service_codes
-  #   admin.resources :virtual_machines,
-  #     :member => {
-  #       :monitoring_reminder_post => :post }
-  #   admin.resources :ip_blocks, :collection => { :tree   => :get },
-  #                               :member     => { :subnet => :get,
-  #                                                :swip   => :get,
-  #                                                :swip_submit => :post }
-  #   admin.resources :bandwidth_quotas
-  #   admin.resources :backup_quotas
-  #   admin.resources :bgp_sessions
-  #   admin.resources :bgp_sessions_prefixes
-  #   admin.resources :vlans, :member => {
-  #     :shutdown => :post,
-  #     :restore  => :post
-  #   }
-  #   admin.resources :jobs, :member => {
-  #     :retry => :post
-  #   }
-  # end
-  # map.admin "admin", :controller => 'admin/head_quarters', :action => 'index'
+  get '/noVNC/console', controller: 'virtual_machines', action: 'console'
+
+  get '/dashboard', controller: 'my_account', action: 'dashboard', as: 'dashboard'
+
+  namespace :admin do
+    resources :accounts
+    resources :invoices
+    resources :services
+    resources :service_codes
+    resources :virtual_machines do
+      member do
+        post 'monitoring_reminder_post'
+      end
+    end
+    resources :ip_blocks do
+      collection do
+        get  'tree'
+      end
+
+      member do
+        get  'subnet'
+        get  'swip'
+        post 'swip_submit'
+      end
+    end
+    resources :bandwidth_quotas
+    resources :backup_quotas
+    resources :bgp_sessions
+    resources :bgp_sessions_prefixes
+    resources :vlans do
+      member do
+        post 'shutdown'
+        post 'restore'
+      end
+    end
+    resources :jobs do
+      member do
+        post 'retry'
+      end
+    end
+  end
+
+  get 'admin', controller: 'admin/head_quarters', action: 'index'
 
   # Switch user and search
   post 'admin/su', controller: 'admin/head_quarters', action: 'su'
