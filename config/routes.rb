@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       end
 
       member do
-        put  'update_label'
+        patch 'update_label'
       end
 
       resources :virtual_machines do
