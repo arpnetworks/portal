@@ -12,7 +12,6 @@
  *
  *= require arp
  *= require bootstrap.min
- *= require font-awesome.min
  *=
  *= require_tree .
  *= require_self
