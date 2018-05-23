@@ -34,10 +34,13 @@ group :development, :test do
   gem 'byebug'
   # Use Capistrano for deployment
   gem 'capistrano-rails'
+end
 
+group :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'rspec-activemodel-mocks'
+  gem 'rspec-html-matchers'
 
   gem 'factory_bot'
   gem 'factory_bot_rails'
