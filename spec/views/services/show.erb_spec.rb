@@ -1,42 +1,43 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../../my_spec_helper')
+require File.dirname(__FILE__) + '/../../rails_helper'
 
 describe "/services/show.erb" do
+  include RSpecHtmlMatchers
+
   before(:each) do
-    assigns[:service] = stub_model(Service)
-    assigns[:service].service_code = stub_model(ServiceCode)
-    assigns[:services] = [
+    assign(:service, stub_model(Service, service_code: stub_model(ServiceCode)))
+    assign(:services, [
       stub_model(Service),
       stub_model(Service)
-    ]
-    assigns[:description] = ''
-    assigns[:resources] = []
+    ])
+    assign(:description, '')
+    assign(:resources, [])
 
     @resources = [
       stub_model(Resource),
       stub_model(Resource),
     ]
 
-    assigns[:account] = stub_model(Account)
+    assign(:account, stub_model(Account))
   end
 
   context "description is empty" do
     it "should display 'No further details'" do
       assigns[:description] = ''
-      render "/services/show.erb"
-      response.should have_tag('td', 'No further details')
+      assign(:description, '')
+      render template: "/services/show.erb"
+      expect(response).to have_tag('td', /No further details/)
     end
-  
+
     it "should not display 'No further details' if resources exist" do
-      @service = stub_model(Service)
-      @service.service_code = stub_model(ServiceCode)
-      @service.stub!(:resources).and_return(@resources)
-      assigns[:description] = ''
-      assigns[:service] = @service
-      assigns[:resources] = @resources
-  
-      render "/services/show.erb"
-      response.should_not have_tag('td', /No further details/)
+      @service = stub_model(Service,
+                            service_code: stub_model(ServiceCode),
+                            resources: @resources)
+      assign(:description, '')
+      assign(:service, @service)
+      assign(:resources, @resources)
+
+      render template: "/services/show.erb"
+      expect(response).to_not have_tag('td', text: /No further details/)
     end
   end
 end
