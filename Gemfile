@@ -37,6 +37,7 @@ group :development, :test do
 
   gem 'rspec'
   gem 'rspec-rails'
+  gem 'rspec-activemodel-mocks'
 
   gem 'factory_bot'
   gem 'factory_bot_rails'
