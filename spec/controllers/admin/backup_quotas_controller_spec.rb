@@ -67,16 +67,24 @@ describe Admin::BackupQuotasController do
 
     describe "with valid params" do
 
+      before do
+        @p = { server: 'backup.example.com' }
+      end
+
+      def do_create
+        post :create, backup_quota: @p
+      end
+
       it "should expose a newly created backup_quota as @backup_quota" do
-        BackupQuota.should_receive(:new).with({'these' => 'params'}).and_return(mock_backup_quota(:save => true))
-        post :create, :backup_quota => {:these => 'params'}
-        assigns(:backup_quota).should equal(mock_backup_quota)
+        expect(BackupQuota).to receive(:new).with(@p) { mock_backup_quota(save: true) }
+        do_create
+        expect(assigns(:backup_quota)).to eq(mock_backup_quota)
       end
 
       it "should redirect to all service codes" do
-        BackupQuota.stub!(:new).and_return(mock_backup_quota(:save => true))
-        post :create, :backup_quota => {}
-        response.should redirect_to(admin_backup_quotas_path)
+        allow(BackupQuota).to receive(:new) { mock_backup_quota(save: true) }
+        do_create
+        expect(response).to redirect_to(admin_backup_quotas_path)
       end
 
     end

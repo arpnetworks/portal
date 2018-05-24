@@ -79,11 +79,9 @@ describe Admin::ServiceCodesController do
   describe "responding to GET edit" do
 
     it "should expose the requested service_codes as @service_codes" do
-      # ServiceCode.should_receive(:find).with("37").and_return(mock_service_code)
       expect(ServiceCode).to receive(:find).with("37") { mock_service_code }
       get :edit, :id => "37"
       expect(assigns[:service_code]).to eq(mock_service_code)
-      # assigns[:service_code].should equal(mock_service_code)
     end
 
   end
