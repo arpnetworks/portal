@@ -14,6 +14,8 @@ module PasswordEncryption
 
       validates_presence_of     :password
       validates_confirmation_of :password, :if => Proc.new { |account| !account.password_encrypted }
+
+      before_save :encrypt_password
     end
   end
 
@@ -25,7 +27,7 @@ module PasswordEncryption
   end
 
   module InstanceMethods
-    def before_save
+    def encrypt_password
       # If password_confirmation wasn't specified, then we can assume the 
       # password was not meant to be changed, so we don't want to rehash it, 
       # since we already have the hashed version.  However, all new records 
