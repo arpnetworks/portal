@@ -1,3 +1,13 @@
+def create_admin!
+  create :account_admin unless Account.find_by(login: 'admin')
+end
+
+def login_as_admin!
+  login!
+  allow(@controller).to receive(:is_arp_admin?)     { true }
+  allow(@controller).to receive(:is_arp_sub_admin?) { true }
+end
+
 # Let's us "login" within a spec.
 def login!(user = 'admin', pass = 'mysecret')
   authenticated_user = Account.authenticate(user, pass)

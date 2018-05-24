@@ -4,13 +4,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 describe Admin::BackupQuotasController do
 
   before(:context) do
-    create :account_admin
+    create_admin!
   end
 
   before do
-    login!
-    allow(@controller).to receive(:is_arp_admin?)     { true }
-    allow(@controller).to receive(:is_arp_sub_admin?) { true }
+    login_as_admin!
   end
 
   def mock_backup_quota(stubs={})
