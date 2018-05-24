@@ -12,6 +12,12 @@ FactoryBot.define do
     email
     password 'password'
     password_confirmation 'password'
+
+    factory :account_admin do
+      login 'admin'
+      password 'mysecret'
+      password_confirmation 'mysecret'
+    end
   end
 
   factory :service do
