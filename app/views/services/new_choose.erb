@@ -1,0 +1,55 @@
+<table class="services new" align="center">
+  <caption>Add New Service</caption>
+  <tbody>
+    <tr>
+      <td>
+        Which service would you like to add?
+
+        <%= form_tag("", :method => 'GET') do %>
+          <ul>
+            <li>
+              <%= radio_button_tag(:service, "vps") %>
+              <%= label_tag(:service_vps, "VPS without OS (blank)") %>
+            </li>
+
+            <li>
+              <%= radio_button_tag(:service, "vps_with_os", false, :disabled => true) %>
+              <%= label_tag(:service_vps_with_os, "VPS with OS (Coming Soon!)", :class => 'disabled') %>
+            </li>
+
+            <!--
+            <li>
+              <%= radio_button_tag(:service, "thunder") %>
+              <%= label_tag(:service_thunder, "ARP Thunder™ Cloud Dedicated Server") %>
+            </li>
+
+            <li>
+              <%= radio_button_tag(:service, "metal", false) %>
+              <%= label_tag(:service_metal, "ARP Metal™ Dedicated Server") %>
+            </li>
+            <li>
+              <%= radio_button_tag(:service, "backup") %>
+              <%= label_tag(:service_backup, "Backup Storage") %>
+            </li>
+
+            //-->
+
+            <li>
+              <%= radio_button_tag(:service, "bgp") %>
+              <%= label_tag(:service_bgp, "BGP Session") %>
+            </li>
+          </ul>
+
+          <br/>
+
+          <div>
+          <button type='submit' class='btn btn-info'><i class="fas fa-chevron-right"></i> &nbsp;Continue</button>
+          </div>
+        <% end %>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+

@@ -1,0 +1,42 @@
+<!-- required fields //-->
+<tbody>
+  <tr>
+    <td colspan="2">
+      <h3></h3>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Account ID:</td>
+    <td class="required"><%= collection_select(:service, :account_id, 
+                                               Account.all, :id,
+                                               :display_account_name_with_login,
+                                               { :include_blank => @include_blank }) %>
+                                               <%= link_to('Go', admin_account_path(@service.account)) if @service.account %>
+    </td>
+  </tr><tr>
+    <td class="label">Service Code ID:</td>
+    <td class="required"><%= collection_select(:service, :service_code_id,
+                                               ServiceCode.all, :id,
+                                               :name,
+                                               { :include_blank => @include_blank }) %></td>
+  </tr><tr>
+    <td class="label">Service Title:</td>
+    <td class="required"><%= f.text_field :title, :size => 70 %></td>
+  </tr><tr>
+    <td class="label valign-top">Service Details:</td>
+    <td class="required"><%= f.text_area :description, :rows => 16, :cols => 48 %></td>
+  </tr><tr>
+    <td class="label">Coupon Code:</td>
+    <td class="required"><%= f.text_field :coupon, :size => 20 %></td>
+  </tr><tr>
+    <td class="label">Billing Amount ($):</td>
+    <td class="required"><%= f.text_field :billing_amount, :size => 10 %></td>
+  </tr><tr>
+    <td class="label">Billing Interval (months):</td>
+    <td class="required"><%= f.text_field :billing_interval, :size => 10 %></td>
+  </tr>
+  </tr><tr>
+    <td class="label">Billing Due On (date):</td>
+    <td class="required"><%= f.text_field :billing_due_on, :size => 10 %></td>
+  </tr>
+</tbody>

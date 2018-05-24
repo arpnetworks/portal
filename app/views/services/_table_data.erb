@@ -1,0 +1,93 @@
+<thead>
+  <% if @enable_admin_view && action_name == 'index' %>
+  <tr>
+    <td colspan="<%= services_colspan(@enable_admin_view) %>" class="pagination">
+      <span class="page-entries-info">
+        <%= page_entries_info @services %>
+        (<%= link_to('Show All', admin_services_path(:per_page => 999999)) %>)
+      </span>
+      <span class="page-links">
+      <%= will_paginate @services %>
+      </span>
+
+      <span style='clear: both'>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <% unless @enable_pending_view %>
+    <th class="action" style="width: <%= @enable_admin_view && !@sub_admin_view ? 65 : 20 %>px"></th>
+    <% end %>
+
+    <% if @enable_admin_view %>
+      <th class="account">Account</th>
+    <% end %>
+
+    <th class="code">Code</th>
+    <th>Service</th>
+
+    <% unless @enable_summary_view || @sub_admin_view %>
+    <th class="money">Amount</th>
+    <th class="interval">Recurring</th>
+    <% end %>
+  </tr>
+</thead>
+<tbody>
+  <% if @services.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="<%= services_colspan(@enable_admin_view) %>">
+        No services found
+      </td>
+    </tr>
+  <% else %>
+  <% @services.each do |service| %>
+    <tr class="<%= cycle("odd", "even") -%><%= service.deleted? ? " deleted_row" : (service.pending? && @enable_admin_view ? " pending_row" : "") -%><%= @enable_pending_view ? ' no_highlight' : '' %>" <%= services_table_onClick(service) %>>
+      <% unless @enable_pending_view %>
+      <td class="action">
+      <% if @enable_admin_view %>
+        <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), admin_service_path(service.id)) %>
+      <% else %>
+        <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), account_service_path(@account, service.id)) %>
+      <% end %>
+
+      <% if @enable_admin_view %>
+          <% unless @sub_admin_view %>
+          <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_service_path(service.id)) %>
+          <% if !service.deleted? %>
+          <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"), 
+                      admin_service_path(service.id), 
+                      :method => :delete,
+                      :data   => { :confirm => "Are you sure you want to delete this service?\nAll *RESOURCES* assigned to this service will **ALSO BE DELETED**.\nTHIS CANNOT BE UNDONE." }) %>
+          <% end %>
+          <% end %>
+        <td class="account"><%= link_to(h(service.account.display_account_name), admin_account_path(service.account)) %></td>
+      <% end %>
+      </td>
+      <% end %>
+
+      <td class="code"><%= service.service_code && service.service_code.name %></td>
+      <td><%= service.title %><%= h(service.label.to_s.empty? ? '' : ', ' + service.label) %></td>
+
+      <% unless @enable_summary_view || @sub_admin_view %>
+      <td class="money"><%= money(service.billing_amount, 'USD') %></td>
+      <td class="interval"><%= billing_interval_in_words(service.billing_interval) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+  <% if @is_super_admin %>
+  <% if @service_totals && @service_totals.size > 0 %>
+    <tr class="totals-label">
+      <td colspan="<%= @enable_admin_view ? 4 : 3 %>" class="totals totals-label">Totals</td>
+      <td colspan="2" class="totals-label"></td>
+    </tr>
+
+    <% @service_totals.each do |pair| %>
+    <tr class="totals">
+      <td colspan="<%= @enable_admin_view ? 4 : 3 %>" class="totals"><%= billing_interval_in_words(pair[0]) %> Recurring Charges: </td>
+      <td colspan="2"><%= money(pair[1]) %></td>
+    </tr>
+    <% end %>
+  <% end %>
+  <% end %>
+<% end %>
+</tbody>

@@ -1,0 +1,17 @@
+<table class="services">
+  <caption>
+    <div>&nbsp;
+      <div class="title">
+        <% if controller.action_name == 'search' %>
+          Search Results for Services
+        <% else %>
+          All Services
+        <% end %>
+      </div>
+      <div class="actions">
+        <%= link_to("New Service", new_admin_service_path, :class => 'add_item') %>
+      </div>
+    </div>
+  </caption>
+  <%= render :partial => 'services/table_data' %>
+</table>

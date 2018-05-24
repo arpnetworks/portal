@@ -1,0 +1,80 @@
+<h1 id="header">
+  <%= image_tag(@account.gravatar_url(:size => 60), :alt => 'Gravatar Image') %>
+  <%= @account.display_name %>'s dashboard
+</h1>
+
+<div class="main-menu">
+  <div class="title">Main Menu</div>
+
+  <ul class="actions">
+    <% if @account.arp_admin? %>
+    <li class="admin"><%= link_to 'Admin', admin_path %></li>
+    <% end %>
+
+    <li class="edit-profile"><%= link_to 'Edit Profile', edit_account_path(@account.id) %></li>
+    <li class="my-services"><%= link_to 'My Services', account_services_path(@account.id) %></li>
+    <li class="reverse-dns"><%= link_to 'Reverse DNS', reverse_dns_account_dns_records_path(@account.id) %></li>
+    <li class="credit-card"><%= link_to 'Credit Card', new_account_credit_card_path(@account.id) %></li>
+    <li class="invoice"><%= link_to 'Invoices', account_invoices_path(@account.id) %></li>
+    <li class="jobs"><%= link_to 'Notifications', account_jobs_path(@account.id) %></li>
+    <li class="help"><%= link_to 'Help Desk', @tender_link %></li>
+  </ul>
+
+  <div class='notice-transparent'>
+    <a href='<%= new_account_service_path(@account) %>', class='btn btn-success'><i class="fas fa-plus"></i> Add New Service</a>
+    <br/>
+    <br/>
+    <a href='<%= remove_account_services_path(@account) %>', class='btn btn-small btn-danger'><i class="fas fa-times"></i> Remove Service</a>
+  </div>
+</div>
+
+<div class="dashboard-summaries">
+  <div class="notice-cool">
+    <span class="vote">
+      Check out our <a href='https://trello.com/b/Ml0HXyJX/arp-networks-suggestions-and-feature-requests' target='_new'>Suggestions and Feature Requests</a> Trello board and cast your vote!
+    </span>
+  </div>
+
+  <% if @jobs.size > 0 %>
+    <table class="jobs">
+      <caption>Recent Notifications</caption>
+        <%= render :partial => 'jobs/table_data' %>
+    </table>
+    <%= render :partial => 'jobs/legend' %>
+
+    &raquo; Go to <%= link_to('Notifications', account_jobs_path(@account.id)) %>
+  <% end %>
+
+  <table class="services">
+    <caption>My Services Summary</caption>
+      <%= render :partial => 'services/table_data' %>
+  </table>
+
+  <% unless @services.size == 0 %>
+  &raquo; Go to <%= link_to('My Services', account_services_path(@account.id)) %>
+  <% end %>
+
+  <% if @account.suspended? %>
+  <div class='notice-warning'>
+    Your account has been suspended due to non-payment
+    <br/>
+    <br/>
+    Please update your <%= link_to 'Credit Card', new_account_credit_card_path(@account.id) %>
+  </div>
+  <% end %>
+
+  <table class="invoices">
+    <caption>My Invoices Summary</caption>
+      <%= render :partial => 'invoices/table_data' %>
+  </table>
+
+  <% unless @invoices && @invoices.size == 0 %>
+  &raquo; Go to <%= link_to('Invoices', account_invoices_path(@account.id)) %>
+  <% end %>
+
+  <% if @unpaid_invoices && @unpaid_invoices.size > 0 %>
+    <%= render :partial => 'invoices/pay_button' %>
+  <% end %>
+</div>
+
+<hr />
