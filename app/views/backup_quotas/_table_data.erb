@@ -1,0 +1,104 @@
+<% if !@enable_admin_view %>
+<style type='text/css'>
+  table.backup-quotas tr.odd:hover td, table.backup-quotas tr.even:hover td {
+    background-color: #ddf;
+  }
+</style>
+<% end %>
+
+<thead>
+  <tr>
+    <th class="action" style="width: <%= @enable_admin_view && !@sub_admin_view ? 65 : 20 %>px"></th>
+
+    <% if @enable_admin_view %>
+      <th class="account">Account</th>
+    <% end %>
+
+    <th class="server">Server</th>
+    <th class="username">Username</th>
+    <th class="quota">Quota</th>
+  </tr>
+</thead>
+<tbody>
+  <% if @backup_quotas.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="<%= backup_quotas_colspan(@enable_admin_view) %>">
+        No backup quotas found
+      </td>
+    </tr>
+  <% else %>
+  <% reset_cycle %>
+  <% @backup_quotas.each do |backup_quota| %>
+    <% if @enable_admin_view %>
+      <tr class="<%= cycle("odd", "even") -%>" <%= backup_quotas_table_onClick(backup_quota) %>>
+    <% else %>
+      <tr class="<%= cycle("even", "odd") -%>" style="cursor: default" <%= backup_quotas_table_onClick(backup_quota) %>>
+    <% end %>
+      <td class="action">
+      <% if @enable_admin_view %>
+        <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), edit_admin_backup_quota_path(backup_quota.id)) %>
+      <% else %>
+        <%#= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), account_service_backup_quota_path(@account, :*, backup_quota.id)) %>
+      <% end %>
+
+      <% if @enable_admin_view %>
+          <% unless @sub_admin_view %>
+          <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_backup_quota_path(backup_quota.id)) %>
+          <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"),
+                      admin_backup_quota_path(backup_quota.id),
+                      :method => :delete,
+                      :data   => { :confirm => 'Are you sure you want to delete this backup quota?  THIS CANNOT BE UNDONE.' }) %>
+          <% end %>
+        <td class="account"><%= admin_account_path_from_resource(backup_quota.resource) %></td>
+      <% end %>
+      </td>
+
+      <td class="server"><%= backup_quota.server %></td>
+      <td class="username"><%= backup_quota.username %></td>
+      <td class="quota"><%= backup_quotas_format(backup_quota.quota) %></td>
+    </tr>
+
+    <% if controller.action_name != 'index' %>
+      <tr>
+        <td></td>
+        <td class='th-minor' colspan="<%= backup_quotas_colspan(@enable_admin_view) - 1 %>">
+          Authentication
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td colspan="<%= backup_quotas_colspan(@enable_admin_view) - 1 %>" class="info">
+          SSH public key authentication is required to access this server.
+
+          <div style='margin-top: 5px'>
+          <a href='<%= ssh_key_account_service_backup_quota_path(@account, @backup_quota.resource.service, @backup_quota) %>',
+             class='btn'><i class="fas fa-key"></i> Submit Key</a>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td class='th-minor' colspan="<%= backup_quotas_colspan(@enable_admin_view) - 1 %>">
+          Local Access
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td colspan="<%= backup_quotas_colspan(@enable_admin_view) - 1 %>" class="info">
+          We can add an additional NIC to your VPS that connects directly to
+          the backup server over an internal VLAN.  This traffic will not count
+          against your bandwidth quota and will also operate at 1 Gbps.
+          <br />&#x000A;
+          <br />&#x000A;
+          This link is IPv6 only and will utilize your link-local (fe80::/64) address.
+          Make sure IPv6 is enabled on your server before requesting this additional NIC.
+        </td>
+      </tr>
+    <% end %>
+
+  <% end %>
+<% end %>
+</tbody>

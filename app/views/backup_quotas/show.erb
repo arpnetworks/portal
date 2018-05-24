@@ -1,0 +1,7 @@
+<%= render :partial => '/backup_quotas/table' %>
+
+<% if @enable_admin_view %>
+  &laquo; <%= link_to('Back to Backup Quotas', admin_backup_quotas_path) %>
+<% else %>
+  &laquo; <%= link_to('Back to Dashboard', dashboard_path) %>
+<% end %>

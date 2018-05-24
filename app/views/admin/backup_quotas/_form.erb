@@ -1,0 +1,30 @@
+<tbody>
+  <tr>
+    <td colspan="2">
+      <h3></h3>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Service ID:</td>
+    <td class="required"><%= collection_select(:backup_quota, :service_id,
+                                               Service.where(service_code_id: ServiceCode.find_by(name: 'BACKUP')), :id,
+                                               :display_service_with_account,
+                                               { :include_blank => @include_blank }) %></td>
+  </tr>
+  <tr>
+    <td class="label">Server:</td>
+    <td class="required"><%= f.text_field :server, size: 30 %></td>
+  </tr>
+  <tr>
+    <td class="label">Username:</td>
+    <td class="required"><%= f.text_field :username, size: 30 %></td>
+  </tr>
+  <tr>
+    <td class="label">Quota:</td>
+    <td class="required"><%= f.text_field :quota, :size => 10 %> (in blocks)</td>
+  </tr>
+  <tr>
+    <td class="label">Notes:</td>
+    <td class="required"><%= f.text_area :notes, cols: 48, rows: 16 %></td>
+  </tr>
+</tbody>
