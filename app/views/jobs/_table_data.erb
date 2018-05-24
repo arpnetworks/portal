@@ -1,0 +1,67 @@
+<thead>
+  <% if action_name == 'index' %>
+  <tr>
+    <td colspan="<%= jobs_colspan(@enable_admin_view, action_name) %>" class="pagination">
+      <span class="page-entries-info">
+        <%= page_entries_info @jobs %>
+        <% if @enable_admin_view %>
+        (<%= link_to('Show All', admin_jobs_path(:per_page => 999999)) %>)
+        <% end %>
+      </span>
+      <span class="page-links">
+      <%= will_paginate @jobs %>
+      </span>
+
+      <span style='clear: both'>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <% if @enable_admin_view && controller.action_name == 'index' %>
+    <th class="action" style="width: 20px"></th>
+    <th class="account">Account</th>
+    <th class="created_at">Created At</th>
+    <% end %>
+
+    <th class="state">State</th>
+
+    <% if action_name == 'index' %>
+    <th class="jid">jid</th>
+    <% end %>
+
+    <th class="code"><%= @enable_admin_view ? 'Code' : 'Job' %></th>
+    <th class="retval"><%= @enable_admin_view ? 'Response' : 'Message' %></th>
+  </tr>
+</thead>
+<tbody>
+  <% if @jobs.nil? || @jobs.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="<%= jobs_colspan(@enable_admin_view, action_name) %>">
+        No jobs found
+      </td>
+    </tr>
+  <% else %>
+  <% @jobs.each do |job| %>
+    <tr class="<%= cycle("odd", "even") -%><%= " #{job.aasm_state}" -%><%= @enable_admin_view ? " cursor" : "" %>" <%= jobs_table_onClick(job) %>>
+      <% if @enable_admin_view && controller.action_name == 'index' %>
+      <td class="action">
+      <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), admin_job_path(job.id)) %>
+      <% if controller.action_name == 'index' %>
+        <td class="account"><%= link_to(h(job.account.display_account_name), admin_account_path(job.account)) %></td>
+      <% end %>
+      </td>
+      <td class="created_at"><%= job.created_at.strftime("%m-%d %R") %></td>
+      <% end %>
+
+      <td class="state"><%= %w(running done ready waiting failed).include?(job.aasm_state) ? "" : job.aasm_state %></td>
+
+      <% if action_name == 'index' %>
+      <td class="jid"><%= job.jid_short %></td>
+      <% end %>
+
+      <td class="code"><%= job.code %></td>
+      <td class="retval"><%= job.aasm_state == 'failed' ? (job.reason || '') + (@enable_admin_view ? '' : "<div class='additional-note'>Our support team has been notified of this issue</div>") : (job.retval || '') %></td>
+    </tr>
+  <% end %>
+<% end %>
+</tbody>
