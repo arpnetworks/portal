@@ -1,66 +1,66 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../../my_spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::BackupQuotasController do
-  fixtures :accounts
 
-  before :all do
-    Account.delete_all("id > 2")
+  before(:context) do
+    create :account_admin
   end
 
   before do
     login!
+    allow(@controller).to receive(:is_arp_admin?)     { true }
+    allow(@controller).to receive(:is_arp_sub_admin?) { true }
   end
 
   def mock_backup_quota(stubs={})
     @mock_backup_quota ||= mock_model(BackupQuota, stubs)
   end
-  
+
   describe "responding to GET index" do
 
     it "should expose all backup_quotas as @backup_quotas" do
-      BackupQuota.should_receive(:find).with(:all).and_return([mock_backup_quota])
-      mock_backup_quota.should_receive(:backup_quota).any_number_of_times
+      expect(BackupQuota).to receive(:all) { [mock_backup_quota] }
       get :index
-      assigns[:backup_quotas].should == [mock_backup_quota]
+      expect(assigns[:backup_quotas]).to eq([mock_backup_quota])
     end
 
   end
 
   describe "responding to GET new" do
-  
+
     it "should expose a new backup_quota as @backup_quota" do
-      BackupQuota.should_receive(:new).and_return(mock_backup_quota)
+      expect(BackupQuota).to receive(:new) { mock_backup_quota }
       get :new
-      assigns[:backup_quota].should equal(mock_backup_quota)
+      expect(assigns[:backup_quota]).to eq(mock_backup_quota)
     end
 
     it "should set @include_blank" do
-      BackupQuota.should_receive(:new).and_return(mock_backup_quota)
+      expect(BackupQuota).to receive(:new) { mock_backup_quota }
       get :new
-      assigns(:include_blank).should be_true
+      expect(assigns(:include_blank)).to be true
     end
 
   end
 
   describe "responding to GET edit" do
-  
+
     it "should expose the requested backup_quota as @backup_quota" do
-      BackupQuota.should_receive(:find).with("37").and_return(mock_backup_quota)
+      expect(BackupQuota).to receive(:find).with("37") { mock_backup_quota }
       get :edit, :id => "37"
-      assigns[:backup_quota].should equal(mock_backup_quota)
+      expect(assigns[:backup_quota]).to eq(mock_backup_quota)
     end
 
     it "should redirect to the admin_backup_quotas list if backup_quota cannot be found" do
-      BackupQuota.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+      allow(BackupQuota).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
       get :edit, :id => "999"
-      response.should redirect_to(admin_backup_quotas_url)
+      expect(response).to redirect_to(admin_backup_quotas_url)
     end
 
     it "should set @include_blank" do
-      BackupQuota.should_receive(:find).with("37").and_return(mock_backup_quota)
+      expect(BackupQuota).to receive(:find).with("37") { mock_backup_quota }
       get :edit, :id => "37"
-      assigns(:include_blank).should be_true
+      expect(assigns(:include_blank)).to be true
     end
 
   end
@@ -68,7 +68,7 @@ describe Admin::BackupQuotasController do
   describe "responding to POST create" do
 
     describe "with valid params" do
-      
+
       it "should expose a newly created backup_quota as @backup_quota" do
         BackupQuota.should_receive(:new).with({'these' => 'params'}).and_return(mock_backup_quota(:save => true))
         post :create, :backup_quota => {:these => 'params'}
@@ -80,9 +80,9 @@ describe Admin::BackupQuotasController do
         post :create, :backup_quota => {}
         response.should redirect_to(admin_backup_quotas_path)
       end
-      
+
     end
-    
+
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved backup_quota as @backup_quota" do
@@ -97,9 +97,9 @@ describe Admin::BackupQuotasController do
         post :create, :backup_quota => {}
         response.should render_template('new')
       end
-      
+
     end
-    
+
   end
 
   describe "responding to PUT udpate" do
@@ -125,7 +125,7 @@ describe Admin::BackupQuotasController do
       end
 
     end
-    
+
     describe "with invalid params" do
 
       it "should expose the backup_quota as @backup_quota" do
@@ -157,7 +157,7 @@ describe Admin::BackupQuotasController do
       mock_backup_quota.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
-  
+
     it "should redirect to the admin_backup_quotas list" do
       BackupQuota.stub!(:find).and_return(mock_backup_quota(:destroy => true))
       delete :destroy, :id => "1"
