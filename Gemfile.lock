@@ -221,6 +221,7 @@ GEM
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
     will_paginate (3.1.6)
+    yubikey (1.4.1)
 
 PLATFORMS
   ruby
@@ -252,6 +253,7 @@ DEPENDENCIES
   unicorn
   web-console (~> 2.0)
   will_paginate
+  yubikey
 
 RUBY VERSION
    ruby 2.3.4p301
