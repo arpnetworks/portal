@@ -1,0 +1,20 @@
+<div class="error">
+  <%= error_messages_for :service %>
+</div>
+
+<%= form_for([:admin, @service_code]) do |f| %>
+<table class="entry_form" align="center">
+  <caption>New Service Code</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input type='submit' value="Create" />
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+&laquo; <%= link_to('Back to All Service Codes', admin_service_codes_path) %>

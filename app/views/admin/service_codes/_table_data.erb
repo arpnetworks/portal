@@ -1,0 +1,27 @@
+<thead>
+  <tr>
+    <th class="action" style="width: 36px"></th>
+    <th class="code">Code</th>
+  </tr>
+</thead>
+<tbody>
+  <% if @service_codes.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="2">
+        No service codes found
+      </td>
+    </tr>
+  <% else %>
+  <% @service_codes.each do |service_code| %>
+    <tr class="<%= cycle("odd", "even") -%>">
+      <td class="action">
+        <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_service_code_path(service_code.id)) %>
+        <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"), 
+                    admin_service_code_path(service_code.id), 
+                    :method => :delete,
+                    :data   => { :confirm => 'Are you sure you want to delete this service code?  THIS CANNOT BE UNDONE.' }) %>
+      <td class="code" onClick="location.href='<%= edit_admin_service_code_path(service_code.id) %>'"><%= service_code.name %></td>
+    </tr>
+  <% end %>
+<% end %>
+</tbody>

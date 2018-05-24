@@ -1,0 +1,16 @@
+<table class="service_codes">
+  <caption>
+    <div>&nbsp;
+      <div class="title">
+        All Service Codes
+      </div>
+      <div class="actions">
+        <%= link_to("New Service Code", new_admin_service_code_path, :class => "add_item") %>
+      </div>
+    </div>
+  </caption>
+
+  <%= render :partial => 'table_data' %>
+</table>
+
+&laquo; <%= link_to('Back to Head Quarters', admin_path) %>
