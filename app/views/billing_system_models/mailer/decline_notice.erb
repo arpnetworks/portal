@@ -1,0 +1,33 @@
+Hi <%= @account.first_name %>,
+
+This is the Billing Department at ARP Networks, Inc.
+
+Recently, your credit card<%= @account.credit_card ? " (**" + @account.credit_card.display_number.to_s + ") " : ' ' %>has declined or expired, and we require
+new or updated credit card information in order to keep your account active.
+
+To update your credit card information, please login to the Portal:
+
+https://portal.arpnetworks.com
+
+and click the "Credit Card" link located on the left sidebar.
+
+You may then click "Pay Invoices" from the dashboard and immediately
+bring your account current.
+
+The account in question has username "<%= @account.login %>"
+
+Please make sure the billing address you provide matches the one for
+your card.  Some banks will decline your card right away, even if there
+are sufficient funds, if we don't provide them with the correct billing
+address.
+
+If you do not click "Pay Invoices" at this time, we will re-try charging
+your credit card within 5 business days after it has been updated.
+
+Your prompt cooperation is greatly appreciated.  Thank you.
+
+-- 
+Billing Department
+ARP Networks, Inc. | http://www.arpnetworks.com | +1 855 444-3145
+Data center, VPS, and IP Transit solutions
+
