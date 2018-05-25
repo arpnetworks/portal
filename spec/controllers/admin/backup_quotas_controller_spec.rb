@@ -9,6 +9,7 @@ describe Admin::BackupQuotasController do
 
   before do
     login_as_admin!
+    @p = { server: 'backup.example.com' }
   end
 
   def mock_backup_quota(stubs={})
@@ -65,16 +66,11 @@ describe Admin::BackupQuotasController do
 
   describe "responding to POST create" do
 
+    def do_create
+      post :create, backup_quota: @p
+    end
+
     describe "with valid params" do
-
-      before do
-        @p = { server: 'backup.example.com' }
-      end
-
-      def do_create
-        post :create, backup_quota: @p
-      end
-
       it "should expose a newly created backup_quota as @backup_quota" do
         expect(BackupQuota).to receive(:new).with(@p) { mock_backup_quota(save: true) }
         do_create
@@ -86,48 +82,48 @@ describe Admin::BackupQuotasController do
         do_create
         expect(response).to redirect_to(admin_backup_quotas_path)
       end
-
     end
 
     describe "with invalid params" do
-
       it "should expose a newly created but unsaved backup_quota as @backup_quota" do
-        BackupQuota.stub!(:new).with({'these' => 'params'}).and_return(mock_backup_quota(:save => false))
-        post :create, :backup_quota => {:these => 'params'}
-        assigns(:backup_quota).should equal(mock_backup_quota)
-        assigns(:include_blank).should == true
+        allow(BackupQuota).to receive(:new).with(@p) { mock_backup_quota(save: false) }
+        do_create
+        expect(assigns[:backup_quota]).to eq(mock_backup_quota)
+        expect(assigns[:include_blank]).to be true
       end
 
       it "should re-render the 'new' template" do
-        BackupQuota.stub!(:new).and_return(mock_backup_quota(:save => false))
-        post :create, :backup_quota => {}
-        response.should render_template('new')
+        allow(BackupQuota).to receive(:new) { mock_backup_quota(save: false) }
+        do_create
+        expect(response).to render_template('new')
       end
-
     end
-
   end
 
   describe "responding to PUT udpate" do
 
+    def do_patch
+      patch :update, id: '37', backup_quota: @p
+    end
+
     describe "with valid params" do
 
       it "should update the requested backup_quota" do
-        BackupQuota.should_receive(:find).with("37").and_return(mock_backup_quota)
-        mock_backup_quota.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :backup_quota => {:these => 'params'}
+        expect(BackupQuota).to receive(:find).with('37') { mock_backup_quota }
+        expect(mock_backup_quota).to receive(:update_attributes).with(@p)
+        do_patch
       end
 
       it "should expose the requested backup_quota as @backup_quota" do
-        BackupQuota.stub!(:find).and_return(mock_backup_quota(:update_attributes => true))
-        put :update, :id => "1"
-        assigns(:backup_quota).should equal(mock_backup_quota)
+        allow(BackupQuota).to receive(:find) { mock_backup_quota(update_attributes: true) }
+        do_patch
+        expect(assigns[:backup_quota]).to eq(mock_backup_quota)
       end
 
       it "should redirect to all backup quotas" do
-        BackupQuota.stub!(:find).and_return(mock_backup_quota(:update_attributes => true))
-        put :update, :id => "1"
-        response.should redirect_to(admin_backup_quotas_path)
+        allow(BackupQuota).to receive(:find) { mock_backup_quota(update_attributes: true) }
+        do_patch
+        expect(response).to redirect_to(admin_backup_quotas_path)
       end
 
     end
@@ -135,21 +131,21 @@ describe Admin::BackupQuotasController do
     describe "with invalid params" do
 
       it "should expose the backup_quota as @backup_quota" do
-        BackupQuota.stub!(:find).and_return(mock_backup_quota(:update_attributes => false))
-        put :update, :id => "1"
-        assigns(:backup_quota).should equal(mock_backup_quota)
+        allow(BackupQuota).to receive(:find) { mock_backup_quota(update_attributes: false) }
+        do_patch
+        expect(assigns(:backup_quota)).to eq(mock_backup_quota)
       end
 
       it "should re-render the 'edit' template" do
-        BackupQuota.stub!(:find).and_return(mock_backup_quota(:update_attributes => false))
-        put :update, :id => "1"
-        response.should render_template('edit')
+        allow(BackupQuota).to receive(:find) { mock_backup_quota(update_attributes: false) }
+        do_patch
+        expect(response).to render_template('edit')
       end
 
       it "should redirect to the admin_backup_quotas list if backup_quota cannot be found" do
-        BackupQuota.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        allow(BackupQuota).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
         put :update, :id => "999"
-        response.should redirect_to(admin_backup_quotas_url)
+        expect(response).to redirect_to(admin_backup_quotas_url)
       end
 
     end
@@ -158,30 +154,34 @@ describe Admin::BackupQuotasController do
 
   describe "responding to DELETE destroy" do
 
+    def do_delete(id = '37')
+      delete :destroy, id: id
+    end
+
     it "should destroy the requested backup_quotas" do
-      BackupQuota.should_receive(:find).with("37").and_return(mock_backup_quota)
-      mock_backup_quota.should_receive(:destroy)
-      delete :destroy, :id => "37"
+      expect(BackupQuota).to receive(:find).with("37") { mock_backup_quota }
+      expect(mock_backup_quota).to receive(:destroy)
+      do_delete
     end
 
     it "should redirect to the admin_backup_quotas list" do
-      BackupQuota.stub!(:find).and_return(mock_backup_quota(:destroy => true))
-      delete :destroy, :id => "1"
-      response.should redirect_to(admin_backup_quotas_url)
+      allow(BackupQuota).to receive(:find) { mock_backup_quota(destroy: true) }
+      do_delete(1)
+      expect(response).to redirect_to(admin_backup_quotas_url)
     end
 
     it "should set flash[:error] if destroy() raises AR exception" do
-      bad_monkey = mock(BackupQuota)
-      bad_monkey.should_receive(:destroy).and_raise(ActiveRecord::StatementInvalid)
-      BackupQuota.stub!(:find).and_return(bad_monkey)
-      delete :destroy, :id => "1"
-      flash[:error].should_not be_nil
+      bad_monkey = mock_model(BackupQuota)
+      expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, 'ju baby no good')
+      allow(BackupQuota).to receive(:find).and_return(bad_monkey)
+      do_delete(1)
+      expect(flash[:error]).to_not be_nil
     end
 
     it "should redirect to the admin_backup_quotas list if backup_quota cannot be found" do
-      BackupQuota.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
-      delete :destroy, :id => "999"
-      response.should redirect_to(admin_backup_quotas_url)
+      allow(BackupQuota).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
+      do_delete(999)
+      expect(response).to redirect_to(admin_backup_quotas_url)
     end
   end
 
