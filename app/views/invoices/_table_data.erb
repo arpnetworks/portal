@@ -1,0 +1,108 @@
+<thead>
+  <% if action_name == 'index' %>
+  <tr>
+    <td colspan="<%= invoices_colspan(@enable_admin_view, action_name) %>" class="pagination">
+      <span class="page-entries-info">
+        <%= page_entries_info @invoices %>
+        <% if @enable_admin_view %>
+        (<%= link_to('Show All', admin_invoices_path(:per_page => 999999)) %>)
+        <% end %>
+      </span>
+      <span class="page-links">
+      <%= will_paginate @invoices %>
+      </span>
+
+      <span style='clear: both'>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <% unless @enable_pending_view %>
+    <th class="action" style="width: <%= @enable_admin_view && !@sub_admin_view ? 65 : 20 %>px"></th>
+    <% end %>
+
+    <% if @enable_admin_view && controller.action_name == 'index' %>
+      <th class="account">Account</th>
+    <% end %>
+
+    <% unless @enable_summary_view || @enable_pending_view %>
+    <th class="number">No.</th>
+    <% end %>
+    <th class="date">Date</th>
+
+    <th>Summary</th>
+
+    <th class="total">Total</th>
+    <% unless @enable_summary_view || @enable_pending_view %>
+    <th class="paid">Paid</th>
+    <th class="balance">Balance</th>
+    <% end %>
+    <% unless @enable_pending_view %>
+    <th class="status">Status</th>
+    <% end %>
+  </tr>
+</thead>
+<tbody>
+  <% if @invoices.nil? || @invoices.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="<%= invoices_colspan(@enable_admin_view, action_name) %>">
+        No invoices found
+      </td>
+    </tr>
+  <% else %>
+  <% @invoices.each do |invoice| %>
+    <tr class="<%= cycle("odd", "even") -%><%= invoice.deleted? || invoice.archived? ? " deleted_row" : (invoice.pending? && @enable_admin_view ? " pending_row" : "") -%><%= @enable_pending_view ? ' no_highlight' : '' %>" <%= invoices_table_onClick(invoice) %>>
+      <% unless @enable_pending_view %>
+      <td class="action">
+      <% if @enable_admin_view %>
+        <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), admin_invoice_path(invoice.id)) %>
+      <% else %>
+        <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), account_invoice_path(@account, invoice.id)) %>
+      <% end %>
+      <% if @enable_admin_view %>
+        <% if controller.action_name == 'index' %>
+          <td class="account"><%= link_to(h(invoice.account.display_account_name), admin_account_path(invoice.account)) %></td>
+        <% end %>
+      <% end %>
+      </td>
+      <% end %>
+
+      <% unless @enable_summary_view || @enable_pending_view %>
+      <td class="number"><%= invoice.id %></td>
+      <% end %>
+      <td class="date"><%= date_in_words(invoice.date) %></td>
+
+      <td class="summary">
+        <% if invoice.line_items.size < 1 %>
+          <div>
+            No summary available
+          </div>
+        <% end %>
+
+        <% invoice.line_items[0..1].each do |li| %>
+          <div>
+            <%= li.description %>
+          </div>
+        <% end %>
+
+        <% if invoice.line_items.size > 2 %>
+          <div class="additional-note">
+            ...additional line items, see invoice for details
+          </div>
+        <% end %>
+      </td>
+
+      <% unless @sub_admin_view %>
+      <td class="total"><%= money2(invoice.total) %></td>
+      <% unless @enable_summary_view || @enable_pending_view %>
+      <td class="paid"><%= money2(invoice.paid) %></td>
+      <td class="balance"><%= money2(invoice.balance) %></td>
+      <% end %>
+      <% unless @enable_pending_view %>
+      <td class="status"><%= invoice_paid_text(invoice) %></td>
+      <% end %>
+      <% end %>
+    </tr>
+  <% end %>
+<% end %>
+</tbody>

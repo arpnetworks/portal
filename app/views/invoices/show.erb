@@ -1,0 +1,85 @@
+<table class="invoice_detail">
+  <caption>Invoice Detail</caption>
+  <thead></thead>
+  <tbody>
+    <tr>
+      <td colspan="5" class="header">
+        <div class="company">
+          <pre>
+ARP Networks, Inc.
+8383 Wilshire Blvd
+Suite 800
+Beverly Hills, CA 90211
++1 855 444-3145
+          </pre>
+        </div>
+
+        <div class="stats">
+          <div class="date">
+            <%= date_in_words(@invoice.date) %>
+          </div>
+
+          <div class="number">
+            Invoice Number: <%= @invoice.id %>
+          </div>
+
+          <div class="status">
+            Status: <%= invoice_paid_text(@invoice) %>
+          </div>
+        </div>
+
+        <div class="bill_to">
+          <span class="label">
+            Bill To:
+          </span>
+
+          <pre>
+<%= @invoice.bill_to %>
+          </pre>
+        </div>
+
+        <div class="message">
+          <%= @invoice.message %>
+        </div>
+
+        <div class="terms">
+          Terms: <%= @invoice.terms.to_s.empty? ? "None" : @invoice.terms %>
+        </div>
+      </td>
+    </tr>
+    <tr class="line-items-heading">
+      <td class="date">Date</td>
+      <td class="code">Code</td>
+      <td class="description">Description</td>
+      <td class="amount">Amount</td>
+    </tr>
+    <% @invoice.line_items.each do |line_item| %>
+    <tr class="line-items">
+      <td class="date"><%= date_in_words(line_item.date) %></td>
+      <td class="code"><%= line_item.code %></td>
+      <td class="description"><%= line_item.description %></td>
+      <td class="amount"><%= money2(line_item.amount) %></td>
+    </tr>
+    <% end %>
+    <tr class="totals-label">
+      <td colspan="3" class="totals totals-label">Totals</td>
+      <td colspan="1" class="totals-label"></td>
+    </tr>
+    <tr class="totals">
+      <td colspan="3" class="totals">Total</td>
+      <td colspan="1"><%= money2(@invoice.total) %></td>
+    </tr>
+
+    <tr class="totals">
+      <td colspan="3" class="totals">Amount Paid</td>
+      <td colspan="1"><%= money2(@invoice.paid) %></td>
+    </tr>
+
+    <tr class="totals">
+      <td colspan="3" class="totals">Balance</td>
+      <td colspan="1"><%= money2(@invoice.balance) %></td>
+    </tr>
+  </tbody>
+  <tfoot>
+  </tfoot>
+</table>

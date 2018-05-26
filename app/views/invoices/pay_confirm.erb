@@ -1,0 +1,18 @@
+<div class='notice-green'>
+  <div>
+    Thank you!
+  </div>
+  <br/>
+
+  <div>
+    Your transaction ID is <strong><%= @transaction_id %></strong>.
+  </div>
+  <br/>
+
+  <div>
+    A sales receipt has been emailed to you.
+  </div>
+</div>
+</div>
+
+&laquo; <%= link_to('Back to My Invoices', account_invoices_path(@account)) %><br />

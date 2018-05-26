@@ -1,0 +1,52 @@
+<tbody>
+  <tr>
+    <td colspan="2">
+      <h3></h3>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Service ID:</td>
+    <td class="required"><%= collection_select(:bandwidth_quota, :service_id,
+                                               Service.where(service_code_id: ServiceCode.find_by(name: 'BANDWIDTH')), :id,
+                                               :display_service_with_account,
+                                               { :include_blank => @include_blank }) %></td>
+  </tr>
+  <tr>
+    <td class="label">Commit:</td>
+    <td class="required"><%= f.text_field :commit, :size => 5 %></td>
+  </tr>
+  <tr>
+    <td class="label">Commit Unit:</td>
+    <td class="required">
+      <select name="bandwidth_quota[commit_unit]" id="bandwidth_quota_commit_unit">
+      <%= options_for_select(%w(Mbps GB), @bandwidth_quota.commit_unit) %>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Commit Overage ($):</td>
+    <td class="required"><%= f.text_field :commit_overage, :size => 5 %></td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border-top: 1px solid black"><strong>Cacti</strong></td>
+  </tr>
+  <tr>
+    <td class="label">Username:</td>
+    <td class="required"><%= f.text_field :cacti_username %></td>
+  </tr>
+  <tr>
+    <td class="label">Password:</td>
+    <td class="required"><%= f.text_field :cacti_password %></td>
+  </tr>
+  <tr>
+    <td class="label">local_graph_id:</td>
+    <td class="required"><%= f.text_field :cacti_local_graph_id, :size => 5 %></td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border-top: 1px solid black"><strong>Other</strong></td>
+  </tr>
+  <tr>
+    <td class="label">Notes:</td>
+    <td class="required"><%= f.text_area :notes, cols: 48, rows: 16 %></td>
+  </tr>
+</tbody>

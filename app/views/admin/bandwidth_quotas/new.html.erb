@@ -1,0 +1,20 @@
+<div class="error">
+  <%= error_messages_for :bandwidth_quota %>
+</div>
+
+<%= form_for([:admin, @bandwidth_quota], url: admin_bandwidth_quotas_path) do |f| %>
+<table class="entry_form" align="center">
+  <caption>New Bandwidth Quota</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input type='submit' value="Create" />
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+&laquo; <%= link_to('Back to All Bandwidth Quotas', admin_bandwidth_quotas_path) %>

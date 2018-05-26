@@ -1,0 +1,72 @@
+<% if @outstanding_balance <= 0 %>
+  <div class="notice-green">
+    All invoices are paid and no balance is outstanding.  Thank you!
+  </div>
+<% elsif @credit_card.nil? %>
+  <div class="notice-green">
+    Your account does not have a credit card.
+
+    <p>
+    <%= link_to '<i class="icon-credit-card"></i> &nbsp;Add Credit Card', new_account_credit_card_path(@account.id), class: 'btn btn-success' %>
+    </p>
+  </div>
+<% else %>
+
+  <table class="invoices">
+    <caption>Unpaid Invoices</caption>
+    <%= render :partial => 'invoices/table_data' %>
+  </table>
+
+  <form id='authorize' method='POST' action='<%= pay_confirm_account_invoices_path(@account) %>'>
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+  <div class='notice-green' style='width: 60%'>
+    Outstanding Balance<br/>
+    <div class='money outstanding'>
+      <%= money2(@outstanding_balance) %> USD
+    </div>
+    <input type='hidden' name='confirmed_amount' value='<%= @outstanding_balance %>'>
+  </div>
+
+  <div id="credit-card" class="notice-cool" style='width: 60%'>
+    Credit Card<br/>
+
+    <div class='credit-card'>
+      **<%= @credit_card.display_number %>, <%= @credit_card.month %>/<%= @credit_card.year %>
+    </div>
+    <br/>
+    <div>
+      If you'd like to use a different credit card, <%= link_to 'submit a new one', new_account_credit_card_path(@account.id) %>
+    </div>
+  </div>
+
+  <div class="notice-warm">
+    <div>
+      <strong>I authorize ARP Networks, Inc. to charge the above credit card for <%= money2(@outstanding_balance) %> USD</strong>
+    </div>
+
+    <% if @credit_card_number %>
+      <input type='hidden' name='credit_card_number' value='<%= @credit_card_number %>'>
+    <% else %>
+      <div style='margin-top: 5px; margin-bottom: 10px'>
+        For security purposes, please confirm your full credit card number:
+        <br/>
+        <input type='text' name='credit_card_number'>
+      </div>
+    <% end %>
+
+    <div style='margin-top: 5px'>
+      <button type='submit' class='btn btn-success' id='authorize'>
+        <i class="icon-check"></i> &nbsp;Authorize
+      </button>
+    </div>
+  </div>
+
+  </form>
+<% end %>
+
+<script type='text/javascript'>
+  $("form#authorize").submit(function() {
+    $(this).find("button[type='submit']").attr("disabled", true);
+  });
+</script>

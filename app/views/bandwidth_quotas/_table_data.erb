@@ -1,0 +1,89 @@
+<% if !@enable_admin_view %>
+<style type='text/css'>
+  table.bandwidth-quotas tr.odd:hover td, table.bandwidth-quotas tr.even:hover td {
+    background-color: #ddf;
+  }
+</style>
+<% end %>
+
+<thead>
+  <% if action_name == 'index' %>
+  <tr>
+    <td colspan="<%= bandwidth_quotas_colspan(@enable_admin_view, action_name) %>" class="pagination">
+      <span class="page-entries-info">
+        <%= page_entries_info @bandwidth_quotas %>
+        <% if @enable_admin_view %>
+        (<%= link_to('Show All', admin_bandwidth_quotas_path(:per_page => 999999)) %>)
+        <% end %>
+      </span>
+      <span class="page-links">
+      <%= will_paginate @bandwidth_quotas %>
+      </span>
+
+      <span style='clear: both'>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <th class="action" style="width: <%= @enable_admin_view && !@sub_admin_view ? 65 : 20 %>px"></th>
+
+    <% if @enable_admin_view %>
+      <th class="account">Account</th>
+    <% end %>
+
+    <th class="commit">Commitment</th>
+    <th class="overage">Overage Fee</th>
+    <th class="url">Graphs Link</th>
+
+    <% if !@enable_admin_view %>
+      <th class="username">Username</th>
+      <th class="password">Password</th>
+    <% end %>
+  </tr>
+</thead>
+<tbody>
+  <% if @bandwidth_quotas.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="<%= bandwidth_quotas_colspan(@enable_admin_view) %>">
+        No bandwidth quotas found
+      </td>
+    </tr>
+  <% else %>
+  <% reset_cycle %>
+  <% @bandwidth_quotas.each do |bandwidth_quota| %>
+    <% if @enable_admin_view %>
+      <tr class="<%= cycle("odd", "even") -%>" <%= bandwidth_quotas_table_onClick(bandwidth_quota) %>>
+    <% else %>
+      <tr class="<%= cycle("even", "odd") -%>" style="cursor: default" <%= bandwidth_quotas_table_onClick(bandwidth_quota) %>>
+    <% end %>
+      <td class="action">
+      <% if @enable_admin_view %>
+        <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), admin_bandwidth_quota_path(bandwidth_quota.id)) %>
+      <% else %>
+        <%#= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), account_service_bandwidth_quota_path(@account, :*, bandwidth_quota.id)) %>
+      <% end %>
+
+      <% if @enable_admin_view %>
+          <% unless @sub_admin_view %>
+          <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_bandwidth_quota_path(bandwidth_quota.id)) %>
+          <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"), 
+                      admin_bandwidth_quota_path(bandwidth_quota.id), 
+                      :method => :delete,
+                      :data => { :confirm => 'Are you sure you want to delete this bandwidth quota?  THIS CANNOT BE UNDONE.' }) %>
+          <% end %>
+        <td class="account"><%= admin_account_path_from_resource(bandwidth_quota.resource) %></td>
+      <% end %>
+      </td>
+
+      <td class="commit"><%= bandwidth_quota.commit %> <%= bandwidth_quota.commit_unit %></td>
+      <td class="overage"><%= money(bandwidth_quota.commit_overage) %> / <%= bandwidth_quota.commit_unit %></td>
+      <td class="url"><%= link_to(truncate(bandwidth_quota.graph_url, :length => 40), bandwidth_quota.graph_url) %></td>
+
+      <% if !@enable_admin_view %>
+        <td class="username"><%= bandwidth_quota.cacti_username %></td>
+        <td class="password"><span id='bw-password' class='magic-password'><%= bandwidth_quota.cacti_password %></span></td>
+      <% end %>
+    </tr>
+  <% end %>
+<% end %>
+</tbody>

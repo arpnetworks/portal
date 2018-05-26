@@ -1,0 +1,10 @@
+<table class="invoices">
+  <caption>My Invoices</caption>
+    <%= render :partial => 'table_data' %>
+</table>
+
+&laquo; <%= link_to('Back to Dashboard', dashboard_path) %>
+
+<% if @unpaid_invoices && @unpaid_invoices.size > 0 %>
+  <%= render :partial => 'invoices/pay_button' %>
+<% end %>

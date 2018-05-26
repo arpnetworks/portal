@@ -1,6 +1,10 @@
 module BandwidthQuotasHelper
-  def bandwidth_quotas_colspan(admin)
-    admin ? 6 : 5
+  def bandwidth_quotas_colspan(admin, action_name)
+    if admin && action_name == 'index'
+      6
+    else
+      5
+    end
   end
 
   def bandwidth_quotas_table_onClick(bandwidth_quota)
