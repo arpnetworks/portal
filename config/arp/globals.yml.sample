@@ -1,14 +1,22 @@
 development:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
+  sr_subject: Hi
   admins:
     - admin
     - john
   irr_password: foo
+  hosts:
+    rancid: rancid.example.com
+    rancid_user: rancid-user
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
+  sr_subject: Hi
   admins:
     - admin
     - john
   irr_password: foo
+  hosts:
+    rancid: rancid.example.com
+    rancid_user: rancid-user

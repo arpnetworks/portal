@@ -13,4 +13,7 @@ if conf = @config[Rails.env]
 
   $ADMINS = conf['admins']
   $IRR_PASSWORD = conf['irr_password']
+
+  $HOST_RANCID      = conf['hosts']['rancid']
+  $HOST_RANCID_USER = conf['hosts']['rancid_user']
 end
