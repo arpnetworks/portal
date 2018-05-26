@@ -1,0 +1,7 @@
+<div style='margin-top: 5px'>
+  <div class='form-section-header'><%= title || 'Data Center Location' %>:</div>
+  <% session[:form][:location] ||= 'lax' %>
+  <input type="radio" id="location_lax" name="location" value="lax" <%= session[:form][:location] == 'lax' ? 'checked' : '' %>><label for="location_lax"><img src='/images/icons/flag_lax_tiny.png' alt='United States Flag'> Los Angeles, USA</label>
+  <br/>
+  <input type="radio" id="location_fra" name="location" value="fra" <%= session[:form][:location] == 'fra' ? 'checked' : '' %>><label for="location_fra"><img src='/images/icons/flag_fra_tiny.png' alt='Flag of Germany'> Frankfurt, Germany</label>
+</div>

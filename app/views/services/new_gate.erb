@@ -1,0 +1,39 @@
+<table class="services new" align="center">
+  <caption>Add New Service</caption>
+  <tbody>
+    <tr>
+      <td>
+
+        <% if @account.credit_card.nil? %>
+
+        <div class='notice-transparent'>
+          A valid <strong>credit card</strong> is required to order new services
+        </div>
+
+        <div class='notice-transparent'>
+          <a href='<%= new_account_credit_card_path %>', class='btn btn-success'><i class="fas fa-credit-card"></i> Add Credit Card</a>
+        </div>
+
+        <% end %>
+
+        <% if !@account.current? %>
+
+        <div class='notice-transparent'>
+          <p>
+          Oops, this account has <strong>unpaid invoices</strong> over $50.00 USD
+          </p>
+          <p>
+          All invoices must be paid before new services can be ordered
+          </p>
+
+          <div class='notice-transparent'>
+            <a href='<%= pay_account_invoices_path %>', class='btn btn-success'><i class="fas fa-money-bill-alt"></i> Pay Invoices</a>
+          </div>
+        <% end %>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+

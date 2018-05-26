@@ -1,0 +1,19 @@
+<table class="services new" align="center">
+  <caption><%= @title %></caption>
+  <tbody>
+    <tr>
+      <td>
+        <%= form_tag(confirm_account_services_path, :method => 'POST') do %>
+
+          <%= render :partial => "new_" + params[:service] %>
+
+          <div>
+          <%= hidden_field_tag(:service, params[:service]) %>
+          <button type='submit' class='btn btn-info'><i class="fas fa-chevron-right"></i> &nbsp;Continue</button>
+          </div>
+
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>

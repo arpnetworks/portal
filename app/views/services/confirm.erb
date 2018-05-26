@@ -1,0 +1,54 @@
+<table class="services new" align="center">
+  <caption><%= @title %> Confirmation</caption>
+  <tbody>
+    <tr>
+      <td>
+        <form id='authorize' method='POST' action='<%= confirm_done_account_services_path %>'>
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+        <table class="services service_detail center" style="width: 85%">
+          <caption>Pending New Services</caption>
+            <%= render :partial => 'services/table_data' %>
+        </table>
+
+        <% if @pending_invoice %>
+        <table class="invoices center" style="width: 85%">
+          <caption>Pending New Invoice</caption>
+            <%= render :partial => 'invoices/table_data' %>
+        </table>
+        <% end %>
+
+        <br/>
+        <div class="notice-warm">
+          <div>
+            The above listed new services with associated recurring charges will be created, which can be canceled
+            at any time.
+          </div>
+          <br/>
+          <div>
+            A pro-rated invoice from now to the end of the current billing cycle will also be created, as shown above.
+          </div>
+          <div>
+            Pro-rated charges are not refundable.
+          </div>
+          <br/>
+          <div>
+            <strong>I authorize ARP Networks, Inc. to perform the above modifications to my account</strong>
+          </div>
+
+          <div style='margin-top: 5px'>
+            <button type='submit' class='btn btn-success' id='authorize'>
+              <i class="fas fa-check"></i> &nbsp;Authorize
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<script type='text/javascript'>
+  $("form#authorize").submit(function() {
+    $(this).find("button[type='submit']").attr("disabled", true);
+  });
+</script>

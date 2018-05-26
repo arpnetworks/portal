@@ -1,0 +1,7 @@
+<%= render :partial => '/bandwidth_quotas/table' %>
+
+<% if @enable_admin_view %>
+  &laquo; <%= link_to('Back to Bandwidth', admin_bandwidth_quotas_path) %>
+<% else %>
+  &laquo; <%= link_to('Back to Dashboard', dashboard_path) %>
+<% end %>
