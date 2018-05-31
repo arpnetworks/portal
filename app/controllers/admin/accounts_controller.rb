@@ -4,7 +4,8 @@ class Admin::AccountsController < Admin::HeadQuartersController
   before_filter :find_account,      :only   => [:show, :edit, :update, :destroy]
 
   def index
-    @accounts = Account.all
+    @accounts = Account.paginate(page:     params[:page],
+                                 per_page: params[:per_page] || 20).order('created_at DESC')
   end
 
   def new

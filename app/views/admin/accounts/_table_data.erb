@@ -1,0 +1,52 @@
+<thead>
+  <% if action_name == 'index' %>
+  <tr>
+    <td colspan="5" class="pagination">
+      <span class="page-entries-info">
+        <%= page_entries_info @accounts %>
+        (<%= link_to('Show All', admin_accounts_path(:per_page => 999999)) %>)
+      </span>
+      <span class="page-links">
+      <%= will_paginate @accounts %>
+      </span>
+
+      <span style='clear: both'>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <th class="action"></th>
+    <th>Login</th>
+    <th>Email</th>
+    <th>Account</th>
+    <th>Address</th>
+  </tr>
+</thead>
+<tbody>
+  <% if @accounts.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="5">
+        No accounts found
+      </td>
+    </tr>
+  <% else %>
+  <% @accounts.each do |account| %>
+    <tr class="<%= cycle("odd", "even") -%> <%= account.suspended? ? 'suspended' : '' %>" <%= accounts_table_onClick(account) %>>
+      <td class="action">
+      <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), admin_account_path(account)) %>
+      <% unless @sub_admin_view %>
+      <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_account_path(account.id)) %>
+      <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"),
+                  admin_account_path(account.id),
+                  :method => :delete,
+                  :data => { :confirm => 'Are you sure you want to delete this account?  THIS CANNOT BE UNDONE.' }) %>
+      <% end %>
+      </td>
+      <td class="login"><%= truncate(account.login, :length => 20) %></td>
+      <td class="login"><%= truncate(account.email, :length => 20) %></td>
+      <td class="account"><%= truncate(h(account.display_account_name), :length => 30) %></td>
+      <td class="address"><%= truncate(h(one_line_address_for_account(account)), :length => 75) %></td>
+    </tr>
+  <% end %>
+<% end %>
+</tbody>
