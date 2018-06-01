@@ -1,0 +1,17 @@
+Service Order
+-------------
+
+New Service: BGP Session
+Account: <%= @account.display_account_name %> (ID: <%= @account.id %>)
+
+Details
+~~~~~~~
+
+ASN: <%= @asn %>
+Full routes desired? <%= @full_routes == 'on' ? 'Yes' : 'No' %>
+Session Family: <%= @family %>
+Location: <%= @location %>
+
+Prefixes:
+
+<%= @prefixes %>

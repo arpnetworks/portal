@@ -1,0 +1,24 @@
+Hi <%= @account.display_name %>,
+
+Re: VPS labeled "<%= @vm.label %>" 
+    and UUID <%= @vm.uuid %>
+
+Our Nagios monitor shows that your VPS fails to respond to our pings.
+
+If you block ICMP, please consider opening it up for 208.79.88.56, so
+our monitoring can be alerted if there is a problem with your host.
+
+More information about our monitoring can be found here:
+http://support.arpnetworks.com/faqs/vps/vps-monitoring
+
+If your VPS really is unreachable to you, let us know if you need
+help with getting it back up.
+
+Thanks!
+
+P.S. If we continue to be unable to monitor your VPS, you will probably
+receive this message again.
+
+-- 
+ARP Networks, Inc.
+Support Team
