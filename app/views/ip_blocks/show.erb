@@ -1,0 +1,8 @@
+<%= render :partial => '/ip_blocks/table' %>
+
+<% if @enable_admin_view %>
+  &laquo; <%= link_to('Back to All IP blocks', admin_ip_blocks_path) %>
+<% else %>
+  &laquo; <%= link_to('Back to My IP blocks', account_ip_blocks_path(@account)) %><br />
+  &laquo; <%= link_to('Back to Dashboard', dashboard_path) %>
+<% end %>

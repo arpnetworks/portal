@@ -1,0 +1,138 @@
+<% if @ip_blocks %>
+<table class="ip_blocks ip_block_detail<%= @enable_admin_view ? '' : " cursor-normal" %>">
+  <caption>IP Block Detail</caption>
+  <%= render :partial => '/ip_blocks/table_data' %>
+</table>
+
+<div>
+  <div class="title2">DNS Servers</div>
+
+  <div>
+    All customers can use the following DNS servers within their <pre style='display: inline'>/etc/resolv.conf</pre> file:
+  </div>
+
+  <br/>
+
+  <div>
+    <pre>
+      208.79.88.7
+      208.79.88.9
+    </pre>
+  </div>
+
+  <div>
+    The following IPv6 resolvers may also be used:
+  </div>
+
+  <br/>
+
+  <div>
+    <pre>
+      2607:f2f8:0:101::a
+      2607:f2f8:0:101::b
+    </pre>
+  </div>
+
+  <div>
+    These servers are universal and will work with any IP block assigned to you.
+  </div>
+
+  <br/>
+
+</div>
+
+<% if @enable_admin_view %>
+  <div>
+    <div class="title2">Reverse DNS Helper</div>
+
+    <p>
+    <span>
+      <form method='GET' action='<%= request.env["REQUEST_URI"] %>' style="display: inline">
+        Name Server 1: <input type='text' name='ns[]' value='<%= @ns[0] %>' id='ns1'><br/>
+        Name Server 2: <input type='text' name='ns[]' value='<%= @ns[1] %>' id='ns2'><br/>
+        Name Server 3: <input type='text' name='ns[]' value='<%= @ns[2] %>' id='ns3'><br/>
+        Name Server 4: <input type='text' name='ns[]' value='<%= @ns[3] %>' id='ns4'><br/>
+        Name Server 5: <input type='text' name='ns[]' value='<%= @ns[4] %>' id='ns5'><br/>
+        Name Server 6: <input type='text' name='ns[]' value='<%= @ns[5] %>' id='ns6'><br/>
+        Name Server 7: <input type='text' name='ns[]' value='<%= @ns[6] %>' id='ns7'><br/>
+        <br/>
+
+        <input type='checkbox' name='ns_afraid_org' id='ns_afraid_org'> 
+        <label for='ns_afraid_org'>Prefill with afraid.org IPv6 DNS Servers</label>
+        <br/>
+        <input type='checkbox' name='ns_he_net' id='ns_he_net'> 
+        <label for='ns_he_net'>Prefill with HE.net DNS Servers</label>
+        <br/>
+        <br/>
+
+        <input type='submit' value="Generate" />
+      </form>
+    </span>
+    <span>
+      <form method='GET' action='<%= request.env["REQUEST_URI"] %>' style="display: inline; padding-left: 5px">
+        <input type='submit' value="Start Over" />
+      </form>
+    </span>
+    </p>
+
+    <script type='text/javascript'>
+      $('#ns_afraid_org').change(function() {
+        if($(this).is(":checked")) {
+          $('#ns1').val('ns1.afraid.org')
+          $('#ns2').val('ns2.afraid.org')
+          $('#ns3').val('ns3.afraid.org')
+          $('#ns4').val('ns4.afraid.org')
+        } else {
+          $('#ns1').val('')
+          $('#ns2').val('')
+          $('#ns3').val('')
+          $('#ns4').val('')
+        }
+      });
+
+      $('#ns_he_net').change(function() {
+        if($(this).is(":checked")) {
+          $('#ns1').val('ns1.he.net')
+          $('#ns2').val('ns2.he.net')
+          $('#ns3').val('ns3.he.net')
+          $('#ns4').val('ns4.he.net')
+          $('#ns5').val('ns5.he.net')
+        } else {
+          $('#ns1').val('')
+          $('#ns2').val('')
+          $('#ns3').val('')
+          $('#ns4').val('')
+          $('#ns5').val('')
+        }
+      });
+
+    </script>
+
+    <% if @ns[0] && !@ns[0].empty? %>
+      <% @ip_blocks.each do |ip_block| %>
+      <div class='title2'>IPv<%= ip_block.version %> BIND entries</div>
+      <pre>
+<%= ip_block.reverse_dns_delegation_entries(@ns_arg) %>
+      </pre>
+    <% end %>
+
+    <div class='title2'>Email</div>
+    <pre>
+The following is what we have in our IPv4 DNS for your IP block(s):
+
+<%= @ipv4_blocks.inject('') { |str, ip_block| str + ip_block.reverse_dns_delegation_entries(@ns_arg).gsub(/^(.*)$/, "" + '\1') + "\n" } # Looks weird, but I originally wanted to add a tab in front 
+-%>
+You will want to name your zone(s) as follows:
+
+<%= @ipv4_blocks.inject('') { |str, ip_block| str + ip_block.rfc2317_zone_name + "\n" } -%>
+
+Then proceed to set your PTRs normally.
+
+IPv6 has also been delegated in the standard fashion.
+
+    </pre>
+    <% end %>
+  </div>
+<% end %>
+
+<% end %>
