@@ -1,0 +1,40 @@
+<tbody>
+  <tr>
+    <td colspan="2">
+      <h3></h3>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Service ID:</td>
+    <% service_code_id = ServiceCode.find_by_name("BANDWIDTH").id -%>
+    <td class="required"><%= collection_select(:bgp_session, :service_id,
+                                               Service.where("service_code_id = #{service_code_id} and title like '%BGP Session%'").\
+                                                       order('created_at desc'), :id,
+                                               :display_service_with_account,
+                                               { :include_blank => @include_blank }) %></td>
+  </tr>
+  <tr>
+    <td class="label">ASN:</td>
+    <td class="required"><%= f.text_field :asn, :size => 10 %></td>
+  </tr>
+  <tr>
+    <td class="label">Peer Host:</td>
+    <td class="required"><%= f.text_field :peer_host %></td>
+  </tr>
+  <tr>
+    <td class="label">Peer IP Address (Us):</td>
+    <td class="required"><%= f.text_field :peer_ip_address_a %></td>
+  </tr>
+  <tr>
+    <td class="label">Peer IP Address (Them):</td>
+    <td class="required"><%= f.text_field :peer_ip_address_z %></td>
+  </tr>
+  <tr>
+    <td class="label">Multihop?:</td>
+    <td class="required"><%= f.check_box :multihop %></td>
+  </tr>
+  <tr>
+    <td class="label">AS-SET:</td>
+    <td class="required"><%= f.text_field :as_set %> (optional)</td>
+  </tr>
+</tbody>

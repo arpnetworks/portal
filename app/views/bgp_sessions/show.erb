@@ -1,0 +1,7 @@
+<%= render :partial => '/bgp_sessions/table' %>
+
+<% if @enable_admin_view %>
+  &laquo; <%= link_to('Back to All BGP Sessions', admin_bgp_sessions_path) %>
+<% else %>
+  &laquo; <%= link_to('Back to Dashboard', dashboard_path) %>
+<% end %>

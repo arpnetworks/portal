@@ -1,0 +1,94 @@
+<table class="bgp-sessions">
+  <caption>
+    <div>&nbsp;
+      <div class="title">
+        All BGP Sessions
+      </div>
+      <div class="actions">
+        <%= link_to("New BGP Session", new_admin_bgp_session_path, :class => 'add_item') %>
+      </div>
+    </div>
+  </caption>
+  <%= render :partial => 'bgp_sessions/table_data' %>
+</table>
+
+&laquo; <%= link_to('Back to Head Quarters', admin_path) %>
+
+<% if params[:ph] %>
+
+<div>
+  <div class='title2'>Provisioning Helper</div>
+
+  <% ['s1.lax', 's7.lax', 's1.fra', 's2.fra'].each do |router| %>
+    <% sessions_v4 = BgpSession.all(:conditions => "(peer_host = '#{router}' || peer_host = '#{router}.arpnetworks.com') && peer_ip_address_a not like '%:%'") %>
+    <% sessions_v6 = BgpSession.all(:conditions => "(peer_host = '#{router}' || peer_host = '#{router}.arpnetworks.com') && peer_ip_address_a like '%:%'") %>
+
+    <% [sessions_v4, sessions_v6].each do |sessions| %>
+    <% if !sessions.empty? %>
+      <h3><%= router %></h3>
+
+      <% session_family = (sessions.first.peer_ip_address_a =~ /:/) ? 'v6' : 'v4' -%>
+
+      <% if session_family == 'v4' -%>
+
+      <p>
+        Control plane ACL:
+      </p>
+      <pre>
+        end
+        conf t
+
+        no ip access-list extended cp-critical-in-customer
+        ip access-list extended cp-critical-in-customer
+
+        remark Control plane critical traffic - inbound (customer sessions)
+        remark BGP
+      <% sessions.each do |session| -%>
+        <% if session.peer_ip_address_z !~ /^10\./ -%>
+
+        permit tcp host <%= session.peer_ip_address_z %> eq bgp host <%= session.peer_ip_address_a %>
+        permit tcp host <%= session.peer_ip_address_z %> host <%= session.peer_ip_address_a %> eq bgp
+        <% end -%>
+      <% end -%>
+
+        deny ip any any
+        exit
+      </pre>
+
+      <% end %>
+
+      <% if session_family == 'v6' -%>
+
+      <p>
+        Control plane ACL:
+      </p>
+      <pre>
+        end
+        conf t
+
+        no ipv6 access-list cp-critical-in-customer-v6
+        ipv6 access-list cp-critical-in-customer-v6
+
+        remark Control plane critical traffic - inbound (customer sessions)
+        remark BGP
+      <% sessions.each do |session| -%>
+        <% if session.peer_ip_address_z !~ /^10\./ -%>
+
+        permit tcp host <%= session.peer_ip_address_z %> eq bgp host <%= session.peer_ip_address_a %>
+        permit tcp host <%= session.peer_ip_address_z %> host <%= session.peer_ip_address_a %> eq bgp
+        <% end -%>
+      <% end -%>
+
+        deny ipv6 any any
+        exit
+      </pre>
+
+    <% end %>
+
+    <% end %>
+    <% end %>
+  <% end %>
+
+</div>
+
+<% end %>
