@@ -1,0 +1,64 @@
+<% if !@enable_admin_view %>
+<style type='text/css'>
+  table.bgp-sessions tr.odd:hover td, table.bgp-sessions tr.even:hover td {
+    background-color: #ddf;
+  }
+</style>
+<% end %>
+
+<thead>
+  <tr>
+    <th class="action" style="width: <%= @enable_admin_view && !@sub_admin_view ? 40 : 20 %>px"></th>
+
+    <% if @enable_admin_view %>
+      <th class="account">Account</th>
+    <% end %>
+
+    <th class="asn">ASN</th>
+    <th class="peer_host">Peer Host</th>
+    <th class="peer_ip_address">Peer IP Address A-Side (Us)</th>
+    <th class="peer_ip_address">Peer IP Address Z-Side (You)</th>
+    <th class="multihop">Multihop</th>
+    <th class="as_set">AS-SET</th>
+  </tr>
+</thead>
+<tbody>
+  <% if @bgp_sessions.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="<%= bgp_sessions_colspan(@enable_admin_view) %>">
+        No BGP sessions found
+      </td>
+    </tr>
+  <% else %>
+  <% reset_cycle %>
+  <% @bgp_sessions.each do |bgp_session| %>
+    <% if @enable_admin_view %>
+      <tr class="<%= cycle("odd", "even") -%>" <%= bgp_sessions_table_onClick(bgp_session) %>>
+    <% else %>
+      <tr class="<%= cycle("even", "odd") -%>" style="cursor: default" <%= bgp_sessions_table_onClick(bgp_session) %>>
+    <% end %>
+      <td class="action">
+
+      <% if @enable_admin_view %>
+          <% unless @sub_admin_view %>
+          <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_bgp_session_path(bgp_session.id)) %>
+          <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"), 
+                      admin_bgp_session_path(bgp_session.id), 
+                      :method => :delete,
+                      :data => { :confirm => 'Are you sure you want to delete this BGP session?  THIS CANNOT BE UNDONE.' }) %>
+          <% end %>
+        <td class="account"><%= admin_account_path_from_resource(bgp_session.resource) %></td>
+      <% end %>
+      </td>
+
+      <td class="asn"><%= bgp_session.asn %></td>
+      <td class="peer_host"><%= bgp_session.peer_host %></td>
+      <td class="peer_ip_address"><%= bgp_session.peer_ip_address_a %></td>
+      <td class="peer_ip_address"><%= bgp_session.peer_ip_address_z %></td>
+      <td class="multihop"><%= bgp_session.multihop ? 'Yes' : 'No' %></td>
+      <td class="as_set"><%= bgp_session.as_set %></td>
+    </tr>
+
+  <% end %>
+<% end %>
+</tbody>

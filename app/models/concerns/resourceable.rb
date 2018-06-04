@@ -4,7 +4,7 @@ module Resourceable
   def self.included(base)
     base.module_eval do
       has_one :resource, :as => :assignable, :dependent => :destroy
-    
+
       after_create :assign_service
       after_update :update_service
 
@@ -41,7 +41,7 @@ module Resourceable
     def update_service
       # If a service ID is defined, assign the resource to that service
       if @service_id
-        if resource 
+        if resource
           if resource.service.id != @service_id
             update_service_assignment(@service_id)
           end

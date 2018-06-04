@@ -1,0 +1,124 @@
+<div class="error">
+  <%= error_messages_for :bgp_session %>
+</div>
+
+<%= form_for([:admin, @bgp_session]) do |f| %>
+<table class="entry_form edit_bgp_session" align="center">
+  <caption>Edit BGP Session</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input type='submit' value="Save changes" />
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+&laquo; <%= link_to('Back to All BGP Sessions', admin_bgp_sessions_path) %>
+
+<% if !@bgp_session.asn.to_s.empty? &&
+      !@bgp_session.peer_host.empty? &&
+      !@bgp_session.peer_ip_address_a.empty? &&
+      !@bgp_session.peer_ip_address_z.empty? %>
+
+<% router = @bgp_session.peer_host %>
+
+<% prefixes_v4 = @bgp_session.prefixes.map { |prefix| prefix.version == 4 ? prefix.prefix : nil }.compact %>
+<% prefixes_v6 = @bgp_session.prefixes.map { |prefix| prefix.version == 6 ? prefix.prefix : nil }.compact %>
+
+<% peer_group = (@bgp_session.session_type_info == 'v6') ? 'customer-v6' : 'customer' %>
+
+<div>
+  <div class='title2'>Provisioning Helper</div>
+
+  <h3><%= router %></h3>
+
+  <% if router == 's3.lax' %>
+    Sorry, you still have to do this one manually
+  <% else %>
+  <% if @account %>
+
+  <%# I hate ERB %>
+
+  Setup:
+  <br/>
+  <br/>
+
+  <pre>
+    conf t
+
+    <% if @bgp_session.session_type_info == 'v4' -%>no ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
+    <% prefixes_v4.each do |prefix| -%>ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> permit <%= prefix %>
+    <% end -%>ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> deny 0.0.0.0/0 le 32
+    <% end -%><% if @bgp_session.session_type_info == 'v6' && @bgp_session.peer_host =~ /s?.fra/ -%>no ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
+    <% prefixes_v6.each do |prefix| -%>ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> permit <%= prefix %>
+    <% end -%>ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> deny ::/0 le 128
+    <% end -%>
+
+    router bgp 25795
+
+    neighbor <%= @bgp_session.peer_ip_address_z %> remote-as <%= (router == 's1.lax' && @bgp_session.asn > 65535) ? '23456' :  @bgp_session.asn.to_s %>
+    neighbor <%= @bgp_session.peer_ip_address_z %> description Customer: <%= @bgp_session.resource.service.account.display_name %>
+  <% if @bgp_session.peer_host =~ /s?.fra/ %>
+    address-family ip<%= @bgp_session.session_type_info %>
+  <% end %>
+    neighbor <%= @bgp_session.peer_ip_address_z %> activate
+    neighbor <%= @bgp_session.peer_ip_address_z %> prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> in
+    neighbor <%= @bgp_session.peer_ip_address_z %> peer-group <%= peer_group %>
+  <% if @bgp_session.peer_host =~ /s?.fra/ %>
+    exit-address-family
+  <% end %>
+    end
+  <% end %>
+  </pre>
+
+  <% if !@ips_for_rpf_filter.empty? %>
+    <pre>
+    conf t
+    <% seq = 10 %>
+    no ip access-list extended <%= @rpf_filter %>
+    ip access-list extended <%= @rpf_filter %>
+    <% @ips_for_rpf_filter.each do |ip_block| -%><%= seq %> permit ip <%= ip_block.ip %> <%= ip_block.wildcard_mask(true) %> any<% seq += 1 %>
+    <% end -%>10000 deny ip any any
+
+    end
+    </pre>
+  <% end %>
+
+  Tear-down:
+  <br/>
+  <br/>
+
+  <pre>
+    conf t
+
+    <% if @bgp_session.session_type_info == 'v4' -%>no ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
+    <% end -%><% if @bgp_session.session_type_info == 'v6' && @bgp_session.peer_host =~ /s?.fra/ -%>no ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
+    <% end -%>
+
+    router bgp 25795
+
+    no neighbor <%= @bgp_session.peer_ip_address_z %>
+
+    end
+  <% if !@ips_for_rpf_filter.empty? %>
+    <pre>
+    conf t
+    <% seq = 10 %>
+    no ip access-list extended <%= @rpf_filter %>
+    ip access-list extended <%= @rpf_filter %>
+    <% @ips_for_rpf_filter_without_session_prefixes.each do |ip_block| -%><%= seq %> permit ip <%= ip_block.ip %> <%= ip_block.wildcard_mask(true) %> any<% seq += 1 %>
+    <% end -%>10000 deny ip any any
+
+    end
+    </pre>
+  <% end %>
+  <% end %>
+  </pre>
+
+  </div>
+</div>
+<% end %>

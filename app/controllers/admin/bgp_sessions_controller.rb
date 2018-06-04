@@ -129,6 +129,7 @@ class Admin::BgpSessionsController < Admin::HeadQuartersController
 
   def bgp_session_params
     params.require(:bgp_session).permit(
+      :service_id,
       :asn,
       :peer_host,
       :peer_ip_address_a,

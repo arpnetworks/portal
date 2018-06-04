@@ -1,0 +1,20 @@
+<div class="error">
+  <%= error_messages_for :bgp_session %>
+</div>
+
+<%= form_for([:admin, @bgp_session]) do |f| %>
+<table class="entry_form" align="center">
+  <caption>New BGP Session</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input type='submit' value="Create" />
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+&laquo; <%= link_to('Back to All BGP Sessions', admin_bgp_sessions_path) %>
