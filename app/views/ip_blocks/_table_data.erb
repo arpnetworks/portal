@@ -1,0 +1,155 @@
+<% if !@enable_admin_view %>
+<style type='text/css'>
+  table.ip_blocks tr.even:hover td {
+    background-color: #ddf;
+  }
+  table.ip_blocks tr.odd:hover td {
+    background-color: #fff;
+  }
+</style>
+<% end %>
+
+<thead>
+  <tr>
+    <th class="action" style="width: <%= @enable_admin_view && !@sub_admin_view ? 65 : 20 %>px"></th>
+
+    <% if @enable_admin_view %>
+      <th class="account">Account</th>
+      <th class="vlan">VLAN</th>
+      <th class="vlan">R?</th>
+    <% end %>
+
+    <th class="network">Network</th>
+
+    <% if !@enable_admin_view %>
+    <th class="ips">Usable IPs</th>
+    <th class="gateway">Gateway</th>
+    <th class="netmask">Subnet Mask</th>
+    <th class="broadcast">Broadcast</th>
+    <% else %>
+    <th>Label</th>
+    <% end %>
+    <th class="vlan"></th>
+  </tr>
+</thead>
+<tbody>
+  <% if @ip_blocks.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="<%= ip_blocks_colspan(@enable_admin_view) %>">
+        No IP blocks found
+      </td>
+    </tr>
+  <% else %>
+  <% reset_cycle %>
+  <% @ip_blocks.each do |ip_block| %>
+    <tr class="<%= cycle("even", "odd") -%>"<%= @enable_admin_view ? "" : ' style="cursor: default"' -%> <%= ip_blocks_table_onClick(ip_block) %>>
+      <td class="action">
+      <% if @enable_admin_view && !@sub_admin_view %>
+        <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), admin_ip_block_path(ip_block.id)) %>
+      <% else %>
+        <%#= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), account_service_ip_block_path(@account, :*, ip_block.id)) %>
+      <% end %>
+
+      <% if @enable_admin_view %>
+          <% unless @sub_admin_view %>
+          <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_ip_block_path(ip_block.id)) %>
+          <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"),
+                      admin_ip_block_path(ip_block.id),
+                      :method => :delete,
+                      :data => { :confirm => 'Are you sure you want to delete this IP block?  THIS CANNOT BE UNDONE.' }) %>
+          <% end %>
+        <td class="account"><%= admin_account_path_from_resource(ip_block.resource) %></td>
+        <td class="vlan"><%= ip_block.vlan %></td>
+        <td class="vlan"><%= ip_block.routed ? 'T' : 'F' %></td>
+      <% end %>
+      </td>
+
+      <% if ip_block.version == 6 && !ip_block.routed &&
+         ip_block.resource && ip_block.resource.service &&
+         ip_block.resource.service.service_code.name == 'IP_BLOCK' # Cheat for customers prior to 06/10/2010
+         # By default, we hard code a /64 onto the wire; routing of entire /48
+         # can be requested
+      %>
+        <td>
+          <div style='padding-bottom: 5pt; color: green'><%= ip_block.cidr.sub(%r{/48$}, '/64') %> Assigned</div>
+          <div><%= ip_block.cidr %> Allocated</div>
+        </td>
+      <% else %>
+        <td><%= ip_block.cidr %></td>
+      <% end %>
+
+      <% if !@enable_admin_view %>
+      <% if ip_block.routed %>
+        <td>All</td>
+        <% if ip_block.version == 6
+           # We are making the copious assumption that all IPv6 routed
+           # blocks will be over a link-local (fe80::/64) address and
+           # as such, we will just display the next_hop which we have
+           # set from their point of view
+        %>
+          <td colspan="3"> <%= ip_block.next_hop %> </td>
+        <% else %>
+          <td colspan="3"> Routed to <%= ip_block.next_hop %> </td>
+        <% end %>
+      <% else %>
+      <td><%= ip_block.ip_range_usable %></td>
+      <td><%= ip_block.gateway %></td>
+      <td><%= ip_block.netmask %></td>
+      <td><%= ip_block.broadcast %></td>
+      <% end %>
+      <% else %>
+        <td><%= ip_block.label %></td>
+      <% end %>
+      <% location = (ip_block.location && ip_block.location.code) || 'lax' %>
+      <td><%= image_tag('/images/icons/flag_' + location + '_tiny.png', :alt => location) %></td>
+
+    </tr>
+    <% if ip_block.version == 6 && !ip_block.routed? && controller.action_name != 'index' &&
+          ip_block.resource.service.service_code.name == 'IP_BLOCK' # Cheat for customers prior to 06/10/2010
+    %>
+      <tr>
+        <td></td>
+        <td class='th-minor' colspan="<%= ip_blocks_colspan(@enable_admin_view) - 1%>">
+          Notes on IPv6 Assigned vs. Allocated Blocks
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td colspan="<%= ip_blocks_colspan(@enable_admin_view) - 1%>" class="info">
+          <div>
+          A /48 IPv6 block has been allocated to your site as recommended by RFC 3177 and RFC 5375.
+          </div>
+          <div>
+          However, only the first /64 is directly connected (assigned) to your VLAN.
+          </div>
+          <div>
+          Should you require use of the entire /48 at this time, we will route it to you over a link-local address.
+          </div>
+          <div>
+            Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> to set this up.
+          </div>
+        </td>
+      </tr>
+      <% reset_cycle %>
+
+    <% end %>
+    <% if !ip_block.notes.to_s.empty? && controller.action_name != 'index' %>
+      <tr>
+        <td></td>
+        <td class='th-minor' colspan="<%= ip_blocks_colspan(@enable_admin_view) - 1%>">
+          Additional
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td colspan="<%= ip_blocks_colspan(@enable_admin_view) - 1%>" class="info">
+          <%= ip_block.notes.empty? ? "No further details" : ip_block.notes %>
+        </td>
+      </tr>
+      <% reset_cycle %>
+    <% end %>
+  <% end %>
+<% end %>
+</tbody>

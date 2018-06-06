@@ -1,0 +1,29 @@
+<ul>
+  <% ip_blocks.each do |ip_block| %>
+    <li>
+
+    <%= link_to(ip_block.cidr, edit_admin_ip_block_path(ip_block.id)) %>
+    <%= link_to(image_tag('/images/icons/bullet_add.png', :alt => "Subnet"), 
+                new_admin_ip_block_path(:ip_block => { :ip_block_id => ip_block.id })) %>
+    <%= subnet_wizard(ip_block) %> :
+
+    <% if ip_block.account && 
+          ip_block.parent_block && 
+          ip_block.parent_block.account && 
+          ip_block.account_name == ip_block.parent_block.account_name -%> 
+      &raquo;
+    <% else %>
+    <%= ip_block.account ? link_to(h(ip_block.account_name), admin_account_path(ip_block.account)) : '' %>
+    <% end %>
+
+    <%= truncate(ip_block.label, :length => 64) %>
+    <%= ", " if !ip_block.label.blank? && !ip_block.vlan.blank? %>
+    <%= "VLAN #{ip_block.vlan}" if ip_block.vlan && !ip_block.vlan.blank? %>
+
+    <% subnets = ip_block.subnets(resource: { service: :account }) %>
+    <% if !subnets.empty? %>
+      <%= render :partial => 'tree', :locals => { :ip_blocks => subnets } %>
+    <% end %>
+    </li>
+  <% end %>
+</ul>
