@@ -1,0 +1,17 @@
+<table class="accounts">
+  <caption>
+    <div>&nbsp;
+      <div class="title">
+        <% if controller.action_name == 'search' %>
+          Search Results for Accounts
+        <% else %>
+          All Accounts
+        <% end %>
+      </div>
+      <div class="actions">
+        <%= link_to("New Account", new_admin_account_path, :class => 'add_item') %>
+      </div>
+    </div>
+  </caption>
+  <%= render :partial => 'admin/accounts/table_data' %>
+</table>

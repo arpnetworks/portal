@@ -1,0 +1,20 @@
+<table class="accounts">
+  <caption><%= h(@account.display_name) %> Summary</caption>
+    <%= render :partial => 'table_data' %>
+</table>
+
+<table class="services">
+  <caption>Services for <%= h(@account.display_name) %></caption>
+    <%= render :partial => 'services/table_data' %>
+</table>
+
+<% if @enable_admin_view && !@sub_admin_view %>
+<div>
+  Total MRC: <span class="money"><%= money2(@mrc) %></span>
+</div>
+<% end %>
+
+<table class="invoices">
+  <caption>Invoices for <%= h(@account.display_name) %></caption>
+    <%= render :partial => 'invoices/table_data' %>
+</table>
