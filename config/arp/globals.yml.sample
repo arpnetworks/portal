@@ -9,6 +9,7 @@ development:
   hosts:
     rancid: rancid.example.com
     rancid_user: rancid-user
+  vlan_min: 20
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -20,3 +21,4 @@ test:
   hosts:
     rancid: rancid.example.com
     rancid_user: rancid-user
+  vlan_min: 20

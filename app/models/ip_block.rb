@@ -269,7 +269,7 @@ class IpBlock < ActiveRecord::Base
       raise ArgumentError
     end
 
-    possible_parents = IpBlock.where("cidr like '#{lhs}%' and vlan >= 105")
+    possible_parents = IpBlock.where("cidr like '#{lhs}%' and vlan >= #{$VLAN_MIN}")
 
     @parent_net = nil
     possible_parents.each do |ip_block|
