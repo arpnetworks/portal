@@ -1,0 +1,15 @@
+<table class="bgp-sessions-prefixes">
+  <caption>
+    <div>&nbsp;
+      <div class="title">
+        All Prefixes
+      </div>
+      <div class="actions">
+        <%= link_to("New Prefix", new_admin_bgp_sessions_prefix_path, :class => 'add_item') %>
+      </div>
+    </div>
+  </caption>
+  <%= render :partial => 'bgp_sessions_prefixes/table_data' %>
+</table>
+
+&laquo; <%= link_to('Back to Head Quarters', admin_path) %>

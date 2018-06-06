@@ -1,0 +1,20 @@
+<div class="error">
+  <%= error_messages_for :account %>
+</div>
+
+<%= form_for([:admin, @account]) do |f| %>
+<table class="entry_form edit_account" align="center">
+  <caption>Edit Account</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input type='submit' value="Save changes" />
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'accounts/form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+&laquo; <%= link_to('Back to All Accounts', admin_accounts_path) %>
