@@ -59,6 +59,6 @@
   </tr>
   <tr>
     <td class="label">Notes:</td>
-    <td class="required"><%= f.text_area :notes, cols: 48, rows: 16 %></td>
+    <td class="required"><%= text_area_tag 'ip_block[notes]', @ip_block.notes_source, size: "48x16", id: 'ip_block_notes' %></td>
   </tr>
 </tbody>

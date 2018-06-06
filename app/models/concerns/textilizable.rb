@@ -1,6 +1,17 @@
 require 'redcarpet'
 require 'redcarpet/render_strip'
 
+class CustomRenderer < Redcarpet::Render::Base
+  def preprocess(text)
+    s = text.gsub(/\R/m, '<br />&#x000A;')
+    s
+  end
+
+  def paragraph(text)
+    text
+  end
+end
+
 module Textilizable
   extend ActiveSupport::Concern
 
@@ -37,7 +48,8 @@ module Textilizable
 
   included do
     def as_markdown
-      @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: false, tables: true, hard_wrap: true)
+      # @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: false, tables: true, hard_wrap: true)
+      @markdown ||= Redcarpet::Markdown.new(CustomRenderer)
     end
 
     def as_plaintext

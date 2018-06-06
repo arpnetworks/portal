@@ -145,7 +145,7 @@
       <tr>
         <td></td>
         <td colspan="<%= ip_blocks_colspan(@enable_admin_view) - 1%>" class="info">
-          <%= ip_block.notes.empty? ? "No further details" : ip_block.notes %>
+          <%= ip_block.notes.empty? ? "No further details" : sanitize(ip_block.notes) %>
         </td>
       </tr>
       <% reset_cycle %>
