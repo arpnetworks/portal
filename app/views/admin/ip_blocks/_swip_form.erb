@@ -1,0 +1,55 @@
+<tbody>
+  <tr>
+    <td class="label">Registration Action:</td>
+    <td class="required">
+      <%= radio_button :form, :registration_action, "N" %> New
+      <%= radio_button :form, :registration_action, "M" %> Modify
+      <%= radio_button :form, :registration_action, "R" %> Remove
+    </tr>
+  </tr>
+  <tr>
+    <td class="label">Network Name:</td>
+    <td class="required"><%= text_field :form, :network_name, :size => 30 %></td>
+  </tr>
+  <tr>
+    <td class="label">IP Address and Prefix:</td>
+    <td class="required"><%= @ip_block.cidr.to_s %></td>
+  </tr>
+  <tr>
+    <td class="label">Origin AS:</td>
+    <td class="required"><%= @ip_block.origin_as %></td>
+  </tr>
+  <tr>
+    <td class="label">Customer Name:</td>
+    <td class="required"><%= f.text_field :display_account_name %></td>
+  </tr>
+  <tr>
+    <td class="label">Customer Address:</td>
+    <td class="required"><%= f.text_field :address1 %></td>
+  </tr>
+  <tr>
+    <td class="label"></td>
+    <td class="required"><%= f.text_field :address2 %></td>
+  </tr>
+  <tr>
+    <td class="label">City:</td>
+    <td class="required"><%= f.text_field :city %></td>
+  </tr>
+  <tr>
+    <td class="label">State/Province:</td>
+    <td class="required"><%= f.text_field :state, :size => 10 %></td>
+  </tr>
+  <tr>
+    <td class="label">Postal Code:</td>
+    <td class="required"><%= f.text_field :zip %></td>
+  </tr>
+  <tr>
+    <td class="label">County Code:</td>
+    <td class="required"><%= f.text_field :country %></td>
+  </tr>
+  <tr>
+    <td class="label">Public Comments:</td>
+    <td class="required"><%= text_area :form, :public_comments, cols: 48, rows: 16 %></td>
+    </td>
+  </tr>
+</tbody>

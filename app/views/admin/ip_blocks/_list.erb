@@ -1,0 +1,17 @@
+<table class="ip_blocks">
+  <caption>
+    <div>&nbsp;
+      <div class="title">
+        <% if controller.action_name == 'search' %>
+          Search Results for IP blocks
+        <% else %>
+          All IP blocks
+        <% end %>
+      </div>
+      <div class="actions">
+        <%= link_to("New IP block", new_admin_ip_block_path, :class => 'add_item') %>
+      </div>
+    </div>
+  </caption>
+  <%= render :partial => 'ip_blocks/table_data' %>
+</table>

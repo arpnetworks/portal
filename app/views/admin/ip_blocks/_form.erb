@@ -1,0 +1,64 @@
+<tbody>
+  <tr>
+    <td colspan="2">
+      <h3></h3>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Service ID:</td>
+    <td class="required"><%= collection_select(:ip_block, :service_id,
+                                               Service.includes('account'), :id,
+                                               :display_service_with_account,
+                                               { :include_blank => @include_blank }) %>
+                                               <%= link_to('Go', admin_service_path(@ip_block.resource.service)) if @ip_block.resource %> |
+                                               <%= link_to('SWIP', swip_admin_ip_block_path(@ip_block)) if !@ip_block.new_record? %>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Parent block:</td>
+    <td class="required"><%= collection_select(:ip_block, :ip_block_id,
+                                               IpBlock.includes(resource: { service: :account }).order('seq, network'), :id,
+                                               :short_desc,
+                                               { :include_blank => @include_blank }) %></td>
+  </tr>
+  <tr>
+    <td class="label">Location:</td>
+
+    <td class="required"><%= collection_select(:ip_block, :location_id,
+                                               Location.all, :id,
+                                               :display_name,
+                                               { :include_blank => @include_blank }) %></td>
+  </tr>
+  <tr>
+    <td class="label">CIDR:</td>
+    <td class="required"><%= f.text_field :cidr %></td>
+  </tr>
+  <tr>
+    <td class="label">Label:</td>
+    <td class="required"><%= f.text_field :label, :size => 50 %></td>
+  </tr>
+  <tr>
+    <td class="label">VLAN:</td>
+    <td class="required"><%= f.text_field :vlan, :size => 5 %> (Next Available: <%= Vlan.next_available(:limit => 5).join(', ') %>, ...) [Note: LAX only]</td>
+  </tr>
+  <tr>
+    <td class="label">Sequence:</td>
+    <td class="required"><%= f.text_field :seq, :size => 5 %></td>
+  </tr>
+  <tr>
+    <td class="label">Routed?:</td>
+    <td class="required"><%= f.check_box :routed %></td>
+  </tr>
+  <tr>
+    <td class="label">Next hop or IPv6 link-local gateway (if routed):</td>
+    <td class="required"><%= f.text_field :next_hop %></td>
+  </tr>
+  <tr>
+    <td class="label">Available?:</td>
+    <td class="required"><%= f.check_box :available %></td>
+  </tr>
+  <tr>
+    <td class="label">Notes:</td>
+    <td class="required"><%= f.text_area :notes, cols: 48, rows: 16 %></td>
+  </tr>
+</tbody>

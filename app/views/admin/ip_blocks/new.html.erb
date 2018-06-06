@@ -1,0 +1,21 @@
+<div class="error">
+  <%= error_messages_for :ip_block %>
+</div>
+
+<%= form_for([:admin, @ip_block]) do |f| %>
+<table class="entry_form" align="center">
+  <caption>New IP block</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input type='submit' value="Create" />
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+&laquo; <%= link_to('Back to All IP Blocks', admin_ip_blocks_path) %><br/>
+&laquo; <%= link_to('Back to Dashboard', dashboard_path) %>

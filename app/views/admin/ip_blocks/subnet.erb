@@ -1,0 +1,73 @@
+<div class="title2">RFC 3531 Subnet Wizard</div>
+
+<div class="subnet-wizard">
+
+  <form method="GET">
+  <table class="entry_form" align="center">
+
+    <tbody>
+      <tr>
+        <td>Parent Block:</td>
+        <td><%= @ip_block.short_desc %></td>
+      </tr>
+      <tr>
+        <td style='width: 1em; white-space: nowrap'>Desired Prefix Length: </td>
+        <td>
+          <input type="text" size="5" name="prefixlen" value="<%= @prefixlen %>" /> (e.g. "/29" for 8 IP block)
+        </td>
+      </tr>
+      <tr>
+        <td>Strategy: </td>
+        <td>
+          <%= radio_button_tag(:strategy, :centermost, (@strategy == 'centermost') || @strategy.nil? || @strategy.empty?) %> Centermost &nbsp;&nbsp;
+          <%= radio_button_tag(:strategy, :leftmost, @strategy == 'leftmost') %> Leftmost &nbsp;&nbsp;
+        </td>
+      </tr>
+      <tr>
+        <td style='width: 1em; white-space: nowrap'>Return Limit: </td>
+        <td>
+          <input type="text" size="5" name="limit" value="<%= @limit || 100 %>" />
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td>
+          <input style='float: left' type='submit' value="Find Available Blocks" />
+        </td>
+      <tr>
+        <td colspan="2">
+
+        <% if @subnets_available %>
+          <% if @subnets_available.size == 0 %>
+            <div>
+              There are no available subnets of prefix length <%= @prefixlen %> within <%= @ip_block.cidr %><br /><br />
+            </div>
+          <% else %>
+            Available subnets:
+            <ul>
+              <% @subnets_available.each do |subnet| %>
+                <li><%= link_to(subnet.cidr,
+                                new_admin_ip_block_path(:ip_block => { :ip_block_id => @ip_block.id,
+                                                                       :cidr => subnet.cidr })) %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        <% end %>
+
+        <% if @prefixlen %>
+        <div>
+          <%= link_to('Start over') %>
+        </div>
+        <% end %>
+
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+  </form>
+
+</div>
+
+&laquo; <%= link_to('Back to All IP blocks', tree_admin_ip_blocks_path) %>

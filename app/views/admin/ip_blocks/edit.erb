@@ -1,0 +1,26 @@
+<div class="error">
+  <%= error_messages_for :ip_block %>
+</div>
+
+<%= form_for([:admin, @ip_block]) do |f| %>
+<table class="entry_form edit_ip_block" align="center">
+  <caption>Edit IP block</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input style='float: left' type='submit' value="Save changes" />
+
+        <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"),
+                    admin_ip_block_path(@ip_block.id),
+                    :method => :delete,
+                    :data => { :confirm => 'Are you sure you want to delete this IP block?  THIS CANNOT BE UNDONE.' },
+                    :style => 'padding-top: 3px; float: right') %>
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+&laquo; <%= link_to('Back to All IP blocks', admin_ip_blocks_path) %>

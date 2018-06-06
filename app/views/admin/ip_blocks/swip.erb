@@ -1,0 +1,18 @@
+<div class="error">
+  <%= @form_error %>
+</div>
+
+<%= form_for :downstream_org, :url => { :action => "swip_submit" } do |f| %>
+<table class="entry_form" align="center">
+  <caption>ARIN SWIP: REASSIGN SIMPLE</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input type='submit' value="Submit to ARIN" />
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'swip_form', :locals => { :f => f } %>
+</table>
+<% end %>
