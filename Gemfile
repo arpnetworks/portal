@@ -44,6 +44,8 @@ group :test do
 
   gem 'factory_bot'
   gem 'factory_bot_rails'
+
+  gem 'simplecov', require: false
 end
 
 group :development do
