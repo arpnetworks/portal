@@ -1,19 +1,35 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
-require File.dirname(__FILE__) + '/../../my_spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::AccountsController do
-  fixtures :accounts
+
+  # before do
+  #   login!
+  #   @account = accounts(:user_1)
+  #   @account_params = { :login => 'login', :email => 'foobar@example.com' }
+  #   @params  = { :id => @account.id, :account => @account_params }
+
+  #   controller.stub!(:is_arp_admin?).and_return(true)
+  #   controller.stub!(:is_arp_sub_admin?).and_return(true)
+  #   controller.stub!(:set_admin_state).and_return(true)
+  #   controller.stub!(:login_required)
+  # end
+
+  before(:context) do
+    create_admin!
+  end
 
   before do
-    login!
-    @account = accounts(:user_1)
-    @account_params = { :login => 'login', :email => 'foobar@example.com' }
-    @params  = { :id => @account.id, :account => @account_params }
+    login_as_admin!
 
-    controller.stub!(:is_arp_admin?).and_return(true)
-    controller.stub!(:is_arp_sub_admin?).and_return(true)
-    controller.stub!(:set_admin_state).and_return(true)
-    controller.stub!(:login_required)
+    @account = stub_model(Account, login: 'login', email: 'foo@example.com')
+    @account_params = { login: @account.login, email: @account.email }
+    @params  = { id: @account.id, account: @account_params }
+
+    allow(controller).to receive(:is_arp_admin?)     { true }
+    allow(controller).to receive(:is_arp_sub_admin?) { true }
+    allow(controller).to receive(:set_admin_state) { true }
+    allow(controller).to receive(:login_required)
   end
 
   def do_get(opts = {})
@@ -27,13 +43,13 @@ describe Admin::AccountsController do
 
     it "should display new account form" do
       do_get
-      assigns(:account).should be_new_record
-      response.should be_success
+      expect(assigns(:account)).to be_new_record
+      expect(response).to be_success
     end
 
     it "should set @include_blank" do
       do_get
-      assigns(:include_blank).should be_true
+      expect(assigns(:include_blank)).to be true
     end
   end
 
@@ -45,9 +61,9 @@ describe Admin::AccountsController do
     it "should create new account" do
       num_records = Account.count
       do_post(@params.merge(:account => @params[:account].merge(:login => 'foo2', :company => 'foo', :password => 'foo', :password_confirmation => 'foo')))
-      Account.count.should == num_records + 1
-      response.should redirect_to(admin_accounts_path)
-      flash[:notice].should_not be_nil
+      expect(Account.count).to eq(num_records + 1)
+      expect(response).to redirect_to(admin_accounts_path)
+      expect(flash[:notice]).to_not be_nil
     end
 
     it "should go back to new page if error creating" do
@@ -71,6 +87,7 @@ describe Admin::AccountsController do
     end
 
     it "should show the account" do
+      allow(Account).to receive(:find) { @account }
       do_get @params
       response.should be_success
       response.should render_template('admin/accounts/show')
@@ -78,6 +95,7 @@ describe Admin::AccountsController do
     end
 
     it "should redirect when the account is not found" do
+      allow(Account).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
       do_get @params.merge(:id => 999)
       flash[:error].should_not be_nil
       response.should redirect_to(admin_accounts_path)
@@ -90,12 +108,14 @@ describe Admin::AccountsController do
     end
 
     it "should show the account" do
+      allow(Account).to receive(:find) { @account }
       do_get @params
       response.should be_success
       assigns(:account).id.should == @account.id
     end
 
     it "should redirect when the account is not found" do
+      allow(Account).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
       do_get @params.merge(:id => 999)
       flash[:error].should_not be_nil
       response.should redirect_to(admin_accounts_path)
@@ -107,28 +127,11 @@ describe Admin::AccountsController do
       put :update, opts
     end
 
-    def do_mock(opts = {})
-      @account = mock_model(Account, {}.merge(opts))
-      Account.should_receive(:find).with(@account.id.to_s).and_return(@account)
-      @account.should_receive(:login=)
-    end
-
-    it "should update the account" do
-      @new_account = { :company => 'a new company' }
-      @account.company.should_not == @new_account[:company]
-      do_put(@params.merge(:account => @params[:account].merge(@new_account)))
-      response.should redirect_to(last_location)
-      flash[:notice].should_not be_empty
-      @reloaded_account = Account.find(@account.id)
-      @reloaded_account.company.should == @new_account[:company]
-    end
-
     it "should go back to edit page if error updating" do
-      # Using mocks/stubs here
-      do_mock(:update_attributes => false)
-
+      allow(Account).to receive(:find) { @account }
+      allow(@account).to receive(:update_attributes).and_raise(ActiveRecord::StatementInvalid, 'foo')
       do_put(@params.merge(:id => @account.id))
-      response.should render_template('admin/accounts/edit')
+      expect(response).to render_template('admin/accounts/edit')
     end
 
     it "should redirect when the account is not found" do
@@ -138,9 +141,8 @@ describe Admin::AccountsController do
     end
 
     it "should not update password if one is not supplied" do
-      do_mock
-
-      @account.should_receive(:update_attributes).with(@account_params.stringify_keys!)
+      allow(Account).to receive(:find) { @account }
+      expect(@account).to receive(:update_attributes).with(@account_params.stringify_keys!)
 
       do_put(@params.merge(:id => @account.id, :account => @account_params.merge(
                            :password => '', :password_confirmation => '')))
@@ -157,7 +159,7 @@ describe Admin::AccountsController do
       mock_account.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
-  
+
     it "should redirect to the location that brought us here" do
       Account.stub!(:find).and_return(mock_account(:destroy => true))
       delete :destroy, :id => "1"

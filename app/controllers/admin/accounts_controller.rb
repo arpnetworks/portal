@@ -15,7 +15,7 @@ class Admin::AccountsController < Admin::HeadQuartersController
 
   def create
     begin
-      @account = Account.new(params[:account])
+      @account = Account.new(account_params)
 
       # This field is protected from mass assignment
       @account.login = params[:account][:login]
