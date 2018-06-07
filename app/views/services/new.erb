@@ -5,10 +5,10 @@
       <td>
         <%= form_tag(confirm_account_services_path, :method => 'POST') do %>
 
-          <%= render :partial => "new_" + params[:service] %>
+          <%= render :partial => "new_" + @service %>
 
           <div>
-          <%= hidden_field_tag(:service, params[:service]) %>
+          <%= hidden_field_tag(:service, @service) %>
           <button type='submit' class='btn btn-info'><i class="fas fa-chevron-right"></i> &nbsp;Continue</button>
           </div>
 

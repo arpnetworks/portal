@@ -53,6 +53,7 @@ GEM
     arel (6.0.4)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
+    brakeman (4.3.1)
     builder (3.2.3)
     byebug (10.0.2)
     capistrano (3.10.2)
@@ -237,6 +238,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   activemerchant
+  brakeman
   byebug
   capistrano-rails
   coffee-rails (~> 4.1.0)

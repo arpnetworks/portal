@@ -233,7 +233,7 @@ class CreditCard < ActiveRecord::Base
       data = gpg_decrypt!(tmpdir, number, passphrase)
 
       # Remove tmpdir
-      Kernel.system("rm -rf #{tmpdir}")
+      Kernel.system("rm -rf " + tmpdir)
 
       if data && !data.empty?
         self.number = data
@@ -242,7 +242,7 @@ class CreditCard < ActiveRecord::Base
       end
     rescue Exception => e
       # Remove tmpdir
-      Kernel.system("rm -rf #{tmpdir}")
+      Kernel.system("rm -rf " + tmpdir)
     end
 
     false
