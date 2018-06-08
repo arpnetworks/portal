@@ -18,6 +18,12 @@ FactoryBot.define do
       password 'mysecret'
       password_confirmation 'mysecret'
     end
+
+    factory :account_user do
+      login 'user'
+      password 'mysecret'
+      password_confirmation 'mysecret'
+    end
   end
 
   factory :service do
