@@ -3,18 +3,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::AccountsController do
 
-  # before do
-  #   login!
-  #   @account = accounts(:user_1)
-  #   @account_params = { :login => 'login', :email => 'foobar@example.com' }
-  #   @params  = { :id => @account.id, :account => @account_params }
-
-  #   controller.stub!(:is_arp_admin?).and_return(true)
-  #   controller.stub!(:is_arp_sub_admin?).and_return(true)
-  #   controller.stub!(:set_admin_state).and_return(true)
-  #   controller.stub!(:login_required)
-  # end
-
   before(:context) do
     create_admin!
   end
@@ -28,8 +16,9 @@ describe Admin::AccountsController do
 
     allow(controller).to receive(:is_arp_admin?)     { true }
     allow(controller).to receive(:is_arp_sub_admin?) { true }
-    allow(controller).to receive(:set_admin_state) { true }
+    allow(controller).to receive(:set_admin_state)   { true }
     allow(controller).to receive(:login_required)
+    allow(controller).to receive(:last_location)     { '/foo' }
   end
 
   def do_get(opts = {})
@@ -68,16 +57,16 @@ describe Admin::AccountsController do
 
     it "should go back to new page if error creating" do
       do_post(@params.merge(:account => { :login => '' })) # Blank login
-      response.should render_template('admin/accounts/new')
-      assigns(:include_blank).should == true
+      expect(response).to render_template('admin/accounts/new')
+      expect(assigns(:include_blank)).to be true
     end
   end
 
   describe "handling GET /admin/accounts" do
     it "should display a list of accounts" do
       do_get
-      assigns(:accounts).should_not be_empty
-      response.should be_success
+      expect(assigns(:accounts)).to_not be_empty
+      expect(response).to be_success
     end
   end
 
@@ -89,16 +78,16 @@ describe Admin::AccountsController do
     it "should show the account" do
       allow(Account).to receive(:find) { @account }
       do_get @params
-      response.should be_success
-      response.should render_template('admin/accounts/show')
-      assigns(:account).id.should == @account.id
+      expect(response).to be_success
+      expect(response).to render_template('admin/accounts/show')
+      expect(assigns(:account).id).to eq @account.id
     end
 
     it "should redirect when the account is not found" do
       allow(Account).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
       do_get @params.merge(:id => 999)
-      flash[:error].should_not be_nil
-      response.should redirect_to(admin_accounts_path)
+      expect(flash[:error]).to_not be_nil
+      expect(response).to redirect_to(admin_accounts_path)
     end
   end
 
@@ -110,15 +99,15 @@ describe Admin::AccountsController do
     it "should show the account" do
       allow(Account).to receive(:find) { @account }
       do_get @params
-      response.should be_success
-      assigns(:account).id.should == @account.id
+      expect(response).to be_success
+      expect(assigns(:account).id).to eq @account.id
     end
 
     it "should redirect when the account is not found" do
       allow(Account).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
       do_get @params.merge(:id => 999)
-      flash[:error].should_not be_nil
-      response.should redirect_to(admin_accounts_path)
+      expect(flash[:error]).to_not be_nil
+      expect(response).to redirect_to(admin_accounts_path)
     end
   end
 
@@ -136,8 +125,8 @@ describe Admin::AccountsController do
 
     it "should redirect when the account is not found" do
       do_put @params.merge(:id => 999)
-      flash[:error].should_not be_nil
-      response.should redirect_to(admin_accounts_path)
+      expect(flash[:error]).to_not be_nil
+      expect(response).to redirect_to(admin_accounts_path)
     end
 
     it "should not update password if one is not supplied" do
@@ -155,23 +144,25 @@ describe Admin::AccountsController do
 
   describe "responding to DELETE destroy" do
     it "should destroy the requested accounts" do
-      Account.should_receive(:find).with("37").and_return(mock_account)
-      mock_account.should_receive(:destroy)
+      allow(controller).to receive(:last_location) { '/foo' }
+      expect(Account).to receive(:find).with("37") { mock_account }
+      expect(mock_account).to receive(:destroy)
       delete :destroy, :id => "37"
     end
 
     it "should redirect to the location that brought us here" do
-      Account.stub!(:find).and_return(mock_account(:destroy => true))
+      allow(controller).to receive(:last_location) { '/foo' }
+      allow(Account).to receive(:find) { mock_account(destroy: true) }
       delete :destroy, :id => "1"
-      response.should redirect_to(last_location)
+      expect(response).to redirect_to('/foo')
     end
 
     it "should set flash[:error] if destroy() raises AR exception" do
-      bad_monkey = mock(Account)
-      bad_monkey.should_receive(:destroy).and_raise(ActiveRecord::StatementInvalid)
-      Account.stub!(:find).and_return(bad_monkey)
+      bad_monkey = double(Account)
+      expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, 'foo')
+      allow(Account).to receive(:find) { bad_monkey }
       delete :destroy, :id => "1"
-      flash[:error].should_not be_nil
+      expect(flash[:error]).to_not be_nil
     end
   end
 end
