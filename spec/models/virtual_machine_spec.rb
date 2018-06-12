@@ -32,7 +32,7 @@ context VirtualMachine do
       label = 'bar'
       record_name = "#{label}.cust.arpnetworks.com"
 
-      DnsRecord.find_by_name(record_name).should == nil
+      expect(DnsRecord.find_by_name(record_name)).to be_nil
 
       @vm = create :virtual_machine, {
         uuid: @uuid,
@@ -48,13 +48,11 @@ context VirtualMachine do
       @vm.save
 
       dns_record = DnsRecord.find_by_name_and_type(record_name, 'A')
-      dns_record.should_not be_nil
-      dns_record.content.should == @ip_address
+      expect(dns_record).to_not be_nil
+      expect(dns_record.content).to eq @ip_address
 
       dns_record = DnsRecord.find_by_name_and_type(record_name, 'AAAA')
       expect(dns_record).to_not be_nil
-      # dns_record.should_not be_nil
-      # dns_record.content.should == ipv6_address
       expect(dns_record.content).to eq @ipv6_address
     end
 
@@ -74,8 +72,8 @@ context VirtualMachine do
       @vm.label = label
       @vm.save
 
-      v4_record.reload.name.should == "#{label}.cust.arpnetworks.com"
-      v6_record.reload.name.should == "#{label}.cust.arpnetworks.com"
+      expect(v4_record.reload.name).to eq "#{label}.cust.arpnetworks.com"
+      expect(v6_record.reload.name).to eq "#{label}.cust.arpnetworks.com"
     end
 
     specify "should be updated upon IP address change" do
@@ -97,8 +95,8 @@ context VirtualMachine do
       @vm.virtual_machines_interfaces[0].ipv6_address = ipv6
       @vm.save
 
-      v4_record.reload.content.should == ipv4
-      v6_record.reload.content.should == ipv6
+      expect(v4_record.reload.content).to eq ipv4
+      expect(v6_record.reload.content).to eq ipv6
     end
     specify "should not update when VM label does not change" do
       @vm = VirtualMachine.first
@@ -113,30 +111,36 @@ context VirtualMachine do
                                         :name => @vm.dns_record_name,
                                         :content => ipv6_address)
 
-      DnsRecord.should_receive(:find_by_name_and_type).with(@vm.dns_record_name, 'A').at_least(:once) \
+      expect(DnsRecord).to receive(:find_by_name_and_type).with(@vm.dns_record_name, 'A').at_least(:once) \
         { ipv4_dns_record_mock }
-      DnsRecord.should_receive(:find_by_name_and_type).with(@vm.dns_record_name, 'AAAA').at_least(:once) \
+      expect(DnsRecord).to receive(:find_by_name_and_type).with(@vm.dns_record_name, 'AAAA').at_least(:once) \
         { ipv6_dns_record_mock }
 
       @vm.save
     end
     specify "should be deleted upon VM destruction" do
+      @vm.virtual_machines_interfaces[0].update_attributes(
+        :ip_address => @ip_address,
+        :ipv6_address => @ipv6_address
+      )
+
+      @vm.resource.service.account = @account
       @vm.save # This will create the initial records
 
       v4_record = DnsRecord.find_by_name_and_type(@vm.dns_record_name, 'A')
       v6_record = DnsRecord.find_by_name_and_type(@vm.dns_record_name, 'AAAA')
 
-      v4_record.should_not be_nil
-      v6_record.should_not be_nil
+      expect(v4_record).to_not be_nil
+      expect(v6_record).to_not be_nil
 
       @vm.destroy
 
-      DnsRecord.find_by_id(v4_record.id).should == nil
-      DnsRecord.find_by_id(v6_record.id).should == nil
+      expect(DnsRecord.find_by_id(v4_record.id)).to be_nil
+      expect(DnsRecord.find_by_id(v6_record.id)).to be_nil
     end
 
     specify "should not be created upon VM creation belonging to ARP Networks" do
-      DnsDomain.should_not_receive(:find_by_name)
+      expect(DnsDomain).to_not receive(:find_by_name)
 
       @vm = create :virtual_machine, {
         uuid: @uuid,
@@ -153,7 +157,7 @@ context VirtualMachine do
       @vm.save
     end
     specify "should not be updated upon VM label change belonging to ARP Networks" do
-      DnsDomain.should_not_receive(:find_by_name)
+      expect(DnsDomain).to_not receive(:find_by_name)
 
       @vm = create :virtual_machine
       @vm.resource.service.account = Account.find 1
@@ -169,7 +173,7 @@ context VirtualMachine do
 
   context "dns_record_name()" do
     specify "should be of the form <label>.cust.arpnetworks.com" do
-      expect(@vm.dns_record_name).to eq "johndoe.cust.arpnetworks.com"
+      expect(@vm.dns_record_name).to eq "#{@vm.label}.cust.arpnetworks.com"
     end
     specify "should be of the form <alt-label>.cust.arpnetworks.com if we supply <alt-label>" do
       expect(@vm.dns_record_name('alt')).to eq 'alt.cust.arpnetworks.com'
@@ -186,10 +190,15 @@ context VirtualMachine do
   context "when creating" do
     context "with service_id" do
       specify "should assign VM to service" do
-        @vm = VirtualMachine.create(:uuid => @uuid,
-                                    :service_id => @service.id,
-                                    :label => 'foo')
+        @vm = VirtualMachine.create(uuid:       @uuid,
+                                    service_id: @service.id,
+                                    host:       'foo.arpnetworks.com',
+                                    ram:        1024,
+                                    storage:    20,
+                                    label:      'foo')
+
         @vm = VirtualMachine.find_by_uuid(@uuid) # Reload the whole instance
+
         expect(@vm.resource.service).to eq @service
       end
     end
@@ -218,7 +227,7 @@ context VirtualMachine do
 
         # VM should not belong to @service anymore
         @service.virtual_machines.each do |vm|
-          vm.should_not == @vm
+          expect(vm).to_not eq @vm
         end
         expect(@vm.resource.service).to_not eq @service
       end
@@ -230,8 +239,13 @@ context VirtualMachine do
 
       context "when no prior service was assigned" do
         specify "should assign VM to service" do
-          @vm = VirtualMachine.create(:uuid => @uuid,
-                                      :label => 'foo')
+          @vm = VirtualMachine.create(uuid:       @uuid,
+                                      service_id: @service.id,
+                                      host:       'foo.arpnetworks.com',
+                                      ram:        1024,
+                                      storage:    20,
+                                      label:      'foo2')
+
           expect(@vm.resource).to_not be_nil
           do_reassign
           expect(@vm.resource.service).to eq @service_new
