@@ -1,0 +1,15 @@
+<table class="bandwidth-quotas">
+  <caption>
+    <div>&nbsp;
+      <div class="title">
+        All Bandwidth Quotas
+      </div>
+      <div class="actions">
+        <%= link_to("New Bandwidth", new_admin_bandwidth_quota_path, :class => 'add_item') %>
+      </div>
+    </div>
+  </caption>
+  <%= render :partial => 'bandwidth_quotas/table_data' %>
+</table>
+
+&laquo; <%= link_to('Back to Head Quarters', admin_path) %>

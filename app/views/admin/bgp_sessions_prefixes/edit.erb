@@ -1,0 +1,20 @@
+<div class="error">
+  <%= error_messages_for :bgp_sessions_prefix %>
+</div>
+
+<%= form_for([:admin, @bgp_sessions_prefix]) do |f| %>
+<table class="entry_form edit_bgp_sessions_prefix" align="center">
+  <caption>Edit Prefix</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input type='submit' value="Save changes" />
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+&laquo; <%= link_to('Back to All Prefixes', admin_bgp_sessions_prefixes_path) %>
