@@ -18,4 +18,6 @@ if conf = @config[Rails.env]
   $HOST_RANCID_USER = conf['hosts']['rancid_user']
 
   $VLAN_MIN = conf['vlan_min']
+
+  $KEYER    = conf['keyer']
 end

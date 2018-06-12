@@ -124,6 +124,7 @@ describe Admin::AccountsController do
     end
 
     it "should redirect when the account is not found" do
+      allow(Account).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
       do_put @params.merge(:id => 999)
       expect(flash[:error]).to_not be_nil
       expect(response).to redirect_to(admin_accounts_path)

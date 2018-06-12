@@ -8,7 +8,7 @@
     <td class="label">Service ID:</td>
     <% service_code_id = ServiceCode.find_by_name("BANDWIDTH").id -%>
     <td class="required"><%= collection_select(:bgp_session, :service_id,
-                                               Service.where("service_code_id = #{service_code_id} and title like '%BGP Session%'").\
+                                               Service.where(["service_code_id = ? and title like '%BGP Session%'", service_code_id]).\
                                                        order('created_at desc'), :id,
                                                :display_service_with_account,
                                                { :include_blank => @include_blank }) %></td>

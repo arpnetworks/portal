@@ -22,6 +22,8 @@ def login!(user = 'admin', pass = 'mysecret')
   expect(authenticated_user).to_not be_nil
 
   @controller.session[:account_id] = authenticated_user.id
+  allow(Account).to receive(:find).with(authenticated_user.id) { authenticated_user }
+  authenticated_user
 end
 
 def login_with_account!(account)
