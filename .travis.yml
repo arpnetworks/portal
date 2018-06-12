@@ -8,6 +8,7 @@ cache: bundler
 before_script:
   - "mysql -e 'create database arp_customer_cp_test;'"
   - "mysql -e 'create database powerdns_test;'"
+  - "mysql powerdns_test < db/schema-powerdns.sql"
   - "cp ./config/arp/globals.yml.sample config/arp/globals.yml"
   - "cp ./config/arp/password_encryption.yml.sample config/arp/password_encryption.yml"
   - "cp ./config/arp/tender.yml.sample config/arp/tender.yml"
