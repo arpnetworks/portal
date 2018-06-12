@@ -354,6 +354,54 @@ class VirtualMachine < ActiveRecord::Base
     end
   end
 
+  def self.next_available_ports(cluster, port_type, how_many)
+    if ! %w(kct kzt sct).include? cluster
+      raise ArgumentError.new("Invalid cluster")
+    end
+
+    if ! %w(vnc_port serial_port websocket_port).include? port_type
+      raise ArgumentError.new("Invalid port_type")
+    end
+
+    how_many = how_many.to_i
+    if how_many < 1
+      raise ArgumentError.new("how_many cannot be less than 1")
+    end
+
+    vms = VirtualMachine.select("#{port_type}, label").where("host like '#{cluster}%'")
+
+    ports = vms.map { |vm| vm.send(port_type) }.compact
+    ports.sort!
+
+    first = ports.first
+    last  = ports.last
+
+    if first.nil?
+      first = last = case port_type
+      when 'vnc_port'
+        $PORTS_MIN_VNC.to_i
+      when 'serial_port'
+        $PORTS_MIN_SERIAL.to_i
+      when 'websocket_port'
+        $PORTS_MIN_WS.to_i
+      end
+    end
+
+    available = []
+    (first..last).each { |n| available << (ports.include?(n) ? nil : n) }
+    available = available.compact
+
+    if available.empty?
+      available << (last + 1)
+
+      (how_many - 1).downto(0).each do |n|
+        available << available.last + 1
+      end
+    end
+
+    available[0..(how_many-1)]
+  end
+
   def pool_name
     pool && pool.name
   end
