@@ -3,8 +3,7 @@ language: ruby
 env:
   - RAILS_ENV=test
 
-cache:
-  bundler: true
+cache: bundler
 
 before_script:
   - "mysql -e 'create database arp_customer_cp_test;'"
