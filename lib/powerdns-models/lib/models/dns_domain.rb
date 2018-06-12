@@ -5,7 +5,7 @@ class DnsDomain < ActiveRecord::Base
 
   has_many :dns_records, :foreign_key => 'domain_id'
   alias :records :dns_records
-  
+
   def soa
     DnsRecord.find_by_domain_id_and_type(id, 'SOA')
   end

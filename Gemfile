@@ -64,6 +64,7 @@ gem 'activemerchant'
 gem 'dynamic_form', git: 'https://github.com/joelmoss/dynamic_form.git'
 gem 'netaddr', '~> 1.0'
 gem 'redcarpet'
+gem 'uuid'
 gem 'will_paginate'
 gem 'yubikey'
 
