@@ -17,6 +17,10 @@ class CreditCardsController < ProtectedController
   end
 
   def create
+    if params[:credit_card].nil? or params[:credit_card].empty?
+      render :new and return
+    end
+
     if params[:credit_card]
       # Must coerce some values of the form to fit CreditCard model
       first_name, *last_name = params[:credit_card][:first_name].split(' ')

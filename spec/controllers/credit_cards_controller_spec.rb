@@ -92,18 +92,6 @@ describe CreditCardsController do
             expect(response).to render_template('credit_cards/new')
           end
         end
-
-        context "without any credit_card" do
-          before do
-            expect(@credit_card_mock).to receive(:save).and_return(false)
-            expect(@credit_card_mock).to receive(:valid?).and_return(false)
-          end
-
-          it "should render new credit card form" do
-            do_post
-            expect(response).to render_template('credit_cards/new')
-          end
-        end
       end
     end
   end
