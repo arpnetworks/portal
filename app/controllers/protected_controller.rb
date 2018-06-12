@@ -43,7 +43,8 @@ class ProtectedController < ApplicationController
   end
 
   def is_arp_sub_admin?
-    if @account && @account.arp_sub_admin?
+    if (@account && @account.arp_sub_admin?) ||
+        @account.arp_admin?
       return true
     else
       flash[:error] = "You took a wrong turn at Albuquerque"
