@@ -22,4 +22,5 @@ if conf = @config[Rails.env]
   $KEYER    = conf['keyer']
 
   $SIMPLE_CRYPT_KEY = conf['simple_crypt_key']
+  $OTP_PREFIX       = conf['otp_prefix']
 end

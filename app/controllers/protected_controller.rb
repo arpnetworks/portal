@@ -66,7 +66,8 @@ class ProtectedController < ApplicationController
 
       raise ArgumentError unless otp
 
-
+      # Our identity
+      raise ArgumentError if otp[0..11] != $OTP_PREFIX
 
       otp = Yubikey::OTP::Verify.new(otp)
 

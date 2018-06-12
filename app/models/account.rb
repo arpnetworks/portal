@@ -60,6 +60,10 @@ class Account < ActiveRecord::Base
     $ADMINS.include?(login)
   end
 
+  def arp_sub_admin?
+    false # Not used right now
+  end
+
   # An account that has its VLAN in 'shutdown' state is suspended
   def suspended?
     vlan_shutdown

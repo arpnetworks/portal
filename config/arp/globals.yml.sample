@@ -12,6 +12,7 @@ development:
   vlan_min: 20
   keyer: keymaster
   simple_crypt_key: lkjasdklfjalskdjf
+  otp_prefix: cccccccjfv
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -26,3 +27,4 @@ test:
   vlan_min: 20
   keyer: keymaster
   simple_crypt_key: lkjasdklfjalskdjf
+  otp_prefix: cccccccjfv
