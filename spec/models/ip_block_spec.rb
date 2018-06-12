@@ -399,7 +399,7 @@ BLOCK
 
       it "should search for possible matches" do
         expect(IpBlock).to receive(:where).with(\
-          "cidr like '10.0.0.%' and vlan >= 105").\
+          "cidr like '10.0.0.%' and vlan >= 20").\
           and_return([])
         go
       end

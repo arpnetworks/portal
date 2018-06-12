@@ -39,7 +39,7 @@ class CreditCardsController < ProtectedController
       params[:credit_card][:display_number] = display_number
     end
 
-    @credit_card = CreditCard.new(params[:credit_card])
+    @credit_card = CreditCard.new(credit_card_params)
     @credit_card.account_id = @account.id
 
     if @credit_card.valid?
@@ -67,5 +67,26 @@ class CreditCardsController < ProtectedController
     end
 
     render :new
+  end
+
+  private
+
+  def credit_card_params
+    params.require(:credit_card).permit(
+      :number,
+      :month,
+      :year,
+      :first_name,
+      :last_name,
+      :billing_name,
+      :billing_company,
+      :billing_address_1,
+      :billing_address_2,
+      :billing_city,
+      :billing_state,
+      :billing_postal_code,
+      :billing_country_iso_3166,
+      :billing_phone
+    )
   end
 end
