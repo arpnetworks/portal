@@ -13,6 +13,11 @@ development:
   keyer: keymaster
   simple_crypt_key: lkjasdklfjalskdjf
   otp_prefix: cccccccjfv
+  ports:
+    min:
+      vnc: 5900
+      web_socket: 12000
+      serial: 9000
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -28,3 +33,8 @@ test:
   keyer: keymaster
   simple_crypt_key: lkjasdklfjalskdjf
   otp_prefix: cccccccjfv
+  ports:
+    min:
+      vnc: 5900
+      web_socket: 12000
+      serial: 9000

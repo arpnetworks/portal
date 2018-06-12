@@ -23,4 +23,8 @@ if conf = @config[Rails.env]
 
   $SIMPLE_CRYPT_KEY = conf['simple_crypt_key']
   $OTP_PREFIX       = conf['otp_prefix']
+
+  $PORTS_MIN_VNC    = conf['ports']['min']['vnc']
+  $PORTS_MIN_WS     = conf['ports']['min']['web_socket']
+  $PORTS_MIN_SERIAL = conf['ports']['min']['serial']
 end
