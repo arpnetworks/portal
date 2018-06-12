@@ -60,4 +60,14 @@ class Admin::HeadQuartersController < ProtectedController
 
   protected
 
+  def set_admin_state
+    @enable_admin_view = true unless params[:cv]
+
+    @sub_admin_view = false # No longer used
+
+
+    # If the 'cv' param is set, then the views will be rendered as if a
+    # customer was logged in.  cv = "customer view".  A quick shortcut to
+    # check if what they see is OK.
+  end
 end
