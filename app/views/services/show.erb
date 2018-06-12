@@ -1,0 +1,146 @@
+<table class="services service_detail">
+  <caption>Service Detail</caption>
+  <%= render :partial => '/services/table_data' %>
+  <tfoot>
+    <% if @description.empty? %>
+      <% @pre = !@resources.empty? ? "" : "No further details" %>
+    <% else %>
+      <% @pre = @description %>
+    <% end %>
+
+    <% if !@pre.empty? %>
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= services_colspan(@enable_admin_view) - 1%>">
+        <!-- Additional -->
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="<%= services_colspan(@enable_admin_view) - 1%>" class="info">
+        <%= @pre %>
+      </td>
+    </tr>
+    <% end %>
+
+    <% if @enable_admin_view %>
+    <tr>
+      <td></td>
+      <td colspan="<%= services_colspan(@enable_admin_view) - 1%>" class="info">
+        Service created on <%= @service.created_at.strftime("%m-%d-%Y %H:%M:%S %Z") %>
+        <% if @service.deleted_at %>
+        Service deleted on <%= @service.deleted_at.strftime("%m-%d-%Y %H:%M:%S %Z") %>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tfoot>
+</table>
+
+<% if (@service.service_code.name == 'VPS' ||
+       @service.service_code.name == 'THUNDER' ||
+       @service.service_code.name == 'METAL') &&
+      !@enable_admin_view %>
+<div id='service-label-form'>
+<%= form_for [:update_label, @service], :url  => { :action => 'update_label' } do |f| %>
+
+  <table>
+  <tr>
+    <td>Custom Service Label: </td><td><%= f.text_field :label, :size => 60, :id => 'service-label-field' %></td>
+    <td>
+      <input type='submit' value="Save changes" class="btn"/>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td class='note'>
+      <span>
+      To help identify similar services, you may add your own label
+      </span>
+    </td>
+    <td></td>
+  </tr>
+  </table>
+<% end %>
+</div>
+
+<div style='padding-bottom: 10px'>
+<a href='#' id='service-label-form-edit'>Edit service label</a>
+</div>
+<% end %>
+
+<div style='padding-bottom: 10px'>
+  <% if @resources.empty? %>
+    <div></div>
+  <% else %>
+  <% @resources.each do |resource| %>
+    <% instantiate_resource(resource) %>
+    <div>
+      <%= render :partial => '/virtual_machines/table' if resource.assignable_type == 'VirtualMachine' %>
+      <%= render :partial => '/bandwidth_quotas/table' if resource.assignable_type == 'BandwidthQuota' %>
+      <%= render :partial => '/backup_quotas/table' if resource.assignable_type == 'BackupQuota' %>
+      <%= render :partial => '/bgp_sessions/table' if resource.assignable_type == 'BgpSession' %>
+    </div>
+  <% end %>
+  <% if @ip_blocks && !@ip_blocks.empty? %>
+    <div>
+      <%= render :partial => '/ip_blocks/table' %>
+    </div>
+  <% end %>
+  <% end %>
+</div>
+
+<% content_for :js do %>
+  $(".magic-password").each(function(index) {
+    var toggler_class    = "toggler-" + $(this).attr('id');
+    var toggler_selector = "." + toggler_class;
+
+    var me = $(this)
+    me.hide();
+    me.after("&nbsp;<a href='#' class='" + toggler_class + "'>Show</a>");
+
+    $(toggler_selector).click(function() {
+      me.toggle();
+
+      var toggler = $(this);
+
+      if(toggler.text() == 'Hide') {
+        toggler.text("Show");
+      } else {
+        toggler.text("Hide");
+      }
+
+      return false;
+    });
+  });
+
+  $("#service-label-form").each(function(index) {
+    var me = $(this)
+
+    me.hide();
+
+    $("#service-label-form-edit").click(function() {
+      me.show();
+
+      var label_field = $("#service-label-field");
+      label_field.focus();
+      var curlabel = label_field.val();
+      label_field.val('');
+      label_field.val(curlabel);
+
+      $(this).hide();
+
+      return false;
+    });
+  });
+<% end %>
+
+<% if @enable_admin_view %>
+  &laquo; <%= link_to('Back to All Services', admin_services_path) %>
+<% else %>
+  &laquo; <%= link_to('Back to My Services', account_services_path(@account)) %><br />
+  &laquo; <%= link_to('Back to Dashboard', dashboard_path) %>
+<% end %>
+
+
