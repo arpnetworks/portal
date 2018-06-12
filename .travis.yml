@@ -10,6 +10,7 @@ before_script:
   - "cp ./config/arp/globals.yml.sample config/arp/globals.yml"
   - "cp ./config/arp/password_encryption.yml.sample config/arp/password_encryption.yml"
   - "cp ./config/arp/tender.yml.sample config/arp/tender.yml"
+  - "cp ./config/database.yml.sample config/database.yml"
 
 script:
   - bundle exec rake db:schema:load
