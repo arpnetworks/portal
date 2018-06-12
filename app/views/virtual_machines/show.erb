@@ -1,0 +1,7 @@
+<%= render :partial => '/virtual_machines/table' %>
+
+<% if @enable_admin_view %>
+  &laquo; <%= link_to('Back to All Virtual Machines', admin_virtual_machines_path) %>
+<% else %>
+  &laquo; <%= link_to('Back to Dashboard', dashboard_path) %>
+<% end %>
