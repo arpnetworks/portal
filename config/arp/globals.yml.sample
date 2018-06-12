@@ -10,6 +10,8 @@ development:
     rancid: rancid.example.com
     rancid_user: rancid-user
   vlan_min: 20
+  keyer: keymaster
+  simple_crypt_key: lkjasdklfjalskdjf
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -22,3 +24,5 @@ test:
     rancid: rancid.example.com
     rancid_user: rancid-user
   vlan_min: 20
+  keyer: keymaster
+  simple_crypt_key: lkjasdklfjalskdjf

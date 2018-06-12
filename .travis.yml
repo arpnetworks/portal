@@ -1,4 +1,17 @@
 language: ruby
 
+env:
+  - RAILS_ENV=test
+
 cache:
   bundler: true
+
+before_script:
+  - "cp ./config/arp/globals.yml.sample config/arp/globals.yml"
+  - "cp ./config/arp/password_encryption.yml.sample config/arp/password_encryption.yml"
+  - "cp ./config/arp/tender.yml.sample config/arp/tender.yml"
+
+script:
+  - bundle exec rake db:schema:load
+  - bundle exec rake db:test:prepare
+  - bundle exec rake spec
