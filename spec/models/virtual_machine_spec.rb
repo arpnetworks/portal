@@ -147,7 +147,13 @@ context VirtualMachine do
         label: 'baz'
       }
 
-      @vm.resource.service.account = Account.find 1
+      begin
+        @account = Account.find 1
+      rescue
+        @account = create(:account, id: 1)
+      end
+
+      @vm.resource.service.account = @account
 
       @vm.virtual_machines_interfaces.create
       @vm.virtual_machines_interfaces[0].update_attributes(
@@ -160,7 +166,14 @@ context VirtualMachine do
       expect(DnsDomain).to_not receive(:find_by_name)
 
       @vm = create :virtual_machine
-      @vm.resource.service.account = Account.find 1
+
+      begin
+        @account = Account.find 1
+      rescue
+        @account = create(:account, id: 1)
+      end
+
+      @vm.resource.service.account = @account
 
       ipv4 = '192.168.0.1'
       ipv6 = 'fe80::3'
