@@ -9,6 +9,7 @@ live:
   enabled: false
 
 test:
-  api_login:
-  api_password:
-  api_signature:
+  api_login: foo
+  api_password: bar
+  api_signature: baz
+  enabled: true
