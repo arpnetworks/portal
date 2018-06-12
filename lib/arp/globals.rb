@@ -20,4 +20,6 @@ if conf = @config[Rails.env]
   $VLAN_MIN = conf['vlan_min']
 
   $KEYER    = conf['keyer']
+
+  $SIMPLE_CRYPT_KEY = conf['simple_crypt_key']
 end
