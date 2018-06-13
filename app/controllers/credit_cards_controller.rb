@@ -90,7 +90,8 @@ class CreditCardsController < ProtectedController
       :billing_state,
       :billing_postal_code,
       :billing_country_iso_3166,
-      :billing_phone
+      :billing_phone,
+      :display_number
     )
   end
 end
