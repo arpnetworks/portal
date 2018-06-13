@@ -1,9 +1,9 @@
 def create_admin!
-  create :account_admin unless Account.find_by(login: 'admin')
+  Account.find_by(login: 'admin') || create(:account_admin)
 end
 
 def create_user!
-  create :account_user unless Account.find_by(login: 'user')
+  Account.find_by(login: 'user') || create(:account_user)
 end
 
 def login_as_admin!
