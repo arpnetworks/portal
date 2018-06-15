@@ -24,13 +24,17 @@ set :repo_url, "git@github.com:arpnetworks/portal.git"
 append :linked_files, "config/database.yml",
                       "config/arp/globals.yml",
                       "config/arp/password_encryption.yml",
-                      "config/arp/tender.yml"
-                      "config/arp/billing/gateway.yml"
+                      "config/arp/tender.yml",
+                      "config/arp/billing/gateway.yml",
                       "config/arp/billing/gpg.yml"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets"
+append :linked_dirs, "log",
+                     "tmp/pids",
+                     "tmp/cache",
+                     "tmp/sockets",
+                     ".bundle"
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -43,3 +47,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets"
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 set :ssh_options, verify_host_key: :secure
+
+# rbenv
+set :rbenv_type, :user
+set :rbenv_ruby, File.read('.ruby-version').strip
