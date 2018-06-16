@@ -730,7 +730,7 @@ table.jobs tr.failed.odd td {
 }
 
 table.jobs tr.running td.state {
-  padding 0px;
+  padding: 0px;
   background-repeat: no-repeat;
   background-image: url(/images/icons/ellipsis.gif);
   background-position: center;
@@ -739,7 +739,7 @@ table.jobs tr.running td.state {
 }
 
 table.jobs tr.done td.state {
-  padding 0px;
+  padding: 0px;
   background-repeat: no-repeat;
   background-image: url(/images/icons/done.png);
   background-position: center;
@@ -748,7 +748,7 @@ table.jobs tr.done td.state {
 }
 
 table.jobs tr.ready td.state, table.jobs tr.waiting td.state {
-  padding 0px;
+  padding: 0px;
   background-repeat: no-repeat;
   background-image: url(/images/icons/clock-simple-green.png);
   background-position: center;
@@ -757,7 +757,7 @@ table.jobs tr.ready td.state, table.jobs tr.waiting td.state {
 }
 
 table.jobs tr.failed td.state {
-  padding 0px;
+  padding: 0px;
   background-repeat: no-repeat;
   background-image: url(/images/icons/failed.png);
   background-position: center;
