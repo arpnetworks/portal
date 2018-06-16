@@ -64,6 +64,10 @@ group :development do
   gem 'brakeman', require: false
 end
 
+group :production do
+  gem 'passenger'
+end
+
 gem 'aasm'
 gem 'activemerchant'
 gem 'dynamic_form', git: 'https://github.com/joelmoss/dynamic_form.git'

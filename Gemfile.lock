@@ -123,6 +123,9 @@ GEM
     netaddr (1.5.1)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
+    passenger (5.3.2)
+      rack
+      rake (>= 0.8.1)
     rack (1.6.10)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -263,6 +266,7 @@ DEPENDENCIES
   jquery-rails
   mysql2 (~> 0.4.0)
   netaddr (~> 1.0)
+  passenger
   rails (= 4.2.9)
   redcarpet
   rspec
