@@ -18,6 +18,8 @@ development:
       vnc: 5900
       web_socket: 12000
       serial: 9000
+  slack:
+    webhook_url: 'https://hooks.slack.com/services/YOUR-HOOK'
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -38,3 +40,5 @@ test:
       vnc: 5900
       web_socket: 12000
       serial: 9000
+  slack:
+    webhook_url: 'https://hooks.slack.com/services/YOUR-HOOK'

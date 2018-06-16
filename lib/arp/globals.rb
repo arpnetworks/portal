@@ -27,4 +27,6 @@ if conf = @config[Rails.env]
   $PORTS_MIN_VNC    = conf['ports']['min']['vnc']
   $PORTS_MIN_WS     = conf['ports']['min']['web_socket']
   $PORTS_MIN_SERIAL = conf['ports']['min']['serial']
+
+  $SLACK_WEBHOOK_URL = conf['slack']['webhook_url']
 end

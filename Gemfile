@@ -66,6 +66,7 @@ end
 
 group :production do
   gem 'passenger'
+  gem 'slack-notifier'
 end
 
 gem 'aasm'
