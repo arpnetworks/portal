@@ -20,13 +20,16 @@ set :repo_url, "git@github.com:arpnetworks/portal.git"
 # Default value for :pty is false
 # set :pty, true
 
+@deploy = YAML.load(File.read(File.join(File.dirname(__FILE__), 'arp', 'deploy.yml')))
+
 # Default value for :linked_files is []
 append :linked_files, "config/database.yml",
                       "config/arp/globals.yml",
                       "config/arp/password_encryption.yml",
                       "config/arp/tender.yml",
-                      "config/arp/billing/gateway.yml",
-                      "config/arp/billing/gpg.yml"
+                      @deploy['configs']['billing']['gateway'],
+                      @deploy['configs']['billing']['gpg'],
+                      @deploy['configs']['billing']['paypal_key']
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
