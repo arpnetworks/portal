@@ -11,7 +11,7 @@ development:
     rancid_user: rancid-user
   vlan_min: 20
   keyer: keymaster
-  simple_crypt_key: lkjasdklfjalskdjfalksjdfkajksdfjaksdjfakldjfaklsdjfkajdfkajskdfjaksdjkfajdfkljakldjfalksjdflkajdlfajfdlakjsdflkjaf
+  simple_crypt_key: 'PdSgVkYp3s5v8y/B?E(H+MbQeThWmZq4'
   otp_prefix: cccccccjfv
   ports:
     min:
@@ -33,7 +33,7 @@ test:
     rancid_user: rancid-user
   vlan_min: 20
   keyer: keymaster
-  simple_crypt_key: lkjasdklfjalskdjfalksjdfkajksdfjaksdjfakldjfaklsdjfkajdfkajskdfjaksdjkfajdfkljakldjfalksjdflkajdlfajfdlakjsdflkjaf
+  simple_crypt_key: 'PdSgVkYp3s5v8y/B?E(H+MbQeThWmZq4'
   otp_prefix: cccccccjfv
   ports:
     min:
