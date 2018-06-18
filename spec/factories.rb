@@ -58,6 +58,16 @@ FactoryBot.define do
     trait :available do
       available true
     end
+
+    factory :ip_block_super do
+      cidr '208.79.88.0/21'
+      vlan '102'
+    end
+
+    factory :ip_block_smaller do
+      cidr '208.79.88.0/24'
+      vlan '105'
+    end
   end
 
   factory :vlan do
