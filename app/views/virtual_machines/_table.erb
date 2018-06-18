@@ -1,0 +1,385 @@
+<table class="virtual_machines virtual_machine_detail<%= @enable_admin_view ? '' : " cursor-normal" %>">
+  <% if @virtual_machine.thunder? %>
+  <caption>ARP Thunder™ Cloud Dedicated Server Detail</caption>
+  <% else %>
+  <caption>Virtual Machine Detail</caption>
+  <% end %>
+
+  <%= render :partial => '/virtual_machines/table_data' %>
+  <tfoot>
+
+    <% if @virtual_machine.host != '' &&
+          @virtual_machine.vnc_port != '' &&
+          @virtual_machine.vnc_password != '' %>
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        Out-of-band Access
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+          <a class="btn btn-primary" href='/noVNC/console?id=<%= @virtual_machine.id %>' target="_blank">View Console</a>
+        <br />&#x000A;
+        <br />&#x000A;
+        The easiest way to view your server's console is to simply click "View Console" above.
+        If you'd prefer direct access over VNC, you can do so with the settings below.
+        <br />&#x000A;
+        <br />&#x000A;
+        VNC Server: <%= @virtual_machine.host %>
+        <br />&#x000A;
+        Port: <%= @virtual_machine.vnc_port %>
+        <br />&#x000A;
+        <% unless @sub_admin_view %>
+        Password: <span id="vnc-password" class="magic-password"><%= @virtual_machine.vnc_password %></span>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        Serial Console and Management over SSH
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td class="info" colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        For access to your server's serial port and the ability to tunnel VNC over SSH, you can use the console
+        server below.
+        <br />&#x000A;
+        <br />&#x000A;
+
+        Hostname: console.cust.arpnetworks.com
+        <br />&#x000A;
+        Login: <%= @virtual_machine.console_login %>
+        <br />&#x000A;
+        <br />&#x000A;
+
+        SSH public key authentication is required to access this server.
+
+        <div style='margin-top: 5px'>
+        <a href='<%= ssh_key_account_service_virtual_machine_path(@account, @virtual_machine.resource.service, @virtual_machine) %>',
+           class='btn'><i class="fas fa-key"></i> Submit Key</a>
+        </div>
+
+        <br />&#x000A;
+
+        <% unless @sub_admin_view %>
+        Serial Console Password: <span id="serial-console-password" class="magic-password"><%= @virtual_machine.conserver_password %></span>
+        <% end %>
+      </td>
+    </tr>
+
+    <% if @virtual_machine.label.to_s != '' && @virtual_machine.host.to_s != '' %>
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        Actions
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+
+        <div id='flash_notice_div' class='flash_notice rounded'>
+          <%= flash[:notice_for_vm] %>
+        </div>
+
+        <div class="vm-action-buttons">
+
+          <form method='POST' action='<%= boot_account_service_virtual_machine_path(@account, @virtual_machine.resource.service, @virtual_machine) %>'>
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <button type='submit' class='btn btn-success'
+              onclick="return confirm('Are you sure you want to boot the server with UUID <%= @virtual_machine.uuid %>?')">
+              <i class="fas fa-play"></i> &nbsp;Boot
+            </button>
+          </form>
+
+          <form method='POST' action='<%= shutdown_account_service_virtual_machine_path(@account, @virtual_machine.resource.service, @virtual_machine) %>'>
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <button type='submit' class='btn btn-warning'
+              onclick="return confirm('Are you sure you want to gracefully shutdown the server with UUID <%= @virtual_machine.uuid %>?')">
+              <i class="fas fa-stop"></i> &nbsp;Shutdown
+            </button>
+          </form>
+
+          <form method='POST' action='<%= shutdown_hard_account_service_virtual_machine_path(@account, @virtual_machine.resource.service, @virtual_machine) %>'>
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <button type='submit' class='btn btn-danger'
+              onclick="return confirm('Are you sure you want to FORCEFULLY power off the server with UUID <%= @virtual_machine.uuid %>?')">
+              <i class="fas fa-power-off"></i> &nbsp;Power Off
+            </button>
+          </form>
+
+        </div>
+
+        <div class="vm-action-buttons-notes">
+          Shutdown is graceful and requires that your server responds to an ACPI shutdown signal, otherwise it has no effect.
+          <br />&#x000A;
+          Power off will immediately and forcefully halt your server regardless of state.
+        </div>
+
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        CD-ROM
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="cd-rom">
+
+        <div id='flash_notice_div' class='flash_notice rounded'>
+          <%= flash[:notice_for_vm_iso] %>
+        </div>
+
+        <div>
+          To change the ISO in the virtual CD-ROM drive, perform the following:
+        </div>
+
+      <ul>
+        <li>
+        <div class="vm-iso-change-buttons">
+          <form method='POST' action='<%= iso_change_account_service_virtual_machine_path(@account, @virtual_machine.resource.service, @virtual_machine) %>'>
+            Choose:
+
+            <select name="iso_file" id="iso_file">
+              <option value=""></option>
+              <% if @iso_files -%>
+              <% @iso_files.each do |iso_file| -%>
+                <option value="<%= iso_file %>"><%= iso_file %></option>
+              <% end -%>
+              <% end -%>
+            </select>
+
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <button type='submit' class=''
+              onclick="return iso_validate()">
+              <i class="fas fa-cog"></i> &nbsp;Load ISO
+            </button>
+          </form>
+        </div>
+        </li>
+      </ul>
+
+      <div class="vm-action-buttons-notes">
+        If the changes do not take effect immediately, completely <strong>shutdown</strong> your server
+        (<span style="font-family: monospace">halt -p</span>), and then <strong>Boot</strong> it from above.
+      </div>
+
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        Advanced Parameters
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1 %>" class="advanced-parameters">
+
+        <div>
+          The following are a list of advanced parameters that you can change about your server.
+          <br/>
+          <br/>
+        </div>
+        <div>
+          These should be considered <strong>experts only</strong> and you should not proceed
+          unless you are sure of the consequences.
+        </div>
+
+      <ul>
+        <li>
+        <div class="vm-iso-change-buttons">
+          <form method='POST' action='<%= advanced_parameter_account_service_virtual_machine_path(@account, @virtual_machine.resource.service, @virtual_machine) %>'>
+            Option:
+
+            <select name="advanced_parameter" id="advanced_parameter">
+              <option value=""></option>
+              <option value="bios-serial_yes">BIOS output to serial port: Enable</option>
+              <option value="bios-serial_no">BIOS output to serial port: Disable</option>
+              <option value="boot-menu_yes">Device boot menu in BIOS: On (15 Second Delay)</option>
+              <option value="boot-menu_no">Device boot menu in BIOS: Off (Immediate Boot)</option>
+              <option value="boot-device_hd">Default boot device: 1st Hard Disk</option>
+              <option value="boot-device_cdrom">Default boot device: CD-ROM</option>
+            </select>
+
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <button type='submit' class=''
+              onclick="return advanced_parameter_warning()">
+              <i class="fas fa-cog"></i> &nbsp;Apply
+            </button>
+          </form>
+        </div>
+        </li>
+      </ul>
+
+      <div class="vm-action-buttons-notes">
+        If the changes do not take effect immediately, completely <strong>shutdown</strong> your server
+        (<span style="font-family: monospace">halt -p</span>), and then <strong>Boot</strong> it from above.
+      </div>
+
+      </td>
+    </tr>
+
+    <% end %>
+
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        Additional
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+        <%= @virtual_machine.notes.nil? || @virtual_machine.notes.empty? ? "No further details" : @virtual_machine.notes %>
+      </td>
+    </tr>
+
+    <% if @enable_admin_view && !@sub_admin_view %>
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        Admin Options
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+        <%= button_to("Email Monitoring Reminder", monitoring_reminder_post_admin_virtual_machine_path(@virtual_machine),
+                      :confirm => "Send VPS Monitoring Reminder to #{@virtual_machine.account.email}?") %>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        Destructive Administrative Actions
+      </td>
+    </tr>
+
+    <% if @virtual_machine.account.ip_blocks.first %>
+
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+        <%= form_tag(shutdown_admin_vlan_path(@virtual_machine.account.ip_blocks.first.vlan),
+                     :method => :post) %>
+          <table style="border: 0px">
+            <tr>
+              <td>Action:</td>
+              <td>Shutdown VLAN</td>
+             </tr>
+             <tr>
+               <td>OTP 1:</td>
+               <td><input type="text" name="otp" size="65"></td>
+             </tr>
+             <tr>
+               <td>OTP 2:</td>
+               <td><input type="text" name="otp2" size="65"></td>
+             </tr>
+             <tr>
+               <td></td>
+               <td>
+                 <input type="hidden" name="virtual_machine_id" value="<%= @virtual_machine.id %>">
+                 <input type="submit" value="Execute">
+               </td>
+             </tr>
+           </table>
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+        <%= form_tag(restore_admin_vlan_path(@virtual_machine.account.ip_blocks.first.vlan),
+                     :method => :post) %>
+          <table style="border: 0px">
+            <tr>
+              <td>Action:</td>
+              <td>Restore VLAN</td>
+             </tr>
+             <tr>
+               <td>OTP 1:</td>
+               <td><input type="text" name="otp" size="65"></td>
+             </tr>
+             <tr>
+               <td>OTP 2:</td>
+               <td><input type="text" name="otp2" size="65"></td>
+             </tr>
+             <tr>
+               <td></td>
+               <td>
+                 <input type="hidden" name="virtual_machine_id" value="<%= @virtual_machine.id %>">
+                 <input type="submit" value="Execute">
+               </td>
+             </tr>
+           </table>
+        </form>
+      </td>
+    </tr>
+
+    <% else %>
+
+    <tr><td></td><td>
+      <div>No VLAN found</div>
+    </td></tr>
+
+    <% end %>
+
+    <% end %>
+
+  </tfoot>
+</table>
+
+<% if @enable_admin_view %>
+<div>
+  <strong><%= @virtual_machine.uuid %></strong>, <%= link_to 'VM Service', admin_service_path(@virtual_machine.service_id) %>
+  <br/><br/>
+</div>
+<% end %>
+
+<script type='text/javascript'>
+  $(function() {
+      $("input[name='otp']").keypress(function(event) {
+        if(event.which == 13) {
+          event.preventDefault();
+        }
+      });
+  });
+</script>
+
+<% content_for :js do -%>
+  function iso_validate() {
+    if($('#iso_file').val() == '') {
+      alert('Please select an ISO file from the list');
+      return false;
+    }
+
+    return confirm("Are you sure you want to change the ISO file in the CD-ROM of this server?\n\nNew ISO: " + $('#iso_file').val());
+  }
+
+  function advanced_parameter_warning() {
+    if($('#advanced_parameter').val() == '') {
+      alert('Please select a parameter from the list');
+      return false;
+    }
+    return confirm("Please confirm that you want to perform the following: \n\n" + $('#advanced_parameter option:selected').text());
+  }
+<% end -%>
