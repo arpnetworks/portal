@@ -1,0 +1,140 @@
+<tbody>
+  <tr>
+    <td colspan="2">
+      <h3></h3>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Service ID:</td>
+    <td class="required"><%= collection_select(:virtual_machine, :service_id,
+                                               Service.where(service_code_id: [ServiceCode.find_by(name: 'VPS'),
+                                                                               ServiceCode.find_by(name: 'THUNDER')]), :id,
+                                               :display_service_with_account,
+                                               { :include_blank => @include_blank }) %></td>
+  </tr>
+  <tr>
+    <td class="label">UUID:</td>
+    <td class="required"><%= f.text_field :uuid, :size => 36 %></td>
+  </tr>
+  <tr>
+    <td class="label">Label:</td>
+    <td class="required"><%= f.text_field :label %></td>
+  </tr>
+  <tr>
+    <td class="label">Host:</td>
+    <td class="required">
+      <%= collection_select(:virtual_machine, :host,
+                                               Host.all, :hostname,
+                                               :display_name,
+                                               { :include_blank => true }) %>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">RAM:</td>
+    <td class="required"><%= f.text_field :ram, :size => 5 %> MB</td>
+  </tr>
+  <tr>
+    <td class="label">Storage:</td>
+    <td class="required"><%= f.text_field :storage, :size => 5 %> GB</td>
+  </tr>
+
+  <tr>
+    <td class="label">Pool:</td>
+    <td><%= collection_select(:virtual_machine, :pool_id,
+                              Pool.all, :id,
+                              :display_name,
+                              { :include_blank => true }) %>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td class="note"><span>We default to "rbd" if unspecified</span></td>
+  </tr>
+  <tr>
+    <td class="label">Operating System:</td>
+    <td class="required"><%= f.text_field :os %></td>
+  </tr>
+  <tr>
+    <td class="label">OS Template:</td>
+    <td class="required"><%= f.text_field :os_template %></td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border-top: 1px solid black"><strong>Serial Console</strong></td>
+  </tr>
+  <tr>
+    <td class="label">Console Login:</td>
+    <td class="required"><%= f.text_field :console_login, :size => 16 %></td>
+  </tr>
+  <tr>
+    <td class="label">Conserver Password:</td>
+    <td class="required"><%= f.text_field :conserver_password, :size => 16 %></td>
+  </tr>
+  <tr>
+    <td class="label">Serial Port:</td>
+    <td class="required">
+      <%= f.text_field :serial_port, :size => 16 %>
+      <% if cluster = @virtual_machine.cluster %>
+        (Next Available in <%= cluster %>: <%= VirtualMachine.next_available_ports(cluster, 'serial_port', 5).join(', ') %>)
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border-top: 1px solid black"><strong>VNC</strong></td>
+  </tr>
+  <tr>
+    <td class="label">VNC Port:</td>
+    <td class="required">
+      <%= f.text_field :vnc_port, :size => 8 %>
+      <% if cluster = @virtual_machine.cluster %>
+        (Next Available in <%= cluster %>: <%= VirtualMachine.next_available_ports(cluster, 'vnc_port', 5).join(', ') %>)
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">VNC Password:</td>
+    <td class="required"><%= f.text_field :vnc_password %></td>
+  </tr>
+  <tr>
+    <td class="label">Websocket Port:</td>
+    <td class="required">
+      <%= f.text_field :websocket_port, :size => 8 %>
+      <% if cluster = @virtual_machine.cluster %>
+        (Next Available in <%= cluster %>: <%= VirtualMachine.next_available_ports(cluster, 'websocket_port', 5).join(', ') %>)
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border-top: 1px solid black"><strong>Network Interface</strong></td>
+  </tr>
+  <tr>
+    <td class="label">MAC:</td>
+    <td><%= f.text_field :mac_address %></td>
+  </tr>
+  <tr>
+    <td class="label">IP Address:</td>
+    <td><%= f.text_field :ip_address %></td>
+  </tr>
+  <tr>
+    <td class="label">IP Netmask:</td>
+    <td><%= f.text_field :ip_netmask %></td>
+  </tr>
+  <tr>
+    <td class="label">IPv6 Address:</td>
+    <td><%= f.text_field :ipv6_address %></td>
+  </tr>
+  <tr>
+    <td class="label">IPv6 Prefix Length:</td>
+    <td><%= f.text_field :ipv6_prefixlen, :size => 8 %></td>
+  </tr>
+  <tr>
+    <td colspan="2" style="border-top: 1px solid black"><strong>Other</strong></td>
+  </tr>
+  <tr>
+    <td class="label">OTP:</td>
+    <td><input type="text" name="otp" size="65"></td>
+  </tr>
+  <tr>
+    <td class="label">Notes:</td>
+    <td class="required"><%= f.text_area :notes %></td>
+  </tr>
+</tbody>

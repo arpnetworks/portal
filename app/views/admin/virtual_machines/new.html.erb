@@ -1,0 +1,20 @@
+<div class="error">
+  <%= error_messages_for :virtual_machine %>
+</div>
+
+<%= form_for([:admin, @virtual_machine]) do |f| %>
+<table class="entry_form" align="center">
+  <caption>New VM</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <input type='submit' value="Create" />
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+&laquo; <%= link_to('Back to All Virtual Machines', admin_virtual_machines_path) %>

@@ -1,0 +1,17 @@
+<table class="virtual_machines">
+  <caption>
+    <div>&nbsp;
+      <div class="title">
+        <% if controller.action_name == 'search' %>
+          Search Results for Virtual Machines
+        <% else %>
+          All Virtual Machines
+        <% end %>
+      </div>
+      <div class="actions">
+        <%= link_to("New VM", new_admin_virtual_machine_path, :class => 'add_item') %>
+      </div>
+    </div>
+  </caption>
+  <%= render :partial => 'virtual_machines/table_data' %>
+</table>
