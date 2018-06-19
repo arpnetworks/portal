@@ -29,4 +29,6 @@ if conf = @config[Rails.env]
   $PORTS_MIN_SERIAL = conf['ports']['min']['serial']
 
   $SLACK_WEBHOOK_URL = conf['slack']['webhook_url']
+
+  $ARIN_API_KEY     = conf['arin']['api_key']
 end

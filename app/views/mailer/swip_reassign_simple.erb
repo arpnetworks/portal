@@ -1,0 +1,21 @@
+Template: ARIN-REASSIGN-SIMPLE-5.0
+**  As of March 2011
+**  Detailed instructions are located below the template.
+
+00. API Key: <%= $ARIN_API_KEY %>
+
+01. Registration Action (N,M, or R):<%= @form.registration_action %>
+02. Network Name:<%= @form.network_name %>
+03. IP Address and Prefix or Range:<%= @ip_block.cidr %>
+04. Origin AS:<%= @ip_block.origin_as %>
+05. Private (Yes or No):No
+06. Customer Name:<%= @downstream_org.display_account_name %>
+07. Customer Address:<%= @downstream_org.address1 %>
+07. Customer Address:<%= @downstream_org.address2 %>
+08. Customer City:<%= @downstream_org.city %>
+09. Customer State/Province:<%= @downstream_org.state %>
+10. Customer Postal Code:<%= @downstream_org.zip %>
+11. Customer Country Code:<%= @downstream_org.country %>
+12. Public Comments:<%= @downstream_org.public_comments %>
+
+END OF TEMPLATE
