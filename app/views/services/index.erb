@@ -1,0 +1,10 @@
+<table class="services">
+  <caption>My Services</caption>
+    <%= render :partial => 'table_data' %>
+</table>
+
+&laquo; <%= link_to('Back to Dashboard', dashboard_path) %>
+
+<div class='notice-cool'>
+  <a href='<%= new_account_service_path(@account) %>', class='btn btn-success'><i class="fas fa-plus"></i> Add New Service</a>
+</div>

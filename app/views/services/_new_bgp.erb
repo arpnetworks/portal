@@ -1,0 +1,47 @@
+<p>
+Provisioning time for new sessions is currently about <strong>24 hours</strong>.
+</p>
+
+<p>
+Please fill out the following form to establish a new BGP session with us.
+</p>
+
+<p>
+Your ASN: <%= text_field_tag(:asn, session[:form][:asn]) %>
+<% if err = session[:form]['errors']['asn'] %>
+  <span class='simple-error'><%= err %></span>
+<% end %>
+</p>
+
+<div>
+  <input id="full_routes" type="checkbox" name="full_routes" <%= session[:form][:full_routes] ? 'checked' : '' %>>
+  <label for="full_routes">Full Routing Table?</label>
+</div>
+<div class='note'>
+  &nbsp;We provide a full routing table over a 2nd session with our Looking Glass, provided free of charge.
+</div>
+
+<div style='margin-top: 5px'>
+  <div class='form-section-header'>Session Family:</div>
+  <% session[:form][:family] ||= 'v4_and_v6' %>
+  <input type="radio" id="family_v4_and_v6" name="family" value="v4_and_v6" <%= session[:form][:family] == 'v4_and_v6' ? 'checked' : '' %>><label for="family_v4_and_v6">Both IPv4 and IPv6</label>
+  <br/>
+  <input type="radio" id="family_v4_only" name="family" value="v4_only" <%= session[:form][:family] == 'v4_only' ? 'checked' : '' %>><label for="family_v4_only">Only IPv4</label>
+  <br/>
+  <input type="radio" id="family_v6_only" name="family" value="v6_only" <%= session[:form][:family] == 'v6_only' ? 'checked' : '' %>><label for="family_v6_only">Only IPv6</label>
+  <br/>
+</div>
+
+<%= render :partial => 'location', :locals => { :title => 'Session Location' } %>
+
+<div>
+<br/>
+Tell us all the IPv4 and IPv6 prefixes you wish to announce in the area below, separated by spaces, commas or newlines.
+<br/>
+These can be modified later with a support ticket.
+<br/></br>
+
+<%= text_area_tag(:prefixes, session[:form][:prefixes], :size => "48x16") %>
+</div>
+
+<br/>
