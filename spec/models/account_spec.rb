@@ -152,6 +152,7 @@ describe Account do
 
   context "IPs and DNS Records" do
     before do
+      Service.delete_all
       ServiceCode.delete_all
 
       @ip_blocks = [create(:ip_block, cidr: '10.0.0.0/30'),
@@ -207,6 +208,11 @@ describe Account do
     end
 
     describe "owns_dns_record?()" do
+      before do
+        DnsDomain.delete_all
+        DnsRecord.delete_all
+      end
+
       specify "should return true if dns_record is a PTR and belongs to account" do
         @dns_record_for_me = create :dns_record, name: '2.0.0.10.in-addr.arpa',
                                                  content: 'example.com'
@@ -307,6 +313,7 @@ describe Account do
 
   context "Bandwidth Quota" do
     before do
+      Service.delete_all
       Account.delete_all("id > 2")
 
       @garrys_bq = create :bandwidth_quota

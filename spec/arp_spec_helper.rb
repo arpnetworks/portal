@@ -2,12 +2,15 @@ def create_admin!
   Account.find_by(login: 'admin') || create(:account_admin)
 end
 
-def create_user!
-  @user = Account.find_by(login: 'user') || create(:account_user)
+def create_user!(opts = {})
+  login = opts[:login] || 'user'
+  @user = Account.find_by(login: login) || create(:account_user, login: login)
 
-  # A regular user should have at least one service
-  if @user.services.empty?
-    @user.services << create(:service, description: 'cool stuff')
+  if opts[:create_service]
+    # A regular user should have at least one service
+    if @user.services.empty?
+      @user.services << create(:service, description: 'cool stuff')
+    end
   end
 
   @user

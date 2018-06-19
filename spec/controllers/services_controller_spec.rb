@@ -5,11 +5,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 context ServicesController do
 
   before(:context) do
-    create_user!
+    create_user!(login: 'user2', create_service: true)
   end
 
   before do
-    @account = login_as_user!
+    @account = login!('user2')
   end
 
   specify "should be a ServicesController" do
