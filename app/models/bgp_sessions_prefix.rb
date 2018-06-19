@@ -5,6 +5,8 @@ class BgpSessionsPrefix < ActiveRecord::Base
   after_create  :mail_irr_route_object_add
   after_destroy :mail_irr_route_object_remove
 
+  validates_presence_of :prefix
+
   def version
     case prefix
     when /\./

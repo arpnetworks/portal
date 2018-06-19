@@ -1,0 +1,30 @@
+<tbody>
+  <tr>
+    <td colspan="2">
+      <h3></h3>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">BGP Session ID:</td>
+    <td class="required"><%= collection_select(:bgp_sessions_prefix, :bgp_session_id,
+                                               BgpSession.all.order('created_at desc'), :id,
+                                               :display_service_with_account,
+                                               { :include_blank => @include_blank }) %></td>
+  </tr>
+  <tr>
+    <td class="label">Prefix:</td>
+    <% if controller.action_name == 'edit' %>
+      <td class="required"><%= @bgp_sessions_prefix.prefix %></td>
+    <% else %>
+      <td class="required"><%= f.text_field :prefix %> (e.g. 10.0.0.0/24)</td>
+    <% end %>
+  </tr>
+  <tr>
+    <td class="label">Min Length:</td>
+    <td class="required"><%= f.text_field :prefixlen_min, :size => 5 %> (optional)</td>
+  </tr>
+  <tr>
+    <td class="label">Max Length:</td>
+    <td class="required"><%= f.text_field :prefixlen_max, :size => 5 %> (optional)</td>
+  </tr>
+</tbody>
