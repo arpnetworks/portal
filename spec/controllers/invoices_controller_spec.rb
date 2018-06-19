@@ -15,15 +15,6 @@ context InvoicesController do
     allow(Account).to receive(:find).with(@account.id) { @account }
   end
 
-  # before do
-  #   # @account = Factory.create(:account,
-  #   #                           :first_name => 'John',
-  #   #                           :last_name => 'Doe')
-  #   # login_with_account!(@account)
-
-
-  # end
-
   specify "should be a InvoicesController" do
     expect(controller).to be_an_instance_of(InvoicesController)
   end
@@ -124,8 +115,6 @@ context InvoicesController do
     context "with credit card number" do
       before do
         @cc_num = '4111111111111111'
-        # @credit_card = Factory.build(:credit_card, :number => @cc_num)
-        # @account.stub!(:credit_card).and_return(@credit_card)
       end
 
       context "with unpaid invoices" do
@@ -191,7 +180,6 @@ context InvoicesController do
 
                 allow(@cr).to receive(:gateway_response).and_return("--- !ruby/object:ActiveMerchant::Billing::Response \nauthorization: 0JU013998M1143205\navs_result: \n code: X\n postal_match: Y\n street_match: Y\n message: Street address and 9-digit postal code match.\ncvv_result: \n code: M\n message: Match\nfraud_review: false\nmessage: Success\nparams: \n timestamp: \"2013-11-27T10:02:25Z\"\n correlation_id: ce7da3479e6f2\n transaction_id: #{@transaction_id}\n amount: \"444.00\"\n amount_currency_id: USD\n build: \"8620107\"\n version: \"52.0\"\n avs_code: X\n ack: Success\n cvv2_code: M\nsuccess: true\ntest: true\n")
 
-                # @cc.stub!(:charge_with_sales_receipt).and_return([@cr, @sr])
                 allow(@cc).to receive(:charge_with_sales_receipt).and_return([@cr, @sr])
                 allow(Charge).to receive(:find).and_return(@cr)
               end
@@ -288,8 +276,6 @@ context InvoicesController do
     context "without credit card number" do
       before do
         @cc_num = ''
-        # @credit_card = Factory.build(:credit_card, :number => @cc_num)
-        # @account.stub!(:credit_card).and_return(@credit_card)
       end
 
       specify "should return to pay action with notice" do
