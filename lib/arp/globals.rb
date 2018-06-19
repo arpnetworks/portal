@@ -31,4 +31,6 @@ if conf = @config[Rails.env]
   $SLACK_WEBHOOK_URL = conf['slack']['webhook_url']
 
   $ARIN_API_KEY     = conf['arin']['api_key']
+
+  $PROVISIONING     = conf['provisioning']
 end

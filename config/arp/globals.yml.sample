@@ -22,6 +22,10 @@ development:
     webhook_url: 'https://hooks.slack.com/services/YOUR-HOOK'
   arin:
     api_key: foo
+  provisioning:
+    initial_host:
+      lax: lax-host.example.com
+      fra: fra-host.example.com
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -46,3 +50,7 @@ test:
     webhook_url: 'https://hooks.slack.com/services/YOUR-HOOK'
   arin:
     api_key: foo
+  provisioning:
+    initial_host:
+      lax: lax-host.example.com
+      fra: fra-host.example.com
