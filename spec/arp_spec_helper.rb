@@ -3,7 +3,14 @@ def create_admin!
 end
 
 def create_user!
-  Account.find_by(login: 'user') || create(:account_user)
+  @user = Account.find_by(login: 'user') || create(:account_user)
+
+  # A regular user should have at least one service
+  if @user.services.empty?
+    @user.services << create(:service, description: 'cool stuff')
+  end
+
+  @user
 end
 
 def login_as_admin!

@@ -30,6 +30,10 @@ FactoryBot.define do
     account
     service_code
     billing_amount 5.00
+
+    trait :deleted do
+      deleted_at '01/01/1970'
+    end
   end
 
   factory :service_code do
