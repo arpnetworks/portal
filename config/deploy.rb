@@ -1,5 +1,5 @@
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.10.2"
+lock "~> 3.10"
 
 set :application, "portal"
 set :repo_url, "git@github.com:arpnetworks/portal.git"
@@ -49,7 +49,7 @@ append :linked_dirs, "log",
 # set :keep_releases, 5
 
 # Uncomment the following to require manually verifying the host key before first deploy.
-set :ssh_options, verify_host_key: :secure
+set :ssh_options, verify_host_key: :always
 
 # rbenv
 set :rbenv_type, :user
