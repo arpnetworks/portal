@@ -291,30 +291,37 @@ BLOCK
   end
 
   context "available_for_allocation()" do
+    before do
+      @location_code = 'lax'
+    end
+
     context "for IPv4" do
       specify "smallest subnet is a /30" do
-        expect(IpBlock.available_for_allocation(32, 'lax')).to eq("Only /30 and larger blocks are supported")
+        expect(IpBlock.available_for_allocation(32, @location_code)).to eq("Only /30 and larger blocks are supported")
       end
 
       specify "should find a /29" do
         ipb = create :ip_block, :available, cidr: '172.16.1.0/29', vlan: 106
-        expect(IpBlock.available_for_allocation(29, 'lax')).to eq(ipb)
+        @location_code = ipb.location.code
+        expect(IpBlock.available_for_allocation(29, @location_code)).to eq(ipb)
       end
 
       specify "should find a /30" do
         ipb = create :ip_block, :available, cidr: '172.16.1.8/30', vlan: 107
-        expect(IpBlock.available_for_allocation(30, 'lax')).to eq(ipb)
+        @location_code = ipb.location.code
+        expect(IpBlock.available_for_allocation(30, @location_code)).to eq(ipb)
       end
 
       specify "should not find a /27" do
-        create :ip_block
-        expect(IpBlock.available_for_allocation(27, 'lax')).to eq(nil)
+        ipb = create :ip_block
+        @location_code = ipb.location.code
+        expect(IpBlock.available_for_allocation(27, @location_code)).to eq(nil)
       end
     end
 
     context "for IPv6" do
       specify "does not apply to IPv6" do
-        expect(IpBlock.available_for_allocation(48, 'lax')).to eq("Not applicable to IPv6")
+        expect(IpBlock.available_for_allocation(48, @location_code)).to eq("Not applicable to IPv6")
       end
     end
   end

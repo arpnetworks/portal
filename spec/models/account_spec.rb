@@ -198,7 +198,8 @@ describe Account do
 
     describe "vlan()" do
       it "should return ID of VLAN associated with this account" do
-        expect(account.vlan).to eq(999)
+        @vlan = account.ip_blocks.first.vlan
+        expect(account.vlan).to eq(@vlan)
       end
 
       it "should return nil if no IP blocks are associated with this account" do
@@ -214,22 +215,22 @@ describe Account do
       end
 
       specify "should return true if dns_record is a PTR and belongs to account" do
-        @dns_record_for_me = create :dns_record, name: '2.0.0.10.in-addr.arpa',
-                                                 content: 'example.com'
+        @dns_record_for_me = create :dns_record, :the_10_block, name: '2.0.0.10.in-addr.arpa',
+                                                                content: 'example.com'
         @dns_record_for_me.type = 'PTR'
         expect(account.owns_dns_record?(@dns_record_for_me)).to eq(true)
       end
 
       specify "should return false if dns_record is a PTR and does not belongs to account" do
-        @dns_record_for_someone_else = create :dns_record, name: '9.0.0.10.in-addr.arpa',
-                                                           content: 'example.com'
+        @dns_record_for_someone_else = create :dns_record, :the_10_block, name: '9.0.0.10.in-addr.arpa',
+                                                                          content: 'example.com'
         @dns_record_for_someone_else.type = 'PTR'
         expect(account.owns_dns_record?(@dns_record_for_someone_else)).to eq(false)
       end
 
       specify "should return true if dns_record is a CNAME and belongs to account" do
-        @dns_record_for_me = create :dns_record, name: '2.0.0.10.in-addr.arpa',
-                                                 content: 'example.com'
+        @dns_record_for_me = create :dns_record, :the_10_block, name: '2.0.0.10.in-addr.arpa',
+                                                                content: 'example.com'
 
         DnsRecord.delete_all("type != 'CNAME'")
         @dns_record_for_me.type = 'CNAME'
@@ -237,14 +238,14 @@ describe Account do
       end
 
       specify "should return false if dns_record is a CNAME and does not belongs to account" do
-        @dns_record_for_someone_else = create :dns_record, name: '9.0.0.10.in-addr.arpa',
-                                                           content: 'example.com'
+        @dns_record_for_someone_else = create :dns_record, :the_10_block, name: '9.0.0.10.in-addr.arpa',
+                                                                          content: 'example.com'
         expect(account.owns_dns_record?(@dns_record_for_someone_else)).to eq(false)
       end
 
       specify "should return false if dns_record is a PTR and IPv4 IP is the network number" do
-        @dns_record = create :dns_record, name: '0.0.0.10.in-addr.arpa',
-                                          content: 'example.com'
+        @dns_record = build :dns_record, :the_10_block, name: '0.0.0.10.in-addr.arpa',
+                                                        content: 'example.com'
         @dns_record.type = 'PTR'
         expect(account.owns_dns_record?(@dns_record)).to eq(false)
       end

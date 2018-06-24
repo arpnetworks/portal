@@ -216,7 +216,7 @@ class IpBlock < ActiveRecord::Base
       return "Only /30 and larger blocks are supported"
     end
 
-    location = Location.find_by_code(location_code)
+    location = Location.find_by(code: location_code)
 
     if !location
       return "Location not found"

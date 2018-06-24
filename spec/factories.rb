@@ -48,13 +48,16 @@ FactoryBot.define do
 
   factory :location do
     name 'Los Angeles'
-    code 'lax'
+
+    sequence :code do |n|
+      "lax-#{n}"
+    end
   end
 
   factory :ip_block do
     location
     cidr '10.0.0.0/30'
-    vlan '999'
+    vlan '100'
     after(:create) do |ip|
       ip.resource = create(:resource, assignable: ip)
     end
@@ -104,14 +107,21 @@ FactoryBot.define do
   end
 
   factory :dns_domain do
-    name '0.0.10.in-addr.arpa'
     type 'MASTER'
+
+    trait :the_10_block do
+      name '0.0.10.in-addr.arpa'
+    end
+    trait :the_192_block do
+      name '0.168.192.in-addr.arpa'
+    end
   end
 
   factory :dns_record do
-    dns_domain
+    # association :dns_domain, :the_10_block
     name '2.0.0.10.in-addr.arpa'
     content 'example.com'
+
     after(:build) do |r|
       r.type = 'PTR'
     end
@@ -119,6 +129,29 @@ FactoryBot.define do
     factory :dns_record_with_ns_type do
       after(:build) do |r|
         r.type = 'NS'
+      end
+    end
+
+    # We need to do this because we can have only 1 DnsDomain with a
+    # particular supernet, and FactoryBot always wants to create a new
+    # one even if it already exists
+
+    trait :the_10_block do
+      before(:create) do |r|
+        domain = DnsDomain.find_by(name: '0.0.10.in-addr.arpa') ||
+                 (create :dns_domain, :the_10_block)
+                 # DnsDomain.create(name:  '0.0.10.in-addr.arpa', type: 'MASTER')
+
+        r.domain_id = domain.id
+      end
+    end
+
+    trait :the_192_block do
+      before(:create) do |r|
+        domain = DnsDomain.find_by(name: '0.168.192.in-addr.arpa') ||
+                 (create :dns_domain, :the_192_block)
+
+        r.domain_id = domain.id
       end
     end
   end

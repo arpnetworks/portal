@@ -38,10 +38,26 @@ end
 
 def login_with_account!(account)
   @controller.session[:account_id] = account.id
+  allow(Account).to receive(:find).with(account.id) { account }
 end
 
 def last_location
   request.env["REQUEST_URI"]
+end
+
+def clear_db!
+  CreditCard.delete_all
+  BackupQuota.delete_all
+  DnsRecord.delete_all
+  DnsDomain.delete_all
+  BandwidthQuota.delete_all
+  VirtualMachine.delete_all
+  Vlan.delete_all
+  IpBlock.delete_all
+  Location.delete_all
+  Service.delete_all
+  Resource.delete_all
+  Account.delete_all
 end
 
 RSpec.shared_examples "Destructive Administrative Action" do

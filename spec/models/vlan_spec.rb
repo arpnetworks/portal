@@ -1,19 +1,20 @@
 require File.dirname(__FILE__) + '/../rails_helper'
 
 context "Vlan class with fixtures loaded" do
-  before(:all) do
+  before do
     @code = 'lax'
-    @lax = create :location, code: @code
-    create :ip_block, vlan: 102, location: @lax
-    create :ip_block, vlan: 104, location: @lax
-    create :ip_block, vlan: 105, location: @lax
-    create :ip_block, vlan: 106, location: @lax, available: true
-    create :ip_block, vlan: 107, location: @lax, available: true
-    create :ip_block, vlan: 108, location: @lax, available: true
-    create :vlan, vlan: 1, label: 'Native VLAN',  location: @lax
-    create :vlan, vlan: 100, label: 'FidoNet',  location: @lax
-    create :vlan, vlan: 101, label: 'VLAN 101', location: @lax
-    create :vlan, vlan: 440, label: 'VLAN 440', location: @lax
+    @lax = Location.find_by(code: @code) || create(:location, code: @code)
+
+    create :ip_block, vlan: 102, location: @lax unless IpBlock.find_by(vlan: 102)
+    create :ip_block, vlan: 104, location: @lax unless IpBlock.find_by(vlan: 104)
+    create :ip_block, vlan: 105, location: @lax unless IpBlock.find_by(vlan: 105)
+    create :ip_block, vlan: 106, location: @lax, available: true unless IpBlock.find_by(vlan: 106)
+    create :ip_block, vlan: 107, location: @lax, available: true unless IpBlock.find_by(vlan: 107)
+    create :ip_block, vlan: 108, location: @lax, available: true unless IpBlock.find_by(vlan: 108)
+    create :vlan, vlan: 1, label: 'Native VLAN',  location: @lax unless Vlan.find_by(vlan: 1)
+    create :vlan, vlan: 100, label: 'FidoNet',  location: @lax   unless Vlan.find_by(vlan: 100)
+    create :vlan, vlan: 101, label: 'VLAN 101', location: @lax   unless Vlan.find_by(vlan: 101)
+    create :vlan, vlan: 440, label: 'VLAN 440', location: @lax   unless Vlan.find_by(vlan: 440)
   end
 
   context "next_available()" do
@@ -37,6 +38,7 @@ context "Vlan class with fixtures loaded" do
 
   context "in_use()" do
     before do
+      Vlan.delete_all('vlan > 440')
       @in_use = Vlan.in_use(@lax.id)
     end
 
