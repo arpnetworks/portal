@@ -1,0 +1,80 @@
+<% if !@enable_admin_view %>
+<style type='text/css'>
+  table.virtual_machines tr.odd:hover td, table.virtual_machines tr.even:hover td {
+    background-color: #ddf;
+  }
+</style>
+<% end %>
+
+<thead>
+  <% if @enable_admin_view && action_name == 'index' %>
+  <tr>
+    <td colspan="<%= virtual_machines_colspan(@enable_admin_view) %>" class="pagination">
+      <span class="page-entries-info">
+        <%= page_entries_info @virtual_machines %>
+        (<%= link_to('Show All', admin_virtual_machines_path(:per_page => 999999)) %>)
+      </span>
+      <span class="page-links">
+      <%= will_paginate @virtual_machines %>
+      </span>
+
+      <span style='clear: both'>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <th class="action" style="width: <%= @enable_admin_view && !@sub_admin_view ? 65 : 20 %>px"></th>
+
+    <% if @enable_admin_view %>
+      <th class="account">Account</th>
+    <% end %>
+
+    <th class="ram">RAM</th>
+    <th class="storage">Storage</th>
+    <th>Operating System</th>
+    <th>UUID</th>
+  </tr>
+</thead>
+<tbody>
+  <% if @virtual_machines.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="<%= virtual_machines_colspan(@enable_admin_view) %>">
+        No virtual machines found
+      </td>
+    </tr>
+  <% else %>
+  <% reset_cycle %>
+  <% @virtual_machines.each do |virtual_machine| %>
+    <% if @enable_admin_view %>
+      <tr class="<%= cycle("odd", "even") -%>" <%= virtual_machines_table_onClick(virtual_machine) %>>
+    <% else %>
+      <tr class="<%= cycle("even", "odd") -%>" style="cursor: default" <%= virtual_machines_table_onClick(virtual_machine) %>>
+    <% end %>
+      <td class="action">
+      <% if @enable_admin_view %>
+        <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), admin_virtual_machine_path(virtual_machine.id)) %>
+      <% else %>
+        <%#= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), account_service_virtual_machine_path(@account, :*, virtual_machine.id)) %>
+      <% end %>
+
+      <% if @enable_admin_view %>
+          <% unless @sub_admin_view %>
+          <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_virtual_machine_path(virtual_machine.id)) %>
+          <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"),
+                      admin_virtual_machine_path(virtual_machine.id),
+                      :method => :delete,
+                      :data => { :confirm => 'Are you sure you want to delete this virtual machine?  THIS CANNOT BE UNDONE.' }) %>
+          <% end %>
+        <td class="account"><%= h(admin_account_path_from_resource(virtual_machine.resource)) %></td>
+      <% end %>
+      </td>
+
+      <td class="ram"><%= virtual_machine.ram %> MB</td>
+      <td class="storage"><%= virtual_machine.storage %> GB</td>
+      <td><%= virtual_machine.os %></td>
+      <td><%= virtual_machine.uuid %></td>
+
+    </tr>
+  <% end %>
+<% end %>
+</tbody>
