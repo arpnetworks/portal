@@ -84,7 +84,7 @@ FactoryBot.define do
 
   factory :virtual_machine do
     sequence :uuid do |n|
-      "682950e4-4af8-11e0-8cea-001c25748b#{n}"
+      UUID.generate
     end
     sequence :label do |n|
       "foo#{n}"
