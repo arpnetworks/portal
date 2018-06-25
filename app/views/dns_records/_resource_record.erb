@@ -1,0 +1,80 @@
+      <% content = @dns_record.content.to_s
+         if content.empty?
+           content = "<span style='font-style: italic'>&lt;content&gt;</span>"
+         end
+      %>
+      <div class='resource-record'>
+        Your resource record will look like...
+        <br/><br/>
+        <pre id="resource-record"><%= (@dns_record.name.to_s.empty? ? '' : @dns_record.name.to_s + '.') + @domain.to_s + "\tIN\t" + @dns_record.type.to_s + "\t" + content %></pre>
+      </div>
+
+      <% if action_name == 'new' || action_name == 'create' %>
+      <script type='text/javascript'>
+        $(document).ready(function() {
+          update_rr = function() {
+            $('#resource-record').html(
+              ($('#dns_record_name').val() == '' ? '' :
+               $('#dns_record_name').val() + ".")  +
+              $('#dns_record_domain').val() + "\t" +
+              "IN" + "\t" +
+              $('#dns_record_type').val() + "\t" +
+              $('#dns_record_content').val());
+
+            var domain = $('#dns_record_domain').val();
+            if(domain.match(/\.ip6\.arpa$/)) {
+              $('#checkbox_ipv6_zeros').attr("disabled", false)
+            } else {
+              $('#checkbox_ipv6_zeros').attr("disabled", true)
+            }
+          };
+
+          $('#dns_record_name').keyup(update_rr);
+          $('#dns_record_name').change(update_rr);
+          $('#dns_record_domain').change(update_rr);
+          $('#dns_record_type').change(update_rr);
+          $('#dns_record_content').keyup(update_rr);
+          $('#dns_record_content').change(update_rr);
+
+          $('#checkbox_ipv6_zeros').change(function() {
+            var domain = $('#dns_record_domain').val();
+            if(!domain.match(/\.ip6\.arpa$/)) {
+              alert("Only valid for an IPv6 domain")
+              $(this).attr("checked", false)
+              return false
+            }
+
+            var nibbles = $('#dns_record_name').val().split('.')
+            var nibbles_suffix = domain.split('.')
+
+            var remainder = 32 - (nibbles.length + (nibbles_suffix.length - 2))
+
+            var i = 0;
+            var s = '';
+            for(i = 0; i < remainder; i++) {
+              s += ".0"
+            }
+
+            $('#dns_record_name').val($('#dns_record_name').val() + s)
+            update_rr()
+          });
+        });
+      </script>
+      <% else %>
+      <script type='text/javascript'>
+        $(document).ready(function() {
+          update_rr = function() {
+            $('#resource-record').html(
+              $('#dns_record_name').html() + "\t" +
+              "IN" + "\t" +
+              $('#dns_record_type').val() + "\t" +
+              $('#dns_record_content').val());
+          };
+      
+          $('#dns_record_type').change(update_rr);
+          $('#dns_record_content').keyup(update_rr);
+          $('#dns_record_content').change(update_rr);
+        });
+      </script>
+      <% end %>
+
