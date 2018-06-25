@@ -112,4 +112,14 @@ class Mailer < ActionMailer::Base
 
     mail(to: @recipients, subject: @subject, from: @from)
   end
+
+  def simple_notification(subject, body)
+    @subject    = subject
+    @recipients = ['gdolley@arpnetworks.com']
+    @from       = 'support@arpnetworks.com'
+
+    @body       = body
+
+    mail(to: @recipients, subject: @subject, from: @from)
+  end
 end
