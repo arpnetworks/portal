@@ -115,6 +115,9 @@ FactoryBot.define do
     trait :the_192_block do
       name '0.168.192.in-addr.arpa'
     end
+    trait :the_ipv6_block do
+      name '8.f.2.f.7.0.6.2.ip6.arpa'
+    end
   end
 
   factory :dns_record do
