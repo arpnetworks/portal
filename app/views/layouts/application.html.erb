@@ -60,46 +60,6 @@
 </div>
 
 <script type='text/javascript'>
-  $(document).ready(function() {
-    $(".no-event-bubble-up").each(function() {
-      $(this).click(function(e) {
-        e.stopPropagation();
-      });
-    });
-
-    $("td.action a").on("click", function(e) {
-      //e.stopPropagation();
-      alert('e.target: ' + e.target.nodeName);
-      alert('this: ' + this.nodeName);
-      //$.rails.
-      //alert('tirgger!');
-      //return false;
-
-      e.stopPropagation();
-      element = this;
-
-      bige = e;
-
-     // $.rails.fire(element, 'confirm');
-      try {
-        $.rails.fire(e.target.parent, 'confirm');
-      } catch(error) {
-        alert(error);
-        return false;
-      }
-
-    });
-
-    // Only applies to links with data-confirm in our actions column
-    $("td.action a").on("confirm:complete2", function(e, answer) {
-      alert('completed! with answer: ' + answer)
-      if(answer != true) {
-        return false;
-      }
-      return false;
-      e.stopPropagation();
-    });
-  });
   <%= yield :js %>
   $(window).konami(function(){ alert('Download more RAM! Free, Fast, and Instant!\nhttp://www.downloadmoreram.com/')})
 </script>
