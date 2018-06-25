@@ -9,6 +9,7 @@ development:
   hosts:
     rancid: rancid.example.com
     rancid_user: rancid-user
+    console: console.example.com
   vlan_min: 20
   keyer: keymaster
   simple_crypt_key: 'PdSgVkYp3s5v8y/B?E(H+MbQeThWmZq4'
@@ -37,6 +38,7 @@ test:
   hosts:
     rancid: rancid.example.com
     rancid_user: rancid-user
+    console: console.example.com
   vlan_min: 20
   keyer: keymaster
   simple_crypt_key: 'PdSgVkYp3s5v8y/B?E(H+MbQeThWmZq4'

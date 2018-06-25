@@ -8,7 +8,7 @@ if redis_conf = @config[Rails.env]
 
   ARP_REDIS = Redis.new(:url => @REDIS_URL,
                         :network_timeout => redis_conf['timeout'],
-                        :password => redis_conf['password'].empty? ? nil : redis_conf['password'])
+                        :password => redis_conf['password'].blank? ? nil : redis_conf['password'])
 end
 
 def build_and_reload_conserver(host)

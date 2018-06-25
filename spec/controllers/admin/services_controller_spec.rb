@@ -10,10 +10,6 @@ describe Admin::ServicesController do
   before do
     login_as_admin!
 
-    # @account = stub_model(Account, login: 'login', email: 'foo@example.com')
-    # @account_params = { login: @account.login, email: @account.email }
-    # @params  = { id: @account.id, account: @account_params }
-
     @service = create :service
     @params  = { :id => @service.id }
 

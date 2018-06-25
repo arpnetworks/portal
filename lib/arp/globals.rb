@@ -16,6 +16,7 @@ if conf = @config[Rails.env]
 
   $HOST_RANCID      = conf['hosts']['rancid']
   $HOST_RANCID_USER = conf['hosts']['rancid_user']
+  $HOST_CONSOLE     = conf['hosts']['console']
 
   $VLAN_MIN = conf['vlan_min']
 
