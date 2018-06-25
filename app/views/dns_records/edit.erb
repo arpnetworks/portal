@@ -1,0 +1,25 @@
+<div class="error">
+  <%= error_messages_for :dns_record %>
+</div>
+
+<%= form_for(@dns_record, :url => account_dns_record_path(@account, @dns_record)) do |f| %>
+<table class="entry_form edit_dns_record" align="center">
+  <caption>Edit DNS Record</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <button type='submit' class='btn'><i class="icon-save"></i> &nbsp;Save changes</button>
+      </td>
+    </tr>
+  </tfoot>
+
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+<%= render :partial => 'resource_record' %>
+
+<br/>
+&laquo; <%= link_to('Back to Reverse DNS Records', reverse_dns_account_dns_records_path(@account)) %><br/>
+&laquo; <%= link_to('Back to Dashboard', dashboard_path) %>
