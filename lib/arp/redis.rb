@@ -1,3 +1,5 @@
+require 'redis'
+
 @config = YAML.load(File.read(File.join(File.dirname(__FILE__), '..', '..', 'config', 'arp', 'redis.yml')))
 
 if redis_conf = @config[Rails.env]
