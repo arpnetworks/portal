@@ -76,7 +76,9 @@ module ApplicationHelper
 
   def services_table_onClick(service)
     unless @enable_pending_view
-      String.new("onClick=\"location.href='" + (@enable_admin_view ? admin_service_path(service.id) : account_service_path(@account, service.id)) + "'\"").html_safe
+      html =  "onClick=\"location.href='".html_safe
+      html << (@enable_admin_view ? admin_service_path(service.id) : account_service_path(@account, service.id))
+      html << "'\"".html_safe
     else
       ""
     end
@@ -86,7 +88,9 @@ module ApplicationHelper
     if vlan.new_record?
       ""
     else
-      String.new("onClick=\"location.href='" + edit_admin_vlan_path(vlan.id) + "'\"").html_safe
+      html =  "onClick=\"location.href='"
+      html << edit_admin_vlan_path(vlan.id)
+      html << "'\"".html_safe
     end
   end
 
@@ -110,7 +114,9 @@ module ApplicationHelper
 
   def invoices_table_onClick(invoice)
     unless @enable_pending_view
-      String.new("onClick=\"location.href='" + (@enable_admin_view ? admin_invoice_path(invoice.id) : account_invoice_path(@account, invoice.id)) + "'\"").html_safe
+      html =  "onClick=\"location.href='".html_safe
+      html << (@enable_admin_view ? admin_invoice_path(invoice.id) : account_invoice_path(@account, invoice.id))
+      html << "'\"".html_safe
     else
       ""
     end
@@ -118,7 +124,9 @@ module ApplicationHelper
 
   def jobs_table_onClick(job)
     if @enable_admin_view
-      String.new("onClick=\"location.href='" + admin_job_path(job.id) + "'\"").html_safe
+      html = "onClick=\"location.href='".html_safe
+      html << admin_job_path(job.id)
+      html << "'\"".html_safe
     else
       ""
     end
