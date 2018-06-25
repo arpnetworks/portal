@@ -41,7 +41,7 @@
     </tr>
   <% else %>
   <% @services.each do |service| %>
-    <tr class="<%= cycle("odd", "even") -%><%= service.deleted? ? " deleted_row" : (service.pending? && @enable_admin_view ? " pending_row" : "") -%><%= @enable_pending_view ? ' no_highlight' : '' %>" <%= services_table_onClick(service) %>>
+    <tr class="<%= cycle("odd", "even") -%><%= service.deleted? ? " deleted_row" : (service.pending? && @enable_admin_view ? " pending_row" : "") -%><%= @enable_pending_view ? ' no_highlight' : '' %>">
       <% unless @enable_pending_view %>
       <td class="action">
       <% if @enable_admin_view %>
@@ -65,12 +65,12 @@
       </td>
       <% end %>
 
-      <td class="code"><%= service.service_code && service.service_code.name %></td>
-      <td><%= service.title %><%= h(service.label.to_s.empty? ? '' : ', ' + service.label) %></td>
+      <td class="code" <%= services_table_onClick(service) %>><%= service.service_code && service.service_code.name %></td>
+      <td class=""     <%= services_table_onClick(service) %>><%= service.title %><%= h(service.label.to_s.empty? ? '' : ', ' + service.label) %></td>
 
       <% unless @enable_summary_view || @sub_admin_view %>
-      <td class="money"><%= money(service.billing_amount, 'USD') %></td>
-      <td class="interval"><%= billing_interval_in_words(service.billing_interval) %></td>
+      <td class="money"    <%= services_table_onClick(service) %>><%= money(service.billing_amount, 'USD') %></td>
+      <td class="interval" <%= services_table_onClick(service) %>><%= billing_interval_in_words(service.billing_interval) %></td>
       <% end %>
     </tr>
   <% end %>
