@@ -1,0 +1,38 @@
+
+<div class="error">
+  <%= error_messages_for :dns_record %>
+</div>
+
+<%= form_for(@dns_record, :url => account_dns_records_path(@account.id)) do |f| %>
+<table class="entry_form edit_dns_record" align="center">
+  <caption>New DNS Record</caption>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="1">
+        <button type='submit' class='btn'><i class="icon-file"></i> &nbsp;Create Record</button>
+      </td>
+    </tr>
+  </tfoot>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+</table>
+<% end %>
+
+<%= render :partial => 'resource_record' %>
+
+<div class='dns-record-tips'>
+  <img src='/images/icons/lightbulb.png' align='bottom'> Tips &amp; Guidelines
+
+  <ul>
+    <li>IPv4: "IP / Name" is simply a single IP</li>
+    <li>IPv6: "IP / Name" is an IP followed by a long string of zeros.
+    Use the "Add IPv6 Zeros" checkbox to add these zeros automatically</li>
+    <li>The first, second and last IP of an IPv4 block cannot be assigned a PTR record</li>
+    <li>You may use CNAME and/or NS records to set up delegation to other name servers (without the need for RFC 2317)</li>
+    <li>It may take up to 60 seconds for changes made here to propagate to our authoritative name servers</li>
+  </ul>
+</div>
+
+<br/>
+&laquo; <%= link_to('Back to Reverse DNS Records', reverse_dns_account_dns_records_path(@account)) %><br/>
+&laquo; <%= link_to('Back to Dashboard', dashboard_path) %>

@@ -1,0 +1,38 @@
+<tbody>
+  <% if action_name == 'new' || action_name == 'create' %>
+  <tr>
+    <td class="label">IP / Name:</td>
+    <td class="required"><%= f.text_field :name, :size => 50 %></td>
+  </tr>
+  <tr>
+    <td class="label">Domain (Zone):</td>
+    <td class="required">
+      <select name="dns_record[domain]" id="dns_record_domain">
+      <%= options_for_select(@account.reverse_dns_zones, 
+                             @domain) %>
+      </select>
+
+      <input type='checkbox' name='checkbox_ipv6_zeros' id='checkbox_ipv6_zeros' disabled>
+      <label for="checkbox_ipv6_zeros">Add IPv6 Zeros</label>
+    </td>
+  </tr>
+  <% else %>
+  <tr>
+    <td class="label">IP / Name:</td>
+    <td><span id="dns_record_name"><%= @dns_record.name %></td>
+  </tr>
+  <% end %>
+  <tr>
+    <td class="label">Type:</td>
+    <td class="required">
+      <select name="dns_record[type]" id="dns_record_type">
+      <%= options_for_select(%w(PTR CNAME NS), @dns_record.type) %>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label">Content:</td>
+    <td class="required"><%= f.text_field :content, :size => 50 %></td>
+  </tr>
+</tbody>

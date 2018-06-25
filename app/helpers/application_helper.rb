@@ -100,7 +100,9 @@ module ApplicationHelper
 
   def dns_records_table_onClick(account, record)
     if account.owns_dns_record?(record)
-      String.new("onClick=\"location.href='" + edit_account_dns_record_path(account.id, record.id) + "'\"").html_safe
+      html = "onClick=\"location.href='".html_safe
+      html << edit_account_dns_record_path(account.id, record.id)
+      html << "'\"".html_safe
     else
       ""
     end
