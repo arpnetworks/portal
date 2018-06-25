@@ -1,0 +1,87 @@
+<%= stylesheet_link_tag '/legacy/stylesheets/jquery.jqplot', media: 'all' %>
+<%= javascript_include_tag '/legacy/javascripts/jquery-1.4.2.min',
+                           '/legacy/javascripts/jquery.jqplot.min',
+                           '/legacy/javascripts/jqplot.highlighter.min',
+                           '/legacy/javascripts/jqplot.cursor.min',
+                           '/legacy/javascripts/jqplot.dateAxisRenderer.min',
+                           '/legacy/javascripts/jqplot.canvasTextRenderer.min',
+                           '/legacy/javascripts/jqplot.canvasAxisTickRenderer.min',
+                           '/legacy/javascripts/jqplot.canvasAxisLabelRenderer.min',
+                           '/legacy/javascripts/jqplot.trendline.min',
+                           '/legacy/javascripts/admin' %>
+
+<div class="title2">Services Report</div>
+
+<div>
+  Total MRC for VPS beginning March, 2009: <span class="money"><%= money(@vps_service_totals[1]) %></span>
+</div>
+<div>
+  Total MRC for IP Blocks: <span class="money"><%= money2(@ip_block_service_total) %></span>
+</div>
+<div>
+  Total MRC for ARP Metal™: <span class="money"><%= money2(@metal_services_total) %></span>
+</div>
+<div>
+  Total MRC for Backup Services: <span class="money"><%= money2(@backup_service_total) %></span>
+</div>
+<div>
+  Total MRC for all services: <span class="money"><%= money2(@mrc_total) %></span>
+</div>
+<br/>
+<br/>
+
+<div id="chartdiv3" style="height:400px;width:895px;"></div>
+<br/>
+<script type='text/javascript'>
+  draw_graph('chartdiv3', "Monthly Recurring Charges (last 36 months), [Total]", [[<%= @mrc_chart_data %>]], 'USD');
+</script>
+
+<div id="chartdiv5" style="height:400px;width:895px;"></div>
+<br/>
+<script type='text/javascript'>
+  draw_graph('chartdiv5', "Monthly Recurring Charges (last 36 months), [VPS]", [[<%= @vps_mrc_chart_data %>]], 'USD');
+</script>
+
+<div id="chartdiv4" style="height:400px;width:895px;"></div>
+<br/>
+<script type='text/javascript'>
+  draw_graph('chartdiv4', "Monthly Recurring Charges (last 24 months), [ARP Metal™]", [[<%= @metal_mrc_chart_data %>]], 'USD');
+</script>
+
+<div id="chartdiv" style="height:400px;width:895px;"></div>
+<br/>
+<script type='text/javascript'>
+  draw_graph('chartdiv', "Orders / Cancellations per month (last 24 months) [VPS Services]", [[<%= @chart_data %>], [<%= @deleted_chart_data %>]], 'Number of Orders / Cancellations');
+</script>
+
+<div id="chartdiv2" style="height:400px;width:895px;"></div>
+<br/>
+<script type='text/javascript'>
+  draw_graph('chartdiv2', "Orders / Cancellations per month (last 36 months) [ARP Metal™]", [[<%= @metal_chart_data %>], [<%= @metal_deleted_chart_data %>]], 'Number of Orders / Cancellations');
+</script>
+
+<table>
+  <caption>VPS Orders</caption>
+  <% @vps_services_all.each do |service| %>
+  <tr class="<%= cycle("odd", "even") -%><%= service.deleted? ? " deleted_row" : "" -%>">
+    <td><%= service.id %></td>
+    <td><%= service.created_at.strftime("%m-%d-%Y") %></td>
+    <td><%= link_to(service.account.display_account_name, admin_account_path(service.account)) %></td>
+    <td><%= service.title %></td>
+    <td><%= money(service.billing_amount) %></td>
+  </tr>
+  <% end %>
+</table>
+
+<table>
+  <caption>Cancellations</caption>
+  <% @vps_services_deleted.each do |service| %>
+  <tr class="<%= cycle("odd", "even") %>">
+    <td><%= service.id %></td>
+    <td><%= service.deleted_at.strftime("%m-%d-%Y") %></td>
+    <td><%= link_to(service.account.display_account_name, admin_account_path(service.account)) %></td>
+    <td><%= service.title %></td>
+    <td><%= money(service.billing_amount) %></td>
+  </tr>
+  <% end %>
+</table>
