@@ -1,0 +1,9 @@
+production:
+  host: localhost
+  port: 9000
+  db: 0
+
+development:
+  host: localhost
+  port: 9000
+  db: 0

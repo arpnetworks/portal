@@ -27,6 +27,7 @@ append :linked_files, "config/database.yml",
                       "config/arp/globals.yml",
                       "config/arp/password_encryption.yml",
                       "config/arp/tender.yml",
+                      "config/arp/redis.yml",
                       @deploy['configs']['billing']['gateway'],
                       @deploy['configs']['billing']['gpg'],
                       @deploy['configs']['billing']['paypal_key']
