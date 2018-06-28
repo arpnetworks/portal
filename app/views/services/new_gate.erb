@@ -4,7 +4,17 @@
     <tr>
       <td>
 
-        <% if @account.credit_card.nil? %>
+        <% if @account.services.empty? %>
+
+        <div class='notice-transparent'>
+          <p>
+          Oops, this account appears to be blank
+          </p>
+          <p>
+          You must place an actual order at <a href='https://arpnetworks.com'>arpnetworks.com</a> to establish your account first
+          </p>
+
+        <% elsif @account.credit_card.nil? %>
 
         <div class='notice-transparent'>
           A valid <strong>credit card</strong> is required to order new services

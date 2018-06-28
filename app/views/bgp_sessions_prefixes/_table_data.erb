@@ -1,0 +1,62 @@
+<% if !@enable_admin_view %>
+<style type='text/css'>
+  table.bgp-sessions-prefixes tr.odd:hover td, table.bgp-sessions-prefixes tr.even:hover td {
+    background-color: #ddf;
+  }
+</style>
+<% end %>
+
+<thead>
+  <tr>
+    <th class="action" style="width: <%= @enable_admin_view && !@sub_admin_view ? 40 : 20 %>px"></th>
+
+    <% if @enable_admin_view %>
+      <th class="account">BGP Session</th>
+    <% end %>
+
+    <th class="prefix">Prefix</th>
+    <th class="prefixlen_min">Min</th>
+    <th class="prefixlen_max">Max</th>
+  </tr>
+</thead>
+<tbody>
+  <% if @bgp_sessions_prefixes.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="<%= bgp_sessions_prefixes_colspan(@enable_admin_view) %>">
+        No prefixes found
+      </td>
+    </tr>
+  <% else %>
+  <% reset_cycle %>
+  <% @bgp_sessions_prefixes.each do |bgp_sessions_prefix| %>
+    <% if @enable_admin_view %>
+      <tr class="<%= cycle("odd", "even") -%>">
+    <% else %>
+      <tr class="<%= cycle("even", "odd") -%>" style="cursor: default">
+    <% end %>
+      <td class="action">
+      <% if @enable_admin_view %>
+        <% #link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), admin_bgp_session_path(bgp_session.id)) %>
+      <% else %>
+      <% end %>
+
+      <% if @enable_admin_view %>
+          <% unless @sub_admin_view %>
+          <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_bgp_sessions_prefix_path(bgp_sessions_prefix.id)) %>
+          <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"),
+                      admin_bgp_sessions_prefix_path(bgp_sessions_prefix.id),
+                      :method => :delete,
+                      :data => { :confirm => 'Are you sure you want to delete this prefix?  THIS CANNOT BE UNDONE.' }) %>
+          <% end %>
+        <td class="account"><%= admin_account_path_from_resource(bgp_sessions_prefix.bgp_session.resource) %></td>
+      <% end %>
+      </td>
+
+      <td class="prefix"        <%= bgp_sessions_prefixes_table_onClick(bgp_sessions_prefix) %>><%= bgp_sessions_prefix.prefix %></td>
+      <td class="prefixlen_min" <%= bgp_sessions_prefixes_table_onClick(bgp_sessions_prefix) %>><%= (i = bgp_sessions_prefix.prefixlen_min) ? '/' + i.to_s : '' %></td>
+      <td class="prefixlen_max" <%= bgp_sessions_prefixes_table_onClick(bgp_sessions_prefix) %>><%= (i = bgp_sessions_prefix.prefixlen_max) ? '/' + i.to_s : '' %></td>
+    </tr>
+
+  <% end %>
+<% end %>
+</tbody>
