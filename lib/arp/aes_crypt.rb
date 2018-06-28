@@ -16,7 +16,7 @@ module AESCrypt
   def AESCrypt.decrypt(encrypted_data, key, iv, cipher_type)
     aes = OpenSSL::Cipher.new(cipher_type)
     aes.decrypt
-    aes.key = key
+    aes.key = key[0..31]
     aes.iv = iv if iv != nil
     aes.update(encrypted_data) + aes.final
   end
@@ -35,7 +35,7 @@ module AESCrypt
   def AESCrypt.encrypt(data, key, iv, cipher_type)
     aes = OpenSSL::Cipher.new(cipher_type)
     aes.encrypt
-    aes.key = key
+    aes.key = key[0..31]
     aes.iv = iv[0..15] if iv != nil
     aes.update(data) + aes.final
   end
