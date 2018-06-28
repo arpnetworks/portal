@@ -5,6 +5,7 @@ require 'arp/tender'
 require 'arp/globals'
 require 'arp/aes_crypt'
 require 'arp/redis'
+require 'arp/hosts'
 
 require 'digest'
 

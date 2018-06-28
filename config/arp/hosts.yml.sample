@@ -1,0 +1,9 @@
+trusted_vm_hosts:
+  - foo.example.com
+  - bar.example.com
+trusted_console_hosts:
+  - foo.example.com
+  - bar.example.com
+trusted_monitor_hosts:
+  - foo.example.com
+  - bar.example.com
