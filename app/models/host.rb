@@ -6,6 +6,6 @@ class Host < ActiveRecord::Base
   end
 
   def self.hosts_for_console_passwd_file
-    Host.all.map { |host| host.hostname.split('.')[0] }.sort
+    Host.all.map { |host| host.hostname }.sort
   end
 end
