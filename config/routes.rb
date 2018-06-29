@@ -114,6 +114,23 @@ Rails.application.routes.draw do
   # Reports
   get "admin/reports/services", controller: 'admin/reports', action: 'services'
 
+  namespace :api do
+    namespace :v1 do
+      namespace :internal do
+        # TODO from below
+
+        # Legacy
+        get 'console_logins',            controller: 'utils', action: 'console_logins'
+        get 'console_passwd_file',       controller: 'utils', action: 'console_passwd_file'
+        get 'console_passwd_file/:host', controller: 'utils', action: 'console_passwd_file'
+        get 'redis/ping',                controller: 'utils', action: 'redis_ping'
+
+        # Other
+        get 'jobs/health', controller: 'utils', action: 'job_queue_health'
+      end
+    end
+  end
+
   # # Internal API
   # map.namespace(:api) do |api|
   #   api.namespace(:v1) do |v1|

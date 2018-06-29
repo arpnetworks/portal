@@ -82,6 +82,10 @@ FactoryBot.define do
     vlan 100
   end
 
+  factory :host do
+    location
+  end
+
   factory :virtual_machine do
     sequence :uuid do |n|
       UUID.generate

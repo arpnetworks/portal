@@ -7,3 +7,6 @@ trusted_console_hosts:
 trusted_monitor_hosts:
   - foo.example.com
   - bar.example.com
+proxy_hosts:
+  - foo.example.com
+  - bar.example.com
