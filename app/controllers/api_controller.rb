@@ -4,7 +4,7 @@ class ApiController < ApplicationController
   def trusted_console_hosts
     @remote_ip = request.env['REMOTE_ADDR']
 
-    if @remote_ip.in?($PROXY_HOSTS)
+    if @remote_ip.in?($PROXY_HOSTS) || @remote_ip == '127.0.0.1'
        @remote_ip = request.env['HTTP_X_FORWARDED_FOR']
     end
 
@@ -18,7 +18,7 @@ class ApiController < ApplicationController
   def trusted_vm_hosts
     @remote_ip = request.env['REMOTE_ADDR']
 
-    if @remote_ip.in?($PROXY_HOSTS)
+    if @remote_ip.in?($PROXY_HOSTS) || @remote_ip == '127.0.0.1'
        @remote_ip = request.env['HTTP_X_FORWARDED_FOR']
     end
 
@@ -35,7 +35,7 @@ class ApiController < ApplicationController
 
     @remote_ip = request.env['REMOTE_ADDR']
 
-    if @remote_ip.in?($PROXY_HOSTS)
+    if @remote_ip.in?($PROXY_HOSTS) || @remote_ip == '127.0.0.1'
        @remote_ip = request.env['HTTP_X_FORWARDED_FOR']
     end
 
