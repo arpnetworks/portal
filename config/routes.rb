@@ -117,6 +117,16 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       namespace :internal do
+        # VMs
+        put 'virtual_machines/:uuid/status/:status', controller: 'virtual_machines',
+                                                     action:     'status'
+        put 'virtual_machines/statuses',             controller: 'virtual_machines',
+                                                     action:     'statuses'
+        # Provisioning
+        get 'provisioning/:mac_address/config.tar.gz', controller: 'provisioning',
+                                                       action:     'config'
+
+        # Jobs
         put 'jobs/:id/event/:event',       controller: 'jobs',  action: 'event'
         put 'jobs/:id/event/:event/:args', controller: 'jobs',  action: 'event'
 
@@ -131,23 +141,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  # # Internal API
-  # map.namespace(:api) do |api|
-  #   api.namespace(:v1) do |v1|
-  #     v1.namespace(:internal) do |internal|
-  #       internal.connect 'virtual_machines/:uuid/status/:status', :controller => 'virtual_machines',
-  #                                                                 :action     => 'status',
-  #                                                                 :conditions => { :method => :put }
-  #       internal.connect 'virtual_machines/statuses', :controller => 'virtual_machines',
-  #                                                     :action     => 'statuses',
-  #                                                     :conditions => { :method => :put }
-  #       # Provisioning
-  #       internal.connect 'provisioning/:mac_address/config.tar.gz', :controller => 'provisioning',
-  #                                                                   :action     => 'config'
-  #     end
-  #   end
-  # end
 
   root controller: 'accounts', action: 'login'
 
