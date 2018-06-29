@@ -117,7 +117,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       namespace :internal do
-        # TODO from below
+        put 'jobs/:id/event/:event',       controller: 'jobs',  action: 'event'
+        put 'jobs/:id/event/:event/:args', controller: 'jobs',  action: 'event'
 
         # Legacy
         get 'console_logins',            controller: 'utils', action: 'console_logins'
@@ -135,8 +136,6 @@ Rails.application.routes.draw do
   # map.namespace(:api) do |api|
   #   api.namespace(:v1) do |v1|
   #     v1.namespace(:internal) do |internal|
-  #       internal.connect 'jobs/:id/event/:event',        :controller => 'jobs', :action => 'event', :conditions => { :method => :put }
-  #       internal.connect 'jobs/:id/event/:event/:args',  :controller => 'jobs', :action => 'event', :conditions => { :method => :put }
   #       internal.connect 'virtual_machines/:uuid/status/:status', :controller => 'virtual_machines',
   #                                                                 :action     => 'status',
   #                                                                 :conditions => { :method => :put }
