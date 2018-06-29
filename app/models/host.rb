@@ -4,4 +4,8 @@ class Host < ActiveRecord::Base
   def display_name
     hostname + " (#{location.code})"
   end
+
+  def self.hosts_for_console_passwd_file
+    Host.all.map { |host| host.hostname.split('.')[0] }.sort
+  end
 end
