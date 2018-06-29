@@ -59,3 +59,6 @@ test:
     initial_host:
       lax: lax-host.example.com
       fra: fra-host.example.com
+  jobs:
+    queue_health_exclusions:
+      - 1
