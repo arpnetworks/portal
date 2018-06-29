@@ -13,7 +13,7 @@ class ServicesController < ProtectedController
 
   def show
     @services = [@service]
-    @description = @service.description || ""
+    @description = @service.description_source || ""
 
     # Resource details
     instantiate_resources_of_service(@service)

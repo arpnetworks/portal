@@ -19,7 +19,7 @@
     <tr>
       <td></td>
       <td colspan="<%= services_colspan(@enable_admin_view) - 1%>" class="info">
-        <%= @pre %>
+        <%= sanitize(@pre) %>
       </td>
     </tr>
     <% end %>
