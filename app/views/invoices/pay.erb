@@ -7,7 +7,7 @@
     Your account does not have a credit card.
 
     <p>
-    <%= link_to '<i class="icon-credit-card"></i> &nbsp;Add Credit Card', new_account_credit_card_path(@account.id), class: 'btn btn-success' %>
+    <%= link_to '<i class="fas fa-credit-card"></i> &nbsp;Add Credit Card', new_account_credit_card_path(@account.id), class: 'btn btn-success' %>
     </p>
   </div>
 <% else %>
@@ -57,7 +57,7 @@
 
     <div style='margin-top: 5px'>
       <button type='submit' class='btn btn-success' id='authorize'>
-        <i class="icon-check"></i> &nbsp;Authorize
+        <i class="fas fa-check"></i> &nbsp;Authorize
       </button>
     </div>
   </div>
