@@ -36,6 +36,10 @@ class Api::V1::Internal::UtilsController < ApiController
     if @host.nil? || @host.empty?
       @vm_hosts = Host.hosts_for_console_passwd_file
     else
+      unless @host =~ /\./
+        @host += '.arpnetworks.com'
+      end
+
       @vm_hosts = [@host]
     end
 
