@@ -27,6 +27,9 @@ development:
     initial_host:
       lax: lax-host.example.com
       fra: fra-host.example.com
+  jobs:
+    queue_health_exclusions:
+      - 1
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp

@@ -34,4 +34,6 @@ if conf = @config[Rails.env]
   $ARIN_API_KEY     = conf['arin']['api_key']
 
   $PROVISIONING     = conf['provisioning']
+
+  $JOBS_QUEUE_HEALTH_EXCLUSIONS = conf['jobs']['queue_health_exclusions']
 end
