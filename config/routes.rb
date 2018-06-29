@@ -137,26 +137,15 @@ Rails.application.routes.draw do
   #     v1.namespace(:internal) do |internal|
   #       internal.connect 'jobs/:id/event/:event',        :controller => 'jobs', :action => 'event', :conditions => { :method => :put }
   #       internal.connect 'jobs/:id/event/:event/:args',  :controller => 'jobs', :action => 'event', :conditions => { :method => :put }
-
   #       internal.connect 'virtual_machines/:uuid/status/:status', :controller => 'virtual_machines',
   #                                                                 :action     => 'status',
   #                                                                 :conditions => { :method => :put }
   #       internal.connect 'virtual_machines/statuses', :controller => 'virtual_machines',
   #                                                     :action     => 'statuses',
   #                                                     :conditions => { :method => :put }
-
   #       # Provisioning
   #       internal.connect 'provisioning/:mac_address/config.tar.gz', :controller => 'provisioning',
   #                                                                   :action     => 'config'
-
-  #       # Legacy
-  #       internal.connect 'console_logins',            :controller => 'utils', :action => 'console_logins'
-  #       internal.connect 'console_passwd_file',       :controller => 'utils', :action => 'console_passwd_file'
-  #       internal.connect 'console_passwd_file/:host', :controller => 'utils', :action => 'console_passwd_file'
-  #       internal.connect 'redis/ping', :controller => 'utils', :action => 'redis_ping'
-
-  #       # Other
-  #       internal.connect 'jobs/health', :controller => 'utils', :action => 'job_queue_health'
   #     end
   #   end
   # end
