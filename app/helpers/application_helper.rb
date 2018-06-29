@@ -88,7 +88,7 @@ module ApplicationHelper
     if vlan.new_record?
       ""
     else
-      html =  "onClick=\"location.href='"
+      html =  "onClick=\"location.href='".html_safe
       html << edit_admin_vlan_path(vlan.id)
       html << "'\"".html_safe
     end
