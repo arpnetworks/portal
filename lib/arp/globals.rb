@@ -11,7 +11,8 @@ if conf = @config[Rails.env]
   # To disable online payments
   $PAYMENT_SYSTEM_DISABLED_LOCKFILE = conf['payment_system_disabled_lockfile']
 
-  $ADMINS = conf['admins']
+  $ADMINS = conf['admins']['portal']
+  $ADMINS_CONSOLE = conf['admins']['console']
   $IRR_PASSWORD = conf['irr_password']
 
   $HOST_RANCID      = conf['hosts']['rancid']

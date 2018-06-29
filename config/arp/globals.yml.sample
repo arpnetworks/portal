@@ -3,8 +3,12 @@ development:
   payment_system_disabled_lockfile: lock-it.tmp
   sr_subject: Hi
   admins:
-    - admin
-    - john
+    portal:
+      - admin
+      - john
+    console:
+      - admin
+      - larry
   irr_password: foo
   hosts:
     rancid: rancid.example.com
@@ -37,6 +41,13 @@ test:
   admins:
     - admin
     - john
+  admins:
+    portal:
+      - admin
+      - john
+    console:
+      - admin
+      - larry
   irr_password: foo
   hosts:
     rancid: rancid.example.com
