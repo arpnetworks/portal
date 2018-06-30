@@ -78,5 +78,5 @@ namespace :deploy do
     end
   end
 
-  after :updated, :copy_stragglers
+  before 'deploy:assets:precompile', :copy_stragglers
 end

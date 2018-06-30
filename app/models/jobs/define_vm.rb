@@ -4,6 +4,10 @@ class Jobs::DefineVM < Job
 
     vm   = args['vm']['virtual_machine']
 
+    if vm.nil?
+      vm = args['vm']
+    end
+
     return nil if vm['created_at'].nil?
 
     vm = VirtualMachine.find(vm['id'])

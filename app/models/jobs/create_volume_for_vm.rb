@@ -3,6 +3,11 @@ class Jobs::CreateVolumeForVM < Jobs::CreateVolume
     args = JSON.parse(args_json)
 
     vm   = args['vm']['virtual_machine']
+
+    if vm.nil?
+      vm = args['vm']
+    end
+
     opts = args['opts'] || {}
 
     opts.merge!(extract_ops(vm))
