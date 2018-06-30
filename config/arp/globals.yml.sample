@@ -13,6 +13,7 @@ development:
   hosts:
     rancid: rancid.example.com
     rancid_user: rancid-user
+    rancid_dir: /home/rancid
     console: console.example.com
   vlan_min: 20
   keyer: keymaster
@@ -52,6 +53,7 @@ test:
   hosts:
     rancid: rancid.example.com
     rancid_user: rancid-user
+    rancid_dir: /home/rancid
     console: console.example.com
   vlan_min: 20
   keyer: keymaster
