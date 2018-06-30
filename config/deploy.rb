@@ -58,11 +58,6 @@ set :ssh_options, verify_host_key: :always
 set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
 
-# Passenger
-# set :passenger_in_gemfile, true
-# set :passenger_environment_variables, { PASSENGER_INSTANCE_REGISTRY_DIR: fetch(:deploy_to) + '/shared/passenger' }
-# set :passenger_restart_command, 'bundle exec passenger-config restart-app'
-
 # Defaults to [:web]
 set :assets_roles, [:app]
 
