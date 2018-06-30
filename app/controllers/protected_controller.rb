@@ -92,7 +92,7 @@ class ProtectedController < ApplicationController
 
   def iso_files
     begin
-      files = File.readlines("config/iso-files.txt").map do |item|
+      files = File.readlines("config/arp/iso-files.txt").map do |item|
         item.strip
       end
 

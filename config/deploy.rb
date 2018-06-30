@@ -29,6 +29,7 @@ append :linked_files, "config/database.yml",
                       "config/arp/tender.yml",
                       "config/arp/redis.yml",
                       "config/arp/hosts.yml",
+                      "config/arp/iso-files.txt",
                       @deploy['configs']['billing']['gateway'],
                       @deploy['configs']['billing']['gpg'],
                       @deploy['configs']['billing']['paypal_key']
