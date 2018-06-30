@@ -65,3 +65,18 @@ set :passenger_restart_command, 'bundle exec passenger-config restart-app'
 # Defaults to [:web]
 set :assets_roles, [:app]
 
+namespace :deploy do
+  desc 'Copy stragglers'
+  task :copy_stragglers do
+    stragglers = [
+      'bin/arp/provisioning/create_new_vps_account.rb',
+      'lib/arp/utils.rb'
+    ]
+
+    stragglers.each do |straggler|
+      `scp #{straggler} foo.example.com:#{release_path}/#{straggler}`
+    end
+  end
+
+  after :updated, :copy_stragglers
+end
