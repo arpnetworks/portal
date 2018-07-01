@@ -135,6 +135,6 @@
   </tr>
   <tr>
     <td class="label">Notes:</td>
-    <td class="required"><%= f.text_area :notes %></td>
+    <td class="required"><%= text_area_tag 'virtual_machine[notes]', @virtual_machine.notes_source, size: '60x20', id: 'virtual_machine_notes' %></td>
   </tr>
 </tbody>

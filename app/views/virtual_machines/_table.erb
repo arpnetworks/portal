@@ -247,7 +247,7 @@
     <tr>
       <td></td>
       <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
-        <%= @virtual_machine.notes.nil? || @virtual_machine.notes.empty? ? "No further details" : @virtual_machine.notes %>
+        <%= @virtual_machine.notes.nil? || @virtual_machine.notes.empty? ? "No further details" : sanitize(@virtual_machine.notes) %>
       </td>
     </tr>
 
