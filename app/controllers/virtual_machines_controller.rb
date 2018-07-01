@@ -154,7 +154,7 @@ class VirtualMachinesController < ProtectedController
 
   def ssh_key_send(login, key, append)
     Kernel.system("ssh", "-o", "ConnectTimeout 5", "#{$KEYER}@#{$HOST_CONSOLE}", "add",
-                  append ? 1 : 0, login, key)
+                  append ? '1' : '0', login, key)
 
     Mailer.simple_notification('SSH Key Submission', "add " + (append ? 1 : 0).to_s + " #{login} #{key}").deliver_now
   end
