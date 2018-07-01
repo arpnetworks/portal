@@ -24,8 +24,9 @@ class Job < ActiveRecord::Base
     end
 
     event :finish, :after => Proc.new { notify_dependent_jobs! } do
-      transitions :from => :running, :to => :done,
-                  :after => Proc.new { |obj, *args| obj.set_process(*args) }
+      transitions :from => :running, :to => :done
+                  # WIP: :after => Proc.new { |obj, *args| obj.set_process(*args) }
+                  # from the Rails 2 codebase, so it's probably garbage now
     end
 
     event :cancel do
