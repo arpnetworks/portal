@@ -127,10 +127,10 @@ class ServicesController < ProtectedController
 
       case session[:service_to_enable]
       when 'vps'
-        plan = session[:form][:plan]
+        plan = session[:form]['plan']
         plan_struct = VirtualMachine.plans['vps'][plan]
 
-        os = session[:form][:os]
+        os = session[:form]['os']
 
         # Mostly for informational purposes...
         Mailer.new_service_vps(@account,
