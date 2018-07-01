@@ -3,6 +3,8 @@ class Api::V1::Internal::UtilsController < ApiController
   before_filter :trusted_console_hosts, only: [:console_passwd_file]
   before_filter :trusted_monitor_hosts, only: [:redis_ping, :job_queue_health]
 
+  skip_before_action :verify_authenticity_token, only: [:console_logins]
+
   def console_logins
     if request.post?
       @body = request.body.read
