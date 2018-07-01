@@ -113,7 +113,7 @@ class ServicesController < ProtectedController
 
 
     loc = session['form']['location']
-    if %w(lax fra).includes(loc)
+    if %w(lax fra).include?(loc)
       @initial_vm_host = $PROVISIONING['initial_host'][loc]
     else
       raise "Invalid location: #{loc}"
