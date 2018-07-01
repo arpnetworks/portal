@@ -131,10 +131,10 @@ Rails.application.routes.draw do
         put 'jobs/:id/event/:event/:args', controller: 'jobs',  action: 'event'
 
         # Legacy
-        get 'console_logins',            controller: 'utils', action: 'console_logins'
-        get 'console_passwd_file',       controller: 'utils', action: 'console_passwd_file'
-        get 'console_passwd_file/:host', controller: 'utils', action: 'console_passwd_file'
-        get 'redis/ping',                controller: 'utils', action: 'redis_ping'
+        post 'console_logins',            controller: 'utils', action: 'console_logins'
+        get  'console_passwd_file',       controller: 'utils', action: 'console_passwd_file'
+        get  'console_passwd_file/:host', controller: 'utils', action: 'console_passwd_file'
+        get  'redis/ping',                controller: 'utils', action: 'redis_ping'
 
         # Other
         get 'jobs/health', controller: 'utils', action: 'job_queue_health'
