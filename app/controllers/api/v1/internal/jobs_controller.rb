@@ -2,6 +2,8 @@ class Api::V1::Internal::JobsController < ApiController
   before_filter :trusted_hosts
   before_filter :find_job, only: [:event, :retval]
 
+  skip_before_action :verify_authenticity_token, only: [:event]
+
   def event
     event = params[:event]
     args  = params[:args]
