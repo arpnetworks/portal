@@ -573,7 +573,7 @@ class Account < ActiveRecord::Base
   def sales_receipt_line_items(invoices)
     line_items = []
 
-    invoices.sort! { |a, b| a.date <=> b.date }
+    invoices = invoices.sort { |a, b| a.date <=> b.date }
 
     invoices.each do |invoice|
       invoice.line_items.order(date: :desc)
