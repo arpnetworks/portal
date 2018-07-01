@@ -463,8 +463,8 @@ class VirtualMachine < ActiveRecord::Base
     end
 
     # Passwords
-    @vnc_password       = opts[:vnc_password]       || %x(pwgen -nc 8 1).strip
-    @conserver_password = opts[:conserver_password] || %x(pwgen -nc 8 1).strip
+    @vnc_password       = opts[:vnc_password]       || %x[/usr/bin/pwgen -nc 8 1].strip
+    @conserver_password = opts[:conserver_password] || %x[/usr/bin/pwgen -nc 8 1].strip
     @console_login      = opts[:console_login]      || service.account.login
 
     # Informational
