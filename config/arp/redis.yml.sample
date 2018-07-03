@@ -7,3 +7,8 @@ development:
   host: localhost
   port: 9000
   db: 0
+
+test:
+  host: localhost
+  port: 9000
+  db: 0
