@@ -83,7 +83,7 @@ Rails.application.configure do
   # Exception Notifier
   config.middleware.use ExceptionNotification::Rack,
     email: {
-      email_prefix: "*BETA* [ARP Networks Portal] ",
+      email_prefix: "[ARP Networks Portal] ",
       sender_address: %{"Application Error" <info@arpnetworks.com>},
       exception_recipients: %w{gdolley@arpnetworks.com}
     },
