@@ -24,7 +24,7 @@
     <td class="required"><%= f.text_field :title, :size => 70 %></td>
   </tr><tr>
     <td class="label valign-top">Service Details:</td>
-    <td class="required"><%= f.text_area :description, :rows => 16, :cols => 48 %></td>
+    <td class="required"><%= text_area_tag 'service[description]', @service.description_source, size: '60x20', id: 'service_description' %></td>
   </tr><tr>
     <td class="label">Coupon Code:</td>
     <td class="required"><%= f.text_field :coupon, :size => 20 %></td>
