@@ -13,6 +13,8 @@ context VirtualMachinesController do
     @service = @vm.resource.service
 
     @account.services << @service
+
+    allow(ARP_REDIS).to receive(:lpush) { nil }
   end
 
   context "boot action" do
@@ -48,7 +50,8 @@ context VirtualMachinesController do
       end
 
       specify "should write request to 'start' VM" do
-        expect(@controller).to receive(:write_request).with(@vm, "start")
+        allow(@account).to receive("find_virtual_machine_by_id").with(@vm.id.to_s) { @vm }
+        expect(@vm).to receive(:change_state!).with('start')
         do_get
       end
     end
@@ -94,7 +97,8 @@ context VirtualMachinesController do
       end
 
       specify "should write request to 'shutdown' VM" do
-        expect(@controller).to receive(:write_request).with(@vm, "shutdown")
+        allow(@account).to receive("find_virtual_machine_by_id").with(@vm.id.to_s) { @vm }
+        expect(@vm).to receive(:change_state!).with('shutdown')
         do_get
       end
     end
@@ -140,7 +144,8 @@ context VirtualMachinesController do
       end
 
       specify "should write request to 'destroy' VM" do
-        expect(@controller).to receive(:write_request).with(@vm, "destroy")
+        allow(@account).to receive("find_virtual_machine_by_id").with(@vm.id.to_s) { @vm }
+        expect(@vm).to receive(:change_state!).with('destroy')
         do_get
       end
     end

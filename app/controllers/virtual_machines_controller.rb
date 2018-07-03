@@ -3,7 +3,7 @@ class VirtualMachinesController < ProtectedController
     vm = @account.find_virtual_machine_by_id(params[:id])
 
     if vm
-      write_request(vm, "start")
+      vm.change_state!('start')
 
       flash[:notice_for_vm] = "Request to boot VM has been sent, please allow 5 - 10 seconds for this request to be processed."
     end
@@ -24,7 +24,7 @@ class VirtualMachinesController < ProtectedController
     vm = @account.find_virtual_machine_by_id(params[:id])
 
     if vm
-      write_request(vm, "shutdown")
+      vm.change_state!('shutdown')
 
       flash[:notice_for_vm] = "Request to gracefully shutdown VM has been sent, please allow 5 - 10 seconds for this request to be processed."
     end
@@ -41,7 +41,7 @@ class VirtualMachinesController < ProtectedController
     vm = @account.find_virtual_machine_by_id(params[:id])
 
     if vm
-      write_request(vm, "destroy")
+      vm.change_state!('destroy')
 
       flash[:notice_for_vm] = "Request to forcefully shutdown VM has been sent, please allow 5 - 10 seconds for this request to be processed."
     end

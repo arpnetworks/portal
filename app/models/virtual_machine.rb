@@ -300,6 +300,21 @@ class VirtualMachine < ActiveRecord::Base
     ARP_REDIS.lpush("queue:#{host}", job.to_json);
   end
 
+  def change_state!(state)
+    host = abbreviated_host
+
+    job = {
+      :class => 'ChangeStateWorker',
+      :args  => [self.uuid, state],
+      :jid   => SecureRandom.hex(12).to_s,
+      :retry => true,
+      :enqueued_at => Time.now.to_f.to_s,
+      :created_at  => Time.now.to_f.to_s
+    }
+
+    ARP_REDIS.lpush("queue:#{host}", job.to_json);
+  end
+
   def cluster
     cluster = nil
 
