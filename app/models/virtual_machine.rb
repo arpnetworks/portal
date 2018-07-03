@@ -285,12 +285,12 @@ class VirtualMachine < ActiveRecord::Base
     end
   end
 
-  def set_iso!(iso)
+  def set_iso!(iso, opts = {})
     host = abbreviated_host
 
     job = {
       :class => 'SetIsoWorker',
-      :args  => [self.uuid, iso],
+      :args  => [self.uuid, iso, opts[:legacy]],
       :jid   => SecureRandom.hex(12).to_s,
       :retry => true,
       :enqueued_at => Time.now.to_f.to_s,

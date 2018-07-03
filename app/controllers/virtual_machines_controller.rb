@@ -66,8 +66,7 @@ class VirtualMachinesController < ProtectedController
           # Our new way, based on Redis
           vm.set_iso!(@iso_file)
         else
-          write_request(vm, "set-param", "cdrom-iso #{$ISO_BASE}/#{@iso_file}")
-          write_request(vm, "change-cdrom", "#{$ISO_BASE}/#{@iso_file}")
+          vm.set_iso!("#{$ISO_BASE}/#{@iso_file}", legacy: true)
         end
 
         flash[:notice_for_vm_iso] = "Request to change CD-ROM ISO has been sent, please allow 5 - 10 seconds for this request to be processed."
