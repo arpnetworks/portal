@@ -19,11 +19,6 @@ context VirtualMachinesController do
 
   context "boot action" do
 
-    before do
-      # We don't want request files to be littered around
-      allow(controller).to receive(:write_request).and_return(nil)
-    end
-
     def do_get(opts = {})
       get :boot, { :account_id => @account.id, :service_id => @service.id,
                    :id => @vm.id }.merge(opts)
@@ -73,11 +68,6 @@ context VirtualMachinesController do
 
   context "shutdown action" do
 
-    before do
-      # We don't want request files to be littered around
-      allow(controller).to receive(:write_request).and_return(nil)
-    end
-
     def do_get(opts = {})
       get :shutdown, { :account_id => @account.id, :service_id => @service.id,
                        :id => @vm.id }.merge(opts)
@@ -119,11 +109,6 @@ context VirtualMachinesController do
   end
 
   context "shutdown_hard action" do
-
-    before do
-      # We don't want request files to be littered around
-      allow(controller).to receive(:write_request).and_return(nil)
-    end
 
     def do_get(opts = {})
       get :shutdown_hard, { :account_id => @account.id, :service_id => @service.id,
@@ -173,11 +158,8 @@ context VirtualMachinesController do
         'FreeBSD-9.2-RELEASE-i386-disc1.iso'
       ]
 
-      # We don't want request files to be littered around
-      allow(controller).to receive(:write_request).and_return(nil)
-      allow(controller).to receive(:iso_files).and_return(@iso_files)
-
       allow(@account).to receive(:find_virtual_machine_by_id).with(@vm.id.to_s).and_return(@vm)
+      allow(controller).to receive(:iso_files).and_return(@iso_files)
       allow(@vm).to receive(:set_iso!)
     end
 
@@ -206,8 +188,6 @@ context VirtualMachinesController do
           iso = 'OpenBSD-5.4-amd64-install54.iso'
           s = "cdrom-iso #{$ISO_BASE}/#{iso}"
           expect(@vm).to receive(:set_iso!).with(iso) { true }
-          # Old way
-          # @controller.should_receive(:write_request).with(@vm, "set-param", s)
           do_get(:iso_file => iso)
         end
       end
