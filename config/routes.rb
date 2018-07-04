@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  # ===========================
-  # BEGIN: Copy from old Portal
-  # ===========================
-
   resources :accounts do
     collection do
       get  'forgot_password'
@@ -143,10 +139,6 @@ Rails.application.routes.draw do
   end
 
   root controller: 'accounts', action: 'login'
-
-  # =========================
-  # END: Copy from old Portal
-  # =========================
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
