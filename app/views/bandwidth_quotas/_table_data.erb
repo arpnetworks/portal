@@ -52,9 +52,9 @@
   <% reset_cycle %>
   <% @bandwidth_quotas.each do |bandwidth_quota| %>
     <% if @enable_admin_view %>
-      <tr class="<%= cycle("odd", "even") -%>" <%= bandwidth_quotas_table_onClick(bandwidth_quota) %>>
+      <tr class="<%= cycle("odd", "even") -%>">
     <% else %>
-      <tr class="<%= cycle("even", "odd") -%>" style="cursor: default" <%= bandwidth_quotas_table_onClick(bandwidth_quota) %>>
+      <tr class="<%= cycle("even", "odd") -%>" style="cursor: default">
     <% end %>
       <td class="action">
       <% if @enable_admin_view %>
@@ -75,12 +75,12 @@
       <% end %>
       </td>
 
-      <td class="commit"><%= bandwidth_quota.commit %> <%= bandwidth_quota.commit_unit %></td>
-      <td class="overage"><%= money(bandwidth_quota.commit_overage) %> / <%= bandwidth_quota.commit_unit %></td>
-      <td class="url"><%= link_to(truncate(bandwidth_quota.graph_url, :length => 40), bandwidth_quota.graph_url) %></td>
+      <td class="commit"   <%= bandwidth_quotas_table_onClick(bandwidth_quota) %>><%= bandwidth_quota.commit %> <%= bandwidth_quota.commit_unit %></td>
+      <td class="overage"  <%= bandwidth_quotas_table_onClick(bandwidth_quota) %>><%= money(bandwidth_quota.commit_overage) %> / <%= bandwidth_quota.commit_unit %></td>
+      <td class="url"      <%= bandwidth_quotas_table_onClick(bandwidth_quota) %>><%= link_to(truncate(bandwidth_quota.graph_url, :length => 40), bandwidth_quota.graph_url) %></td>
 
       <% if !@enable_admin_view %>
-        <td class="username"><%= bandwidth_quota.cacti_username %></td>
+        <td class="username" <%= bandwidth_quotas_table_onClick(bandwidth_quota) %>><%= bandwidth_quota.cacti_username %></td>
         <td class="password"><span id='bw-password' class='magic-password'><%= bandwidth_quota.cacti_password %></span></td>
       <% end %>
     </tr>
