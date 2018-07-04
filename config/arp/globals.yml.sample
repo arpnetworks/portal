@@ -14,7 +14,10 @@ development:
     rancid: rancid.example.com
     rancid_user: rancid-user
     rancid_dir: /home/rancid
+    rancid_provision_vlan_script: /home/scripts/foo.sh
     console: console.example.com
+    cacti: cacti.example.com
+    portal: portal.example.com
   vlan_min: 20
   keyer: keymaster
   simple_crypt_key: 'PdSgVkYp3s5v8y/B?E(H+MbQeThWmZq4'
@@ -54,7 +57,10 @@ test:
     rancid: rancid.example.com
     rancid_user: rancid-user
     rancid_dir: /home/rancid
+    rancid_provision_vlan_script: /home/scripts/foo.sh
     console: console.example.com
+    cacti: cacti.example.com
+    portal: portal.example.com
   vlan_min: 20
   keyer: keymaster
   simple_crypt_key: 'PdSgVkYp3s5v8y/B?E(H+MbQeThWmZq4'
