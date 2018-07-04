@@ -46,9 +46,9 @@
   <% reset_cycle %>
   <% @virtual_machines.each do |virtual_machine| %>
     <% if @enable_admin_view %>
-      <tr class="<%= cycle("odd", "even") -%>" <%= virtual_machines_table_onClick(virtual_machine) %>>
+      <tr class="<%= cycle("odd", "even") -%>">
     <% else %>
-      <tr class="<%= cycle("even", "odd") -%>" style="cursor: default" <%= virtual_machines_table_onClick(virtual_machine) %>>
+      <tr class="<%= cycle("even", "odd") -%>" style="cursor: default">
     <% end %>
       <td class="action">
       <% if @enable_admin_view %>
@@ -69,10 +69,10 @@
       <% end %>
       </td>
 
-      <td class="ram"><%= virtual_machine.ram %> MB</td>
-      <td class="storage"><%= virtual_machine.storage %> GB</td>
-      <td><%= virtual_machine.os %></td>
-      <td><%= virtual_machine.uuid %></td>
+      <td class="ram"     <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.ram %> MB</td>
+      <td class="storage" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.storage %> GB</td>
+      <td <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.os %></td>
+      <td <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.uuid %></td>
 
     </tr>
   <% end %>
