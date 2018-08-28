@@ -49,7 +49,7 @@ describe Admin::AccountsController do
 
     it "should create new account" do
       num_records = Account.count
-      do_post(@params.merge(:account => @params[:account].merge(:login => 'foo2', :company => 'foo', :password => 'foo', :password_confirmation => 'foo')))
+      do_post(@params.merge(:account => @params[:account].merge(:login => 'foo2', :company => 'foo', :password => 'foobarbaz', :password_confirmation => 'foobarbaz')))
       expect(Account.count).to eq(num_records + 1)
       expect(response).to redirect_to(admin_accounts_path)
       expect(flash[:notice]).to_not be_nil
