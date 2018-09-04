@@ -104,14 +104,14 @@ context BackupQuotasController do
 
     specify "should execute shell command to submit key to console.cust (without append)" do
       expect(Kernel).to receive(:system).\
-        with("ssh", "-o", "ConnectTimeout 5", "#{$KEYER}@#{@server}", "add", '0', @login, @quota, @key)
+        with("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$KEYER}@#{@server}", "add", '0', @login, @quota, @key)
 
       do_ssh_key_send(@server, @login, @key, false, @quota)
     end
 
     specify "should execute shell command to submit key to console.cust (with append)" do
       expect(Kernel).to receive(:system).\
-        with("ssh", "-o", "ConnectTimeout 5", "#{$KEYER}@#{@server}", "add", '1', @login, @quota, @key)
+        with("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$KEYER}@#{@server}", "add", '1', @login, @quota, @key)
 
       do_ssh_key_send(@server, @login, @key, true, @quota)
     end

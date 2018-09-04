@@ -334,13 +334,13 @@ context VirtualMachinesController do
 
     specify "should execute shell command to submit key to console.cust (without append)" do
       expect(Kernel).to receive(:system).\
-        with("ssh", "-o", "ConnectTimeout=5", "#{$KEYER}@#{$HOST_CONSOLE}", "add", '0', @login, @key)
+        with("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$KEYER}@#{$HOST_CONSOLE}", "add", '0', @login, @key)
       do_ssh_key_send(@login, @key, false)
     end
 
     specify "should execute shell command to submit key to console.cust (with append)" do
       expect(Kernel).to receive(:system).\
-        with("ssh", "-o", "ConnectTimeout=5", "#{$KEYER}@#{$HOST_CONSOLE}", "add", '1', @login, @key)
+        with("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$KEYER}@#{$HOST_CONSOLE}", "add", '1', @login, @key)
       do_ssh_key_send(@login, @key, true)
     end
   end

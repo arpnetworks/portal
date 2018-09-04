@@ -142,7 +142,7 @@ class Admin::VlansController < Admin::HeadQuartersController
   protected
 
   def send_command(cmd, vlan_id, location, otp)
-    Kernel.system("ssh", "-o", "ConnectTimeout 5", "#{$HOST_RANCID_USER}@#{$HOST_RANCID}",
+    Kernel.system("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$HOST_RANCID_USER}@#{$HOST_RANCID}",
                   otp, cmd, vlan_id.to_s, location)
   end
 

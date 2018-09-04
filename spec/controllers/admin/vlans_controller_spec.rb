@@ -308,14 +308,14 @@ describe Admin::VlansController do
 
     specify "should execute shell command to shutdown VLAN" do
       expect(Kernel).to receive(:system).\
-        with("ssh", "-o", "ConnectTimeout 5", "#{$HOST_RANCID_USER}@#{$HOST_RANCID}", @otp, 'shutdown_vlan', @vlan_id.to_s, @location)
+        with("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$HOST_RANCID_USER}@#{$HOST_RANCID}", @otp, 'shutdown_vlan', @vlan_id.to_s, @location)
 
       do_send_command('shutdown_vlan', @vlan_id, @location, @otp)
     end
 
     specify "should execute shell command to restore VLAN" do
       expect(Kernel).to receive(:system).\
-        with("ssh", "-o", "ConnectTimeout 5", "#{$HOST_RANCID_USER}@#{$HOST_RANCID}", @otp, 'restore_vlan', @vlan_id.to_s, @location)
+        with("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$HOST_RANCID_USER}@#{$HOST_RANCID}", @otp, 'restore_vlan', @vlan_id.to_s, @location)
 
       do_send_command('restore_vlan', @vlan_id, @location, @otp)
     end
