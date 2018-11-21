@@ -23,6 +23,9 @@
     <td class="label">Service Title:</td>
     <td class="required"><%= f.text_field :title, :size => 70 %></td>
   </tr><tr>
+    <td class="label">Customer Label:</td>
+    <td class="required"><%= f.text_field :label, :size => 70 %></td>
+  </tr><tr>
     <td class="label valign-top">Service Details:</td>
     <td class="required"><%= text_area_tag 'service[description]', @service.description_source, size: '60x20', id: 'service_description' %></td>
   </tr><tr>
@@ -34,7 +37,6 @@
   </tr><tr>
     <td class="label">Billing Interval (months):</td>
     <td class="required"><%= f.text_field :billing_interval, :size => 10 %></td>
-  </tr>
   </tr><tr>
     <td class="label">Billing Due On (date):</td>
     <td class="required"><%= f.text_field :billing_due_on, :size => 10 %></td>
