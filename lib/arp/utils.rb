@@ -19,6 +19,23 @@ EOF")
   end
 end
 
+def configure_cacti!(vlan, username, password, location)
+  h = `hostname`.chomp
+
+  exec = "ssh #{$HOST_CACTI} 'cd #{$HOST_CACTI_DIR} && #{$HOST_CACTI_REINDEX_LOCATION_SCRIPT} #{location} && #{$HOST_CACTI_ADD_GRAPH_FOR_VLAN_SCRIPT} #{vlan} #{location} && #{$HOST_CACTI_ADD_CUSTOMER_SCRIPT} #{username} #{password} #{vlan} #{location}'"
+  puts "Executing the following:"
+  puts exec
+  puts ""
+
+  if h == $HOST_PORTAL
+    Kernel.system(exec)
+  end
+end
+
+def local_graph_id_for_vlan(vlan, location)
+  %x(ssh #{$HOST_CACTI} 'cd #{$HOST_CACTI_DIR} && #{$HOST_CACTI_GET_GRAPH_ID_FOR_VLAN_SCRIPT} #{vlan} #{location}').chomp
+end
+
 # Code similar to this is in:
 # controllers/admin/vlans_controller.rb
 def shutdown_vlan(otp, vlan_id, location)
