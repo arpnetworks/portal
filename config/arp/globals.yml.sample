@@ -17,6 +17,7 @@ development:
     rancid_provision_vlan_script: /home/scripts/foo.sh
     console: console.example.com
     cacti: cacti.example.com
+    cacti_dir: /home/cacti
     portal: portal.example.com
   vlan_min: 20
   keyer: keymaster
@@ -60,6 +61,7 @@ test:
     rancid_provision_vlan_script: /home/scripts/foo.sh
     console: console.example.com
     cacti: cacti.example.com
+    cacti_dir: /home/cacti
     portal: portal.example.com
   vlan_min: 20
   keyer: keymaster

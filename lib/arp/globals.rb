@@ -17,6 +17,7 @@ if conf = @config[Rails.env]
   $HOST_RANCID_PROVISION_VLAN_SCRIPT = conf['hosts']['rancid_provision_vlan_script']
   $HOST_CONSOLE     = conf['hosts']['console']
   $HOST_CACTI       = conf['hosts']['cacti']
+  $HOST_CACTI_DIR   = conf['hosts']['cacti_dir']
   $HOST_PORTAL      = conf['hosts']['portal']
 
   $VLAN_MIN = conf['vlan_min']
