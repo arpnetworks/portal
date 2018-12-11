@@ -5,6 +5,21 @@ class Admin::HeadQuartersController < ProtectedController
 
   protect_from_forgery :except => [:su]
 
+  def su
+    if request.post?
+      if @is_super_admin
+        @account = Account.find_by_login(params[:user][:login])
+        session[:account_id] = @account.id
+        redirect_to dashboard_path and return
+      end
+    end
+
+    redirect_to admin_path
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = "You took a wrong turn at Albuquerque"
+    redirect_to admin_path
+  end
+
   def whoami
     render :text => %x{whoami}
   end
@@ -65,6 +80,7 @@ class Admin::HeadQuartersController < ProtectedController
 
     @sub_admin_view = false # No longer used
 
+    @is_super_admin = $SUPER_ADMINS.include?(@account.login)
 
     # If the 'cv' param is set, then the views will be rendered as if a
     # customer was logged in.  cv = "customer view".  A quick shortcut to

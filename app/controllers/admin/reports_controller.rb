@@ -2,10 +2,6 @@ class Admin::ReportsController < Admin::HeadQuartersController
   before_filter :check_access
 
   def services
-    unless @is_super_admin
-      render :text => 'Not authorized' and return
-    end
-
     vps_service_code = ServiceCode.find_by_name('VPS')
     ip_block_service_code = ServiceCode.find_by_name('IP_BLOCK')
     metal_service_code = ServiceCode.find_by_name('METAL')
@@ -154,7 +150,7 @@ class Admin::ReportsController < Admin::HeadQuartersController
   end
 
   def check_access
-    unless @is_superadmin
+    unless @is_super_admin
       redirect_to admin_path
     end
   end
