@@ -9,6 +9,8 @@ development:
     console:
       - admin
       - larry
+  super_admins:
+    - john
   irr_password: foo
   hosts:
     rancid: rancid.example.com
@@ -49,15 +51,14 @@ test:
   payment_system_disabled_lockfile: lock-it.tmp
   sr_subject: Hi
   admins:
-    - admin
-    - john
-  admins:
     portal:
       - admin
       - john
     console:
       - admin
       - larry
+  super_admins:
+    - john
   irr_password: foo
   hosts:
     rancid: rancid.example.com

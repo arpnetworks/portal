@@ -9,6 +9,7 @@ if conf = @config[Rails.env]
 
   $ADMINS = conf['admins']['portal']
   $ADMINS_CONSOLE = conf['admins']['console']
+  $SUPER_ADMINS = conf['super_admins']
   $IRR_PASSWORD = conf['irr_password']
 
   $HOST_RANCID      = conf['hosts']['rancid']

@@ -2,7 +2,7 @@ class Admin::ReportsController < Admin::HeadQuartersController
   before_filter :check_access
 
   def services
-    unless @is_superadmin
+    unless @is_super_admin
       render :text => 'Not authorized' and return
     end
 
