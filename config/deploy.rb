@@ -40,7 +40,8 @@ append :linked_dirs, "log",
                      "tmp/pids",
                      "tmp/cache",
                      "tmp/sockets",
-                     ".bundle"
+                     ".bundle",
+                     "vm-base" # For VM auto-provisioning
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
