@@ -43,6 +43,9 @@ development:
     initial_host:
       lax: lax-host.example.com
       fra: fra-host.example.com
+    host_suffix: cust.example.com
+    scripts:
+      make_config: ./make-it.sh
   jobs:
     queue_health_exclusions:
       - 1
