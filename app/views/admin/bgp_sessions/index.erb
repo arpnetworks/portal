@@ -20,8 +20,8 @@
   <div class='title2'>Provisioning Helper</div>
 
   <% ['s1.lax', 's7.lax', 's1.fra', 's2.fra'].each do |router| %>
-    <% sessions_v4 = BgpSession.all(:conditions => "(peer_host = '#{router}' || peer_host = '#{router}.arpnetworks.com') && peer_ip_address_a not like '%:%'") %>
-    <% sessions_v6 = BgpSession.all(:conditions => "(peer_host = '#{router}' || peer_host = '#{router}.arpnetworks.com') && peer_ip_address_a like '%:%'") %>
+    <% sessions_v4 = BgpSession.where("(peer_host = '#{router}' || peer_host = '#{router}.arpnetworks.com') && peer_ip_address_a not like '%:%'") %>
+    <% sessions_v6 = BgpSession.where("(peer_host = '#{router}' || peer_host = '#{router}.arpnetworks.com') && peer_ip_address_a like '%:%'") %>
 
     <% [sessions_v4, sessions_v6].each do |sessions| %>
     <% if !sessions.empty? %>
