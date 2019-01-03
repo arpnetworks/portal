@@ -17,8 +17,8 @@ class Account < ActiveRecord::Base
   validates_length_of        :login   , :within => 3..48
   validates_presence_of      :password_confirmation, :if => :password_changed?
   validates_format_of        :login   , :with => /\A[0-9a-z_-]+\z/i, :message => 'can contain only numbers and letters.'
-  validates_format_of        :email_billing, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :allow_blank => true
-  validates_format_of        :email2       , :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :allow_blank => true
+  validates_format_of        :email_billing, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\s*\Z/i, :allow_blank => true
+  validates_format_of        :email2       , :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\s*\Z/i, :allow_blank => true
 
   def validate
   end
