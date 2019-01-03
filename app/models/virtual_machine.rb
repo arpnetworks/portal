@@ -30,53 +30,53 @@ class VirtualMachine < ActiveRecord::Base
       "vps" => {
         "small" => {
           'name'    => 'Small',
-          'ram'     => 512,
-          'storage' => 20,
-          'bandwidth' => 1000,
+          'ram'     => 1024,
+          'storage' => 40,
+          'bandwidth' => 2000,
 
           'mrc'     => 10
         },
         "medium" => {
           'name'    => 'Medium',
-          'ram'     => 768,
-          'storage' => 20,
-          'bandwidth' => 1500,
+          'ram'     => 1536,
+          'storage' => 40,
+          'bandwidth' => 3000,
 
           'mrc'     => 15
 
         },
         "all-purpose" => {
           'name'    => 'All-Purpose',
-          'ram'     => 1024,
-          'storage' => 20,
-          'bandwidth' => 2000,
+          'ram'     => 2048,
+          'storage' => 40,
+          'bandwidth' => 4000,
 
           'mrc'     => 20
 
         },
         "large" => {
           'name'    => 'Large',
-          'ram'     => 1536,
-          'storage' => 40,
-          'bandwidth' => 3000,
+          'ram'     => 3072,
+          'storage' => 80,
+          'bandwidth' => 6000,
 
           'mrc'     => 30
 
         },
         "jumbo" => {
           'name'    => 'Jumbo',
-          'ram'     => 2560,
-          'storage' => 80,
-          'bandwidth' => 4000,
+          'ram'     => 4096,
+          'storage' => 160,
+          'bandwidth' => 8000,
 
           'mrc'     => 40
 
         },
         "the american" => {
           'name'    => '"The American"',
-          'ram'     => 4096,
-          'storage' => 120,
-          'bandwidth' => 6000,
+          'ram'     => 8192,
+          'storage' => 240,
+          'bandwidth' => 12000,
 
           'mrc'     => 60
 
