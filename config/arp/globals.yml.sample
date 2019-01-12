@@ -44,6 +44,7 @@ development:
       lax: lax-host.example.com
       fra: fra-host.example.com
     host_suffix: cust.example.com
+    vm_base: /home/provisioning/vm
     scripts:
       make_config: ./make-it.sh
   jobs:
