@@ -259,7 +259,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aasm
+  aasm (~> 4.0)
   activemerchant
   brakeman
   byebug
@@ -285,6 +285,7 @@ DEPENDENCIES
   rspec-activemodel-mocks
   rspec-html-matchers
   rspec-rails
+  sass (= 3.5.6)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   simplecov
