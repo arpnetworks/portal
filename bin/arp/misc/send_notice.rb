@@ -39,6 +39,10 @@ def usage
   -s <addl> OPTIONAL
 
             Additional text to append to the subject line
+
+  --everyone OPTIONAL
+
+            Send notice to ALL active customers; overrides --node
 HELP
 end
 
@@ -59,7 +63,7 @@ opts.on("-t", "--type scheduled|emergency|outage", 'Set notice type') { |o| type
 opts.on("-d", "--dry-run", 'Do not actually send emails') { |o| dry = o }
 opts.on("-a", "--admins-only", 'Send notice to admins only') { |o| admins = o }
 opts.on("-s", "--subject-additional TEXT", 'Append extra text to the subject') { |o| subject_additional = o }
-opts.on("--everyone", 'Send notice to ALL active customers; overrides --nodes') { |o| everyone = o }
+opts.on("--everyone", 'Send notice to ALL active customers; overrides --node') { |o| everyone = o }
 opts.parse(ARGV) rescue usage && exit
 
 if node.nil? || file.nil? || type.nil?
