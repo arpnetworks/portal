@@ -48,8 +48,8 @@ group :test do
   gem 'rspec-activemodel-mocks'
   gem 'rspec-html-matchers'
 
-  gem 'factory_bot'
-  gem 'factory_bot_rails'
+  gem 'factory_bot', '~> 4.0'
+  gem 'factory_bot_rails', '~> 4.0'
 
   gem 'simplecov', require: false
 end
