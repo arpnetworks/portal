@@ -49,6 +49,7 @@ type = nil
 dry  = nil
 admins = nil
 subject_additional = nil
+everyone = nil
 
 # Parse args
 opts = OptionParser.new
@@ -58,6 +59,7 @@ opts.on("-t", "--type scheduled|emergency|outage", 'Set notice type') { |o| type
 opts.on("-d", "--dry-run", 'Do not actually send emails') { |o| dry = o }
 opts.on("-a", "--admins-only", 'Send notice to admins only') { |o| admins = o }
 opts.on("-s", "--subject-additional TEXT", 'Append extra text to the subject') { |o| subject_additional = o }
+opts.on("--everyone", 'Send notice to ALL active customers; overrides --nodes') { |o| everyone = o }
 opts.parse(ARGV) rescue usage && exit
 
 if node.nil? || file.nil? || type.nil?
@@ -78,15 +80,27 @@ unless File.exists?(file)
   exit 1
 end
 
-emails = VirtualMachine.where(host: node).map do |o|
-  email  = o.resource.service.account.email
-  email2 = o.resource.service.account.email2
+if everyone
+  emails = Account.select { |o| o.active? }.map do |o|
+    email  = o.email
+    email2 = o.email2
 
-  email  = email  =~ /@/ ? email  : nil
-  email2 = email2 =~ /@/ ? email2 : nil
+    email  = email  =~ /@/ ? email  : nil
+    email2 = email2 =~ /@/ ? email2 : nil
 
-  [email, email2]
-end.flatten.compact.uniq
+    [email, email2]
+  end.flatten.compact.uniq
+else
+  emails = VirtualMachine.where(host: node).map do |o|
+    email  = o.resource.service.account.email
+    email2 = o.resource.service.account.email2
+
+    email  = email  =~ /@/ ? email  : nil
+    email2 = email2 =~ /@/ ? email2 : nil
+
+    [email, email2]
+  end.flatten.compact.uniq
+end
 
 @subject = nil
 @body    = nil

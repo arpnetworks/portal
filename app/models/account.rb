@@ -397,6 +397,11 @@ class Account < ActiveRecord::Base
     total_outstanding < 50
   end
 
+  # A customer is active if they have active services in their account
+  def active?
+    !services.active.empty?
+  end
+
   def create_pro_rated_invoice!(code, descr, amount, opts = {})
     if amount <= 0
       return nil
