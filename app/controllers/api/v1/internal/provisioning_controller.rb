@@ -3,7 +3,7 @@ class Api::V1::Internal::ProvisioningController < ApiController
   before_filter :find_virtual_machine, only: [:config]
 
   def config
-    @vm_base = RAILS_ROOT + $PROVISIONING['vm_base']
+    @vm_base = Rails.root + $PROVISIONING['vm_base']
 
     @ip_address   = @virtual_machine.ip_address
     @ipv6_address = @virtual_machine.ipv6_address
