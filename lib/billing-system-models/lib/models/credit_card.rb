@@ -110,8 +110,10 @@ class CreditCard < ActiveRecord::Base
 
       # Since we cannot compare float's with certainty, we convert them to
       # strings
-      if sum.to_s != amount.to_s
-        error = "Sum of line item amounts (#{sum}) does not equal charge amount (#{amount})"
+      sum_to_check = sprintf("%01.2f", sum)
+      amount_to_check = sprintf("%01.2f", amount)
+      if sum_to_check != amount_to_check
+        error = "Sum of line item amounts (#{sum_to_check}) does not equal charge amount (#{amount_to_check})"
         raise SalesReceipt::LineItemSumError.new(error)
       end
     end
