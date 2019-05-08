@@ -75,19 +75,6 @@
   <% end %>
   </pre>
 
-  <% if !@ips_for_rpf_filter.empty? %>
-    <pre>
-    conf t
-    <% seq = 10 %>
-    no ip access-list extended <%= @rpf_filter %>
-    ip access-list extended <%= @rpf_filter %>
-    <% @ips_for_rpf_filter.each do |ip_block| -%><%= seq %> permit ip <%= ip_block.ip %> <%= ip_block.wildcard_mask(true) %> any<% seq += 1 %>
-    <% end -%>10000 deny ip any any
-
-    end
-    </pre>
-  <% end %>
-
   Tear-down:
   <br/>
   <br/>
@@ -104,18 +91,6 @@
     no neighbor <%= @bgp_session.peer_ip_address_z %>
 
     end
-  <% if !@ips_for_rpf_filter.empty? %>
-    <pre>
-    conf t
-    <% seq = 10 %>
-    no ip access-list extended <%= @rpf_filter %>
-    ip access-list extended <%= @rpf_filter %>
-    <% @ips_for_rpf_filter_without_session_prefixes.each do |ip_block| -%><%= seq %> permit ip <%= ip_block.ip %> <%= ip_block.wildcard_mask(true) %> any<% seq += 1 %>
-    <% end -%>10000 deny ip any any
-
-    end
-    </pre>
-  <% end %>
   <% end %>
   </pre>
 
