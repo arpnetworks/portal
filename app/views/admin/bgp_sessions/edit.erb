@@ -51,7 +51,7 @@
     conf t
 
     <% if @bgp_session.session_type_info == 'v4' -%>no ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
-    <% prefixes_v4.each do |prefix| -%>ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> permit <%= prefix %>
+    <% prefixes_v4.each do |prefix| -%>ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> permit <%= prefix %> le 24
     <% end -%>ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> deny 0.0.0.0/0 le 32
     <% end -%><% if @bgp_session.session_type_info == 'v6' && @bgp_session.peer_host =~ /s?.fra/ -%>no ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
     <% prefixes_v6.each do |prefix| -%>ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> permit <%= prefix %>
