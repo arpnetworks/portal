@@ -83,7 +83,7 @@ describe Admin::BandwidthQuotasController do
 
       it "should redirect to all service codes" do
         allow(BandwidthQuota).to receive(:new) { mock_bandwidth_quota(save: true) }
-        do_create({})
+        do_create(bandwidth_quota: {})
         expect(response).to redirect_to(admin_bandwidth_quotas_path)
       end
 
@@ -100,7 +100,7 @@ describe Admin::BandwidthQuotasController do
 
       it "should re-render the 'new' template" do
         allow(BandwidthQuota).to receive(:new) { mock_bandwidth_quota(save: false) }
-        do_create({})
+        do_create(bandwidth_quota: {})
         expect(response).to render_template('new')
       end
 

@@ -35,7 +35,7 @@ class Admin::BandwidthQuotasController < Admin::HeadQuartersController
   # POST /admin_bandwidth_quotas
   # POST /admin_bandwidth_quotas.xml
   def create
-    @bandwidth_quota = BandwidthQuota.new(params[:bandwidth_quota])
+    @bandwidth_quota = BandwidthQuota.new(bandwidth_quota_params)
 
     respond_to do |format|
       if @bandwidth_quota.save

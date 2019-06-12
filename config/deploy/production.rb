@@ -9,7 +9,6 @@
 
 server 'snow.arpnetworks.com', roles: %w(app)
 
-
 # role-based syntax
 # ==================
 
