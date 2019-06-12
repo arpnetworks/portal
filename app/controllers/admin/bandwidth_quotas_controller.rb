@@ -97,6 +97,7 @@ class Admin::BandwidthQuotasController < Admin::HeadQuartersController
 
   def bandwidth_quota_params
     params.require(:bandwidth_quota).permit(
+      :service_id,
       :commit,
       :commit_unit,
       :commit_overage,
