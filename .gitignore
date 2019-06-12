@@ -26,3 +26,4 @@ config/arp/redis.yml
 config/arp/hosts.yml
 
 coverage/
+backups/

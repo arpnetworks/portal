@@ -71,7 +71,9 @@ namespace :deploy do
     ]
 
     stragglers.each do |straggler|
-      `scp #{straggler} foo.example.com:#{release_path}/#{straggler}`
+      on roles(:app) do
+        upload! straggler, "#{release_path}/#{straggler}"
+      end
     end
   end
 
