@@ -77,3 +77,67 @@ namespace :deploy do
 
   before 'deploy:assets:precompile', :copy_stragglers
 end
+
+desc "Backup (mysqldump) production databases and rsync to local box"
+task :backup do
+  on 'foo.example.com' do |host|
+    [['production', 'arp_customer_cp'], ['powerdns_production', 'powerdns']].each do |stuff|
+      conf_entry = stuff[0]
+      database   = stuff[1]
+
+      unless ENV['DIFF']
+        filenamep = "#{database}-production.dump.#{Time.now.to_f}.sql.bz2"
+        filename  = "/tmp/#{filenamep}"
+      else
+        filenamep = "#{database}-production.dump.#{Time.now.to_f}-to-diff.sql"
+        filename  = "/tmp/#{filenamep}"
+      end
+      text = capture "cat /var/www/portal.arpnetworks.com/current/config/database.yml"
+      yaml = YAML::load(text)
+      conf = yaml[conf_entry]
+
+      if ENV['DIFF']
+        if conf['database'] == 'arp_customer_cp'
+          @additional_args = '--skip-extended-insert --skip-quick --no-create-info'
+          execute("mysqldump -u #{conf['username']} -p -h #{conf['host']} #{conf['database']} --ignore-table=#{conf['database']}.sessions #{@additional_args} > #{filename}", interaction_handler: {
+            'Enter password: ' => conf['password'] + "\n"
+          })
+        end
+      else
+        execute("mysqldump -u #{conf['username']} -p -h #{conf['host']} #{conf['database']} --ignore-table=#{conf['database']}.sessions | bzip2 -c > #{filename}", interaction_handler: {
+          'Enter password: ' => conf['password'] + "\n"
+        })
+      end
+
+      `mkdir -p #{File.dirname(__FILE__)}/../backups`
+      unless ENV['DIFF'] && conf['database'] != 'arp_customer_cp'
+        download! filename, filenamep
+        `mv #{filenamep} #{File.dirname(__FILE__)}/../backups`
+        execute "rm -f #{filename}"
+      end
+
+      if ENV['LOAD']
+        yaml = YAML::load_file('config/database.yml')
+        conf = yaml[conf_entry.sub('production', 'development')]
+        filename.gsub!("/tmp", "./backups")
+        if conf['adapter'] == 'mysql2'
+          mysql = `which mysql mysql5`.split("\n")
+          if mysql && mysql[0]
+            puts "Loading data from #{filename} into *local* development DB"
+            puts "Executing `bunzip2 -c #{filename} | #{mysql[0]} -u #{conf['username']} -h #{conf['host'] || '127.0.0.1'} -p #{conf['database']}`"
+            `bunzip2 -c #{filename} | #{mysql[0]} -u #{conf['username']} -h #{conf['host'] || '127.0.0.1'} -p #{conf['database']}`
+          end
+        end
+      end
+
+      if ENV['DIFF']
+        diffs = Dir['backups/*to-diff.sql'].sort
+        last, current = diffs[-2..-1]
+        puts ""
+        puts "Check 'em out!!"
+        puts ""
+        puts "vimdiff #{last} #{current}"
+      end
+    end
+  end
+end
