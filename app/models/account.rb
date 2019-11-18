@@ -402,6 +402,25 @@ class Account < ActiveRecord::Base
     !services.active.empty?
   end
 
+  def old_customer?
+    !services.empty? && !active?
+  end
+
+  def customer_since
+    return nil if services.empty?
+
+    first_service = services.sort { |a,b| a.created_at <=> b.created_at }.first
+    first_service.created_at
+  end
+
+  def cancellation_date
+    return nil if services.empty?
+    return nil if active?
+
+    last_service = services.where("deleted_at is not null").sort { |a,b| a.deleted_at <=> b.deleted_at }.last
+    last_service.deleted_at
+  end
+
   def create_pro_rated_invoice!(code, descr, amount, opts = {})
     if amount <= 0
       return nil
