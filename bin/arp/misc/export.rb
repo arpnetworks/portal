@@ -23,9 +23,6 @@ accounts = Account.all.select do |a|
   !a.invoices.empty?
 end.reverse
 
-# TODO: Some kind of "Paid up? Yes/no" field
-# TODO: Unpaid invoices amount: a.invoices.unpaid.inject(0) { |a,i| a+i.total.to_f  }
-#       (Outstanding?)
 # TODO: Paid invoices amount (for reporting?)
 
 csv = CSV.generate do |csv|
