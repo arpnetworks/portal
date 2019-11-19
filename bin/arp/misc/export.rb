@@ -8,7 +8,7 @@ require_relative '../../../config/boot'
 require APP_PATH
 Rails.application.require_environment!
 
-puts "Email, Name, Company, Address, Customer Since, Cancellation Date, Customer Type, Customer Status, Label, MRC"
+puts "Email, Name, Company, Address, Customer Since, Cancellation Date, Customer Type, Customer Status, Label, MRC, Balance"
 
 accounts = Account.all.select do |a|
   # Weed out certain accounts
@@ -17,15 +17,29 @@ accounts = Account.all.select do |a|
   a.email !~ /-BANNED/ and
 
   # If you never had a service, then you're not in the list
-  !a.services.empty?
+  !a.services.empty? and
+
+  # If you were never invoices, then you're not in the list either
+  !a.invoices.empty?
 end.reverse
 
 # TODO: Some kind of "Paid up? Yes/no" field
+# TODO: Unpaid invoices amount: a.invoices.unpaid.inject(0) { |a,i| a+i.total.to_f  }
+#       (Outstanding?)
+# TODO: Paid invoices amount (for reporting?)
 
 csv = CSV.generate do |csv|
-  accounts[0..30].each do |a|
+  accounts[0..70].each do |a|
+    name = a.first_name.to_s + " " + a.last_name.to_s
+
+    if name.to_s.strip.empty?
+      name = a.login
+    end
+
+    unpaid = a.invoices.unpaid.inject(0) { |a, i| a + i.total.to_f }
+
     csv << [a.email,
-            a.first_name.to_s + " " + a.last_name.to_s,
+            name,
             a.company,
             a.address1.to_s.strip + ((a.address2 && !a.address2.empty?) ? ", #{a.address2.to_s.strip}" : "") + ", #{a.city.to_s.strip}, #{a.state.to_s.strip}, #{a.zip.to_s.strip}, #{a.country.to_s.strip}",
             a.customer_since,
@@ -41,7 +55,8 @@ csv = CSV.generate do |csv|
             else
               ''
             end,
-            (a.mrc > 0) ? a.mrc : ''
+            (a.mrc > 0) ? a.mrc : '',
+            unpaid
     ]
   end
 end
