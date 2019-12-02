@@ -22,6 +22,9 @@
   Total MRC for ARP Metal™: <span class="money"><%= money2(@metal_services_total) %></span>
 </div>
 <div>
+  Total MRC for ARP Thunder™: <span class="money"><%= money2(@thunder_service_total) %></span>
+</div>
+<div>
   Total MRC for Backup Services: <span class="money"><%= money2(@backup_service_total) %></span>
 </div>
 <div>
@@ -46,6 +49,12 @@
 <br/>
 <script type='text/javascript'>
   draw_graph('chartdiv4', "Monthly Recurring Charges (last 24 months), [ARP Metal™]", [[<%= @metal_mrc_chart_data %>]], 'USD');
+</script>
+
+<div id="chartdiv6" style="height:400px;width:895px;"></div>
+<br/>
+<script type='text/javascript'>
+  draw_graph('chartdiv6', "Monthly Recurring Charges (last 36 months), [ARP Thunder™]", [[<%= @thunder_mrc_chart_data %>]], 'USD');
 </script>
 
 <div id="chartdiv" style="height:400px;width:895px;"></div>

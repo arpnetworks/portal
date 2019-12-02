@@ -6,6 +6,7 @@ class Admin::ReportsController < Admin::HeadQuartersController
     ip_block_service_code = ServiceCode.find_by_name('IP_BLOCK')
     metal_service_code = ServiceCode.find_by_name('METAL')
     backup_service_code = ServiceCode.find_by_name('BACKUP')
+    thunder_service_code = ServiceCode.find_by_name('THUNDER')
 
     @metal_services_total = Service.active.\
       where(service_code_id: metal_service_code.id, billing_interval: 1).\
@@ -21,6 +22,12 @@ class Admin::ReportsController < Admin::HeadQuartersController
 
     @backup_service_total = Service.active.\
       where(service_code_id: backup_service_code.id, billing_interval: 1).\
+        inject(0) do|x, y|
+          x + y.billing_amount.to_f
+        end
+
+    @thunder_service_total = Service.active.\
+      where(service_code_id: thunder_service_code.id, billing_interval: 1).\
         inject(0) do|x, y|
           x + y.billing_amount.to_f
         end
@@ -124,6 +131,23 @@ class Admin::ReportsController < Admin::HeadQuartersController
       @metal_mrc_chart_data << "', ".html_safe
       @metal_mrc_chart_data << @metal_mrc_counts[i].to_s
       @metal_mrc_chart_data << "], ".html_safe
+      i += 1
+    end
+
+    @thunder_mrc_counts = []
+    @thunder_mrc_chart_data = "".html_safe
+    i = 0
+    36.downto(0) do |n|
+      sql = n.months.ago.strftime("%Y-%m-%%")
+      @thunder_mrc_counts[i] = thunder_service_code.services.where("created_at <= ? and (deleted_at > ? or deleted_at is null)", sql, sql).\
+        inject(0) do |x, y|
+          (y.billing_interval == 1 ? y.billing_amount.to_f : 0) + x
+        end
+      @thunder_mrc_chart_data << "['".html_safe
+      @thunder_mrc_chart_data << n.months.ago.strftime("%Y-%m-28")
+      @thunder_mrc_chart_data << "', ".html_safe
+      @thunder_mrc_chart_data << @thunder_mrc_counts[i].to_s
+      @thunder_mrc_chart_data << "], ".html_safe
       i += 1
     end
 
