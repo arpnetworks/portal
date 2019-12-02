@@ -39,6 +39,12 @@
   draw_graph('chartdiv3', "Monthly Recurring Charges (last 36 months), [Total]", [[<%= @mrc_chart_data %>]], 'USD');
 </script>
 
+<div id="chartdiv6" style="height:400px;width:895px;"></div>
+<br/>
+<script type='text/javascript'>
+  draw_graph('chartdiv6', "Monthly Recurring Charges (last 36 months), [ARP Thunder™]", [[<%= @thunder_mrc_chart_data %>]], 'USD');
+</script>
+
 <div id="chartdiv5" style="height:400px;width:895px;"></div>
 <br/>
 <script type='text/javascript'>
@@ -48,13 +54,7 @@
 <div id="chartdiv4" style="height:400px;width:895px;"></div>
 <br/>
 <script type='text/javascript'>
-  draw_graph('chartdiv4', "Monthly Recurring Charges (last 24 months), [ARP Metal™]", [[<%= @metal_mrc_chart_data %>]], 'USD');
-</script>
-
-<div id="chartdiv6" style="height:400px;width:895px;"></div>
-<br/>
-<script type='text/javascript'>
-  draw_graph('chartdiv6', "Monthly Recurring Charges (last 36 months), [ARP Thunder™]", [[<%= @thunder_mrc_chart_data %>]], 'USD');
+  draw_graph('chartdiv4', "Monthly Recurring Charges (last 36 months), [ARP Metal™]", [[<%= @metal_mrc_chart_data %>]], 'USD');
 </script>
 
 <div id="chartdiv" style="height:400px;width:895px;"></div>
