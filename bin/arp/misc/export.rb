@@ -8,7 +8,7 @@ require_relative '../../../config/boot'
 require APP_PATH
 Rails.application.require_environment!
 
-puts "Email, Name, Company, Address, Customer Since, Cancellation Date, Customer Type, Customer Status, Label, MRC, Balance"
+puts "Email, Name, Company, Address, Customer Since, Cancellation Date, Suspension Date, Customer Type, Customer Status, Label, MRC, Balance"
 
 accounts = Account.all.select do |a|
   # Weed out certain accounts
@@ -23,7 +23,8 @@ accounts = Account.all.select do |a|
   !a.invoices.empty?
 end.reverse
 
-# TODO: Paid invoices amount (for reporting?)
+# MAYBE: Paid invoices amount (for reporting?)
+# MAYBE: No. of Unpaid invoices 
 
 csv = CSV.generate do |csv|
   accounts[0..70].each do |a|
@@ -33,7 +34,7 @@ csv = CSV.generate do |csv|
       name = a.login
     end
 
-    unpaid = a.invoices.unpaid.inject(0) { |a, i| a + i.total.to_f }
+    unpaid = a.invoices.unpaid.inject(0) { |a, i| a + i.balance.to_f }
 
     csv << [a.email,
             name,
@@ -41,6 +42,7 @@ csv = CSV.generate do |csv|
             a.address1.to_s.strip + ((a.address2 && !a.address2.empty?) ? ", #{a.address2.to_s.strip}" : "") + ", #{a.city.to_s.strip}, #{a.state.to_s.strip}, #{a.zip.to_s.strip}, #{a.country.to_s.strip}",
             a.customer_since,
             a.cancellation_date,
+            a.vlan_shutdown_at,
             'Hosting',
             a.active? ? 'Current' : 'Former',
             if a.old_customer?
