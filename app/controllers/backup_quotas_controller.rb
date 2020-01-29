@@ -38,7 +38,7 @@ class BackupQuotasController < ProtectedController
   def ssh_key_send(server, login, key, append, quota)
     # Send the key to server
     Kernel.system("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$KEYER}@#{server}", "add",
-                  append ? '1' : '0', login, quota, key)
+                  append ? '1' : '0', login, quota.to_s, key)
 
     simple_email("SSH Key Submission for Backup Server", command) rescue nil
   end
