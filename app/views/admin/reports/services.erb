@@ -81,16 +81,3 @@
   </tr>
   <% end %>
 </table>
-
-<table>
-  <caption>Cancellations</caption>
-  <% @vps_services_deleted.each do |service| %>
-  <tr class="<%= cycle("odd", "even") %>">
-    <td><%= service.id %></td>
-    <td><%= service.deleted_at.strftime("%m-%d-%Y") %></td>
-    <td><%= link_to(service.account.display_account_name, admin_account_path(service.account)) %></td>
-    <td><%= service.title %></td>
-    <td><%= money(service.billing_amount) %></td>
-  </tr>
-  <% end %>
-</table>

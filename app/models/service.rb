@@ -17,6 +17,7 @@ class Service < ActiveRecord::Base
   scope :active,   -> { where("deleted_at IS NULL and (pending IS NULL or pending = false)") }
   scope :inactive, -> { where("deleted_at IS NOT NULL") }
   scope :pending,  -> { where("pending = true and deleted_at IS NULL") }
+  scope :not_pending, -> { where("pending IS NULL or pending = false") }
 
   textilizable :description
 

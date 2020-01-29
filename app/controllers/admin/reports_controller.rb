@@ -32,7 +32,7 @@ class Admin::ReportsController < Admin::HeadQuartersController
           x + y.billing_amount.to_f
         end
 
-    @vps_services_all = vps_service_code.services.includes(:account, :service_code, :virtual_machines).order('created_at desc')
+    @vps_services_all = vps_service_code.services.not_pending.includes(:account, :service_code, :virtual_machines).order('created_at desc')
     @vps_services_deleted = vps_service_code.services.inactive.includes(:account, :service_code, :virtual_machines).order('deleted_at desc')
 
     @vps_service_totals = Service.give_me_totals(vps_service_code.services.\
@@ -43,7 +43,7 @@ class Admin::ReportsController < Admin::HeadQuartersController
     i = 0
     24.downto(0) do |n|
       sql = n.months.ago.strftime("%Y-%m-%%")
-      @counts[i] = vps_service_code.services.where("created_at like ?", sql).count
+      @counts[i] = vps_service_code.services.not_pending.where("created_at like ?", sql).count
       @chart_data << "['".html_safe
       @chart_data << n.months.ago.strftime("%Y-%m-28")
       @chart_data << "', ".html_safe
@@ -156,7 +156,7 @@ class Admin::ReportsController < Admin::HeadQuartersController
     i = 0
     36.downto(0) do |n|
       sql = n.months.ago.strftime("%Y-%m-%%")
-      @vps_mrc_counts[i] = vps_service_code.services.where("created_at <= ? and (deleted_at > ? or deleted_at is null)", sql, sql).\
+      @vps_mrc_counts[i] = vps_service_code.services.not_pending.where("created_at <= ? and (deleted_at > ? or deleted_at is null)", sql, sql).\
         inject(0) do |x, y|
           (y.billing_interval == 1 ? y.billing_amount.to_f : 0) + x
         end
