@@ -15,6 +15,7 @@ accounts = Account.all.select do |a|
   a.email !~ /spam/ and
   a.email !~ /-DELETED/ and
   a.email !~ /-BANNED/ and
+  a.email !~ /-DISABLED/ and
 
   # If you never had a service, then you're not in the list
   !a.services.empty? and
