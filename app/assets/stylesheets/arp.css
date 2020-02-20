@@ -10,11 +10,30 @@ div.main-container {
   width: 900px;
   margin-left: auto;
   margin-right: auto;
+  padding-top: 16px;
 }
 
 hr {
   clear: both;
   visibility: hidden;
+}
+
+#gravatar {
+  font-size: 2em;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+#gravatar img {
+  float: left;
+  width: 60px;
+  height: 60px;
+  padding-right: 15px;
+}
+
+#gravatar p {
+  padding: 10px 0;
 }
 
 /* img, div, a, ul, li, p, span { behavior: url(iepngfix.htc) } */
