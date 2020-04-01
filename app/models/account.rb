@@ -20,6 +20,8 @@ class Account < ActiveRecord::Base
   validates_format_of        :email_billing, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\s*\Z/i, :allow_blank => true
   validates_format_of        :email2       , :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\s*\Z/i, :allow_blank => true
 
+  scope :suspended, -> { where("vlan_shutdown = 1") }
+
   def validate
   end
 

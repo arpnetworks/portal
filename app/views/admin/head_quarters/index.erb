@@ -3,7 +3,11 @@
 <div class="main-menu">
   <div class="title">Main Menu</div>
   <ul>
-    <li class="all-accounts"><%= link_to('All Accounts', admin_accounts_path) %></li>
+    <li class="all-accounts"><%= link_to('All Accounts', admin_accounts_path) %>
+      <ul>
+        <li style='list-style-image: none'><%= link_to('Suspended', suspended_admin_accounts_path) %></li>
+      </ul>
+    </li>
     <li class="all-jobs"><%= link_to('All Jobs', admin_jobs_path) %></li>
     <li class="all-services"><%= link_to('All Services', admin_services_path) %></li>
     <li class="all-service-codes"><%= link_to('All Service Codes', admin_service_codes_path) %></li>

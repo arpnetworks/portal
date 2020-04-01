@@ -61,7 +61,12 @@ Rails.application.routes.draw do
   get '/dashboard', controller: 'my_account', action: 'dashboard', as: 'dashboard'
 
   namespace :admin do
-    resources :accounts
+    resources :accounts do
+      collection do
+        get 'suspended'
+      end
+    end
+
     resources :invoices
     resources :services
     resources :service_codes

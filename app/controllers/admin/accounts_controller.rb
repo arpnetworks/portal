@@ -8,6 +8,13 @@ class Admin::AccountsController < Admin::HeadQuartersController
                                  per_page: params[:per_page] || 20).order('created_at DESC')
   end
 
+  def suspended
+    @accounts = Account.suspended.paginate(page:     params[:page],
+                                           per_page: params[:per_page] || 20).order('created_at DESC')
+
+    render action: 'index'
+  end
+
   def new
     @account = Account.new
     @include_blank = true
