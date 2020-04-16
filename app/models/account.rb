@@ -408,6 +408,47 @@ class Account < ActiveRecord::Base
     !services.empty? && !active?
   end
 
+  # An empty account is one that has never had any active services
+  # associated with it
+  def empty?
+    if active? or old_customer?
+      return false
+    end
+
+    # Might be a little redundant, but I like to be extra cautious
+    if cancellation_date != nil or customer_since != nil
+      return false
+    end
+
+    true
+  end
+
+  # These accounts are empty and typically have no name or address
+  def spam?
+    if empty?
+      if first_name.blank? &&
+         address1.blank?   &&
+         city.blank?       &&
+         country.blank?
+        return true
+      end
+    end
+
+    false
+  end
+
+  def self.remove_spam_accounts!
+    Account.all.each do |a|
+      if a.spam?
+        begin
+          a.destroy
+        rescue ActiveRecord::StatementInvalid => e
+          puts "Error removing Account ID #{a.id}: #{e.message}"
+        end
+      end
+    end
+  end
+
   def customer_since
     return nil if services.empty?
 
