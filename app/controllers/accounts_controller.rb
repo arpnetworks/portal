@@ -9,6 +9,9 @@ class AccountsController < ProtectedController
   end
 
   def create
+    params[:account][:password] = params[:account][:password_mersal]
+    params[:account][:password_confirmation] = params[:account][:password_confirmation_mersal]
+
     @account = Account.new(params.require(:account).permit(
       :login,
       :email,
