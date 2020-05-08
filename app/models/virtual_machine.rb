@@ -433,6 +433,10 @@ class VirtualMachine < ActiveRecord::Base
     end
   end
 
+  def create_config_disk!(opts = {})
+    Jobs::CreateConfigDisk.new.perform({ vm: self }.to_json)
+  end
+
   # ****************************
   # ** This is the motherload **
   # ****************************
