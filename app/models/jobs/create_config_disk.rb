@@ -33,11 +33,11 @@ class Jobs::CreateConfigDisk < Job
               ]
     }
 
-    # if Rails.env == 'development'
-    #   queue = Socket.gethostname
-    # else
+    if Rails.env == 'development'
+      queue = Socket.gethostname
+    else
       queue = vm.abbreviated_host
-    # end
+    end
 
     ARP_REDIS.lpush("queue:#{queue}", work.to_json)
 
