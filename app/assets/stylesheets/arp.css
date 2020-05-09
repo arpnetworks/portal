@@ -746,6 +746,13 @@ table.jobs tr.failed.odd td {
   background-color: #fcc9c9;
 }
 
+table.jobs tr.cancelled.even td {
+  background-color: #EEEEEE;
+}
+table.jobs tr.cancelled.odd td {
+  background-color: #CDCDC9;
+}
+
 table.jobs tr.running td.state {
   padding: 0px;
   background-repeat: no-repeat;
@@ -777,6 +784,15 @@ table.jobs tr.failed td.state {
   padding: 0px;
   background-repeat: no-repeat;
   background-image: url(/images/icons/failed.png);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.jobs tr.cancelled td.state {
+  padding: 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/cancelled-gray2.png);
   background-position: center;
   width: 16px;
   height: 16px;
