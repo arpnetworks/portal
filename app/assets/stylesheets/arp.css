@@ -792,7 +792,7 @@ table.jobs tr.failed td.state {
 table.jobs tr.cancelled td.state {
   padding: 0px;
   background-repeat: no-repeat;
-  background-image: url(/images/icons/cancelled-gray2.png);
+  background-image: url(/images/icons/cancelled-yellow.png);
   background-position: center;
   width: 16px;
   height: 16px;
