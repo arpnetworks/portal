@@ -147,7 +147,12 @@ class Admin::VirtualMachinesController < Admin::HeadQuartersController
       :label,
       :os_template,
       :websocket_port,
-      :serial_port
+      :serial_port,
+      :mac_address,
+      :ip_address,
+      :ip_netmask,
+      :ipv6_address,
+      :ipv6_prefixlen
     )
   end
 end
