@@ -80,6 +80,15 @@ class Jobs::DefineVM < Job
       end
     end
 
+    # cloud-init enabled images can afford a config disk for the VM
+    case os
+    when 'ubuntu'
+      case os_version
+      when '20.04'
+        opt_params[:attach_config_disk] = true
+      end
+    end
+
     work = {
       :class => 'DefineVmWorker',
       :args  => [job.id, job.jid,
