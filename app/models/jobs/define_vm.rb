@@ -60,6 +60,8 @@ class Jobs::DefineVM < Job
         opt_params[:disk_arch] = 'virtio'
       when '14.04'
         opt_params[:disk_arch] = 'virtio'
+      when '20.04'
+        iso = 'ubuntu-' + os_version + '-live-server-amd64.iso'
       end
     when 'debian'
       iso = 'debian-' + os_version + '.0-amd64-netinst.iso'
