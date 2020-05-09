@@ -430,12 +430,11 @@ class VirtualMachine < ActiveRecord::Base
       Jobs::CreateVolumeForVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
     else
       Jobs::CreateVolumeFromTemplateForVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
-      create_config_disk!
     end
   end
 
-  def create_config_disk!
-    Jobs::CreateConfigDisk.new.perform({ vm: self }.to_json)
+  def create_config_disk!(opts = {})
+    Jobs::CreateConfigDisk.new.perform({ vm: self, opts: opts }.to_json)
   end
 
   # ****************************

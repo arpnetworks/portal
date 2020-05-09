@@ -12,8 +12,23 @@ class Jobs::CreateConfigDisk < Job
 
     vm = VirtualMachine.find(vm['id'])
 
+    opts = args['opts'] || {}
+
     account = vm.account
-    job = super(account, args_json)
+    job = super(account, args_json, opts)
+
+    os = os_version = ''; arch = 'amd64'
+    os, os_version, arch = vm.os_template.split('-')
+
+    # Defaults
+    opts[:flavor] = 'linux'
+
+    case os
+    when 'freebsd'
+      opts[:flavor] = 'bsd'
+    when 'openbsd'
+      opts[:flavor] = 'bsd'
+    end
 
     # Extract network info from VM object
     first_interface = vm.virtual_machines_interfaces[0]
@@ -29,7 +44,8 @@ class Jobs::CreateConfigDisk < Job
               mac_address,
               ipv4_address,
               ipv4_netmask,
-              ipv4_gateway
+              ipv4_gateway,
+              opts
               ]
     }
 
