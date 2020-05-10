@@ -89,6 +89,11 @@ class Jobs::DefineVM < Job
       when '20.04'
         opt_params[:attach_config_disk] = true
       end
+    when 'centos'
+      case os_version
+      when '8.1'
+        opt_params[:attach_config_disk] = true
+      end
     end
 
     work = {
