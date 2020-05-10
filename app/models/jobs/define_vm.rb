@@ -84,6 +84,13 @@ class Jobs::DefineVM < Job
 
     # cloud-init enabled images can afford a config disk for the VM
     case os
+    when 'freebsd'
+      case os_version
+      when '11.3'
+        opt_params[:attach_config_disk] = true
+      when '12.1'
+        opt_params[:attach_config_disk] = true
+      end
     when 'ubuntu'
       case os_version
       when '20.04'
