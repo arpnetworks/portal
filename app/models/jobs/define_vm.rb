@@ -28,7 +28,7 @@ class Jobs::DefineVM < Job
     case os
     when 'freebsd'
       # Default
-      iso = 'FreeBSD-11.0-RELEASE-amd64-disc1.iso'
+      iso = 'FreeBSD-12.1-RELEASE-amd64-disc1.iso'
 
       case os_version
       when /^9\./
