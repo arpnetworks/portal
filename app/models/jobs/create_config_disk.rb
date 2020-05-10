@@ -30,6 +30,28 @@ class Jobs::CreateConfigDisk < Job
       opts[:flavor] = 'bsd'
     end
 
+    # We need slight tweaks to some files, for some OS/distros
+    #
+    # Using the write_files module of cloud-init, we can load modified
+    # files into the guest
+    opts[:write_files] = []
+
+    case os
+    when 'freebsd'
+      template_file = "config/cloud-init/images/#{vm.os_template}/etc/ttys"
+      if File.exists?(template_file)
+        ttys = File.open(template_file).read
+        encoded = Base64.encode64(ttys).(/\n/,"")
+        opts[:write_files] << {
+          encoding: 'b64',
+          content: encoded,
+          owner: 'root:wheel',
+          path: '/etc/ttys',
+          permissions: '0644'
+        }
+      end
+    end
+
     # Extract network info from VM object
     first_interface = vm.virtual_machines_interfaces[0]
     mac_address     = first_interface.mac_address
