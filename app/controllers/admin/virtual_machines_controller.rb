@@ -59,6 +59,10 @@ class Admin::VirtualMachinesController < Admin::HeadQuartersController
       # Old attributes
       old_ram = @virtual_machine.ram
 
+      # Deal with non-existent virtual_machines_interfaces
+      vm_interfaces = @virtual_machine.virtual_machines_interfaces
+      vm_interfaces.size == 0 && vm_interfaces.create
+
       if @virtual_machine.update_attributes(virtual_machine_params)
         flash[:notice] = "Changes saved."
 
