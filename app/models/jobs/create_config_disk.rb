@@ -41,7 +41,7 @@ class Jobs::CreateConfigDisk < Job
       template_file = "config/cloud-init/images/#{vm.os_template}/etc/ttys"
       if File.exists?(template_file)
         ttys = File.open(template_file).read
-        encoded = Base64.encode64(ttys).(/\n/,"")
+        encoded = Base64.encode64(ttys).gsub(/\n/,"")
         opts[:write_files] << {
           encoding: 'b64',
           content: encoded,
