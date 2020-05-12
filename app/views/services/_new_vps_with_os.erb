@@ -1,0 +1,62 @@
+<p>
+Provisioning time for a VPS with OS is usually less than <strong>two minutes</strong>.
+</p>
+
+<div>
+  <div class='form-section-header'>Server Size:</div>
+
+    <select name='plan'>
+  <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
+
+      <option value='<%= k %>'>
+      <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB Disk, <%= plan['bandwidth'] %> GB Bandwidth
+      -- $<%= plan['mrc'] %> USD
+      </option>
+
+
+    <br/>
+  <% end %>
+    </select>
+</div>
+<br/>
+
+
+<div>
+
+<div style="float: left; width: 30%">
+  <div class='form-section-header'>Operating System:</div>
+  <div>
+
+  <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
+    <% v['series'].sort { |a, b| b['version'] <=> a['version'] }.each do |series| %>
+      <input type='radio' id='os_<%= series['code'] %>' name='os' value='<%= series['code'] %>'>
+      <label for='os_<%= series['code'] %>'><img src='/images/icons/os/<%= k %>.png' width="16" height="16" alt='<%= v['title'] %> icon'>
+        <%= v['title'] %> <%= series['version'] %>
+      </label>
+      <br/>
+    <% end %>
+  <% end %>
+
+  </div>
+</div>
+
+<div style='margin-left: auto; width: 60%'>
+
+<%= render :partial => 'location', :locals => { :title => nil } %>
+
+<div class='small-note'>
+  <div class='caption' style='float: left'><strong>Note</strong>:</div>
+  <div>
+    Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
+  </div>
+</div>
+
+</div>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
