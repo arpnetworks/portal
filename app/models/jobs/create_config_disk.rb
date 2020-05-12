@@ -46,7 +46,7 @@ class Jobs::CreateConfigDisk < Job
           encoding: 'b64',
           content: encoded,
           owner: 'root:wheel',
-          path: '/etc/ttys',
+          path: '/etc/ttys-modified',
           permissions: '0644'
         }
       end
