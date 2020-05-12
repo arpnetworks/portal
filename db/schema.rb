@@ -11,29 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170710044446) do
+ActiveRecord::Schema.define(version: 20200512232154) do
 
   create_table "accounts", force: :cascade do |t|
-    t.string   "login",            limit: 255
-    t.string   "password",         limit: 255
-    t.string   "first_name",       limit: 255
-    t.string   "last_name",        limit: 255
-    t.string   "company",          limit: 255
-    t.string   "address1",         limit: 255
-    t.string   "address2",         limit: 255
-    t.string   "city",             limit: 255
-    t.string   "state",            limit: 255
-    t.string   "zip",              limit: 255
-    t.string   "country",          limit: 255
-    t.string   "email",            limit: 255
-    t.string   "email2",           limit: 256
-    t.string   "email_billing",    limit: 256
-    t.boolean  "active",                       default: true,  null: false
+    t.string   "login",               limit: 255
+    t.string   "password",            limit: 255
+    t.string   "first_name",          limit: 255
+    t.string   "last_name",           limit: 255
+    t.string   "company",             limit: 255
+    t.string   "address1",            limit: 255
+    t.string   "address2",            limit: 255
+    t.string   "city",                limit: 255
+    t.string   "state",               limit: 255
+    t.string   "zip",                 limit: 255
+    t.string   "country",             limit: 255
+    t.string   "email",               limit: 255
+    t.string   "email2",              limit: 256
+    t.string   "email_billing",       limit: 256
+    t.boolean  "active",                          default: true,  null: false
     t.datetime "visited_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "vlan_shutdown",                default: false, null: false
+    t.boolean  "vlan_shutdown",                   default: false, null: false
     t.datetime "vlan_shutdown_at"
+    t.boolean  "beta_features",                   default: false, null: false
+    t.boolean  "beta_billing_exempt",             default: false, null: false
   end
 
   create_table "backup_quotas", force: :cascade do |t|
