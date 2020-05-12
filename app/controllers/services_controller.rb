@@ -213,7 +213,7 @@ class ServicesController < ProtectedController
     @service = params[:service]
 
     if @service
-      if %w(vps bgp).include?(@service)
+      if %w(vps_with_os vps bgp).include?(@service)
         return true
       end
     end

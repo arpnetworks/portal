@@ -41,6 +41,7 @@ if conf = @config[Rails.env]
   $ARIN_API_KEY     = conf['arin']['api_key']
 
   $PROVISIONING     = conf['provisioning']
+  $CLOUD_OS         = $PROVISIONING['cloud_os']
 
   $JOBS_QUEUE_HEALTH_EXCLUSIONS = conf['jobs']['queue_health_exclusions']
 end
