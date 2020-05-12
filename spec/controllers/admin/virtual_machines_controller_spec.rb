@@ -152,6 +152,7 @@ describe Admin::VirtualMachinesController do
       # Using mocks/stubs here
       @virtual_machine = mock_model(VirtualMachine, :update_attributes => false)
       expect(VirtualMachine).to receive(:find).with(@virtual_machine.id.to_s).and_return(@virtual_machine)
+      allow(@virtual_machine).to receive(:virtual_machines_interfaces).and_return([:interfaces])
 
       do_put(@params.merge(:id => @virtual_machine.id, :virtual_machine => { notes: 'foo' }))
       expect(response).to render_template('admin/virtual_machines/edit')
