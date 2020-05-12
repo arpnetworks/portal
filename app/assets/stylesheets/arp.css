@@ -1087,6 +1087,20 @@ table.small-note td.caption {
   width: 1em;
 }
 
+div.small-note {
+  padding: 5px 5px 5px 5px;
+  padding-top: 5px;
+  border: none;
+  line-height: 1.3em;
+  font-size: 10px;
+}
+
+div.small-note .caption {
+  float: left;
+  padding-bottom: 20px;
+  padding-right: 7px;
+}
+
 div.form-section-header {
   font-size: 14px;
   padding-top: 3px;
