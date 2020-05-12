@@ -25,5 +25,10 @@ config/arp/globals.yml
 config/arp/redis.yml
 config/arp/hosts.yml
 
+config/arp/deploy.yml
+
 coverage/
 backups/
+
+bin/arp/provisioning/create_new_vps_account.rb
+
