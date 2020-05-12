@@ -41,7 +41,7 @@ class Jobs::DefineVM < Job
       when /^10\./
         iso = 'FreeBSD-10.3-RELEASE-amd64-disc1.iso'
       when /^11\./
-        iso = 'FreeBSD-11.0-RELEASE-amd64-disc1.iso'
+        iso = 'FreeBSD-11.3-RELEASE-amd64-disc1.iso'
       end
     when 'openbsd'
       iso = 'OpenBSD-6.0-amd64-install60.iso'
