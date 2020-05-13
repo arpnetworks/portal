@@ -125,6 +125,27 @@ class AccountsController < ProtectedController
     redirect_to login_accounts_path
   end
 
+  ####################################
+  # For the New Service Configurator #
+  ####################################
+  def ip_addresses
+    @stuff = [
+      {
+        ip_address: '10.0.0.1',
+        assigned: false,
+        assignment: ''
+      },
+      {
+        ip_address: '10.0.0.2',
+        assigned: true,
+        assignment: 'aljfdajdlfajdsf'
+      }
+    ]
+    respond_to do |format|
+      format.json { render json: @stuff }
+    end
+  end
+
   protected
 
   # From http://www.bigbold.com/snippets/posts/show/491

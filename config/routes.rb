@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       get  'login'
       post 'login_attempt'
       get  'logout'
+
+      get  'ip_addresses'
     end
 
     resources :services do
