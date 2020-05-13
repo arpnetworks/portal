@@ -1,3 +1,5 @@
+<div id='new_vps_with_os'>
+
 <div class='notice'>
 Provisioning time for a new VPS with operating system pre-loaded is usually less than <strong>two minutes</strong>.
 </div>
@@ -8,19 +10,12 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
     <select name='plan'>
       <option>Please Choose</option>
   <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
-
       <option value='<%= k %>'>
-      <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB Disk, <%= plan['bandwidth'] %> GB Bandwidth
-      -- $<%= plan['mrc'] %> USD
+      <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB Disk, <%= plan['bandwidth'] %> GB Bandwidth -- $<%= plan['mrc'] %> USD
       </option>
-
-
-    <br/>
   <% end %>
     </select>
 </div>
-<br/>
-
 
 <div>
 
@@ -30,8 +25,8 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
 
   <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
     <% v['series'].sort { |a, b| b['version'] <=> a['version'] }.each do |series| %>
-      <input type='radio' id='os_<%= series['code'] %>' name='os' value='<%= series['code'] %>'>
-      <label for='os_<%= series['code'] %>'><img src='/images/icons/os/<%= k %>.png' width="16" height="16" alt='<%= v['title'] %> icon'>
+      <input type='radio' id='os_<%= series['code'] %>' name='os' value='<%= series['code'] %>' <%= series['pending'] && 'disabled' %>>
+      <label for='os_<%= series['code'] %>' class='<%= series['pending'] && 'disabled' %>'><img src='/images/icons/os/<%= k %>.png' width="16" height="16" alt='<%= v['title'] %> icon'>
         <%= v['title'] %> <%= series['version'] %>
       </label>
       <br/>
@@ -54,7 +49,7 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
 
 </div>
 
-<div style="clear: both; padding-top: 10px">
+<div style="clear: both">
   <div class='form-section-header-prominent'>IP Address Assignments</div>
   <div>
     IPv4 on first network interface:
@@ -78,6 +73,7 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
 <div style="clear: both; padding-top: 10px">
   <div class='form-section-header-prominent'>Users and SSH keys</div>
 
+</div>
 </div>
 
 <br/>

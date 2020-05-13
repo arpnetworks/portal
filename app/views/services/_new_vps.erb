@@ -3,7 +3,7 @@ Provisioning time for a blank VPS is usually less than <strong>one minute</stron
 </p>
 
 <div>
-  <div class='form-section-header'>Server Size:</div>
+  <div class='form-section-header-prominent'>Server Size:</div>
 
   <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
     <input type='radio' id='plan_<%= k %>' name='plan' value='<%= k %>' <%= k == 'small' ? 'checked' : '' %>>
