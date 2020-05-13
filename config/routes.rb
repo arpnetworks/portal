@@ -118,10 +118,6 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      namespace :provisioning do
-        get 'ip_addresses/available', controller: 'ip_addresses', action: 'available'
-      end
-
       namespace :internal do
         # VMs
         put 'virtual_machines/:uuid/status/:status', controller: 'virtual_machines',
