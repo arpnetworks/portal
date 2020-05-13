@@ -132,11 +132,15 @@ class AccountsController < ProtectedController
   # To help with auto-assignment of IPs and/or customer selection of IP
   # addresses
   def ip_address_inventory
+    # Start with an empty response
+    @response = []
+
     @stuff = [
       {
         ip_address: '10.0.0.1',
         assigned: false,
-        assignment: ''
+        assignment: '',
+        location: params[:location]
       },
       {
         ip_address: '10.0.0.2',
@@ -144,8 +148,9 @@ class AccountsController < ProtectedController
         assignment: 'aljfdajdlfajdsf'
       }
     ]
+
     respond_to do |format|
-      format.json { render json: @stuff }
+      format.json { render json: @response }
     end
   end
 

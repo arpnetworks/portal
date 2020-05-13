@@ -8,7 +8,7 @@ $(function() {
     if($(this).is(":checked")) {
       $.ajax({
         dataType: 'json',
-        url: '/accounts/ip_addresses',
+        url: '/provisioning/ip_address',
         data: 'location=' + $(this).val(),
         success: function(data) {
           var s = '';
@@ -16,7 +16,8 @@ $(function() {
           $.each(data, function(k, v) {
             s += "IP: " + v['ip_address'] + "\n" +
                  "Assigned: " + v['assigned'] + "\n" +
-                 "Assignment: " + v['assignment']
+                 "Assignment: " + v['assignment'] + "\n" +
+                 "Location: " + v['location'] + "\n"
           })
 
           alert(s)

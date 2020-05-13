@@ -6,8 +6,6 @@ Rails.application.routes.draw do
       get  'login'
       post 'login_attempt'
       get  'logout'
-
-      get  'provisioning/ip_address', action: 'ip_address_inventory'
     end
 
     resources :services do
@@ -60,6 +58,9 @@ Rails.application.routes.draw do
   get '/noVNC/console', controller: 'virtual_machines', action: 'console'
 
   get '/dashboard', controller: 'my_account', action: 'dashboard', as: 'dashboard'
+
+  # For New Service Configurator
+  get '/provisioning/ip_address', controller: 'accounts', action: 'ip_address_inventory'
 
   namespace :admin do
     resources :accounts do
