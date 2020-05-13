@@ -10,35 +10,36 @@ FactoryBot.define do
   factory :account do
     login
     email
-    password 'password'
-    password_confirmation 'password'
+    password { 'password' }
+    password_confirmation { 'password' }
 
     factory :account_admin do
-      login 'admin'
-      password 'mysecret'
-      password_confirmation 'mysecret'
+      login { 'admin' }
+      password { 'mysecret' }
+      password_confirmation { 'mysecret' }
     end
 
     factory :account_user do
-      login 'user'
-      password 'mysecret'
-      password_confirmation 'mysecret'
+      login { 'user' }
+      email
+      password { 'mysecret' }
+      password_confirmation { 'mysecret' }
     end
   end
 
   factory :service do
     account
     service_code
-    billing_amount 5.00
+    billing_amount { 5.00 }
 
     trait :deleted do
-      deleted_at '01/01/1970'
+      deleted_at { '01/01/1970' }
     end
   end
 
   factory :service_code do
     factory :service_code_for_ip_block do
-      name 'IP_BLOCK'
+      name { 'IP_BLOCK' }
     end
   end
 
@@ -47,7 +48,7 @@ FactoryBot.define do
   end
 
   factory :location do
-    name 'Los Angeles'
+    name { 'Los Angeles' }
 
     sequence :code do |n|
       "lax-#{n}"
@@ -56,30 +57,30 @@ FactoryBot.define do
 
   factory :ip_block do
     location
-    cidr '10.0.0.0/30'
-    vlan '100'
+    cidr { '10.0.0.0/30' }
+    vlan { '100' }
     after(:create) do |ip|
       ip.resource = create(:resource, assignable: ip)
     end
 
     trait :available do
-      available true
+      available { true }
     end
 
     factory :ip_block_super do
-      cidr '208.79.88.0/21'
-      vlan '102'
+      cidr { '208.79.88.0/21' }
+      vlan { '102' }
     end
 
     factory :ip_block_smaller do
-      cidr '208.79.88.0/24'
-      vlan '105'
+      cidr { '208.79.88.0/24' }
+      vlan { '105' }
     end
   end
 
   factory :vlan do
     location
-    vlan 100
+    vlan { 100 }
   end
 
   factory :host do
@@ -93,41 +94,41 @@ FactoryBot.define do
     sequence :label do |n|
       "foo#{n}"
     end
-    host  'kct01.arpnetworks.com'
-    ram   1024
-    storage 20
+    host  { 'kct01.arpnetworks.com' }
+    ram   { 1024 }
+    storage { 20 }
     after(:create) do |vm|
       vm.resource = create(:resource, assignable: vm)
     end
   end
 
   factory :bandwidth_quota do
-    cacti_username 'johndoe'
-    cacti_password 'peeword'
-    cacti_local_graph_id 1000
+    cacti_username { 'johndoe' }
+    cacti_password { 'peeword' }
+    cacti_local_graph_id { 1000 }
     after(:create) do |bq|
       bq.resource = create(:resource, assignable: bq)
     end
   end
 
   factory :dns_domain do
-    type 'MASTER'
+    type { 'MASTER' }
 
     trait :the_10_block do
-      name '0.0.10.in-addr.arpa'
+      name { '0.0.10.in-addr.arpa' }
     end
     trait :the_192_block do
-      name '0.168.192.in-addr.arpa'
+      name { '0.168.192.in-addr.arpa' }
     end
     trait :the_ipv6_block do
-      name '8.f.2.f.7.0.6.2.ip6.arpa'
+      name { '8.f.2.f.7.0.6.2.ip6.arpa' }
     end
   end
 
   factory :dns_record do
     # association :dns_domain, :the_10_block
-    name '2.0.0.10.in-addr.arpa'
-    content 'example.com'
+    name { '2.0.0.10.in-addr.arpa' }
+    content { 'example.com' }
 
     after(:build) do |r|
       r.type = 'PTR'
@@ -164,23 +165,23 @@ FactoryBot.define do
   end
 
   factory :backup_quota do
-    server 'backup01.cust.arpnetworks.com'
-    username 'garry'
-    group 'sftpusers'
-    quota 20000000
-    home_dir '/home/sftpusers/home/garry'
-    chroot_dir '/home/sftpusers/home'
-    notes ''
+    server { 'backup01.cust.arpnetworks.com' }
+    username { 'garry' }
+    group { 'sftpusers' }
+    quota { 20000000 }
+    home_dir { '/home/sftpusers/home/garry' }
+    chroot_dir { '/home/sftpusers/home' }
+    notes { '' }
   end
 
   factory :credit_card do
     association :account
-    display_number '1111'
-    number 4111111111111111
-    month '12'
-    year '2036'
-    first_name 'John'
-    last_name 'Doe'
-    billing_country_iso_3166 'US'
+    display_number { '1111' }
+    number { 4111111111111111 }
+    month { '12' }
+    year { '2036' }
+    first_name { 'John' }
+    last_name { 'Doe' }
+    billing_country_iso_3166 { 'US' }
   end
 end
