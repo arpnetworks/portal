@@ -268,6 +268,8 @@ class ServicesController < ProtectedController
 
   def set_title
     case @service || session[:service_to_enable]
+    when 'vps_with_os'
+      @title = 'New Service Configurator'
     when 'vps'
       @title = 'New VPS without OS'
     when 'metal'
