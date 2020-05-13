@@ -128,7 +128,10 @@ class AccountsController < ProtectedController
   ####################################
   # For the New Service Configurator #
   ####################################
-  def ip_addresses
+
+  # To help with auto-assignment of IPs and/or customer selection of IP
+  # addresses
+  def ip_address_inventory
     @stuff = [
       {
         ip_address: '10.0.0.1',

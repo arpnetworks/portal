@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       post 'login_attempt'
       get  'logout'
 
-      get  'ip_addresses'
+      get  'provisioning/ip_address', action: 'ip_address_inventory'
     end
 
     resources :services do
@@ -118,6 +118,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      namespace :provisioning do
+        get 'ip_addresses/available', controller: 'ip_addresses', action: 'available'
+      end
+
       namespace :internal do
         # VMs
         put 'virtual_machines/:uuid/status/:status', controller: 'virtual_machines',
