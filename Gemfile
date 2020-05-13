@@ -63,6 +63,7 @@ group :development do
   gem 'spring-commands-rspec'
 
   gem 'brakeman', require: false
+  gem 'rubocop-rspec'
 end
 
 group :production do
