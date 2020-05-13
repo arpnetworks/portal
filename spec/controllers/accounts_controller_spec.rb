@@ -76,3 +76,6 @@ describe AccountsController do
   end
 
 end
+
+describe AccountsController, "Provisioning Actions" do
+end
