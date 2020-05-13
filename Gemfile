@@ -82,3 +82,4 @@ gem 'uuid'
 gem 'will_paginate'
 gem 'yubikey'
 
+gem 'rails-ujs'
