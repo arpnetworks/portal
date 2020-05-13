@@ -30,7 +30,6 @@ Rails.application.routes.draw do
           post 'advanced_parameter'
         end
       end
-      resources :ip_blocks
       resources :bandwidth_quotas
       resources :backup_quotas do
         member do
