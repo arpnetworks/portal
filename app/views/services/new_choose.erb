@@ -8,8 +8,8 @@
         <%= form_tag("", :method => 'GET') do %>
           <ul>
             <li>
-              <%= radio_button_tag(:service, "vps_with_os", false) %>
-              <%= label_tag(:service_vps_with_os, "VPS (with OS)") %>
+              <%= radio_button_tag(:service, "vps_with_os", false, :disabled => true) %>
+              <%= label_tag(:service_vps_with_os, "VPS (with OS) (Coming *really* soon!)", :class => 'disabled') %>
             </li>
 
             <li>
