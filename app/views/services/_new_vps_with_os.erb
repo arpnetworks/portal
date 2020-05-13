@@ -6,23 +6,19 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
 
 <div>
   <div class='form-section-header-prominent'>VPS Plan / Size:</div>
-
-    <select name='plan'>
-      <option>Please Choose</option>
-  <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
-      <option value='<%= k %>'>
-      <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB Disk, <%= plan['bandwidth'] %> GB Bandwidth -- $<%= plan['mrc'] %> USD
-      </option>
-  <% end %>
-    </select>
+  <select name='plan'>
+    <option>Please Choose</option>
+    <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
+    <option value='<%= k %>'>
+    <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB Disk, <%= plan['bandwidth'] %> GB Bandwidth -- $<%= plan['mrc'] %> USD
+    </option>
+    <% end %>
+  </select>
 </div>
-
-<div>
 
 <div style="float: left; width: 30%">
   <div class='form-section-header-prominent'>Operating System:</div>
   <div>
-
   <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
     <% v['series'].sort { |a, b| b['version'] <=> a['version'] }.each do |series| %>
       <input type='radio' id='os_<%= series['code'] %>' name='os' value='<%= series['code'] %>' <%= series['pending'] && 'disabled' %>>
@@ -32,21 +28,17 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
       <br/>
     <% end %>
   <% end %>
-
   </div>
 </div>
 
 <div style='margin-left: auto; width: 55%'>
-
-<%= render :partial => 'location', :locals => { :title => nil } %>
-
-<div class='small-note'>
-  <div class='caption' style='float: left'><strong>Note</strong>:</div>
-  <div>
-    Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
+  <%= render :partial => 'location', :locals => { :title => nil } %>
+  <div class='small-note'>
+    <div class='caption' style='float: left'><strong>Note</strong>:</div>
+    <div>
+      Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
+    </div>
   </div>
-</div>
-
 </div>
 
 <div style="clear: both">
@@ -57,29 +49,24 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
       <option></option>
       <option>Let me type my own</option>
     </select>
-
   </div>
 
-  <div class='small-note'>
+  <div>
+    IPv6 address and gateway will be assign by auto-configuration.
+  </div>
+  <div class='small-note' style="display: none">
     <div class='caption' style='float: left'><strong>Note</strong>:</div>
     <div>
       IPv6 addresses will be automatically configured by ______________, but you can change this later.
     </div>
   </div>
-
 </div>
-
 
 <div style="clear: both; padding-top: 10px">
   <div class='form-section-header-prominent'>Users and SSH keys</div>
-
 </div>
 </div>
 
-<br/>
-<br/>
-<br/>
-<br/>
 <br/>
 <br/>
 <br/>
