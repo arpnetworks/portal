@@ -76,11 +76,30 @@ describe AccountsController do
   end
 
   describe 'Provisioning Actions' do
+    before do
+      login_as_user!
+    end
+
+    def do_get_ip_address_inventory
+      get :ip_address_inventory, location: @location, format: :json
+    end
+
     context 'with valid location' do
+      before do
+        @location = 'lax'
+      end
     end
 
     context 'with invalid location' do
+      before do
+        @location = 'ams'
+      end
+
       it 'should return empty set' do
+        do_get_ip_address_inventory
+
+        expect(@response).to be_success
+        expect(@response.body).to eq '[]'
       end
     end
   end
