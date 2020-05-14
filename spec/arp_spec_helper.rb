@@ -64,7 +64,7 @@ RSpec.shared_examples "Destructive Administrative Action" do
 
   describe "with nil OTP" do
     before do
-      @params = { :otp => nil }
+      @params = { otp: nil }
     end
 
     it "should redirect to dashboard" do
@@ -80,7 +80,7 @@ RSpec.shared_examples "Destructive Administrative Action" do
 
   describe "with empty OTP" do
     before do
-      @params = { :otp => '' }
+      @params = { otp: '' }
     end
 
     it "should redirect to dashboard" do
@@ -96,7 +96,7 @@ RSpec.shared_examples "Destructive Administrative Action" do
 
   describe "with incorrect identity OTP" do
     before do
-      @params = { :otp => 'ccffjccjfikrvckthhjnekevccdbtkjibrhgnudkrhev' }
+      @params = { otp: 'ccffjccjfikrvckthhjnekevccdbtkjibrhgnudkrhev' }
     end
 
     it "should redirect to dashboard" do
@@ -112,9 +112,9 @@ RSpec.shared_examples "Destructive Administrative Action" do
 
   describe "with valid OTP" do
     before do
-      @params = { :otp => 'ccucfccuudvinnftjbjihgefrflbdiffrjthhhbhjlku' }
+      @params = { otp: 'ccucfccuudvinnftjbjihgefrflbdiffrjthhhbhjlku' }
 
-      otp = double(:otp, :valid? => true)
+      otp = double(:otp, valid?: true)
       allow(Yubikey::OTP::Verify).to receive(:new).and_return(otp)
     end
 

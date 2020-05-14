@@ -42,8 +42,8 @@ describe '/invoices/pay.erb' do
         @cc_num = '4111111111111111'
 
         assign(:credit_card, stub_model(CreditCard,
-                                        :number => @cc_num,
-                                        :display_number => '1111'))
+                                        number: @cc_num,
+                                        display_number: '1111'))
       end
 
       it 'should display link to change credit card' do

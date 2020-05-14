@@ -21,7 +21,7 @@ context InvoicesController do
 
   context "index action" do
     specify "should respond with success" do
-      get :index, :account_id => @account.id
+      get :index, account_id: @account.id
       expect(@response).to be_success
     end
   end
@@ -34,7 +34,7 @@ context InvoicesController do
     end
 
     def do_get(opts = {})
-      get :pay, { :account_id => @account.id }.merge(opts)
+      get :pay, { account_id: @account.id }.merge(opts)
     end
 
     specify "should respond with success" do
@@ -95,9 +95,9 @@ context InvoicesController do
 
   context "pay_confirm action" do
     def do_post(opts = {})
-      post :pay_confirm, { :account_id => @account.id,
-                           :credit_card_number => @cc_num,
-                           :confirmed_amount => @confirmed_amount}.merge(opts)
+      post :pay_confirm, { account_id: @account.id,
+                           credit_card_number: @cc_num,
+                           confirmed_amount: @confirmed_amount}.merge(opts)
     end
 
     context "when payment system is disabled" do
@@ -120,13 +120,13 @@ context InvoicesController do
       context "with unpaid invoices" do
         before do
           @inv1 = double(:invoice_1,
-                         :id   => 500,
-                         :date => '01-01-1970',
-                         :line_items => [])
+                         id: 500,
+                         date: '01-01-1970',
+                         line_items: [])
           @inv2 = double(:invoice_2,
-                         :id   => 501,
-                         :date => '01-01-1970',
-                         :line_items => [])
+                         id: 501,
+                         date: '01-01-1970',
+                         line_items: [])
           @unpaid_invoices = [@inv1, @inv2]
           allow(@account).to receive(:invoices_unpaid).and_return(@unpaid_invoices)
         end
@@ -140,8 +140,8 @@ context InvoicesController do
 
           specify "should build credit card" do
             @cc = double(:credit_card,
-                         :charge_with_sales_receipt => nil,
-                         :charges => [])
+                         charge_with_sales_receipt: nil,
+                         charges: [])
             expect(@account).to receive(:credit_card).and_return(@cc)
             expect(@cc).to receive(:number=).with(@cc_num)
             do_post
@@ -166,8 +166,8 @@ context InvoicesController do
               allow(@account).to receive(:sales_receipt_line_items).and_return(@li)
               expect(@cc).to receive(:charge_with_sales_receipt).with(\
                 @confirmed_amount, @li,
-                :email_decline_notice => false,
-                :email_sales_receipt => true)
+                email_decline_notice: false,
+                email_sales_receipt: true)
               do_post
             end
 
@@ -197,22 +197,22 @@ context InvoicesController do
                 # Payment Record #1
                 @payments_1 = double(:payments_1)
                 expect(@payments_1).to receive(:create).with({
-                  :account_id => @account.id,
-                  :date => @now,
-                  :reference_number => @transaction_id,
-                  :method => "Credit Card",
-                  :amount => @inv1.total
+                  account_id: @account.id,
+                  date: @now,
+                  reference_number: @transaction_id,
+                  method: "Credit Card",
+                  amount: @inv1.total
                 })
                 expect(@inv1).to receive(:payments).and_return(@payments_1)
 
                 # Payment Record #2
                 @payments_2 = double(:payments_2)
                 expect(@payments_2).to receive(:create).with({
-                  :account_id => @account.id,
-                  :date => @now,
-                  :reference_number => @transaction_id,
-                  :method => "Credit Card",
-                  :amount => @inv2.total
+                  account_id: @account.id,
+                  date: @now,
+                  reference_number: @transaction_id,
+                  method: "Credit Card",
+                  amount: @inv2.total
                 })
                 expect(@inv2).to receive(:payments).and_return(@payments_2)
 
@@ -225,7 +225,7 @@ context InvoicesController do
                   allow(inv).to receive(:paid=)
                   allow(inv).to receive(:save)
                   allow(inv).to receive(:total)
-                  allow(inv).to receive(:payments).and_return(double(:payments, :create => nil))
+                  allow(inv).to receive(:payments).and_return(double(:payments, create: nil))
                 end
 
                 do_post

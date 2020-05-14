@@ -46,19 +46,19 @@ describe Admin::BackupQuotasController do
 
     it "should expose the requested backup_quota as @backup_quota" do
       expect(BackupQuota).to receive(:find).with("37") { mock_backup_quota }
-      get :edit, :id => "37"
+      get :edit, id: "37"
       expect(assigns[:backup_quota]).to eq(mock_backup_quota)
     end
 
     it "should redirect to the admin_backup_quotas list if backup_quota cannot be found" do
       allow(BackupQuota).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
-      get :edit, :id => "999"
+      get :edit, id: "999"
       expect(response).to redirect_to(admin_backup_quotas_url)
     end
 
     it "should set @include_blank" do
       expect(BackupQuota).to receive(:find).with("37") { mock_backup_quota }
-      get :edit, :id => "37"
+      get :edit, id: "37"
       expect(assigns(:include_blank)).to be true
     end
 
@@ -144,7 +144,7 @@ describe Admin::BackupQuotasController do
 
       it "should redirect to the admin_backup_quotas list if backup_quota cannot be found" do
         allow(BackupQuota).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
-        put :update, :id => "999"
+        put :update, id: "999"
         expect(response).to redirect_to(admin_backup_quotas_url)
       end
 

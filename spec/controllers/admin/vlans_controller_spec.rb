@@ -34,7 +34,7 @@ describe Admin::VlansController do
 
     it "should expose the requested vlans as @vlans" do
       expect(Vlan).to receive(:find).with("37") { mock_vlan }
-      get :show, :id => "37"
+      get :show, id: "37"
       expect(assigns[:vlan]).to eq(mock_vlan)
     end
 
@@ -45,7 +45,7 @@ describe Admin::VlansController do
         request.env["HTTP_ACCEPT"] = "application/xml"
         expect(Vlan).to receive(:find).with("37") { mock_vlan }
         expect(mock_vlan).to receive(:to_xml) { xml }
-        get :show, :id => "37"
+        get :show, id: "37"
         expect(response.body).to eq(xml)
       end
 
@@ -67,7 +67,7 @@ describe Admin::VlansController do
 
     it "should expose the requested vlans as @vlans" do
       expect(Vlan).to receive(:find).with("37") { mock_vlan }
-      get :edit, :id => "37"
+      get :edit, id: "37"
       expect(assigns[:vlan]).to eq(mock_vlan)
     end
 

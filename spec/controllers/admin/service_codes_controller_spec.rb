@@ -45,7 +45,7 @@ describe Admin::ServiceCodesController do
     it "should expose the requested service_codes as @service_codes" do
       service_code = double(ServiceCode)
       expect(ServiceCode).to receive(:find).with("37") { service_code }
-      get :show, :id => "37"
+      get :show, id: "37"
       expect(assigns[:service_code]).to eq(service_code)
     end
 
@@ -58,7 +58,7 @@ describe Admin::ServiceCodesController do
         service_code = double(ServiceCode, to_xml: xml)
 
         expect(ServiceCode).to receive(:find).with("37") { service_code }
-        get :show, :id => "37"
+        get :show, id: "37"
         expect(response.body).to eq(xml)
       end
 
@@ -80,7 +80,7 @@ describe Admin::ServiceCodesController do
 
     it "should expose the requested service_codes as @service_codes" do
       expect(ServiceCode).to receive(:find).with("37") { mock_service_code }
-      get :edit, :id => "37"
+      get :edit, id: "37"
       expect(assigns[:service_code]).to eq(mock_service_code)
     end
 
@@ -93,7 +93,7 @@ describe Admin::ServiceCodesController do
     end
 
     def do_create
-      post :create, :service_code => @p
+      post :create, service_code: @p
     end
 
     describe "with valid params" do
@@ -138,18 +138,18 @@ describe Admin::ServiceCodesController do
         p = { name: 'BANDWIDTH' }
         expect(ServiceCode).to receive(:find).with("37") { mock_service_code }
         expect(mock_service_code).to receive(:update_attributes)
-        put :update, :id => "37", :service_code => p
+        put :update, id: "37", service_code: p
       end
 
       it "should expose the requested service_codes as @service_codes" do
         allow(ServiceCode).to receive(:find) { mock_service_code(update_attributes: true) }
-        put :update, :id => "1", :service_code => { name: 'FOO' }
+        put :update, id: "1", service_code: { name: 'FOO' }
         expect(assigns(:service_code)).to eq(mock_service_code)
       end
 
       it "should redirect to all service codes" do
         allow(ServiceCode).to receive(:find) { mock_service_code(update_attributes: true) }
-        put :update, :id => "1", :service_code => { name: 'FOO' }
+        put :update, id: "1", service_code: { name: 'FOO' }
         expect(response).to redirect_to(admin_service_codes_path)
       end
 
@@ -159,7 +159,7 @@ describe Admin::ServiceCodesController do
 
       it "should re-render the 'edit' template" do
         allow(ServiceCode).to receive(:find) { mock_service_code(update_attributes: false) }
-        put :update, :id => "1", :service_code => { name: 'FOO' }
+        put :update, id: "1", service_code: { name: 'FOO' }
         expect(response).to render_template('edit')
       end
 
@@ -172,12 +172,12 @@ describe Admin::ServiceCodesController do
     it "should destroy the requested service_codes" do
       expect(ServiceCode).to receive(:find).with("37") { mock_service_code }
       expect(mock_service_code).to receive(:destroy)
-      delete :destroy, :id => "37"
+      delete :destroy, id: "37"
     end
 
     it "should redirect to the admin_service_codes list" do
       allow(ServiceCode).to receive(:find) { mock_service_code(destroy: true) }
-      delete :destroy, :id => "1"
+      delete :destroy, id: "1"
       expect(response).to redirect_to(admin_service_codes_url)
     end
 
@@ -185,7 +185,7 @@ describe Admin::ServiceCodesController do
       bad_monkey = instance_double(ServiceCode)
       allow(ServiceCode).to receive(:find) { bad_monkey }
       expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, "doh!")
-      delete :destroy, :id => "1"
+      delete :destroy, id: "1"
       expect(flash[:error]).to_not be_nil
     end
 

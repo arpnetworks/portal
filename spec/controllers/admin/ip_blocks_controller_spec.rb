@@ -9,7 +9,7 @@ describe Admin::IpBlocksController do
   before do
     login_as_admin!
     @ip_block = mock_model(IpBlock)
-    @params  = { :id => @ip_block.id }
+    @params  = { id: @ip_block.id }
   end
 
   def do_get(opts = {})
@@ -34,7 +34,7 @@ describe Admin::IpBlocksController do
 
     it "should let parent_block be selected automatically from params" do
       @ip_block_smaller = create :ip_block_smaller
-      do_get(@params.merge(:ip_block => { :ip_block_id => @ip_block_smaller.id }))
+      do_get(@params.merge(ip_block: { ip_block_id: @ip_block_smaller.id }))
       expect(assigns(:ip_block).parent_block.id).to eq @ip_block_smaller.id
     end
 
@@ -44,7 +44,7 @@ describe Admin::IpBlocksController do
     end
 
     it "should allow override seq" do
-      do_get(:ip_block => { :seq => 90 })
+      do_get(ip_block: { seq: 90 })
       expect(assigns(:ip_block).seq).to  eq 90
     end
   end
@@ -56,21 +56,21 @@ describe Admin::IpBlocksController do
 
     it "should create new ip_block" do
       num_records = IpBlock.count
-      do_post(@params.merge(:ip_block => { :cidr => '208.79.88.128/28' }))
+      do_post(@params.merge(ip_block: { cidr: '208.79.88.128/28' }))
       expect(IpBlock.count).to eq(num_records + 1)
       expect(response).to redirect_to(tree_admin_ip_blocks_path)
       expect(flash[:notice]).to_not be_nil
     end
 
     it "should go back to new page if error creating" do
-      expect(IpBlock).to receive(:new) { mock_model(IpBlock, :save => false) }
-      do_post(@params.merge(:ip_block => { :cidr => 'foo' }))
+      expect(IpBlock).to receive(:new) { mock_model(IpBlock, save: false) }
+      do_post(@params.merge(ip_block: { cidr: 'foo' }))
       expect(response).to render_template('admin/ip_blocks/new')
       expect(assigns(:include_blank)).to be true
     end
 
     it "should allow empty service id" do
-      do_post(@params.merge(:ip_block => { :cidr => '192.168.1.0/24', :service_id => '' }))
+      do_post(@params.merge(ip_block: { cidr: '192.168.1.0/24', service_id: '' }))
       expect(response).to redirect_to(tree_admin_ip_blocks_path)
     end
   end
@@ -151,11 +151,11 @@ describe Admin::IpBlocksController do
     end
 
     it "should update the ip_block" do
-      @new_ip_block = { :cidr => '10.0.1.128/28' }
+      @new_ip_block = { cidr: '10.0.1.128/28' }
       @ip_block = create :ip_block
       expect(@ip_block.cidr).to_not eq @new_ip_block[:cidr]
       allow(IpBlock).to receive(:find) { @ip_block }
-      do_put(@params.merge(:ip_block => @new_ip_block))
+      do_put(@params.merge(ip_block: @new_ip_block))
       expect(response).to redirect_to(edit_admin_ip_block_path(@ip_block))
       expect(flash[:notice]).to_not be_empty
       @reloaded_ip_block = IpBlock.find(@ip_block.id)
@@ -167,12 +167,12 @@ describe Admin::IpBlocksController do
       allow(controller).to receive(:ip_block_params) {{}}
       allow(@ip_block).to receive(:update_attributes) { false }
       expect(IpBlock).to receive(:find).with(@ip_block.id.to_s) { @ip_block }
-      do_put(@params.merge(:id => @ip_block.id, :ip_block => {}))
+      do_put(@params.merge(id: @ip_block.id, ip_block: {}))
       expect(response).to render_template('admin/ip_blocks/edit')
     end
 
     it "should redirect when the ip_block is not found" do
-      do_put @params.merge(:id => 999)
+      do_put @params.merge(id: 999)
       expect(flash[:error]).to_not be_nil
       expect(response).to redirect_to(admin_ip_blocks_path)
     end
@@ -180,7 +180,7 @@ describe Admin::IpBlocksController do
     it "should allow empty service id" do
       allow(IpBlock).to receive(:find) { @ip_block }
       allow(@ip_block).to receive(:update_attributes) { true }
-      do_put(@params.merge(:id => @ip_block.id, :ip_block => { :service_id => '', :cidr => '10.0.0.1/24' }))
+      do_put(@params.merge(id: @ip_block.id, ip_block: { service_id: '', cidr: '10.0.0.1/24' }))
       expect(response).to redirect_to(edit_admin_ip_block_path(@ip_block))
     end
   end
@@ -198,12 +198,12 @@ describe Admin::IpBlocksController do
     it "should destroy the requested ip_blocks" do
       expect(IpBlock).to receive(:find).with("37") { mock_ip_block }
       expect(mock_ip_block).to receive(:destroy)
-      delete :destroy, :id => "37"
+      delete :destroy, id: "37"
     end
 
     it "should redirect to the location that brought us here" do
       allow(IpBlock).to receive(:find) { mock_ip_block(destroy: true) }
-      delete :destroy, :id => "1"
+      delete :destroy, id: "1"
       expect(response).to redirect_to(@last_location)
     end
 
@@ -211,7 +211,7 @@ describe Admin::IpBlocksController do
       bad_monkey = mock_model(IpBlock)
       expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, 'bad')
       allow(IpBlock).to receive(:find).and_return(bad_monkey)
-      delete :destroy, :id => "1"
+      delete :destroy, id: "1"
       expect(flash[:error]).to_not be_nil
     end
   end
@@ -221,8 +221,8 @@ describe Admin::IpBlocksController do
       @prefixlen = 28
       expect(IpBlock).to receive(:find).with("37") { mock_ip_block }
 
-      expect(mock_ip_block).to receive(:subnets_available).with(@prefixlen, :Strategy => :leftmost, :limit => nil)
-      get :subnet, :id => "37", :prefixlen => @prefixlen
+      expect(mock_ip_block).to receive(:subnets_available).with(@prefixlen, Strategy: :leftmost, limit: nil)
+      get :subnet, id: "37", prefixlen: @prefixlen
     end
   end
 
@@ -275,7 +275,7 @@ describe Admin::IpBlocksController do
 
     it "should retreive registration_action from form" do
       %w(new modify remove).each do |registration_action|
-        do_post @params.merge(:form => { :registration_action => registration_action })
+        do_post @params.merge(form: { registration_action: registration_action })
         form = assigns(:form)
         expect(form.registration_action).to_not be_nil
         expect(form.registration_action).to eq registration_action
@@ -284,14 +284,14 @@ describe Admin::IpBlocksController do
 
     it "should retreive downstream organization info from form" do
       company = 'Starbucks'
-      do_post @params.merge(:downstream_org => { :display_account_name => company })
+      do_post @params.merge(downstream_org: { display_account_name: company })
       downstream_org = assigns(:downstream_org)
       expect(downstream_org).to_not be_nil
       expect(downstream_org.display_account_name).to eq company
     end
 
     it "should not submit empty network name" do
-      do_post @params.merge(:form => { :network_name => '' })
+      do_post @params.merge(form: { network_name: '' })
       expect(response).to render_template('swip')
     end
   end

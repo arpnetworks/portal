@@ -27,12 +27,12 @@ context "Vlan class with fixtures loaded" do
     end
 
     specify "should respect limit" do
-      expect(Vlan.next_available(:limit => 3)).to eq [103, 109, 110]
+      expect(Vlan.next_available(limit: 3)).to eq [103, 109, 110]
     end
 
     specify "should respect start_at" do
-      expect(Vlan.next_available(:start_at => 400)).to eq [400]
-      expect(Vlan.next_available(:start_at => 440)).to eq [441]
+      expect(Vlan.next_available(start_at: 400)).to eq [400]
+      expect(Vlan.next_available(start_at: 440)).to eq [441]
     end
   end
 

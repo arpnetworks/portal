@@ -14,7 +14,7 @@ describe CreditCardsController do
 
   describe "handling GET /account/1/credit_cards/new" do
     def do_get(opts = {})
-      get :new, { :account_id => @account.id }.merge(opts)
+      get :new, { account_id: @account.id }.merge(opts)
     end
 
     it "should assign new credit card record" do
@@ -45,7 +45,7 @@ describe CreditCardsController do
     end
 
     def do_post(opts = {})
-      post :create, { :account_id => @account.id }.merge(opts)
+      post :create, { account_id: @account.id }.merge(opts)
     end
 
     context "with new credit card" do
@@ -67,16 +67,16 @@ describe CreditCardsController do
           end
 
           it "should assign credit_card to account" do
-            do_post(:credit_card => @credit_card)
+            do_post(credit_card: @credit_card)
           end
 
           it "should assign flash informational message" do
-            do_post(:credit_card => @credit_card)
+            do_post(credit_card: @credit_card)
             expect(flash[:notice]).to_not be_nil
           end
 
           it "should redirect to dashboard" do
-            do_post(:credit_card => @credit_card)
+            do_post(credit_card: @credit_card)
             expect(response).to redirect_to(dashboard_path)
           end
         end
@@ -88,7 +88,7 @@ describe CreditCardsController do
           end
 
           it "should render new credit card form" do
-            do_post(:credit_card => @credit_card)
+            do_post(credit_card: @credit_card)
             expect(response).to render_template('credit_cards/new')
           end
         end

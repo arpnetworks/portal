@@ -2,14 +2,14 @@ require File.dirname(__FILE__) + '/../rails_helper'
 
 describe "IpBlock class with fixtures loaded" do
   before do
-    @ip_block  = IpBlock.new(:cidr => '10.0.0.0/24')
-    @ip_block6 = IpBlock.new(:cidr => '2002::/64')
+    @ip_block  = IpBlock.new(cidr: '10.0.0.0/24')
+    @ip_block6 = IpBlock.new(cidr: '2002::/64')
   end
 
   context "when parent block is unrelated to block" do
     before do
-      @ip_block2 = IpBlock.new(:cidr => '10.0.0.0/24')
-      @ip_block2.parent_block = IpBlock.new(:cidr => '192.168.1.0/24')
+      @ip_block2 = IpBlock.new(cidr: '10.0.0.0/24')
+      @ip_block2.parent_block = IpBlock.new(cidr: '192.168.1.0/24')
     end
 
     specify "should add an error" do
@@ -25,8 +25,8 @@ describe "IpBlock class with fixtures loaded" do
 
   context "when parent block is a supernet of block" do
     before do
-      @ip_block = IpBlock.new(:cidr => '10.0.0.0/25')
-      @ip_block.parent_block = IpBlock.new(:cidr => '10.0.0.0/24')
+      @ip_block = IpBlock.new(cidr: '10.0.0.0/25')
+      @ip_block.parent_block = IpBlock.new(cidr: '10.0.0.0/24')
     end
     specify "should be valid" do
       @ip_block.save
@@ -72,14 +72,14 @@ describe "IpBlock class with fixtures loaded" do
       expect(@ip_block6.ip_range_usable).to eq('All except gateway (::1)')
     end
     specify "should return just one IP, not range, if only one IP is usable" do
-      @ip_block = IpBlock.new(:cidr => '10.0.0.1/30')
+      @ip_block = IpBlock.new(cidr: '10.0.0.1/30')
       expect(@ip_block.ip_range_usable).to eq('10.0.0.2')
     end
   end
 
   context "internal network representation" do
     specify "should be set automatically on save" do
-      @ip_block  = IpBlock.new(:cidr => '10.0.0.0/30')
+      @ip_block  = IpBlock.new(cidr: '10.0.0.0/30')
       expect(@ip_block.network).to eq(nil)
       @ip_block.save
       expect(@ip_block.network).to eq(167772160)
@@ -107,9 +107,9 @@ describe "IpBlock class with fixtures loaded" do
 
   context "subnetting" do
     before do
-      @parent_block = IpBlock.create(:cidr => "10.0.0.0/24")
-      @child1 = IpBlock.create(:cidr => "10.0.0.0/25", :parent_block => @parent_block)
-      @child2 = IpBlock.create(:cidr => "10.0.0.128/27", :parent_block => @parent_block)
+      @parent_block = IpBlock.create(cidr: "10.0.0.0/24")
+      @child1 = IpBlock.create(cidr: "10.0.0.0/25", parent_block: @parent_block)
+      @child2 = IpBlock.create(cidr: "10.0.0.128/27", parent_block: @parent_block)
     end
 
     context "subnets()" do
@@ -118,7 +118,7 @@ describe "IpBlock class with fixtures loaded" do
       end
       
       specify "should return empty array if no subnets" do
-        @parent_block = IpBlock.create(:cidr => '172.16.0.1/24')
+        @parent_block = IpBlock.create(cidr: '172.16.0.1/24')
         expect(@parent_block.subnets).to eq([])
       end
     end
@@ -149,9 +149,9 @@ describe "IpBlock class with fixtures loaded" do
           @available = @parent_block.subnets_available(27)
 
           expect(@available.map { |o| o.cidr }).to eq(\
-            [IpBlock.new(:cidr => '10.0.0.192/27').cidr,
-             IpBlock.new(:cidr => '10.0.0.160/27').cidr,
-             IpBlock.new(:cidr => '10.0.0.224/27').cidr]
+            [IpBlock.new(cidr: '10.0.0.192/27').cidr,
+             IpBlock.new(cidr: '10.0.0.160/27').cidr,
+             IpBlock.new(cidr: '10.0.0.224/27').cidr]
                                                      )
         end
 
@@ -166,22 +166,22 @@ describe "IpBlock class with fixtures loaded" do
         context "should return only limit records if limit specified" do
           specify "as integer" do 
             expect(@parent_block.subnets_available(27).size).to eq(3)
-            expect(@parent_block.subnets_available(27, :limit => 1).size).to eq(1)
+            expect(@parent_block.subnets_available(27, limit: 1).size).to eq(1)
           end
 
           specify "as string" do
             expect(@parent_block.subnets_available(27).size).to eq 3
-            expect(@parent_block.subnets_available(27, :limit => '1').size).to eq 1
+            expect(@parent_block.subnets_available(27, limit: '1').size).to eq 1
           end
 
           specify "as empty string return all" do
             expect(@parent_block.subnets_available(27).size).to eq 3
-            expect(@parent_block.subnets_available(27, :limit => '').size).to eq 3
+            expect(@parent_block.subnets_available(27, limit: '').size).to eq 3
           end
 
           specify "as negative integer return all" do
             expect(@parent_block.subnets_available(27).size).to eq 3
-            expect(@parent_block.subnets_available(27, :limit => -1).size).to eq 3
+            expect(@parent_block.subnets_available(27, limit: -1).size).to eq 3
           end
         end
       end
@@ -210,7 +210,7 @@ describe "IpBlock class with fixtures loaded" do
 
     context "for IPv6" do
       before do
-        @ip_block6 = IpBlock.new(:cidr => '2607:f2f8:c0de::/48')
+        @ip_block6 = IpBlock.new(cidr: '2607:f2f8:c0de::/48')
       end
 
       specify "should return a string suitable for an ARIN SWIP 'Network Name' field" do
@@ -228,7 +228,7 @@ describe "IpBlock class with fixtures loaded" do
   context "reverse_dns_delegation_entries()" do
     context "for IPv4" do
       specify "should return text of entries suitable for BIND" do
-        @ip_block = IpBlock.new(:cidr => '10.0.0.1/28')
+        @ip_block = IpBlock.new(cidr: '10.0.0.1/28')
         expect(@ip_block.reverse_dns_delegation_entries(['foo', 'bar'])).to eq(<<-BLOCK
 ; BEGIN: RFC 2317 sub-Class C delegation
 ;
@@ -254,14 +254,14 @@ BLOCK
                                                                               )
       end
       specify "only blocks smaller than /24 are supported" do
-        @ip_block = IpBlock.new(:cidr => '10.0.0.0/24')
+        @ip_block = IpBlock.new(cidr: '10.0.0.0/24')
         expect(@ip_block.reverse_dns_delegation_entries('foo')).to eq("Not supported: address block too larger (/24 or larger)")
       end
     end
 
     context "for IPv6" do
       specify "should return text of entries suitable for BIND" do
-        @ip_block = IpBlock.new(:cidr => 'fe80:1:c0de::/48')
+        @ip_block = IpBlock.new(cidr: 'fe80:1:c0de::/48')
         expect(@ip_block.reverse_dns_delegation_entries(['foo', 'bar'])).to eq(<<-BLOCK
 e.d.0.c    IN  NS  foo.
 e.d.0.c    IN  NS  bar.
@@ -269,7 +269,7 @@ BLOCK
                                                                               )
       end
       specify "only blocks of size /48 are supported" do
-        @ip_block = IpBlock.new(:cidr => 'fe80::/64')
+        @ip_block = IpBlock.new(cidr: 'fe80::/64')
         expect(@ip_block.reverse_dns_delegation_entries('foo')).to eq("Not supported: address block not equal to /48")
       end
     end
@@ -278,13 +278,13 @@ BLOCK
   context "rfc2317_zone_name()" do
     context "for IPv4" do
       specify "should return text of zone name" do
-        @ip_block = IpBlock.new(:cidr => '10.0.0.1/28')
+        @ip_block = IpBlock.new(cidr: '10.0.0.1/28')
         expect(@ip_block.rfc2317_zone_name).to eq("0-15.0.0.10.in-addr.arpa")
       end
     end
     context "for IPv6" do
       specify "does not apply to IPv6" do
-        @ip_block = IpBlock.new(:cidr => 'fe80::/64')
+        @ip_block = IpBlock.new(cidr: 'fe80::/64')
         expect(@ip_block.rfc2317_zone_name).to eq("Not applicable to IPv6")
       end
     end
@@ -329,23 +329,23 @@ BLOCK
   context "reverse_dns_zone_name()" do
     context "for IPv4" do
       specify "should return text of zone name" do
-        @ip_block = IpBlock.new(:cidr => '10.0.0.1/28')
+        @ip_block = IpBlock.new(cidr: '10.0.0.1/28')
         expect(@ip_block.reverse_dns_zone_name).to eq("0.0.10.in-addr.arpa")
       end
     end
     context "for IPv6" do
       specify "should return text of zone name within ARP Networks /32" do
-        @ip_block = IpBlock.new(:cidr => '2607:f2f8:beef::/48')
+        @ip_block = IpBlock.new(cidr: '2607:f2f8:beef::/48')
         expect(@ip_block.reverse_dns_zone_name).to eq("8.f.2.f.7.0.6.2.ip6.arpa")
       end
 
       specify "should return text of zone name within ARP Networks /29" do
-        @ip_block = IpBlock.new(:cidr => '2a07:12c0:beef::/48')
+        @ip_block = IpBlock.new(cidr: '2a07:12c0:beef::/48')
         expect(@ip_block.reverse_dns_zone_name).to eq("c.2.1.7.0.a.2.ip6.arpa")
       end
 
       specify "should not return text of zone name if outside of ARP Networks /32" do
-        @ip_block = IpBlock.new(:cidr => 'fe80::/64')
+        @ip_block = IpBlock.new(cidr: 'fe80::/64')
         expect(@ip_block.reverse_dns_zone_name).to eq(nil)
       end
     end
@@ -414,9 +414,9 @@ BLOCK
       context "with possible matches" do
         before do
           @ip_blocks = [
-            IpBlock.new(:cidr => '10.0.0.0/30'),
-            IpBlock.new(:cidr => '10.0.0.8/29'),
-            IpBlock.new(:cidr => '10.0.0.16/28'),
+            IpBlock.new(cidr: '10.0.0.0/30'),
+            IpBlock.new(cidr: '10.0.0.8/29'),
+            IpBlock.new(cidr: '10.0.0.16/28'),
           ]
           allow(IpBlock).to receive(:where).and_return(@ip_blocks)
         end
@@ -448,9 +448,9 @@ BLOCK
       context "with possible matches" do
         before do
           @ip_blocks = [
-            IpBlock.new(:cidr => '2607:f2f8:c000::/48'),
-            IpBlock.new(:cidr => '2607:f2f8:c123::/48'),
-            IpBlock.new(:cidr => '2607:f2f8:c400::/48'),
+            IpBlock.new(cidr: '2607:f2f8:c000::/48'),
+            IpBlock.new(cidr: '2607:f2f8:c123::/48'),
+            IpBlock.new(cidr: '2607:f2f8:c400::/48'),
           ]
           allow(IpBlock).to receive(:where).and_return(@ip_blocks)
         end

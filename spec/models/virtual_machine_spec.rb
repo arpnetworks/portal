@@ -13,7 +13,7 @@ context VirtualMachine do
       DnsRecord.delete_all
       DnsDomain.delete_all
 
-      DnsDomain.create(:name => 'arpnetworks.com', :type => 'NATIVE')
+      DnsDomain.create(name: 'arpnetworks.com', type: 'NATIVE')
 
       # Create a few accounts because we want an account ID > 1
       create :account
@@ -40,8 +40,8 @@ context VirtualMachine do
       }
 
       @vm.virtual_machines_interfaces[0].update_attributes(
-        :ip_address => @ip_address,
-        :ipv6_address => @ipv6_address
+        ip_address: @ip_address,
+        ipv6_address: @ipv6_address
       )
 
       @vm.resource.service.account = @account
@@ -58,8 +58,8 @@ context VirtualMachine do
 
     specify "should be updated upon VM label change" do
       @vm.virtual_machines_interfaces[0].update_attributes(
-        :ip_address => @ip_address,
-        :ipv6_address => @ipv6_address
+        ip_address: @ip_address,
+        ipv6_address: @ipv6_address
       )
 
       @vm.resource.service.account = @account
@@ -78,8 +78,8 @@ context VirtualMachine do
 
     specify "should be updated upon IP address change" do
       @vm.virtual_machines_interfaces[0].update_attributes(
-        :ip_address => @ip_address,
-        :ipv6_address => @ipv6_address
+        ip_address: @ip_address,
+        ipv6_address: @ipv6_address
       )
 
       @vm.resource.service.account = @account
@@ -105,11 +105,11 @@ context VirtualMachine do
 
       # Should not receive :update_attributes
       ipv4_dns_record_mock = mock_model(DnsRecord,
-                                        :name => @vm.dns_record_name,
-                                        :content => ipv4_address)
+                                        name: @vm.dns_record_name,
+                                        content: ipv4_address)
       ipv6_dns_record_mock = mock_model(DnsRecord,
-                                        :name => @vm.dns_record_name,
-                                        :content => ipv6_address)
+                                        name: @vm.dns_record_name,
+                                        content: ipv6_address)
 
       expect(DnsRecord).to receive(:find_by_name_and_type).with(@vm.dns_record_name, 'A').at_least(:once) \
         { ipv4_dns_record_mock }
@@ -120,8 +120,8 @@ context VirtualMachine do
     end
     specify "should be deleted upon VM destruction" do
       @vm.virtual_machines_interfaces[0].update_attributes(
-        :ip_address => @ip_address,
-        :ipv6_address => @ipv6_address
+        ip_address: @ip_address,
+        ipv6_address: @ipv6_address
       )
 
       @vm.resource.service.account = @account
@@ -157,8 +157,8 @@ context VirtualMachine do
 
       @vm.virtual_machines_interfaces.create
       @vm.virtual_machines_interfaces[0].update_attributes(
-        :ip_address => '10.0.0.1',
-        :ipv6_address => 'fe80::2'
+        ip_address: '10.0.0.1',
+        ipv6_address: 'fe80::2'
       )
       @vm.save
     end

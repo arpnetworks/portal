@@ -22,8 +22,8 @@ context BackupQuotasController do
 
   context "ssh_key" do
     def do_get(opts = {})
-      get :ssh_key, { :account_id => @account.id, :service_id => @service.id,
-                      :id => @bq.id }.merge(opts)
+      get :ssh_key, { account_id: @account.id, service_id: @service.id,
+                      id: @bq.id }.merge(opts)
     end
 
     specify "should render SSH key submission form" do
@@ -43,8 +43,8 @@ context BackupQuotasController do
     end
 
     def do_post(opts = {})
-      post :ssh_key_post, { :account_id => @account.id, :service_id => @service.id,
-                            :id => @bq.id, :keys => @single_key }.merge(opts)
+      post :ssh_key_post, { account_id: @account.id, service_id: @service.id,
+                            id: @bq.id, keys: @single_key }.merge(opts)
     end
 
     specify "should submit key" do
@@ -57,7 +57,7 @@ context BackupQuotasController do
       expect(controller).to receive(:ssh_key_send).with(@bq.server, @bq.username, key1, false, @bq.quota)
       expect(controller).to receive(:ssh_key_send).with(@bq.server, @bq.username, key2, true, @bq.quota)
 
-      do_post(:keys => @two_keys)
+      do_post(keys: @two_keys)
     end
 
     specify "should acknowledge submission" do
@@ -73,12 +73,12 @@ context BackupQuotasController do
 
     context "when key is empty" do
       specify "should display error" do
-        do_post(:keys => '')
+        do_post(keys: '')
         expect(flash[:error]).to eq "Your submission was empty"
       end
 
       specify "should redirect back to form" do
-        do_post(:keys => '')
+        do_post(keys: '')
         expect(response).to redirect_to(ssh_key_account_service_backup_quota_path(\
           @account.id, @service.id, @bq.id))
       end

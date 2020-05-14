@@ -49,14 +49,14 @@ describe Admin::AccountsController do
 
     it "should create new account" do
       num_records = Account.count
-      do_post(@params.merge(:account => @params[:account].merge(:login => 'foo2', :company => 'foo', :password => 'foobarbaz', :password_confirmation => 'foobarbaz')))
+      do_post(@params.merge(account: @params[:account].merge(login: 'foo2', company: 'foo', password: 'foobarbaz', password_confirmation: 'foobarbaz')))
       expect(Account.count).to eq(num_records + 1)
       expect(response).to redirect_to(admin_accounts_path)
       expect(flash[:notice]).to_not be_nil
     end
 
     it "should go back to new page if error creating" do
-      do_post(@params.merge(:account => { :login => '' })) # Blank login
+      do_post(@params.merge(account: { login: '' })) # Blank login
       expect(response).to render_template('admin/accounts/new')
       expect(assigns(:include_blank)).to be true
     end
@@ -85,7 +85,7 @@ describe Admin::AccountsController do
 
     it "should redirect when the account is not found" do
       allow(Account).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
-      do_get @params.merge(:id => 999)
+      do_get @params.merge(id: 999)
       expect(flash[:error]).to_not be_nil
       expect(response).to redirect_to(admin_accounts_path)
     end
@@ -105,7 +105,7 @@ describe Admin::AccountsController do
 
     it "should redirect when the account is not found" do
       allow(Account).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
-      do_get @params.merge(:id => 999)
+      do_get @params.merge(id: 999)
       expect(flash[:error]).to_not be_nil
       expect(response).to redirect_to(admin_accounts_path)
     end
@@ -119,13 +119,13 @@ describe Admin::AccountsController do
     it "should go back to edit page if error updating" do
       allow(Account).to receive(:find) { @account }
       allow(@account).to receive(:update_attributes).and_raise(ActiveRecord::StatementInvalid, 'foo')
-      do_put(@params.merge(:id => @account.id))
+      do_put(@params.merge(id: @account.id))
       expect(response).to render_template('admin/accounts/edit')
     end
 
     it "should redirect when the account is not found" do
       allow(Account).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
-      do_put @params.merge(:id => 999)
+      do_put @params.merge(id: 999)
       expect(flash[:error]).to_not be_nil
       expect(response).to redirect_to(admin_accounts_path)
     end
@@ -134,8 +134,8 @@ describe Admin::AccountsController do
       allow(Account).to receive(:find) { @account }
       expect(@account).to receive(:update_attributes).with(@account_params.stringify_keys!)
 
-      do_put(@params.merge(:id => @account.id, :account => @account_params.merge(
-                           :password => '', :password_confirmation => '')))
+      do_put(@params.merge(id: @account.id, account: @account_params.merge(
+                           password: '', password_confirmation: '')))
     end
   end
 
@@ -148,13 +148,13 @@ describe Admin::AccountsController do
       allow(controller).to receive(:last_location) { '/foo' }
       expect(Account).to receive(:find).with("37") { mock_account }
       expect(mock_account).to receive(:destroy)
-      delete :destroy, :id => "37"
+      delete :destroy, id: "37"
     end
 
     it "should redirect to the location that brought us here" do
       allow(controller).to receive(:last_location) { '/foo' }
       allow(Account).to receive(:find) { mock_account(destroy: true) }
-      delete :destroy, :id => "1"
+      delete :destroy, id: "1"
       expect(response).to redirect_to('/foo')
     end
 
@@ -162,7 +162,7 @@ describe Admin::AccountsController do
       bad_monkey = double(Account)
       expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, 'foo')
       allow(Account).to receive(:find) { bad_monkey }
-      delete :destroy, :id => "1"
+      delete :destroy, id: "1"
       expect(flash[:error]).to_not be_nil
     end
   end

@@ -19,12 +19,12 @@ describe Service do
     end
 
     it "should not consider intervals less than 1" do
-      @service = [Service.new(:billing_amount => 50, :billing_interval => 0)]
+      @service = [Service.new(billing_amount: 50, billing_interval: 0)]
       expect(Service.give_me_totals(@service)).to eq({})
     end
 
     it "should not consider an interval of nil" do
-      @service = [Service.new(:billing_amount => 50, :billing_interval => nil)]
+      @service = [Service.new(billing_amount: 50, billing_interval: nil)]
       expect(Service.give_me_totals(@service)).to eq({})
     end
   end

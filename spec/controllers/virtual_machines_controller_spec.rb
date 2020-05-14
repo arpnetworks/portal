@@ -20,8 +20,8 @@ context VirtualMachinesController do
   context "boot action" do
 
     def do_get(opts = {})
-      get :boot, { :account_id => @account.id, :service_id => @service.id,
-                   :id => @vm.id }.merge(opts)
+      get :boot, { account_id: @account.id, service_id: @service.id,
+                   id: @vm.id }.merge(opts)
     end
 
     context "with valid VM" do
@@ -54,12 +54,12 @@ context VirtualMachinesController do
     context "with invalid VM" do
 
       specify "should not set flash notice" do
-        do_get(:id => 999)
+        do_get(id: 999)
         expect(flash[:notice_for_vm]).to be_nil
       end
 
       specify "should redirect to service page" do
-        do_get(:id => 999)
+        do_get(id: 999)
         expect(@response).to redirect_to(account_service_path(@account.id,
                                                               @service.id))
       end
@@ -69,8 +69,8 @@ context VirtualMachinesController do
   context "shutdown action" do
 
     def do_get(opts = {})
-      get :shutdown, { :account_id => @account.id, :service_id => @service.id,
-                       :id => @vm.id }.merge(opts)
+      get :shutdown, { account_id: @account.id, service_id: @service.id,
+                       id: @vm.id }.merge(opts)
     end
 
     context "with valid VM" do
@@ -96,12 +96,12 @@ context VirtualMachinesController do
     context "with invalid VM" do
 
       specify "should not set flash notice" do
-        do_get(:id => 999)
+        do_get(id: 999)
         expect(flash[:notice_for_vm]).to be_nil
       end
 
       specify "should redirect to service page" do
-        do_get(:id => 999)
+        do_get(id: 999)
         expect(@response).to redirect_to(account_service_path(@account.id,
                                                           @service.id))
       end
@@ -111,8 +111,8 @@ context VirtualMachinesController do
   context "shutdown_hard action" do
 
     def do_get(opts = {})
-      get :shutdown_hard, { :account_id => @account.id, :service_id => @service.id,
-                            :id => @vm.id }.merge(opts)
+      get :shutdown_hard, { account_id: @account.id, service_id: @service.id,
+                            id: @vm.id }.merge(opts)
     end
 
     context "with valid VM" do
@@ -138,12 +138,12 @@ context VirtualMachinesController do
     context "with invalid VM" do
 
       specify "should not set flash notice" do
-        do_get(:id => 999)
+        do_get(id: 999)
         expect(flash[:notice_for_vm]).to be_nil
       end
 
       specify "should redirect to service page" do
-        do_get(:id => 999)
+        do_get(id: 999)
         expect(@response).to redirect_to(account_service_path(@account.id,
                                                           @service.id))
       end
@@ -164,10 +164,10 @@ context VirtualMachinesController do
     end
 
     def do_get(opts = {})
-      get :iso_change, { :account_id => @account.id,
-                         :service_id => @service.id,
-                         :iso_file   => @iso_files[0],
-                         :id => @vm.id }.merge(opts)
+      get :iso_change, { account_id: @account.id,
+                         service_id: @service.id,
+                         iso_file: @iso_files[0],
+                         id: @vm.id }.merge(opts)
     end
 
     context "with valid VM" do
@@ -188,19 +188,19 @@ context VirtualMachinesController do
           iso = 'OpenBSD-5.4-amd64-install54.iso'
           s = "cdrom-iso #{$ISO_BASE}/#{iso}"
           expect(@vm).to receive(:set_iso!).with(iso) { true }
-          do_get(:iso_file => iso)
+          do_get(iso_file: iso)
         end
       end
 
       context "without valid ISO filename" do
         specify "should redirect to service page" do
-          do_get(:iso_file => 'lskjdlfdjf')
+          do_get(iso_file: 'lskjdlfdjf')
           expect(@response).to redirect_to(account_service_path(@account.id,
                                                             @service.id))
         end
 
         specify "should not set flash notice" do
-          do_get(:iso_file => 'lskjdlfdjf')
+          do_get(iso_file: 'lskjdlfdjf')
           expect(flash[:notice_for_vm_iso]).to be_nil
         end
       end
@@ -213,12 +213,12 @@ context VirtualMachinesController do
       end
 
       specify "should not set flash notice" do
-        do_get(:id => 999)
+        do_get(id: 999)
         expect(flash[:notice_for_vm_iso]).to be_nil
       end
 
       specify "should redirect to service page" do
-        do_get(:id => 999)
+        do_get(id: 999)
         expect(@response).to redirect_to(account_service_path(@account.id,
                                                               @service.id))
       end
@@ -234,7 +234,7 @@ context VirtualMachinesController do
         io = double("io")
         expect(io).to receive(:puts).with("#{command} #{vm.uuid} #{vm.host} ")
 
-        allow(Time).to receive(:new).and_return(double("time", :to_i => ts))
+        allow(Time).to receive(:new).and_return(double("time", to_i: ts))
         expect(File).to receive(:open).with("tmp/requests/#{vm.uuid}-#{ts}", "w").and_yield(io)
 
         VirtualMachinesController.new.instance_eval do
@@ -247,8 +247,8 @@ context VirtualMachinesController do
   context "ssh_key" do
 
     def do_get(opts = {})
-      get :ssh_key, { :account_id => @account.id, :service_id => @service.id,
-                      :id => @vm.id }.merge(opts)
+      get :ssh_key, { account_id: @account.id, service_id: @service.id,
+                      id: @vm.id }.merge(opts)
     end
 
     specify "should render SSH key submission form" do
@@ -269,8 +269,8 @@ context VirtualMachinesController do
     end
 
     def do_post(opts = {})
-      post :ssh_key_post, { :account_id => @account.id, :service_id => @service.id,
-                            :id => @vm.id, :keys => @single_key }.merge(opts)
+      post :ssh_key_post, { account_id: @account.id, service_id: @service.id,
+                            id: @vm.id, keys: @single_key }.merge(opts)
     end
 
     specify "should submit key" do
@@ -287,7 +287,7 @@ context VirtualMachinesController do
       expect(@controller).to receive(:ssh_key_send).with(@vm.console_login, key1, false)
       expect(@controller).to receive(:ssh_key_send).with(@vm.console_login, key2, true)
 
-      do_post(:keys => @two_keys)
+      do_post(keys: @two_keys)
     end
 
     specify "should acknowledge submission" do
@@ -304,12 +304,12 @@ context VirtualMachinesController do
     context "when key is empty" do
 
       specify "should display error" do
-        do_post(:keys => '')
+        do_post(keys: '')
         expect(flash[:error]).to eq "Your submission was empty"
       end
 
       specify "should redirect back to form" do
-        do_post(:keys => '')
+        do_post(keys: '')
         expect(@response).to redirect_to(ssh_key_account_service_virtual_machine_path(\
           @account.id, @service.id, @vm.id))
       end

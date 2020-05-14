@@ -78,12 +78,12 @@ describe ApplicationHelper do
     end
 
     def do_account
-      @account = Account.new(:address1 => @addr1,
-                             :address2 => @addr2,
-                             :city => @city,
-                             :state => @state,
-                             :zip => @zip,
-                             :country => @country)
+      @account = Account.new(address1: @addr1,
+                             address2: @addr2,
+                             city: @city,
+                             state: @state,
+                             zip: @zip,
+                             country: @country)
     end
 
     it "should look like this when only address1 is provided" do
