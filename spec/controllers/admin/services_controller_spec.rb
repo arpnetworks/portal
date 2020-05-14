@@ -50,7 +50,8 @@ describe Admin::ServicesController do
 
     it "should create new service" do
       num_records = Service.count
-      do_post(@params.merge(:service => { :account_id => 1, :title => 'foo' }))
+      some_account = Account.first
+      do_post(@params.merge(:service => { :account_id => some_account.id, :title => 'foo' }))
       expect(Service.count).to eq (num_records + 1)
       expect(response).to redirect_to(admin_services_path)
       expect(flash[:notice]).to_not be_nil
