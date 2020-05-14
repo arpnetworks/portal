@@ -1,10 +1,6 @@
 <div id='new_vps_with_os'>
 
-<div class='notice'>
-Provisioning time for a new VPS with operating system pre-loaded is usually less than <strong>two minutes</strong>.
-</div>
-
-<div>
+<div style='float: left; width: 55%'>
   <div class='form-section-header-prominent'>VPS Plan / Size:</div>
   <select name='plan'>
     <option>Please Choose</option>
@@ -16,7 +12,17 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
   </select>
 </div>
 
-<div style="float: left; width: 30%">
+<div style='margin-left: auto; width: 45%'>
+  <%= render :partial => 'location', :locals => { :title => nil } %>
+  <div class='small-note'>
+    <div class='caption' style='float: left'>Note:</div>
+    <div>
+      Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
+    </div>
+  </div>
+</div>
+
+<div style="clear: both; float: left; width: 55%">
   <div class='form-section-header-prominent'>Operating System:</div>
   <div>
   <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
@@ -31,24 +37,17 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
   </div>
 </div>
 
-<div style='margin-left: auto; width: 55%'>
-  <%= render :partial => 'location', :locals => { :title => nil } %>
-  <div class='small-note'>
-    <div class='caption' style='float: left'>Note:</div>
-    <div>
-      Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
-    </div>
-  </div>
-</div>
-
-<div style="clear: both">
+<div style="margin-left: auto;">
   <div class='form-section-header-prominent'>IP Address Assignments</div>
   <div>
+    <div>
     IPv4 on first network interface:
+    </div>
+    <div>
     <select id='ipv4_address_selector'>
-      <option></option>
-      <option>Let me type my own</option>
+      <option>Loading...</option>
     </select>
+    </div>
 
     <input type='checkbox' id='ip_manual_input'> Let me type my own
   </div>
