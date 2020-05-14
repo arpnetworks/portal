@@ -79,7 +79,7 @@ describe AccountsController do
 
   describe 'Provisioning Actions' do
     before do
-      login_as_user!
+      @account = login_as_user!
     end
 
     def do_get_ip_address_inventory
@@ -89,11 +89,14 @@ describe AccountsController do
     context 'with valid location' do
       before do
         @location = 'lax'
+        @location_obj = Location.new(code: @location)
+        allow(Location).to receive(:find_by).with(code: @location)\
+          .and_return(@location_obj)
       end
 
       context 'with IPs in use' do
         before do
-          allow(@account).to_receive(:ips_in_use).and_return(\
+          allow(@account).to receive(:ips_in_use).and_return(\
             ['10.0.0.2', '10.0.0.3']
           )
         end
@@ -102,15 +105,21 @@ describe AccountsController do
 
         context 'with IPs available' do
           before do
-            allow(@account).to_receive(:ips_available).and_return(\
-              ['10.0.0.4', '10.0.0.5', '10.0.0.6']
-            )
+            @ips_available = ['10.0.0.4', '10.0.0.5', '10.0.0.6']
+            allow(@account).to receive(:ips_available)\
+              .with(location: @location_obj).and_return(@ips_available)
           end
 
           it 'should mark them available' do
             do_get_ip_address_inventory
-            json_response = @response.body
             expect(@response).to be_success
+
+            json_response = JSON.parse(@response.body)
+
+            expect(json_response.size).to eq @ips_available.size
+            @ips_available.each do |available_ip|
+              expect(json_response[available_ip]).not_to be_nil
+            end
           end
         end
       end
@@ -124,8 +133,8 @@ describe AccountsController do
       it 'should return empty set' do
         do_get_ip_address_inventory
 
-        expect(@response).to be_success
-        expect(@response.body).to eq '[]'
+        expect(@response).to_not be_success
+        expect(@response.body).to include("No such location")
       end
     end
   end

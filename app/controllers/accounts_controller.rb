@@ -132,22 +132,35 @@ class AccountsController < ProtectedController
   # To help with auto-assignment of IPs and/or customer selection of IP
   # addresses
   def ip_address_inventory
-    # Start with an empty response
-    @response = []
 
-    @stuff = [
-      {
-        ip_address: '10.0.0.1',
+    location_code = params[:location_code] || 'lax'
+
+    # Scope by location
+    location = Location.find_by(code: location_code)
+    if location.nil?
+      respond_to do |format|
+        format.json { render json: { 
+          error: "No such location: #{location_code}"
+        }, status: :bad_request }
+      end
+      return
+    end
+
+    ips_available = @account.ips_available(location: location)
+
+
+    # Start with an empty response
+    @response = {}
+
+
+    ips_available.each do |ip|
+      @response[ip.to_s] = {
+        ip_address: ip,
         assigned: false,
-        assignment: '',
-        location: params[:location]
-      },
-      {
-        ip_address: '10.0.0.2',
-        assigned: true,
-        assignment: 'aljfdajdlfajdsf'
+        assignment: nil,
+        location: location.code
       }
-    ]
+    end
 
     respond_to do |format|
       format.json { render json: @response }
