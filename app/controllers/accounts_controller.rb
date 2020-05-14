@@ -143,16 +143,17 @@ class AccountsController < ProtectedController
     location = Location.find_by(code: location_code)
     if location.nil?
       respond_to do |format|
-        format.json {
+        format.json do
           render json: {
             error: "No such location: #{location_code}"
           }, status: :bad_request
-        }
+        end
       end
       return
     end
 
     ips_available = @account.ips_available(location: location)
+    ips_in_use    = @account.ips_in_use(location: location)
 
     # Start with an empty response
     @response = {}
@@ -161,6 +162,14 @@ class AccountsController < ProtectedController
       @response[ip.to_s] = {
         ip_address: ip,
         assigned: false,
+        assignment: nil,
+        location: location.code
+      }
+    end
+    ips_in_use.each do |ip|
+      @response[ip.to_s] = {
+        ip_address: ip,
+        assigned: true,
         assignment: nil,
         location: location.code
       }

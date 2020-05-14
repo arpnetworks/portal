@@ -91,35 +91,98 @@ describe AccountsController do
         @location = 'lax'
         @location_obj = Location.new(code: @location)
         allow(Location).to receive(:find_by).with(code: @location)\
-          .and_return(@location_obj)
+                                            .and_return(@location_obj)
       end
 
       context 'with IPs in use' do
         before do
-          allow(@account).to receive(:ips_in_use).and_return(\
-            ['10.0.0.2', '10.0.0.3']
-          )
+          @ips_in_use = ['10.0.0.2', '10.0.0.3']
+          allow(@account).to receive(:ips_in_use).and_return(@ips_in_use)
         end
 
-        it 'should mark them in use'
+        it 'should mark them in use' do
+          do_get_ip_address_inventory
+          expect(@response).to be_success
 
-        context 'with IPs available' do
-          before do
-            @ips_available = ['10.0.0.4', '10.0.0.5', '10.0.0.6']
-            allow(@account).to receive(:ips_available)\
-              .with(location: @location_obj).and_return(@ips_available)
+          json_response = JSON.parse(@response.body)
+
+          expect(json_response.size).to eq @ips_in_use.size
+          @ips_in_use.each do |available_ip|
+            expect(json_response[available_ip]).not_to be_nil
+            expect(json_response[available_ip]['assigned']).to be true
           end
+        end
 
-          it 'should mark them available' do
-            do_get_ip_address_inventory
-            expect(@response).to be_success
+        it 'should have further assignment information' do
+          do_get_ip_address_inventory
+          expect(@response).to be_success
 
-            json_response = JSON.parse(@response.body)
+          json_response = JSON.parse(@response.body)
 
-            expect(json_response.size).to eq @ips_available.size
-            @ips_available.each do |available_ip|
-              expect(json_response[available_ip]).not_to be_nil
-            end
+          expect(json_response.size).to eq @ips_in_use.size
+          @ips_in_use.each do |available_ip|
+            expect(json_response[available_ip]).not_to be_nil
+            expect(json_response[available_ip]['assignment']).not_to be_nil
+          end
+        end
+      end
+
+      context 'with IPs available' do
+        before do
+          @ips_available = ['10.0.0.4', '10.0.0.5', '10.0.0.6']
+          allow(@account).to receive(:ips_available)\
+            .with(location: @location_obj).and_return(@ips_available)
+        end
+
+        it 'should include IP address in hash' do
+          do_get_ip_address_inventory
+          expect(@response).to be_success
+
+          json_response = JSON.parse(@response.body)
+
+          expect(json_response.size).to eq @ips_available.size
+          @ips_available.each do |available_ip|
+            expect(json_response[available_ip]).not_to be_nil
+            expect(json_response[available_ip]['ip_address']).to eq available_ip
+          end
+        end
+
+        it 'should mark them available' do
+          do_get_ip_address_inventory
+          expect(@response).to be_success
+
+          json_response = JSON.parse(@response.body)
+
+          expect(json_response.size).to eq @ips_available.size
+          @ips_available.each do |available_ip|
+            expect(json_response[available_ip]).not_to be_nil
+            expect(json_response[available_ip]['assigned']).to be false
+          end
+        end
+
+        it 'should be assigned to the correct location' do
+          do_get_ip_address_inventory
+          expect(@response).to be_success
+
+          json_response = JSON.parse(@response.body)
+
+          expect(json_response.size).to eq @ips_available.size
+          @ips_available.each do |available_ip|
+            expect(json_response[available_ip]).not_to be_nil
+            expect(json_response[available_ip]['location']).to eq @location
+          end
+        end
+
+        it 'should not have any further assignment information' do
+          do_get_ip_address_inventory
+          expect(@response).to be_success
+
+          json_response = JSON.parse(@response.body)
+
+          expect(json_response.size).to eq @ips_available.size
+          @ips_available.each do |available_ip|
+            expect(json_response[available_ip]).not_to be_nil
+            expect(json_response[available_ip]['assignment']).to be_nil
           end
         end
       end
@@ -134,7 +197,7 @@ describe AccountsController do
         do_get_ip_address_inventory
 
         expect(@response).to_not be_success
-        expect(@response.body).to include("No such location")
+        expect(@response.body).to include('No such location')
       end
     end
   end
