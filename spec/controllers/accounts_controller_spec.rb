@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
@@ -87,6 +89,30 @@ describe AccountsController do
     context 'with valid location' do
       before do
         @location = 'lax'
+      end
+
+      context 'with IPs in use' do
+        before do
+          allow(@account).to_receive(:ips_in_use).and_return(\
+            ['10.0.0.2', '10.0.0.3']
+          )
+        end
+
+        it 'should mark them in use'
+
+        context 'with IPs available' do
+          before do
+            allow(@account).to_receive(:ips_available).and_return(\
+              ['10.0.0.4', '10.0.0.5', '10.0.0.6']
+            )
+          end
+
+          it 'should mark them available' do
+            do_get_ip_address_inventory
+            json_response = @response.body
+            expect(@response).to be_success
+          end
+        end
       end
     end
 
