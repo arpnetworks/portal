@@ -1,0 +1,28 @@
+require: rubocop-rails
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+Metrics/MethodLength:
+  Max: 50
+  IgnoredMethods: ['respond_to']
+Metrics/AbcSize:
+  IgnoredMethods: ['respond_to']
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+Lint/RaiseException:
+  Enabled: true
+Lint/StructNewOverride:
+  Enabled: true
+Style/ExponentialNotation:
+  Enabled: true
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
+Style/SlicingWithRange:
+  Enabled: true
