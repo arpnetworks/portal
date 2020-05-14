@@ -56,61 +56,61 @@ def clear_db!
   Account.delete_all
 end
 
-RSpec.shared_examples "Destructive Administrative Action" do
+RSpec.shared_examples 'Destructive Administrative Action' do
   before do
     # We shouldn't actually hit Yubikey's servers
     allow(Yubikey::OTP::Verify).to receive(:new).and_return(nil)
   end
 
-  describe "with nil OTP" do
+  describe 'with nil OTP' do
     before do
       @params = { otp: nil }
     end
 
-    it "should redirect to dashboard" do
+    it 'should redirect to dashboard' do
       do_post(@params)
       expect(response).to redirect_to(login_accounts_path)
     end
 
-    it "should set flash error" do
+    it 'should set flash error' do
       do_post(@params)
       expect(flash[:error]).to_not be_nil
     end
   end
 
-  describe "with empty OTP" do
+  describe 'with empty OTP' do
     before do
       @params = { otp: '' }
     end
 
-    it "should redirect to dashboard" do
+    it 'should redirect to dashboard' do
       do_post(@params)
       expect(response).to redirect_to(login_accounts_path)
     end
 
-    it "should set flash error" do
+    it 'should set flash error' do
       do_post(@params)
       expect(flash[:error]).to_not be_nil
     end
   end
 
-  describe "with incorrect identity OTP" do
+  describe 'with incorrect identity OTP' do
     before do
       @params = { otp: 'ccffjccjfikrvckthhjnekevccdbtkjibrhgnudkrhev' }
     end
 
-    it "should redirect to dashboard" do
+    it 'should redirect to dashboard' do
       do_post(@params)
       expect(response).to redirect_to(login_accounts_path)
     end
 
-    it "should set flash error" do
+    it 'should set flash error' do
       do_post(@params)
       expect(flash[:error]).to_not be_nil
     end
   end
 
-  describe "with valid OTP" do
+  describe 'with valid OTP' do
     before do
       @params = { otp: 'ccucfccuudvinnftjbjihgefrflbdiffrjthhhbhjlku' }
 
@@ -118,7 +118,7 @@ RSpec.shared_examples "Destructive Administrative Action" do
       allow(Yubikey::OTP::Verify).to receive(:new).and_return(otp)
     end
 
-    it "should not set flash error" do
+    it 'should not set flash error' do
       do_post(@params)
       expect(flash[:error]).to_not be_nil
     end

@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/../../rails_helper'
 
-describe "/services/show.erb" do
+describe '/services/show.erb' do
   include RSpecHtmlMatchers
 
-  context "description is empty" do
+  context 'description is empty' do
     before do
       ip_block = build :ip_block do |ipb|
         ipb.notes = ''
@@ -12,12 +12,12 @@ describe "/services/show.erb" do
     end
 
     it "should not display 'Additional' section" do
-      render "/ip_blocks/table_data.erb"
+      render '/ip_blocks/table_data.erb'
       expect(response).to_not have_tag('td.th-minor', text: /Additional/)
     end
   end
 
-  context "description is not empty" do
+  context 'description is not empty' do
     before do
       ip_block = build :ip_block do |ipb|
         ipb.notes = 'lkjsdf'
@@ -26,7 +26,7 @@ describe "/services/show.erb" do
     end
 
     it "should not display 'Additional' section" do
-      render "/ip_blocks/table_data.erb"
+      render '/ip_blocks/table_data.erb'
       expect(response).to have_tag('td.th-minor', text: /Additional/)
     end
   end

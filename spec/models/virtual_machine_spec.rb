@@ -8,7 +8,7 @@ context VirtualMachine do
     @vm.resource.service = @service
   end
 
-  context "DNS records" do
+  context 'DNS records' do
     before :context do
       DnsRecord.delete_all
       DnsDomain.delete_all
@@ -28,7 +28,7 @@ context VirtualMachine do
       DnsDomain.find_by_name('arpnetworks.com').destroy
     end
 
-    specify "should be created upon VM creation with IPs assigned" do
+    specify 'should be created upon VM creation with IPs assigned' do
       label = 'bar'
       record_name = "#{label}.cust.arpnetworks.com"
 
@@ -56,7 +56,7 @@ context VirtualMachine do
       expect(dns_record.content).to eq @ipv6_address
     end
 
-    specify "should be updated upon VM label change" do
+    specify 'should be updated upon VM label change' do
       @vm.virtual_machines_interfaces[0].update_attributes(
         ip_address: @ip_address,
         ipv6_address: @ipv6_address
@@ -76,7 +76,7 @@ context VirtualMachine do
       expect(v6_record.reload.name).to eq "#{label}.cust.arpnetworks.com"
     end
 
-    specify "should be updated upon IP address change" do
+    specify 'should be updated upon IP address change' do
       @vm.virtual_machines_interfaces[0].update_attributes(
         ip_address: @ip_address,
         ipv6_address: @ipv6_address
@@ -98,7 +98,7 @@ context VirtualMachine do
       expect(v4_record.reload.content).to eq ipv4
       expect(v6_record.reload.content).to eq ipv6
     end
-    specify "should not update when VM label does not change" do
+    specify 'should not update when VM label does not change' do
       @vm = VirtualMachine.first
       ipv4_address = @vm.virtual_machines_interfaces[0].ip_address
       ipv6_address = @vm.virtual_machines_interfaces[0].ipv6_address
@@ -118,7 +118,7 @@ context VirtualMachine do
 
       @vm.save
     end
-    specify "should be deleted upon VM destruction" do
+    specify 'should be deleted upon VM destruction' do
       @vm.virtual_machines_interfaces[0].update_attributes(
         ip_address: @ip_address,
         ipv6_address: @ipv6_address
@@ -139,7 +139,7 @@ context VirtualMachine do
       expect(DnsRecord.find_by_id(v6_record.id)).to be_nil
     end
 
-    specify "should not be created upon VM creation belonging to ARP Networks" do
+    specify 'should not be created upon VM creation belonging to ARP Networks' do
       expect(DnsDomain).to_not receive(:find_by_name)
 
       @vm = create :virtual_machine, {
@@ -162,7 +162,7 @@ context VirtualMachine do
       )
       @vm.save
     end
-    specify "should not be updated upon VM label change belonging to ARP Networks" do
+    specify 'should not be updated upon VM label change belonging to ARP Networks' do
       expect(DnsDomain).to_not receive(:find_by_name)
 
       @vm = create :virtual_machine
@@ -184,11 +184,11 @@ context VirtualMachine do
     end
   end
 
-  context "dns_record_name()" do
-    specify "should be of the form <label>.cust.arpnetworks.com" do
+  context 'dns_record_name()' do
+    specify 'should be of the form <label>.cust.arpnetworks.com' do
       expect(@vm.dns_record_name).to eq "#{@vm.label}.cust.arpnetworks.com"
     end
-    specify "should be of the form <alt-label>.cust.arpnetworks.com if we supply <alt-label>" do
+    specify 'should be of the form <alt-label>.cust.arpnetworks.com if we supply <alt-label>' do
       expect(@vm.dns_record_name('alt')).to eq 'alt.cust.arpnetworks.com'
     end
   end
@@ -200,9 +200,9 @@ context VirtualMachine do
   # I wrote these specs when the code in Resourceable was actually in VirtualMachine
   # (it was born there).
 
-  context "when creating" do
-    context "with service_id" do
-      specify "should assign VM to service" do
+  context 'when creating' do
+    context 'with service_id' do
+      specify 'should assign VM to service' do
         @vm = VirtualMachine.create(uuid:       @uuid,
                                     service_id: @service.id,
                                     host:       'foo.arpnetworks.com',
@@ -217,8 +217,8 @@ context VirtualMachine do
     end
   end
 
-  context "when updating" do
-    context "with service_id" do
+  context 'when updating' do
+    context 'with service_id' do
 
       before do
         @service_new = create :service
@@ -229,7 +229,7 @@ context VirtualMachine do
         @vm.save
       end
 
-      specify "should remove from old service" do
+      specify 'should remove from old service' do
         # Test both directions first
         expect(@vm.resource.service).to eq @service
         @service.virtual_machines.first == @vm
@@ -245,13 +245,13 @@ context VirtualMachine do
         expect(@vm.resource.service).to_not eq @service
       end
 
-      specify "should assign VM to service" do
+      specify 'should assign VM to service' do
         do_reassign
         expect(@vm.resource.service).to eq @service_new
       end
 
-      context "when no prior service was assigned" do
-        specify "should assign VM to service" do
+      context 'when no prior service was assigned' do
+        specify 'should assign VM to service' do
           @vm = VirtualMachine.create(uuid:       @uuid,
                                       service_id: @service.id,
                                       host:       'foo.arpnetworks.com',
@@ -267,9 +267,9 @@ context VirtualMachine do
     end
   end
 
-  context "when VM belongs to" do
-    context "a service" do
-      specify "service_id() should return parent service" do
+  context 'when VM belongs to' do
+    context 'a service' do
+      specify 'service_id() should return parent service' do
         expect(@vm.service_id).to eq @service.id
       end
     end

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../../rails_helper')
 
-describe "/admin/service_codes/edit.html.erb" do
+describe '/admin/service_codes/edit.html.erb' do
   include RSpecHtmlMatchers
 
   before(:each) do
@@ -8,8 +8,8 @@ describe "/admin/service_codes/edit.html.erb" do
     assign(:service_code, @service_code)
   end
 
-  it "should render edit form" do
-    render template: "/admin/service_codes/edit.html.erb"
+  it 'should render edit form' do
+    render template: '/admin/service_codes/edit.html.erb'
 
     expect(response).to have_tag("form[action='#{admin_service_code_path(@service_code)}'][method=post]")
   end

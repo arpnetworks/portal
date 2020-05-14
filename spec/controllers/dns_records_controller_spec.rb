@@ -26,25 +26,25 @@ context DnsRecordsController do
     @account = login_as_user!
   end
 
-  specify "should be a DnsRecordsController" do
+  specify 'should be a DnsRecordsController' do
     expect(controller).to be_an_instance_of(DnsRecordsController)
   end
 
-  specify "account should have two services" do
+  specify 'account should have two services' do
     expect(@account.services.size).to eq 2
   end
 
-  context "handling GET /accounts/1/reverse_dns" do
+  context 'handling GET /accounts/1/reverse_dns' do
     def do_get(opts = {})
       get :reverse_dns, { account_id: @account.id }.merge(opts)
     end
 
-    specify "should be a success" do
+    specify 'should be a success' do
       do_get
       expect(response).to be_success
     end
 
-    specify "should be a success even if account has no IP blocks" do
+    specify 'should be a success even if account has no IP blocks' do
       account = create :account
       login_with_account!(account)
       expect(account.ip_blocks).to eq []
@@ -52,12 +52,12 @@ context DnsRecordsController do
       expect(response).to be_success
     end
 
-    specify "should retrieve IP blocks" do
+    specify 'should retrieve IP blocks' do
       do_get
       expect(assigns(:ip_blocks)).to eq @ip_blocks
     end
 
-    context "when building records" do
+    context 'when building records' do
       before do
         DnsRecord.delete_all
 
@@ -68,7 +68,7 @@ context DnsRecordsController do
                                content: 'example.com')
       end
 
-      specify "should build records with same name and different type" do
+      specify 'should build records with same name and different type' do
         # Same name, different type
         @dns_records << create(:dns_record_with_ns_type, :the_10_block,
                                name: '2.0.0.10.in-addr.arpa',
@@ -90,7 +90,7 @@ context DnsRecordsController do
         ].sort { |a,b| a.ip <=> b.ip }
       end
 
-      specify "should build records for RFC 2317 delegations" do
+      specify 'should build records for RFC 2317 delegations' do
         rfc2317_record = build :dns_record, :the_10_block,
                                              name: '0-3.0.0.10.in-addr.arpa',
                                              content: 'ns1.example.com'
@@ -116,7 +116,7 @@ context DnsRecordsController do
         ]
       end
 
-      specify "should only build records belonging to account" do
+      specify 'should only build records belonging to account' do
         # Add a couple more than @account owns
         (2..8).each do |n|
           @dns_records << create(:dns_record, :the_192_block,
@@ -165,7 +165,7 @@ context DnsRecordsController do
         ]
       end
 
-      specify "should only build IPv6 records belonging to account" do
+      specify 'should only build IPv6 records belonging to account' do
         @domain_ipv6 = create(:dns_domain,
                               name: '8.f.2.f.7.0.6.2.ip6.arpa')
 
@@ -203,7 +203,7 @@ context DnsRecordsController do
         ]
       end
 
-      specify "should build IPv6 records with same name and different type" do
+      specify 'should build IPv6 records with same name and different type' do
         @domain_ipv6 = create(:dns_domain,
                               name: '8.f.2.f.7.0.6.2.ip6.arpa')
 
@@ -236,7 +236,7 @@ context DnsRecordsController do
     end
   end
 
-  context "RESTful actions" do
+  context 'RESTful actions' do
     before do
       DnsRecord.delete_all
 
@@ -247,24 +247,24 @@ context DnsRecordsController do
       @params = { id: @dns_record.id }
     end
 
-    describe "handling GET /account/1/dns_record/1/new" do
+    describe 'handling GET /account/1/dns_record/1/new' do
       def do_get(opts = {})
         get :new, { account_id: @account.id }.merge(opts)
       end
 
-      it "should display new dns_record form" do
+      it 'should display new dns_record form' do
         do_get
         expect(assigns(:dns_record)).to be_new_record
         expect(response).to be_success
       end
 
-      it "should set default type to PTR" do
+      it 'should set default type to PTR' do
         do_get
         expect(assigns(:dns_record).type).to eq 'PTR'
         expect(response).to be_success
       end
 
-      it "should redirect back if account has no reverse DNS zones" do
+      it 'should redirect back if account has no reverse DNS zones' do
         account_without_zones = create(:account)
         login_with_account!(account_without_zones)
         do_get(account_id: account_without_zones.id)
@@ -273,12 +273,12 @@ context DnsRecordsController do
       end
     end
 
-    describe "handling POST /accounts/1/dns_records" do
+    describe 'handling POST /accounts/1/dns_records' do
       def do_post(opts = {})
         post :create, { account_id: @account.id }.merge(opts)
       end
 
-      it "should create new dns_record" do
+      it 'should create new dns_record' do
         allow(@account).to receive(:owns_dns_record?) { true }
         num_records = DnsRecord.count
         new_dns_record = {
@@ -293,7 +293,7 @@ context DnsRecordsController do
         expect(flash[:notice]).to_not be_nil
       end
 
-      it "should create new IPv6 dns_record" do
+      it 'should create new IPv6 dns_record' do
         create :dns_domain, :the_ipv6_block
         allow(@account).to receive(:owns_dns_record?) { true }
         num_records = DnsRecord.count
@@ -309,7 +309,7 @@ context DnsRecordsController do
         expect(flash[:notice]).to_not be_nil
       end
 
-      it "should assign new dns_record to correct domain" do
+      it 'should assign new dns_record to correct domain' do
         domain = DnsDomain.find_by_name('0.0.10.in-addr.arpa') || create(:dns_domain, :the_10_block)
         new_dns_record = {
           name: '2',
@@ -321,7 +321,7 @@ context DnsRecordsController do
         expect(assigns(:dns_record).domain).to eq domain
       end
 
-      it "should go back to new page if error creating" do
+      it 'should go back to new page if error creating' do
         dns_record_mock = mock_model(DnsRecord,
                                      :ip => '10.0.0.1',
                                      :type => 'NS',
@@ -336,7 +336,7 @@ context DnsRecordsController do
         expect(response).to render_template('dns_records/new')
       end
 
-      it "should strip domain from name if error" do
+      it 'should strip domain from name if error' do
         new_dns_record = {
           name: '1',
           domain: '0.0.10.in-addr.arpa',
@@ -347,7 +347,7 @@ context DnsRecordsController do
         expect(assigns(:dns_record)[:name]).to eq '1'
       end
 
-      it "should strip domain from name if error even if name is empty" do
+      it 'should strip domain from name if error even if name is empty' do
         new_dns_record = {
           name: '',
           domain: '0.0.10.in-addr.arpa',
@@ -358,7 +358,7 @@ context DnsRecordsController do
         expect(assigns(:dns_record)[:name]).to eq ''
       end
 
-      it "should not allow creation of dns_record that account could not own" do
+      it 'should not allow creation of dns_record that account could not own' do
         num_records = DnsRecord.count
 
         new_dns_record = {
@@ -375,7 +375,7 @@ context DnsRecordsController do
         expect(response).to render_template('dns_records/new')
       end
 
-      it "should send NOTIFYs" do
+      it 'should send NOTIFYs' do
         new_dns_record = {
           name: '2',
           domain: '0.0.10.in-addr.arpa',
@@ -387,24 +387,24 @@ context DnsRecordsController do
       end
     end
 
-    context "handling GET /accounts/1/dns_records/1/edit" do
+    context 'handling GET /accounts/1/dns_records/1/edit' do
       def do_get(opts = {})
         get :edit, { account_id: @account.id }.merge(opts)
       end
 
-      it "should show the dns_record" do
+      it 'should show the dns_record' do
         do_get @params
         expect(response).to be_success
         expect(assigns(:dns_record).id).to eq @dns_record.id
       end
 
-      it "should redirect when the dns_record is not found" do
+      it 'should redirect when the dns_record is not found' do
         do_get @params.merge(id: 999)
         expect(flash[:error]).to_not be_nil
         expect(response).to redirect_to(reverse_dns_account_dns_records_path(@account))
       end
 
-      it "should redirect when the dns_record does not belong to account" do
+      it 'should redirect when the dns_record does not belong to account' do
         @dns_record_for_someone_else = \
           create(:dns_record, :the_10_block,
                   name: '9.0.0.10.in-addr.arpa',
@@ -416,13 +416,13 @@ context DnsRecordsController do
       end
     end
 
-    context "handling PUT /accounts/1/dns_records/1/edit" do
+    context 'handling PUT /accounts/1/dns_records/1/edit' do
       def do_put(opts = {})
         put :update, { account_id: @account.id }.merge(opts)
       end
 
-      it "should update the dns_record" do
-        new_content = "example2.com."
+      it 'should update the dns_record' do
+        new_content = 'example2.com.'
         expect(@dns_record.content).to_not eq new_content
         do_put(@params.merge(dns_record: { type: 'PTR',
                                               content: new_content }))
@@ -433,27 +433,27 @@ context DnsRecordsController do
         expect(@reloaded_dns_record.content).to eq new_content
       end
 
-      it "should go back to edit page if error updating" do
+      it 'should go back to edit page if error updating' do
         do_put(@params.merge(id: @dns_record.id, dns_record: { type: 'BAD' }))
         expect(response).to render_template('dns_records/edit')
       end
 
-      it "should redirect when the dns_record is not found" do
+      it 'should redirect when the dns_record is not found' do
         do_put @params.merge(id: 999)
         expect(flash[:error]).to_not be_nil
         expect(response).to redirect_to(reverse_dns_account_dns_records_path(@account))
       end
 
-      it "should send NOTIFYs" do
-        new_content = "example2.com."
+      it 'should send NOTIFYs' do
+        new_content = 'example2.com.'
         expect(@dns_record.content).to_not eq new_content
         expect(@controller).to receive(:send_notify).with('0.0.10.in-addr.arpa')
         do_put(@params.merge(dns_record: { type: 'PTR',
                                               content: new_content }))
       end
 
-      it "should not update dns_record if resulting record could not be owned by account" do
-        new_name = "0-3.0.0.10.in-addr.arpa"
+      it 'should not update dns_record if resulting record could not be owned by account' do
+        new_name = '0-3.0.0.10.in-addr.arpa'
         do_put @params.merge(dns_record: { name: new_name, type: 'NS',
                                               content: @dns_record.content.chop })
         expect(flash[:notice]).to eq 'Changes saved.'
@@ -470,7 +470,7 @@ context DnsRecordsController do
       end
     end
 
-    describe "handling DELETE /accounts/1/dns_records/1" do
+    describe 'handling DELETE /accounts/1/dns_records/1' do
       def do_destroy(opts = {})
         put :destroy, { account_id: @account.id }.merge(opts)
       end
@@ -483,19 +483,19 @@ context DnsRecordsController do
                                                      name: '1.0.0.10.in-addr.arpa' }.merge(stubs))
       end
 
-      it "should destroy the requested dns_records" do
-        expect(DnsRecord).to receive(:find).with("37").and_return(mock_dns_record)
+      it 'should destroy the requested dns_records' do
+        expect(DnsRecord).to receive(:find).with('37').and_return(mock_dns_record)
         expect(mock_dns_record).to receive(:destroy)
-        do_destroy(id: "37")
+        do_destroy(id: '37')
       end
 
-      it "should redirect back to dns records index" do
+      it 'should redirect back to dns records index' do
         allow(DnsRecord).to receive(:find) { mock_dns_record(destroy: true) }
-        do_destroy(id: "1")
+        do_destroy(id: '1')
         expect(response).to redirect_to(reverse_dns_account_dns_records_path(@account))
       end
 
-      it "should set flash[:error] if destroy() raises AR exception" do
+      it 'should set flash[:error] if destroy() raises AR exception' do
         bad_monkey = mock_model(DnsRecord, ip: '10.0.0.1',
                                            type: 'NS',
                                            domain: build(:dns_domain, :the_10_block),
@@ -503,20 +503,20 @@ context DnsRecordsController do
                                            name: '1.0.0.10.in-addr.arpa')
         expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, 'u no good')
         allow(DnsRecord).to receive(:find).and_return(bad_monkey)
-        do_destroy(id: "1")
+        do_destroy(id: '1')
         expect(flash[:error]).to_not be_nil
       end
 
-      it "should send NOTIFYs" do
+      it 'should send NOTIFYs' do
         expect(@controller).to receive(:send_notify).with('0.0.10.in-addr.arpa')
-        expect(DnsRecord).to receive(:find).with("37") { mock_dns_record }
+        expect(DnsRecord).to receive(:find).with('37') { mock_dns_record }
         expect(mock_dns_record).to receive(:destroy)
-        do_destroy(id: "37")
+        do_destroy(id: '37')
       end
     end
   end
 
-  context "send_notify()" do
+  context 'send_notify()' do
     before do
       allow(Kernel).to receive(:system).and_return(nil)
     end
@@ -527,9 +527,9 @@ context DnsRecordsController do
       end
     end
 
-    specify "should execute shell command for pdns to send a NOTIFY to slaves" do
+    specify 'should execute shell command for pdns to send a NOTIFY to slaves' do
       domain = '0.0.10.in-addr.arpa'
-      expect(Kernel).to receive(:system).with("pdns_control", "notify", domain)
+      expect(Kernel).to receive(:system).with('pdns_control', 'notify', domain)
       do_send_notify(domain)
     end
   end

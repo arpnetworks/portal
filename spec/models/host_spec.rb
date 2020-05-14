@@ -9,8 +9,8 @@ context Host do
     end
   end
 
-  context "hosts_for_console_passwd_file()" do
-    specify "should return array of hostnames" do
+  context 'hosts_for_console_passwd_file()' do
+    specify 'should return array of hostnames' do
       expect(Host.hosts_for_console_passwd_file.sort).to eq @hostnames.sort
     end
   end
