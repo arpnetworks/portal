@@ -65,6 +65,7 @@ group :development do
   gem 'brakeman', require: false
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
+  gem 'erb_lint', require: false
 end
 
 group :production do
