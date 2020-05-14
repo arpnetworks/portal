@@ -56,7 +56,7 @@ class AccountsController < ProtectedController
     end
 
     if @account.update_attributes(account_params)
-      flash[:notice] = "Changes saved."
+      flash[:notice] = 'Changes saved.'
 
       # Return to edit page
       redirect_to action: 'edit' and return
@@ -98,11 +98,11 @@ class AccountsController < ProtectedController
   end
 
   def login
+    return unless session[:account_id]
+
     # Already logged in?  Go to Dashboard
-    if session[:account_id]
-      flash[:notice] = "You're already logged in, redirecting to your Dashboard"
-      redirect_to(dashboard_path)
-    end
+    flash[:notice] = "You're already logged in, redirecting to your Dashboard"
+    redirect_to(dashboard_path)
   end
 
   def login_attempt
@@ -126,7 +126,7 @@ class AccountsController < ProtectedController
     session[:account_id] = nil
     session[:human]      = nil
     cookies.delete(:login)
-    flash[:notice] = "You have been logged out."
+    flash[:notice] = 'You have been logged out.'
     redirect_to login_accounts_path
   end
 
@@ -175,10 +175,10 @@ class AccountsController < ProtectedController
 
   # From http://www.bigbold.com/snippets/posts/show/491
   def newpass(len)
-    chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-    newpass = ""
+    chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
+    newpass = ''
     1.upto(len) { |i| newpass << chars[rand(chars.size - 1)] }
-    return newpass
+    newpass
   end
 
   private
