@@ -183,12 +183,14 @@ class AccountsController < ProtectedController
         assignment = 'another instance'
       end
 
-      @ips[ip.to_s] = {
-        ip_address: ip,
-        assigned: true,
-        assignment: assignment,
-        location: location.code
-      }
+      if ip
+        @ips[ip.to_s] = {
+          ip_address: ip,
+          assigned: true,
+          assignment: assignment,
+          location: location.code
+        }
+      end
     end
 
     @response['ips'] = @ips
