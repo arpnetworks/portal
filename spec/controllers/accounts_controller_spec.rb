@@ -105,11 +105,12 @@ describe AccountsController do
           expect(@response).to be_success
 
           json_response = JSON.parse(@response.body)
+          ips = json_response['ips']
 
-          expect(json_response.size).to eq @ips_in_use.size
+          expect(ips.size).to eq @ips_in_use.size
           @ips_in_use.each do |available_ip|
-            expect(json_response[available_ip]).not_to be_nil
-            expect(json_response[available_ip]['assigned']).to be true
+            expect(ips[available_ip]).not_to be_nil
+            expect(ips[available_ip]['assigned']).to be true
           end
         end
 
@@ -118,11 +119,13 @@ describe AccountsController do
           expect(@response).to be_success
 
           json_response = JSON.parse(@response.body)
+          ips = json_response['ips']
 
-          expect(json_response.size).to eq @ips_in_use.size
+          expect(ips.size).to eq @ips_in_use.size
           @ips_in_use.each do |available_ip|
-            expect(json_response[available_ip]).not_to be_nil
-            expect(json_response[available_ip]['assignment']).not_to be_nil
+            expect(ips[available_ip]).not_to be_nil
+            expect(ips[available_ip]['assignment']).not_to be_nil
+            expect(ips[available_ip]['assignment']).not_to be_empty
           end
         end
       end
@@ -134,16 +137,27 @@ describe AccountsController do
             .with(location: @location_obj).and_return(@ips_available)
         end
 
+        it 'should set caption for location' do
+          do_get_ip_address_inventory
+          expect(@response).to be_success
+
+          json_response = JSON.parse(@response.body)
+          caption = json_response['caption']
+
+          expect(caption).to match(/Please Choose .* LAX/)
+        end
+
         it 'should include IP address in hash' do
           do_get_ip_address_inventory
           expect(@response).to be_success
 
           json_response = JSON.parse(@response.body)
+          ips = json_response['ips']
 
-          expect(json_response.size).to eq @ips_available.size
+          expect(ips.size).to eq @ips_available.size
           @ips_available.each do |available_ip|
-            expect(json_response[available_ip]).not_to be_nil
-            expect(json_response[available_ip]['ip_address']).to eq available_ip
+            expect(ips[available_ip]).not_to be_nil
+            expect(ips[available_ip]['ip_address']).to eq available_ip
           end
         end
 
@@ -152,11 +166,12 @@ describe AccountsController do
           expect(@response).to be_success
 
           json_response = JSON.parse(@response.body)
+          ips = json_response['ips']
 
-          expect(json_response.size).to eq @ips_available.size
+          expect(ips.size).to eq @ips_available.size
           @ips_available.each do |available_ip|
-            expect(json_response[available_ip]).not_to be_nil
-            expect(json_response[available_ip]['assigned']).to be false
+            expect(ips[available_ip]).not_to be_nil
+            expect(ips[available_ip]['assigned']).to be false
           end
         end
 
@@ -165,11 +180,12 @@ describe AccountsController do
           expect(@response).to be_success
 
           json_response = JSON.parse(@response.body)
+          ips = json_response['ips']
 
-          expect(json_response.size).to eq @ips_available.size
+          expect(ips.size).to eq @ips_available.size
           @ips_available.each do |available_ip|
-            expect(json_response[available_ip]).not_to be_nil
-            expect(json_response[available_ip]['location']).to eq @location
+            expect(ips[available_ip]).not_to be_nil
+            expect(ips[available_ip]['location']).to eq @location
           end
         end
 
@@ -178,11 +194,12 @@ describe AccountsController do
           expect(@response).to be_success
 
           json_response = JSON.parse(@response.body)
+          ips = json_response['ips']
 
-          expect(json_response.size).to eq @ips_available.size
+          expect(ips.size).to eq @ips_available.size
           @ips_available.each do |available_ip|
-            expect(json_response[available_ip]).not_to be_nil
-            expect(json_response[available_ip]['assignment']).to be_nil
+            expect(ips[available_ip]).not_to be_nil
+            expect(ips[available_ip]['assignment']).to be_nil
           end
         end
       end

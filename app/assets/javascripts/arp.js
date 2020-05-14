@@ -11,16 +11,24 @@ $(function() {
         url: '/provisioning/ip_address',
         data: 'location=' + $(this).val(),
         success: function(data) {
-          var s = '';
-          console.log(data)
-          $.each(data, function(k, v) {
-            s += "IP: " + v['ip_address'] + "\n" +
-                 "Assigned: " + v['assigned'] + "\n" +
-                 "Assignment: " + v['assignment'] + "\n" +
-                 "Location: " + v['location'] + "\n"
+          ips = data['ips']
+
+          options = '<option>' + data['caption'] + '</option>'
+
+          $.each(ips, function(k, v) {
+            options += '<option' + (v['assigned'] ? ' disabled' : '') + '>'
+            options += v['ip_address']
+
+
+            if(v['assigned']) {
+              console.log(v)
+              options += ' (assigned to ' + v['assignment'] + ')'
+            }
+
+            options += '</option>'
           })
 
-          alert(s)
+          $('#ipv4_address_selector').html(options)
         },
         error: function(data) {
           alert("Could not retrieve IP addresses.\nPlease try again later.")

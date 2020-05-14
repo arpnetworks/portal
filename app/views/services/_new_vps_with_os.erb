@@ -34,7 +34,7 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
 <div style='margin-left: auto; width: 55%'>
   <%= render :partial => 'location', :locals => { :title => nil } %>
   <div class='small-note'>
-    <div class='caption' style='float: left'><strong>Note</strong>:</div>
+    <div class='caption' style='float: left'>Note:</div>
     <div>
       Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
     </div>
@@ -45,17 +45,19 @@ Provisioning time for a new VPS with operating system pre-loaded is usually less
   <div class='form-section-header-prominent'>IP Address Assignments</div>
   <div>
     IPv4 on first network interface:
-    <select>
+    <select id='ipv4_address_selector'>
       <option></option>
       <option>Let me type my own</option>
     </select>
+
+    <input type='checkbox' id='ip_manual_input'> Let me type my own
   </div>
 
   <div>
     IPv6 address and gateway will be assign by auto-configuration.
   </div>
   <div class='small-note' style="display: none">
-    <div class='caption' style='float: left'><strong>Note</strong>:</div>
+    <div class='caption' style='float: left'>Note:</div>
     <div>
       IPv6 addresses will be automatically configured by ______________, but you can change this later.
     </div>

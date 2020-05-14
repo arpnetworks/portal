@@ -137,7 +137,7 @@ class AccountsController < ProtectedController
   # To help with auto-assignment of IPs and/or customer selection of IP
   # addresses
   def ip_address_inventory
-    location_code = params[:location_code] || 'lax'
+    location_code = params['location'] || 'lax'
 
     # Scope by location
     location = Location.find_by(code: location_code)
@@ -157,9 +157,10 @@ class AccountsController < ProtectedController
 
     # Start with an empty response
     @response = {}
+    @ips      = {}
 
     ips_available.each do |ip|
-      @response[ip.to_s] = {
+      @ips[ip.to_s] = {
         ip_address: ip,
         assigned: false,
         assignment: nil,
@@ -167,13 +168,32 @@ class AccountsController < ProtectedController
       }
     end
     ips_in_use.each do |ip|
-      @response[ip.to_s] = {
+      assignment = ''
+
+      begin
+        raise unless (vm = IpBlock.what_is_assigned_to(ip))
+
+        assignment = vm.uuid
+
+        if (service_id = vm.service_id)
+          svc = Service.find(service_id)
+          assignment = svc.label
+        end
+      rescue StandardError
+        assignment = 'another instance'
+      end
+
+      @ips[ip.to_s] = {
         ip_address: ip,
         assigned: true,
-        assignment: nil,
+        assignment: assignment,
         location: location.code
       }
     end
+
+    @response['ips'] = @ips
+    @response['caption'] = 'Please Choose an IP in ' + \
+                           location_code.upcase
 
     respond_to do |format|
       format.json { render json: @response }

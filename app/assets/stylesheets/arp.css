@@ -1099,6 +1099,7 @@ div.small-note .caption {
   float: left;
   padding-bottom: 20px;
   padding-right: 7px;
+  font-weight: bold;
 }
 
 div.form-section-header {

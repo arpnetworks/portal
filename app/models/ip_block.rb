@@ -281,6 +281,14 @@ class IpBlock < ActiveRecord::Base
     @parent_net.account if @parent_net
   end
 
+  def self.what_is_assigned_to(ip)
+    interfaces = VirtualMachinesInterface.where(ip_address: ip)
+    return if interfaces.empty?
+
+    interface = interfaces.last
+    interface.virtual_machine
+  end
+
   protected
 
   before_save do
