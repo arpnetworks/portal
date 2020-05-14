@@ -16,9 +16,9 @@ $(function() {
           options = '<option>' + data['caption'] + '</option>'
 
           $.each(ips, function(k, v) {
-            options += '<option' + (v['assigned'] ? ' disabled' : '') + '>'
+            options += '<option value="' + v['ip_address'] + '"'
+            options += (v['assigned'] ? ' disabled' : '') + '>'
             options += v['ip_address']
-
 
             if(v['assigned']) {
               console.log(v)
