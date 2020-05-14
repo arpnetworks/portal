@@ -20,7 +20,7 @@ describe AccountsController do
   describe AccountsController, 'when logging in' do
     it 'should remember the requested location in a non-logged-in state and redirect.' do
       request.session[:return_to] = 'http://www.google.com'
-      post :login_attempt, :account => { :login => @user.login, :password => 'mysecret' }
+      post :login_attempt, account: { login: @user.login, password: 'mysecret' }
       expect(response).to redirect_to('http://www.google.com')
     end
 
@@ -43,18 +43,18 @@ describe AccountsController do
     end
 
     it 'should respond with success' do
-      get :edit, :id => @user.id
+      get :edit, id: @user.id
       expect(@response).to be_success
     end
 
     it 'should get account info from current logged in user' do
-      get :edit, :id => @user.id
+      get :edit, id: @user.id
       expect(assigns(:account)).to eq @user
     end
 
     it 'should not get account info from another user' do
       @other = create(:account_user, login: 'other')
-      get :edit, :id => @other.id
+      get :edit, id: @other.id
       expect(assigns(:account)).to_not eq @other
     end
   end
@@ -62,7 +62,7 @@ describe AccountsController do
   describe 'Show account' do
     it 'should redirect to edit' do
       @user = login_as_user!
-      get :show, :id => @user.id
+      get :show, id: @user.id
       expect(@response).to redirect_to(edit_account_path(@user))
     end
   end
