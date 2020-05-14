@@ -26,7 +26,7 @@ class Vlan < ActiveRecord::Base
   # and IpBlock#vlan entries
   def self.in_use(location_id)
     vlans_from_ip_blocks = IpBlock.all.select do |ip_block|
-      if loc = ip_block.location
+      if (loc = ip_block.location)
         loc.id == location_id
       else
         false
@@ -35,7 +35,7 @@ class Vlan < ActiveRecord::Base
     vlans_from_ip_blocks = vlans_from_ip_blocks.map { |ip| ip.vlan }.compact
 
     vlans_from_vlan_database = Vlan.all.select do |ip_block|
-      if loc = ip_block.location
+      if (loc = ip_block.location)
         loc.id == location_id
       else
         false

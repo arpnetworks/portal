@@ -1,8 +1,12 @@
 class AccountsController < ProtectedController
-  protect_from_forgery :except => [:login_attempt, :login]
+  protect_from_forgery except: %i[login_attempt login]
 
-  skip_before_filter :login_required, :only => [:new, :create,
-    :forgot_password, :forgot_password_post, :login, :login_attempt]
+  skip_before_filter :login_required, only: %i[new
+                                               create
+                                               forgot_password
+                                               forgot_password_post
+                                               login
+                                               login_attempt]
 
   def new
     @account = Account.new
@@ -10,22 +14,23 @@ class AccountsController < ProtectedController
 
   def create
     params[:account][:password] = params[:account][:password_mersal]
-    params[:account][:password_confirmation] = params[:account][:password_confirmation_mersal]
+    params[:account][:password_confirmation] = \
+      params[:account][:password_confirmation_mersal]
 
     @account = Account.new(params.require(:account).permit(
-      :login,
-      :email,
-      :password,
-      :password_confirmation
-    ))
+                             :login,
+                             :email,
+                             :password,
+                             :password_confirmation
+                           ))
 
     if @account.save
       session[:account_id] = @account.id
       flash[:notice] = 'Your account has been created!'
 
-      redirect_to :controller => 'my_account', :action => 'dashboard'
+      redirect_to controller: 'my_account', action: 'dashboard'
     else
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
@@ -54,18 +59,18 @@ class AccountsController < ProtectedController
       flash[:notice] = "Changes saved."
 
       # Return to edit page
-      redirect_to :action => 'edit' and return
+      redirect_to action: 'edit' and return
     end
 
     # Don't show password on form
     @account.password              = ''
     @account.password_confirmation = ''
 
-    render :action => 'edit'
+    render action: 'edit'
   end
 
   def show
-    redirect_to :action => 'edit'
+    redirect_to action: 'edit'
   end
 
   def forgot_password_post
@@ -87,10 +92,9 @@ class AccountsController < ProtectedController
     end
 
     redirect_to forgot_password_accounts_path
-
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Sorry, we can't find an account with that email address."
-    redirect_to(forgot_password_accounts_path, :email => params[:email])
+    redirect_to(forgot_password_accounts_path, email: params[:email])
   end
 
   def login
@@ -102,12 +106,13 @@ class AccountsController < ProtectedController
   end
 
   def login_attempt
-    if params[:account] && account = Account.authenticate(params[:account][:login], params[:account][:password])
+    if params[:account] && (account = Account.authenticate(params[:account][:login],
+                                                           params[:account][:password]))
       session[:account_id] = account.id
       account.visited_at = Time.now unless account.visited_at
       account.update_attribute(:visited_at, Time.now)
 
-      cookies[:login] = { :value => account.login, :expires => 1.year.from_now }
+      cookies[:login] = { value: account.login, expires: 1.year.from_now }
 
       flash[:notice] = "Welcome #{account.display_name}, it is nice to see you."
       redirect_back_or_default(dashboard_path) and return true
@@ -119,7 +124,7 @@ class AccountsController < ProtectedController
 
   def logout
     session[:account_id] = nil
-    session[:human]   = nil
+    session[:human]      = nil
     cookies.delete(:login)
     flash[:notice] = "You have been logged out."
     redirect_to login_accounts_path
@@ -132,26 +137,25 @@ class AccountsController < ProtectedController
   # To help with auto-assignment of IPs and/or customer selection of IP
   # addresses
   def ip_address_inventory
-
     location_code = params[:location_code] || 'lax'
 
     # Scope by location
     location = Location.find_by(code: location_code)
     if location.nil?
       respond_to do |format|
-        format.json { render json: { 
-          error: "No such location: #{location_code}"
-        }, status: :bad_request }
+        format.json {
+          render json: {
+            error: "No such location: #{location_code}"
+          }, status: :bad_request
+        }
       end
       return
     end
 
     ips_available = @account.ips_available(location: location)
 
-
     # Start with an empty response
     @response = {}
-
 
     ips_available.each do |ip|
       @response[ip.to_s] = {
@@ -173,7 +177,7 @@ class AccountsController < ProtectedController
   def newpass(len)
     chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
     newpass = ""
-    1.upto(len) { |i| newpass << chars[rand(chars.size-1)] }
+    1.upto(len) { |i| newpass << chars[rand(chars.size - 1)] }
     return newpass
   end
 

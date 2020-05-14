@@ -518,9 +518,9 @@ class VirtualMachine < ActiveRecord::Base
 
       # We can infer from what we already know (but opts above always
       # override)
-      auto_ip_gateway, auto_ip_netmask = \
+      _auto_ip_gateway, auto_ip_netmask = \
         account.network_settings_for(@ip_address)
-      auto_ipv6_gateway, auto_ipv6_prefixlen = \
+      _auto_ipv6_gateway, auto_ipv6_prefixlen = \
         account.network_settings_for(@ipv6_address)
 
       @vm.virtual_machines_interfaces[0].update_attributes(
