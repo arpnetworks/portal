@@ -4,7 +4,6 @@ Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context']
 Metrics/MethodLength:
   Max: 50
-  IgnoredMethods: ['respond_to']
 Metrics/AbcSize:
   IgnoredMethods: ['respond_to']
 
