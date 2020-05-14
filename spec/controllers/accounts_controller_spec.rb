@@ -75,7 +75,13 @@ describe AccountsController do
     end
   end
 
-end
+  describe 'Provisioning Actions' do
+    context 'with valid location' do
+    end
 
-describe AccountsController, "Provisioning Actions" do
+    context 'with invalid location' do
+      it 'should return empty set' do
+      end
+    end
+  end
 end
