@@ -6,8 +6,8 @@ gem 'rails', '4.2.9'
 # Use MySQL as the database for Active Record
 gem 'mysql2', '~> 0.4.0'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
 gem 'sass', '=3.5.6'
+gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
