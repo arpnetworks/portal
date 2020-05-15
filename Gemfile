@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
-ruby "2.4.6"
+ruby '2.4.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.9'
@@ -7,6 +9,7 @@ gem 'rails', '4.2.9'
 gem 'mysql2', '~> 0.4.0'
 # Use SCSS for stylesheets
 gem 'sass', '=3.5.6'
+
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -37,16 +40,16 @@ group :development, :test do
   # Use Capistrano for deployment
   gem 'capistrano', '~> 3.10', require: false
   gem 'capistrano-bundler', '~> 1.3', require: false
+  gem 'capistrano-passenger', require: false
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-rbenv', '~> 2.1', require: false
-  gem 'capistrano-passenger', require: false
 end
 
 group :test do
   gem 'rspec'
-  gem 'rspec-rails'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-html-matchers'
+  gem 'rspec-rails'
 
   gem 'factory_bot', '~> 4.0'
   gem 'factory_bot_rails', '~> 4.0'
@@ -63,9 +66,9 @@ group :development do
   gem 'spring-commands-rspec'
 
   gem 'brakeman', require: false
+  gem 'erb_lint', require: false
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
-  gem 'erb_lint', require: false
 end
 
 group :production do
@@ -75,8 +78,8 @@ end
 
 gem 'aasm', '~> 4.0'
 gem 'activemerchant'
-gem 'exception_notification'
 gem 'dynamic_form', git: 'https://github.com/joelmoss/dynamic_form.git'
+gem 'exception_notification'
 gem 'netaddr', '~> 1.0'
 gem 'redcarpet'
 gem 'redis'
