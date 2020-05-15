@@ -1,5 +1,5 @@
 class Admin::VlansController < Admin::HeadQuartersController
-  before_filter :verify_otp, :only => [:shutdown, :restore]
+  before_action :verify_otp, only: %i[shutdown restore]
 
   # GET /admin_vlans
   # GET /admin_vlans.xml
@@ -110,7 +110,6 @@ class Admin::VlansController < Admin::HeadQuartersController
       format.html { redirect_to(admin_vlans_url) }
       format.xml  { head :ok }
     end
-
   end
 
   def shutdown

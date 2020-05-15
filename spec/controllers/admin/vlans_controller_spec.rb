@@ -123,18 +123,18 @@ describe Admin::VlansController do
 
       it 'should update the requested vlans' do
         expect(Vlan).to receive(:find).with('37') { mock_vlan }
-        expect(mock_vlan).to receive(:update_attributes).with(@p)
+        expect(mock_vlan).to receive(:update).with(@p)
         do_update
       end
 
       it 'should expose the requested vlans as @vlans' do
-        allow(Vlan).to receive(:find) { mock_vlan(update_attributes: true) }
+        allow(Vlan).to receive(:find) { mock_vlan(update: true) }
         do_update('1')
         expect(assigns(:vlan)).to eq(mock_vlan)
       end
 
       it 'should redirect to all service codes' do
-        allow(Vlan).to receive(:find) { mock_vlan(update_attributes: true) }
+        allow(Vlan).to receive(:find) { mock_vlan(update: true) }
         do_update('1')
         expect(response).to redirect_to(admin_vlans_path)
       end
@@ -145,18 +145,18 @@ describe Admin::VlansController do
 
       it 'should update the requested vlans' do
         expect(Vlan).to receive(:find).with('37') { mock_vlan }
-        expect(mock_vlan).to receive(:update_attributes).with(@p)
+        expect(mock_vlan).to receive(:update).with(@p)
         do_update
       end
 
       it 'should expose the vlans as @vlans' do
-        allow(Vlan).to receive(:find) { mock_vlan(update_attributes: false) }
+        allow(Vlan).to receive(:find) { mock_vlan(update: false) }
         do_update('1')
         expect(assigns(:vlan)).to eq(mock_vlan)
       end
 
       it "should re-render the 'edit' template" do
-        allow(Vlan).to receive(:find) { mock_vlan(update_attributes: false) }
+        allow(Vlan).to receive(:find) { mock_vlan(update: false) }
         do_update('1')
         expect(response).to render_template('edit')
       end
