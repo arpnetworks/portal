@@ -1,15 +1,15 @@
 class Admin::AccountsController < Admin::HeadQuartersController
-  before_filter :is_arp_admin?,     :except => [:show]
-  before_filter :is_arp_sub_admin?, :only   => [:show]
-  before_filter :find_account,      :only   => [:show, :edit, :update, :destroy]
+  before_action :is_arp_admin?,     except: [:show]
+  before_action :is_arp_sub_admin?, only: [:show]
+  before_action :find_account,      only: %i[show edit update destroy]
 
   def index
-    @accounts = Account.paginate(page:     params[:page],
+    @accounts = Account.paginate(page: params[:page],
                                  per_page: params[:per_page] || 20).order('created_at DESC')
   end
 
   def suspended
-    @accounts = Account.suspended.paginate(page:     params[:page],
+    @accounts = Account.suspended.paginate(page: params[:page],
                                            per_page: params[:per_page] || 20).order('created_at DESC')
 
     render action: 'index'
@@ -28,17 +28,17 @@ class Admin::AccountsController < Admin::HeadQuartersController
       @account.login = params[:account][:login]
 
       if @account.save
-        flash[:notice] = "New account created"
-        redirect_to admin_accounts_path and return
+        flash[:notice] = 'New account created'
+        redirect_to(admin_accounts_path) && return
       end
     rescue ActiveRecord::StatementInvalid => e
-      flash.now[:error] = "There was an error creating this record"
-      flash.now[:error] += "<br/>"
+      flash.now[:error] = 'There was an error creating this record'
+      flash.now[:error] += '<br/>'
       flash.now[:error] += e.message
     end
 
     @include_blank = true
-    render :action => 'new'
+    render action: 'new'
   end
 
   def edit
@@ -51,11 +51,11 @@ class Admin::AccountsController < Admin::HeadQuartersController
     @accounts = [@account]
     @services = @enable_admin_view ? @account.services : @account.services.active
 
-    if @enable_admin_view
-      @invoices = @account.invoices.all.order('date desc')
-    else
-      @invoices = @account.invoices.active.order('date desc')
-    end
+    @invoices = if @enable_admin_view
+                  @account.invoices.all.order('date desc')
+                else
+                  @account.invoices.active.order('date desc')
+                end
 
     @mrc = @account.services.active.inject(0) { |sum, o| o.billing_interval == 1 ? sum + o.billing_amount : sum + 0 }
   end
@@ -72,25 +72,25 @@ class Admin::AccountsController < Admin::HeadQuartersController
         params[:account].delete(:password_confirmation)
       end
 
-      if @account.update_attributes(account_params)
-        flash[:notice] = "Changes saved."
-        redirect_to last_location and return
+      if @account.update(account_params)
+        flash[:notice] = 'Changes saved.'
+        redirect_to(last_location) && return
       end
     rescue ActiveRecord::StatementInvalid => e
-      flash.now[:error] = "There was an error updating this record"
-      flash.now[:error] += "<br/>"
+      flash.now[:error] = 'There was an error updating this record'
+      flash.now[:error] += '<br/>'
       flash.now[:error] += e.message
     end
 
-    render :action => 'edit'
+    render action: 'edit'
   end
 
   def destroy
     begin
       @account.destroy
     rescue ActiveRecord::StatementInvalid => e
-      flash[:error] = "There was an error deleting this record"
-      flash[:error] += "<br/>"
+      flash[:error] = 'There was an error deleting this record'
+      flash[:error] += '<br/>'
       flash[:error] += e.message
     else
       flash[:notice] = 'Account was deleted.'

@@ -101,5 +101,4 @@ class Admin::BackupQuotasController < Admin::HeadQuartersController
       :notes
     )
   end
-
 end

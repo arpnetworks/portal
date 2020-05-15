@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::AccountsController do
-
   before(:context) do
     create_admin!
   end
@@ -12,13 +11,13 @@ describe Admin::AccountsController do
 
     @account = stub_model(Account, login: 'login', email: 'foo@example.com')
     @account_params = { login: @account.login, email: @account.email }
-    @params  = { id: @account.id, account: @account_params }
+    @params = { id: @account.id, account: @account_params }
 
     allow(controller).to receive(:is_arp_admin?)     { true }
     allow(controller).to receive(:is_arp_sub_admin?) { true }
     allow(controller).to receive(:set_admin_state)   { true }
     allow(controller).to receive(:login_required)
-    allow(controller).to receive(:last_location)     { '/foo' }
+    allow(controller).to receive(:last_location) { '/foo' }
   end
 
   def do_get(opts = {})
@@ -118,7 +117,7 @@ describe Admin::AccountsController do
 
     it 'should go back to edit page if error updating' do
       allow(Account).to receive(:find) { @account }
-      allow(@account).to receive(:update_attributes).and_raise(ActiveRecord::StatementInvalid, 'foo')
+      allow(@account).to receive(:update).and_raise(ActiveRecord::StatementInvalid, 'foo')
       do_put(@params.merge(id: @account.id))
       expect(response).to render_template('admin/accounts/edit')
     end
@@ -132,14 +131,15 @@ describe Admin::AccountsController do
 
     it 'should not update password if one is not supplied' do
       allow(Account).to receive(:find) { @account }
-      expect(@account).to receive(:update_attributes).with(@account_params.stringify_keys!)
+      expect(@account).to receive(:update).with(@account_params.stringify_keys!)
 
       do_put(@params.merge(id: @account.id, account: @account_params.merge(
-                           password: '', password_confirmation: '')))
+        password: '', password_confirmation: ''
+      )))
     end
   end
 
-  def mock_account(stubs={})
+  def mock_account(stubs = {})
     @mock_account ||= mock_model(Account, stubs)
   end
 
