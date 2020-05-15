@@ -41,7 +41,11 @@ class Jobs::CreateVolume < Job
       :created_at  => Time.now.to_f.to_s
     })
 
-    queue = host.split('.').first
+    if Rails.env == 'development'
+      queue = Socket.gethostname
+    else
+      queue = host.split('.').first
+    end
 
     ARP_REDIS.lpush("queue:#{queue}", work.to_json)
 
