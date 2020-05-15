@@ -5,28 +5,28 @@ class Admin::VlansController < Admin::HeadQuartersController
   # GET /admin_vlans.xml
   def index
     @vlans = Vlan.all.order('vlan')
-    @vlans_array = @vlans.map { |vlan| vlan.vlan }
+    @vlans_array = @vlans.map(&:vlan)
 
     @vlans_from_ip_blocks = []
     @vlans_duplicate_filter = []
     IpBlock.all.each do |ip_block|
-      if ip_block.vlan && !@vlans_array.include?(ip_block.vlan) &&
-                          !@vlans_duplicate_filter.include?([ip_block.vlan, ip_block.location])
-        @vlans_from_ip_blocks << Vlan.new(:vlan => ip_block.vlan, 
-                                          :label => "#{ip_block.account_name} #{ip_block.label}",
-                                          :location => ip_block.location)
-        @vlans_duplicate_filter << [ip_block.vlan, ip_block.location]
-      end
+      next unless ip_block.vlan && !@vlans_array.include?(ip_block.vlan) &&
+                  !@vlans_duplicate_filter.include?([ip_block.vlan, ip_block.location])
+
+      @vlans_from_ip_blocks << Vlan.new(vlan: ip_block.vlan,
+                                        label: "#{ip_block.account_name} #{ip_block.label}",
+                                        location: ip_block.location)
+      @vlans_duplicate_filter << [ip_block.vlan, ip_block.location]
     end
 
     @all_vlans = @vlans + @vlans_from_ip_blocks
-    @all_vlans = @all_vlans.sort do |a,b|
+    @all_vlans = @all_vlans.sort do |a, b|
       a.vlan.to_i <=> b.vlan.to_i
     end
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @all_vlans }
+      format.xml  { render xml: @all_vlans }
     end
   end
 
@@ -37,7 +37,7 @@ class Admin::VlansController < Admin::HeadQuartersController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @vlan }
+      format.xml  { render xml: @vlan }
     end
   end
 
@@ -48,7 +48,7 @@ class Admin::VlansController < Admin::HeadQuartersController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @vlan }
+      format.xml  { render xml: @vlan }
     end
   end
 
@@ -66,10 +66,10 @@ class Admin::VlansController < Admin::HeadQuartersController
       if @vlan.save
         flash[:notice] = 'VLAN was successfully created.'
         format.html { redirect_to(admin_vlans_path) }
-        format.xml  { render :xml => @vlan, :status => :created, :location => @vlan }
+        format.xml  { render xml: @vlan, status: :created, location: @vlan }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @vlan.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.xml  { render xml: @vlan.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -80,13 +80,13 @@ class Admin::VlansController < Admin::HeadQuartersController
     @vlan = Vlan.find(params[:id])
 
     respond_to do |format|
-      if @vlan.update_attributes(vlan_params)
+      if @vlan.update(vlan_params)
         flash[:notice] = 'VLAN was successfully updated.'
         format.html { redirect_to(admin_vlans_path) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @vlan.errors, :status => :unprocessable_entity }
+        format.html { render action: 'edit' }
+        format.xml  { render xml: @vlan.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -99,8 +99,8 @@ class Admin::VlansController < Admin::HeadQuartersController
     begin
       @vlan.destroy
     rescue ActiveRecord::StatementInvalid => e
-      flash[:error] = "There was an error deleting this record"
-      flash[:error] += "<br/>"
+      flash[:error] = 'There was an error deleting this record'
+      flash[:error] += '<br/>'
       flash[:error] += e.message
     else
       flash[:notice] = 'VLAN was deleted.'
@@ -142,7 +142,7 @@ class Admin::VlansController < Admin::HeadQuartersController
   protected
 
   def send_command(cmd, vlan_id, location, otp)
-    Kernel.system("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$HOST_RANCID_USER}@#{$HOST_RANCID}",
+    Kernel.system('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$HOST_RANCID_USER}@#{$HOST_RANCID}",
                   otp, cmd, vlan_id.to_s, location)
   end
 

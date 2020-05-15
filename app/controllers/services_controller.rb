@@ -113,7 +113,6 @@ class ServicesController < ProtectedController
       raise "Invalid location: #{loc}"
     end
 
-
     session[:pending_service_ids].each do |service_id|
       service = Service.find(service_id)
       service.pending = false

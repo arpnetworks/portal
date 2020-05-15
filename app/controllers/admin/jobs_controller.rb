@@ -1,20 +1,20 @@
 class Admin::JobsController < Admin::HeadQuartersController
-  before_filter :is_arp_admin?
-  before_filter :find_job, :only => [:show, :edit, :update, :destroy, :retry]
+  before_action :is_arp_admin?
+  before_action :find_job, only: %i[show edit update destroy retry]
 
   def index
     # store_location
 
-    @jobs = Job.paginate(:page => params[:page],
-                         :per_page => params[:per_page] || 20).order('created_at DESC')
+    @jobs = Job.paginate(page: params[:page],
+                         per_page: params[:per_page] || 20).order('created_at DESC')
   end
 
   def destroy
     begin
       @job.destroy
     rescue ActiveRecord::StatementInvalid => e
-      flash[:error] = "There was an error deleting this record"
-      flash[:error] += "<br/>"
+      flash[:error] = 'There was an error deleting this record'
+      flash[:error] += '<br/>'
       flash[:error] += e.message
     else
       flash[:notice] = "Job #{@job.id} (jid=#{@job.jid}) was deleted."
