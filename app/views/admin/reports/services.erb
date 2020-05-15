@@ -1,14 +1,14 @@
 <%= stylesheet_link_tag '/legacy/stylesheets/jquery.jqplot', media: 'all' %>
 <%= javascript_include_tag '/legacy/javascripts/jquery-1.4.2.min',
-                           '/legacy/javascripts/jquery.jqplot.min',
-                           '/legacy/javascripts/jqplot.highlighter.min',
-                           '/legacy/javascripts/jqplot.cursor.min',
-                           '/legacy/javascripts/jqplot.dateAxisRenderer.min',
-                           '/legacy/javascripts/jqplot.canvasTextRenderer.min',
-                           '/legacy/javascripts/jqplot.canvasAxisTickRenderer.min',
-                           '/legacy/javascripts/jqplot.canvasAxisLabelRenderer.min',
-                           '/legacy/javascripts/jqplot.trendline.min',
-                           '/legacy/javascripts/admin' %>
+  '/legacy/javascripts/jquery.jqplot.min',
+  '/legacy/javascripts/jqplot.highlighter.min',
+  '/legacy/javascripts/jqplot.cursor.min',
+  '/legacy/javascripts/jqplot.dateAxisRenderer.min',
+  '/legacy/javascripts/jqplot.canvasTextRenderer.min',
+  '/legacy/javascripts/jqplot.canvasAxisTickRenderer.min',
+  '/legacy/javascripts/jqplot.canvasAxisLabelRenderer.min',
+  '/legacy/javascripts/jqplot.trendline.min',
+  '/legacy/javascripts/admin' %>
 
 <div class="title2">Services Report</div>
 
@@ -33,16 +33,16 @@
 <br/>
 <br/>
 
-<div id="chartdiv3" style="height:400px;width:895px;"></div>
-<br/>
-<script type='text/javascript'>
-  draw_graph('chartdiv3', "Monthly Recurring Charges (last 36 months), [Total]", [[<%= @mrc_chart_data %>]], 'USD');
-</script>
-
 <div id="chartdiv6" style="height:400px;width:895px;"></div>
 <br/>
 <script type='text/javascript'>
   draw_graph('chartdiv6', "Monthly Recurring Charges (last 36 months), [ARP Thunder™]", [[<%= @thunder_mrc_chart_data %>]], 'USD');
+</script>
+
+<div id="chartdiv3" style="height:400px;width:895px;"></div>
+<br/>
+<script type='text/javascript'>
+  draw_graph('chartdiv3', "Monthly Recurring Charges (last 36 months), [Total]", [[<%= @mrc_chart_data %>]], 'USD');
 </script>
 
 <div id="chartdiv5" style="height:400px;width:895px;"></div>
@@ -72,12 +72,12 @@
 <table>
   <caption>VPS Orders</caption>
   <% @vps_services_all.each do |service| %>
-  <tr class="<%= cycle("odd", "even") -%><%= service.deleted? ? " deleted_row" : "" -%>">
-    <td><%= service.id %></td>
-    <td><%= service.created_at.strftime("%m-%d-%Y") %></td>
-    <td><%= link_to(service.account.display_account_name, admin_account_path(service.account)) %></td>
-    <td><%= service.title %></td>
-    <td><%= money(service.billing_amount) %></td>
-  </tr>
+    <tr class="<%= cycle("odd", "even") -%><%= service.deleted? ? " deleted_row" : "" -%>">
+      <td><%= service.id %></td>
+      <td><%= service.created_at.strftime("%m-%d-%Y") %></td>
+      <td><%= link_to(service.account.display_account_name, admin_account_path(service.account)) %></td>
+      <td><%= service.title %></td>
+      <td><%= money(service.billing_amount) %></td>
+    </tr>
   <% end %>
 </table>
