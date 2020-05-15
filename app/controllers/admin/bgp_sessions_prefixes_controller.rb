@@ -1,7 +1,7 @@
 class Admin::BgpSessionsPrefixesController < Admin::HeadQuartersController
-  before_filter :is_arp_admin?, :except => [:show]
-  before_filter :is_arp_sub_admin?, :only => [:show]
-  before_filter :find_bgp_sessions_prefix, :only => [:edit, :update, :destroy]
+  before_action :is_arp_admin?, except: [:show]
+  before_action :is_arp_sub_admin?, only: [:show]
+  before_action :find_bgp_sessions_prefix, only: %i[edit update destroy]
 
   # GET /admin_bgp_sessions_prefixes
   # GET /admin_bgp_sessions_prefixes.xml
@@ -10,7 +10,7 @@ class Admin::BgpSessionsPrefixesController < Admin::HeadQuartersController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @bgp_sessions_prefixes }
+      format.xml  { render xml: @bgp_sessions_prefixes }
     end
   end
 
@@ -22,7 +22,7 @@ class Admin::BgpSessionsPrefixesController < Admin::HeadQuartersController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @bgp_sessions_prefix }
+      format.xml  { render xml: @bgp_sessions_prefix }
     end
   end
 
@@ -40,24 +40,24 @@ class Admin::BgpSessionsPrefixesController < Admin::HeadQuartersController
       if @bgp_sessions_prefix.save
         flash[:notice] = 'Prefix was successfully created.'
         format.html { redirect_to(admin_bgp_sessions_prefixes_path) }
-        format.xml  { render :xml => @bgp_sessions_prefix, :status => :created, :location => @bgp_sessions_prefix }
+        format.xml  { render xml: @bgp_sessions_prefix, status: :created, location: @bgp_sessions_prefix }
       else
         @include_blank = true
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @bgp_sessions_prefix.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.xml  { render xml: @bgp_sessions_prefix.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update
     respond_to do |format|
-      if @bgp_sessions_prefix.update_attributes(bgp_sessions_prefix_params)
+      if @bgp_sessions_prefix.update(bgp_sessions_prefix_params)
         flash[:notice] = 'Prefix was successfully updated.'
         format.html { redirect_to(admin_bgp_sessions_prefixes_path) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @bgp_sessions_prefix.errors, :status => :unprocessable_entity }
+        format.html { render action: 'edit' }
+        format.xml  { render xml: @bgp_sessions_prefix.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -68,8 +68,8 @@ class Admin::BgpSessionsPrefixesController < Admin::HeadQuartersController
     begin
       @bgp_sessions_prefix.destroy
     rescue ActiveRecord::StatementInvalid => e
-      flash[:error] = "There was an error deleting this record"
-      flash[:error] += "<br/>"
+      flash[:error] = 'There was an error deleting this record'
+      flash[:error] += '<br/>'
       flash[:error] += e.message
     else
       flash[:notice] = 'Prefix was deleted.'
@@ -101,5 +101,4 @@ class Admin::BgpSessionsPrefixesController < Admin::HeadQuartersController
       :prefixlen_max
     )
   end
-
 end

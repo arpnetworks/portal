@@ -165,7 +165,7 @@ describe Admin::IpBlocksController do
     it 'should go back to edit page if error updating' do
       @ip_block = mock_model(IpBlock)
       allow(controller).to receive(:ip_block_params) {{}}
-      allow(@ip_block).to receive(:update_attributes) { false }
+      allow(@ip_block).to receive(:update) { false }
       expect(IpBlock).to receive(:find).with(@ip_block.id.to_s) { @ip_block }
       do_put(@params.merge(id: @ip_block.id, ip_block: {}))
       expect(response).to render_template('admin/ip_blocks/edit')
@@ -179,7 +179,7 @@ describe Admin::IpBlocksController do
 
     it 'should allow empty service id' do
       allow(IpBlock).to receive(:find) { @ip_block }
-      allow(@ip_block).to receive(:update_attributes) { true }
+      allow(@ip_block).to receive(:update) { true }
       do_put(@params.merge(id: @ip_block.id, ip_block: { service_id: '', cidr: '10.0.0.1/24' }))
       expect(response).to redirect_to(edit_admin_ip_block_path(@ip_block))
     end

@@ -1,7 +1,7 @@
 class Admin::BgpSessionsController < Admin::HeadQuartersController
-  before_filter :is_arp_admin?,     except: [:show]
-  before_filter :is_arp_sub_admin?, only:   [:show]
-  before_filter :find_bgp_session,  only:   [:edit, :update, :destroy]
+  before_action :is_arp_admin?,     except: [:show]
+  before_action :is_arp_sub_admin?, only:   [:show]
+  before_action :find_bgp_session,  only:   %i[edit update destroy]
 
   # GET /admin_bgp_sessions
   # GET /admin_bgp_sessions.xml
@@ -10,7 +10,7 @@ class Admin::BgpSessionsController < Admin::HeadQuartersController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @all_bgp_sessions }
+      format.xml  { render xml: @all_bgp_sessions }
     end
   end
 
@@ -22,7 +22,7 @@ class Admin::BgpSessionsController < Admin::HeadQuartersController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @bgp_session }
+      format.xml  { render xml: @bgp_session }
     end
   end
 
@@ -39,26 +39,24 @@ class Admin::BgpSessionsController < Admin::HeadQuartersController
         @ip_blocks = @account.ip_blocks
 
         @ip_blocks = @ip_blocks.select do |ip_block|
-          ip_block.version  == 4 &&
-          ip_block.location == Location.find_by_code('lax')
+          ip_block.version == 4 &&
+            ip_block.location == Location.find_by(code: 'lax')
         end
 
         @ips_for_rpf_filter = @ip_blocks
         @ips_for_rpf_filter_without_session_prefixes = @ip_blocks
 
-        if !@ips_for_rpf_filter.empty?
+        unless @ips_for_rpf_filter.empty?
           @rpf_vlan = @ips_for_rpf_filter.first.vlan
 
           @ips_for_rpf_filter = \
-          @ips_for_rpf_filter_without_session_prefixes = @ips_for_rpf_filter.map do |ip_block|
-            ip_block.cidr_obj
-          end
+            @ips_for_rpf_filter_without_session_prefixes = @ips_for_rpf_filter.map(&:cidr_obj)
 
           @ips_for_rpf_filter += @bgp_session.prefixes.map do |prefix|
             NetAddr::CIDR.create(prefix.prefix)
           end
 
-          @rpf_filter = "rpf-vl" + @rpf_vlan.to_s
+          @rpf_filter = 'rpf-vl' + @rpf_vlan.to_s
         end
       end
     end
@@ -73,11 +71,11 @@ class Admin::BgpSessionsController < Admin::HeadQuartersController
       if @bgp_session.save
         flash[:notice] = 'BGP session was successfully created.'
         format.html { redirect_to(admin_bgp_sessions_path) }
-        format.xml  { render :xml => @bgp_session, :status => :created, :location => @bgp_session }
+        format.xml  { render xml: @bgp_session, status: :created, location: @bgp_session }
       else
         @include_blank = true
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @bgp_session.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.xml  { render xml: @bgp_session.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -86,13 +84,13 @@ class Admin::BgpSessionsController < Admin::HeadQuartersController
   # PUT /admin_bgp_sessions/1.xml
   def update
     respond_to do |format|
-      if @bgp_session.update_attributes(bgp_session_params)
+      if @bgp_session.update(bgp_session_params)
         flash[:notice] = 'BGP session was successfully updated.'
         format.html { redirect_to(admin_bgp_sessions_path) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @bgp_session.errors, :status => :unprocessable_entity }
+        format.html { render action: 'edit' }
+        format.xml  { render xml: @bgp_session.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -103,8 +101,8 @@ class Admin::BgpSessionsController < Admin::HeadQuartersController
     begin
       @bgp_session.destroy
     rescue ActiveRecord::StatementInvalid => e
-      flash[:error] = "There was an error deleting this record"
-      flash[:error] += "<br/>"
+      flash[:error] = 'There was an error deleting this record'
+      flash[:error] += '<br/>'
       flash[:error] += e.message
     else
       flash[:notice] = 'BGP session was deleted.'
