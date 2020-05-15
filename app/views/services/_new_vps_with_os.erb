@@ -1,68 +1,68 @@
 <div id='new_vps_with_os'>
 
-<div style='float: left; width: 55%'>
-  <div class='form-section-header-prominent'>VPS Plan / Size:</div>
-  <select name='plan'>
-    <option>Please Choose</option>
-    <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
-    <option value='<%= k %>'>
-    <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB Disk, <%= plan['bandwidth'] %> GB Bandwidth -- $<%= plan['mrc'] %> USD
-    </option>
-    <% end %>
-  </select>
-</div>
-
-<div style='margin-left: auto; width: 45%'>
-  <%= render :partial => 'location', :locals => { :title => nil } %>
-  <div class='small-note'>
-    <div class='caption' style='float: left'>Note:</div>
-    <div>
-      Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
-    </div>
-  </div>
-</div>
-
-<div style="clear: both; float: left; width: 55%">
-  <div class='form-section-header-prominent'>Operating System:</div>
-  <div>
-  <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
-    <% v['series'].sort { |a, b| b['version'] <=> a['version'] }.each do |series| %>
-      <input type='radio' id='os_<%= series['code'] %>' name='os' value='<%= series['code'] %>' <%= series['pending'] && 'disabled' %>>
-      <label for='os_<%= series['code'] %>' class='<%= series['pending'] && 'disabled' %>'><img src='/images/icons/os/<%= k %>.png' width="16" height="16" alt='<%= v['title'] %> icon'>
-        <%= v['title'] %> <%= series['version'] %>
-      </label>
-      <br/>
-    <% end %>
-  <% end %>
-  </div>
-</div>
-
-<div style="margin-left: auto;">
-  <div class='form-section-header-prominent'>IP Address Assignments</div>
-  <div>
-    <div style='padding-bottom: 5px'>
-    IPv4 on first network interface:
-    </div>
-    <div style='padding-bottom: 5px'>
-    <select id='ipv4_address_selector'>
-      <option>Loading...</option>
+  <div style='float: left; width: 55%'>
+    <div class='form-section-header-prominent'>VPS Plan / Size:</div>
+    <select name='plan'>
+      <option>Please Choose</option>
+      <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
+        <option value='<%= k %>'>
+        <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB Disk, <%= plan['bandwidth'] %> GB Bandwidth -- $<%= plan['mrc'] %> USD
+        </option>
+      <% end %>
     </select>
+  </div>
+
+  <div style='margin-left: auto; width: 45%'>
+    <%= render :partial => 'location', :locals => { :title => nil } %>
+    <div class='small-note'>
+      <div class='caption' style='float: left'>Note:</div>
+      <div>
+        Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
+      </div>
+    </div>
+  </div>
+
+  <div style="clear: both; float: left; width: 55%">
+    <div class='form-section-header-prominent'>Operating System:</div>
+    <div>
+      <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
+        <% v['series'].sort { |a, b| b['version'] <=> a['version'] }.each do |series| %>
+          <input type='radio' id='os_<%= series['code'] %>' name='os' value='<%= series['code'] %>' <%= series['pending'] && 'disabled' %>>
+          <label for='os_<%= series['code'] %>' class='<%= series['pending'] && 'disabled' %>'><img src='/images/icons/os/<%= k %>.png' width="16" height="16" alt='<%= v['title'] %> icon'>
+            <%= v['title'] %> <%= series['version'] %>
+          </label>
+          <br/>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div style="margin-left: auto;">
+    <div class='form-section-header-prominent'>IP Address Assignments</div>
+    <div>
+      <div style='padding-bottom: 5px'>
+        IPv4 on first network interface:
+      </div>
+      <div style='padding-bottom: 5px'>
+        <select id='ipv4_address_selector'>
+          <option>Loading...</option>
+        </select>
+      </div>
+
+      <input type='checkbox' id='ip_manual_input'> Let me type my own
     </div>
 
-    <input type='checkbox' id='ip_manual_input'> Let me type my own
+    <div class='small-note'>
+      <div class='caption' style='float: left'>Note:</div>
+      <div>
+        IPv6 address and gateway will be assigned by auto-configuration.
+      </div>
+    </div>
   </div>
 
-  <div class='small-note'>
-    <div class='caption' style='float: left'>Note:</div>
-  <div>
-    IPv6 address and gateway will be assigned by auto-configuration.
+  <div style="clear: both; padding-top: 10px">
+    <div class='form-section-header-prominent'>Users and SSH keys</div>
   </div>
-  </div>
-</div>
-
-<div style="clear: both; padding-top: 10px">
-  <div class='form-section-header-prominent'>Users and SSH keys</div>
-</div>
 </div>
 
 <br/>
@@ -70,6 +70,5 @@
 <br/>
 
 <% content_for :js do %>
-  $(document).ready(function() {  populateIpAddresses('lax') })
-
+  $(document).ready(populateIpAddresses('lax'))
 <% end %>
