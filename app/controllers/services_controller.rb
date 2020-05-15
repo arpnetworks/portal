@@ -1,10 +1,10 @@
 class ServicesController < ProtectedController
-  before_filter :find_service, :only => [:show, :update_label]
-  before_filter :check_cc_exists_and_current, :only => [:new, :confirm, :confirm_done]
-  before_filter :check_account_isnt_blank, :only => [:new, :confirm, :confirm_done]
-  before_filter :verify_service, :only => [:new, :confirm]
-  before_filter :verify_form, :only => [:confirm]
-  before_filter :set_title, :only => [:new, :confirm, :confirm_done]
+  before_action :find_service, only: %i[show update_label]
+  before_action :check_cc_exists_and_current, only: %i[new confirm confirm_done]
+  before_action :check_account_isnt_blank, only: %i[new confirm confirm_done]
+  before_action :verify_service, only: %i[new confirm]
+  before_action :verify_form, only: [:confirm]
+  before_action :set_title, only: %i[new confirm confirm_done]
 
   def index
     @services = @account.services.active
@@ -13,7 +13,7 @@ class ServicesController < ProtectedController
 
   def show
     @services = [@service]
-    @description = @service.description_source || ""
+    @description = @service.description_source || ''
 
     # Resource details
     instantiate_resources_of_service(@service)
@@ -29,9 +29,7 @@ class ServicesController < ProtectedController
       @service.label = params[:service][:label]
       @service.save
 
-      @service.virtual_machines.each do |vm|
-        vm.build_and_reload_conserver!
-      end
+      @service.virtual_machines.each(&:build_and_reload_conserver!)
 
       flash[:notice] = 'Service label updated'
     end
@@ -39,8 +37,7 @@ class ServicesController < ProtectedController
     redirect_to(account_service_path(@account, @service))
   end
 
-  def new
-  end
+  def new; end
 
   # They confirm the new service / MRC to-be-created and also the pro-rated
   # invoice to-be-create
@@ -52,46 +49,46 @@ class ServicesController < ProtectedController
 
       @billing_amount = plan_struct['mrc']
       @code           = 'VPS'
-      @code_obj       = ServiceCode.find_by_name(@code)
-      @service_title  = "Generic VM"
+      @code_obj       = ServiceCode.find_by(name: @code)
+      @service_title  = 'Generic VM'
       @billing_amount_pro_rated = pro_rated_total(@billing_amount)
 
       @pending_service = @account.services.create(
-        :pending      => true,
-        :service_code => @code_obj,
-        :title        => @service_title,
-        :billing_interval => 1,
-        :billing_amount   => @billing_amount
+        pending: true,
+        service_code: @code_obj,
+        title: @service_title,
+        billing_interval: 1,
+        billing_amount: @billing_amount
       )
 
       @pending_invoice = @account.create_pro_rated_invoice!(
-        @code, @service_title, @billing_amount_pro_rated, :pending => true
+        @code, @service_title, @billing_amount_pro_rated, pending: true
       )
     when 'metal'
-      fail
+      raise
     when 'thunder'
-      fail
+      raise
     when 'bgp'
       @billing_amount = 10.00
       @code           = 'BANDWIDTH'
-      @code_obj       = ServiceCode.find_by_name(@code)
+      @code_obj       = ServiceCode.find_by(name: @code)
       @service_title  = "BGP Session (ASN #{params[:asn]})"
       @billing_amount_pro_rated = pro_rated_total(@billing_amount)
 
       @pending_service = @account.services.create(
-        :pending      => true,
-        :service_code => @code_obj,
-        :title        => @service_title,
-        :billing_interval => 1,
-        :billing_amount   => @billing_amount,
-        :description  => "Pending provisioning by ARP Networks staff.\n\nWe thank you for your patience!"
+        pending: true,
+        service_code: @code_obj,
+        title: @service_title,
+        billing_interval: 1,
+        billing_amount: @billing_amount,
+        description: "Pending provisioning by ARP Networks staff.\n\nWe thank you for your patience!"
       )
 
       @pending_invoice = @account.create_pro_rated_invoice!(
-        @code, @service_title, @billing_amount_pro_rated, :pending => true
+        @code, @service_title, @billing_amount_pro_rated, pending: true
       )
     when 'backup'
-      fail
+      raise
     end
 
     @services = [@pending_service].compact
@@ -100,20 +97,17 @@ class ServicesController < ProtectedController
     @enable_pending_view = true
 
     session[:service_to_enable] = @service
-    session[:pending_service_ids] = @services.map { |s| s.id }
-    session[:pending_invoice_ids] = @invoices.map { |i| i.id }
+    session[:pending_service_ids] = @services.map(&:id)
+    session[:pending_invoice_ids] = @invoices.map(&:id)
   end
 
   def confirm_done
     # We've already done this step and maybe the user reloaded the page,
     # so go back to dashboard
-    if session[:service_to_enable].nil?
-      redirect_to dashboard_path
-    end
-
+    redirect_to dashboard_path if session[:service_to_enable].nil?
 
     loc = session['form']['location']
-    if %w(lax fra).include?(loc)
+    if %w[lax fra].include?(loc)
       @initial_vm_host = $PROVISIONING['initial_host'][loc]
     else
       raise "Invalid location: #{loc}"
@@ -137,8 +131,7 @@ class ServicesController < ProtectedController
                                plan,
                                session['form']['location'],
                                os,
-                               plan_struct['bandwidth']
-                               ).deliver_now
+                               plan_struct['bandwidth']).deliver_now
 
         case os
         when '', 'linux'
@@ -154,11 +147,10 @@ class ServicesController < ProtectedController
         end
 
         VirtualMachine.provision!(service,
-                                  :host => @initial_vm_host,
-                                  :ram  => plan_struct['ram'],
-                                  :storage => plan_struct['storage'],
-                                  :os_template => os_template
-                                 )
+                                  host: @initial_vm_host,
+                                  ram: plan_struct['ram'],
+                                  storage: plan_struct['storage'],
+                                  os_template: os_template)
       end
     end
 
@@ -181,7 +173,7 @@ class ServicesController < ProtectedController
     session[:service_to_enable] = nil
 
     # Clear form session
-    session[:form] = { :errors => {} }
+    session[:form] = { errors: {} }
   end
 
   protected
@@ -213,12 +205,10 @@ class ServicesController < ProtectedController
     @service = params[:service]
 
     if @service
-      if %w(vps_with_os vps bgp).include?(@service)
+      if %w[vps_with_os vps bgp].include?(@service)
         case @service
         when 'vps_with_os'
-          if @account.beta_features?
-            return true
-          end
+          return true if @account.beta_features?
         else
           return true
         end
@@ -226,9 +216,9 @@ class ServicesController < ProtectedController
     end
 
     # Initialize form session
-    session[:form] = { :errors => {} }
+    session[:form] = { errors: {} }
 
-    render 'new_choose' and return
+    render('new_choose') && return
   end
 
   def verify_form
@@ -238,9 +228,9 @@ class ServicesController < ProtectedController
       session['form']['plan'] = params[:plan]
       session['form']['os'] = params[:os]
     when 'metal'
-      fail
+      raise
     when 'thunder'
-      fail
+      raise
     when 'bgp'
       session['form']['asn'] = params[:asn]
       session['form']['full_routes'] = params[:full_routes]
@@ -251,16 +241,16 @@ class ServicesController < ProtectedController
       asn = params[:asn]
 
       if asn.blank?
-        session[:form][:errors] = { :asn => "ASN can't be blank" }
-        redirect_to new_account_service_path + "?service=#{@service}" and return
+        session[:form][:errors] = { asn: "ASN can't be blank" }
+        redirect_to(new_account_service_path + "?service=#{@service}") && return
       end
 
-      if !(asn =~ /^[0-9]+$/)
-        session[:form][:errors] = { :asn => 'ASN can only contain numbers' }
-        redirect_to new_account_service_path + "?service=#{@service}" and return
+      if asn !~ /^[0-9]+$/
+        session[:form][:errors] = { asn: 'ASN can only contain numbers' }
+        redirect_to(new_account_service_path + "?service=#{@service}") && return
       end
     when 'backup'
-      fail
+      raise
     end
 
     session[:form][:errors] = {}
@@ -286,13 +276,11 @@ class ServicesController < ProtectedController
   # This came straight from create_new_vps_account.rb
   # But I modified the rescue amount to be full amount instead of 0
   def pro_rated_total(amount)
-    begin
-      todays_date = Time.now.strftime("%d").to_f
-      end_of_month_date = Time.now.end_of_month.strftime("%d").to_f
+    todays_date = Time.now.strftime('%d').to_f
+    end_of_month_date = Time.now.end_of_month.strftime('%d').to_f
 
-      (1.0 - todays_date/end_of_month_date) * amount
-    rescue
-      amount
-    end
+    (1.0 - todays_date / end_of_month_date) * amount
+  rescue StandardError
+    amount
   end
 end
