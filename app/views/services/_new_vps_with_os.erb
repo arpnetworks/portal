@@ -40,10 +40,10 @@
 <div style="margin-left: auto;">
   <div class='form-section-header-prominent'>IP Address Assignments</div>
   <div>
-    <div>
+    <div style='padding-bottom: 5px'>
     IPv4 on first network interface:
     </div>
-    <div>
+    <div style='padding-bottom: 5px'>
     <select id='ipv4_address_selector'>
       <option>Loading...</option>
     </select>
@@ -68,3 +68,8 @@
 <br/>
 <br/>
 <br/>
+
+<% content_for :js do %>
+  $(document).ready(function() {  populateIpAddresses('lax') })
+
+<% end %>
