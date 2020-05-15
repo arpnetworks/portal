@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::VirtualMachinesController do
-
   before(:context) do
     create_admin!
   end
@@ -11,7 +10,7 @@ describe Admin::VirtualMachinesController do
     @account = login_as_admin!
 
     @virtual_machine = create :virtual_machine
-    @params  = { id: @virtual_machine.id }
+    @params = { id: @virtual_machine.id }
 
     allow(controller).to receive(:is_arp_admin?)     { true }
     allow(controller).to receive(:is_arp_sub_admin?) { true }
@@ -19,7 +18,7 @@ describe Admin::VirtualMachinesController do
     allow(controller).to receive(:login_required)
 
     @last_location = '/foo'
-    allow(controller).to receive(:last_location)     { @last_location }
+    allow(controller).to receive(:last_location) { @last_location }
   end
 
   def do_get(opts = {})
@@ -56,11 +55,11 @@ describe Admin::VirtualMachinesController do
     it 'should create new virtual_machine' do
       num_records = VirtualMachine.count
       do_post(@params.merge(virtual_machine: { notes: 'foo',
-                                                  uuid: 'lsk',
-                                                  host: 'foo.example.com',
-                                                  ram: 1024,
-                                                  storage: 20,
-                                                  label: 'foo'}))
+                                               uuid: 'lsk',
+                                               host: 'foo.example.com',
+                                               ram: 1024,
+                                               storage: 20,
+                                               label: 'foo' }))
       expect(VirtualMachine.count).to eq(num_records + 1)
       expect(response).to redirect_to(admin_virtual_machines_path)
       expect(flash[:notice]).to_not be_nil
@@ -150,7 +149,7 @@ describe Admin::VirtualMachinesController do
 
     it 'should go back to edit page if error updating' do
       # Using mocks/stubs here
-      @virtual_machine = mock_model(VirtualMachine, update_attributes: false)
+      @virtual_machine = mock_model(VirtualMachine, update: false)
       expect(VirtualMachine).to receive(:find).with(@virtual_machine.id.to_s).and_return(@virtual_machine)
       allow(@virtual_machine).to receive(:virtual_machines_interfaces).and_return([:interfaces])
 
@@ -165,7 +164,7 @@ describe Admin::VirtualMachinesController do
     end
   end
 
-  def mock_virtual_machine(stubs={})
+  def mock_virtual_machine(stubs = {})
     @mock_virtual_machine ||= mock_model(VirtualMachine, stubs)
   end
 
@@ -190,5 +189,4 @@ describe Admin::VirtualMachinesController do
       expect(flash[:error]).to_not be_nil
     end
   end
-
 end

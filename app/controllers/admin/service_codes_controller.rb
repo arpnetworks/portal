@@ -93,7 +93,6 @@ class Admin::ServiceCodesController < Admin::HeadQuartersController
       format.html { redirect_to(admin_service_codes_url) }
       format.xml  { head :ok }
     end
-
   end
 
   private
