@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby '2.6.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.9'
+gem 'rails', '4.2.11.3'
 # Use MySQL as the database for Active Record
 gem 'mysql2', '~> 0.4.0'
 # Use SCSS for stylesheets
@@ -72,7 +72,7 @@ group :development do
 end
 
 group :production do
-  gem 'passenger'
+  gem 'passenger', '~> 5.0'
   gem 'slack-notifier'
 end
 
