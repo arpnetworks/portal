@@ -1,28 +1,18 @@
-<div id='new_vps_with_os'>
+<div id='new_vps_with_os' class="columns">
 
-  <div style='float: left; width: 55%'>
+  <div class='column'>
     <div class='form-section-header-prominent'>VPS Plan / Size:</div>
-    <select name='plan'>
-      <option>Please Choose</option>
-      <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
-        <option value='<%= k %>'>
-        <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB Disk, <%= plan['bandwidth'] %> GB Bandwidth -- $<%= plan['mrc'] %> USD
-        </option>
-      <% end %>
-    </select>
-  </div>
-
-  <div style='margin-left: auto; width: 45%'>
-    <%= render :partial => 'location', :locals => { :title => nil } %>
-    <div class='small-note'>
-      <div class='caption' style='float: left'>Note:</div>
-      <div>
-        Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
-      </div>
+    <div class='select '>
+      <select name='plan'>
+        <option>Please Choose</option>
+        <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
+          <option value='<%= k %>'>
+          <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB HD, <%= plan['bandwidth'] / 1000 %> TB Bandwidth: $<%= plan['mrc'] %>
+          </option>
+        <% end %>
+      </select>
     </div>
-  </div>
 
-  <div style="clear: both; float: left; width: 55%">
     <div class='form-section-header-prominent'>Operating System:</div>
     <div>
       <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
@@ -35,21 +25,50 @@
         <% end %>
       <% end %>
     </div>
+
+    <div class='form-section-header-prominent'>Users and SSH keys</div>
+
+  <p>
+  <a class="button is-link is-outlined modal-button" data-target="#mymodal" aria-haspopup="true">Add SSH Key</a>
+  </p>
+  <div id='mymodal' class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        Hi! From inside the box...
+      </div>
+      <!-- Any other Bulma elements you want -->
+    </div>
+    <a class="modal-close is-large" aria-label="close"></a>
   </div>
 
-  <div style="margin-left: auto;">
+  </div>
+
+  <div class='column'>
+
+    <%= render :partial => 'location', :locals => { :title => nil } %>
+    <div class='small-note'>
+      <div class='caption' style='float: left'>Note:</div>
+      <div style='white-space: nowrap'>
+        Please email <a href='mailto:support@arpnetworks.com'>support@arpnetworks.com</a> if you need an IP block for either of these locations.
+      </div>
+    </div>
+
+
     <div class='form-section-header-prominent'>IP Address Assignments</div>
     <div>
-      <div style='padding-bottom: 5px'>
+      <div>
         IPv4 on first network interface:
       </div>
-      <div style='padding-bottom: 5px'>
+      <div class='select  is-loading'>
         <select id='ipv4_address_selector'>
-          <option>Loading...</option>
+          <option></option>
         </select>
       </div>
 
-      <input type='checkbox' id='ip_manual_input'> Let me type my own
+      <div>
+        <input type='checkbox' id='ip_manual_input'> Let me type my own
+      </div>
     </div>
 
     <div class='small-note'>
@@ -58,11 +77,12 @@
         IPv6 address and gateway will be assigned by auto-configuration.
       </div>
     </div>
+
   </div>
 
-  <div style="clear: both; padding-top: 10px">
-    <div class='form-section-header-prominent'>Users and SSH keys</div>
-  </div>
+
+
+
 </div>
 
 <br/>
