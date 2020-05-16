@@ -1,0 +1,22 @@
+@charset "utf-8";
+
+// This imports all of Bulma
+// @import "../../../node_modules/bulma/bulma.sass";
+
+// For a modal with a box, these 3 lines are all that is required
+@import "../../../node_modules/bulma/sass/utilities/_all.sass";
+@import "../../../node_modules/bulma/sass/components/modal.sass";
+@import "../../../node_modules/bulma/sass/elements/box.sass";
+
+// But a button class can be useful
+@import "../../../node_modules/bulma/sass/elements/button.sass";
+
+// Forms
+@import "../../../node_modules/bulma/sass/form/_all.sass";
+
+// Grid!
+@import "../../../node_modules/bulma/sass/grid/_all.sass";
+
+// Good for completely free-form content
+// @import "../node_modules/bulma/sass/elements/content.sass";
+

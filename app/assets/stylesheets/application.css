@@ -11,6 +11,7 @@
  * file per style scope.
  *
  *= require arp
+ *= require arp-bulma
  *= require bootstrap.min
 
  *= require_tree .
