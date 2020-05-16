@@ -74,26 +74,28 @@ context DnsRecordsController do
                                name: '2.0.0.10.in-addr.arpa',
                                content: 'example.com')
         do_get
-        expect(assigns(:records).sort { |a,b| a.ip <=> b.ip }).to eq [
+        expect(assigns(:records).sort { |a, b| a.ip <=> b.ip }).to eq [
           OpenStruct.new({
-            r_id: @dns_records[0].id,
-            ip: '10.0.0.2',
-            name: '2.0.0.10.in-addr.arpa',
-            r_type: 'PTR',
-            content: 'example.com.' }),
+                           r_id: @dns_records[0].id,
+                           ip: '10.0.0.2',
+                           name: '2.0.0.10.in-addr.arpa',
+                           r_type: 'PTR',
+                           content: 'example.com.'
+                         }),
           OpenStruct.new({
-            r_id: @dns_records[1].id,
-            ip: '10.0.0.2',
-            name: '2.0.0.10.in-addr.arpa',
-            r_type: 'NS',
-            content: 'example.com' })
-        ].sort { |a,b| a.ip <=> b.ip }
+                           r_id: @dns_records[1].id,
+                           ip: '10.0.0.2',
+                           name: '2.0.0.10.in-addr.arpa',
+                           r_type: 'NS',
+                           content: 'example.com'
+                         })
+        ].sort { |a, b| a.ip <=> b.ip }
       end
 
       specify 'should build records for RFC 2317 delegations' do
         rfc2317_record = build :dns_record, :the_10_block,
-                                             name: '0-3.0.0.10.in-addr.arpa',
-                                             content: 'ns1.example.com'
+                               name: '0-3.0.0.10.in-addr.arpa',
+                               content: 'ns1.example.com'
         rfc2317_record.type = 'NS'
         allow(rfc2317_record).to receive(:domain).and_return(double(DnsDomain, increment_serial!: true))
         rfc2317_record.save
@@ -103,16 +105,18 @@ context DnsRecordsController do
         do_get
         expect(assigns(:records)).to eq [
           OpenStruct.new({
-            r_id: @dns_records[0].id,
-            ip: '10.0.0.2',
-            name: '2.0.0.10.in-addr.arpa',
-            r_type: 'PTR',
-            content: 'example.com.' }),
+                           r_id: @dns_records[0].id,
+                           ip: '10.0.0.2',
+                           name: '2.0.0.10.in-addr.arpa',
+                           r_type: 'PTR',
+                           content: 'example.com.'
+                         }),
           OpenStruct.new({
-            r_id: @dns_records[1].id,
-            name: '0-3.0.0.10.in-addr.arpa',
-            r_type: 'NS',
-            content: 'ns1.example.com' })
+                           r_id: @dns_records[1].id,
+                           name: '0-3.0.0.10.in-addr.arpa',
+                           r_type: 'NS',
+                           content: 'ns1.example.com'
+                         })
         ]
       end
 
@@ -120,48 +124,54 @@ context DnsRecordsController do
         # Add a couple more than @account owns
         (2..8).each do |n|
           @dns_records << create(:dns_record, :the_192_block,
-                                              name: "#{n}.0.168.192.in-addr.arpa",
-                                              content: "foo#{n}")
+                                 name: "#{n}.0.168.192.in-addr.arpa",
+                                 content: "foo#{n}")
         end
 
         do_get
         expect(assigns(:records)).to eq [
           OpenStruct.new({
-            r_id: @dns_records[0].id,
-            ip: '10.0.0.2',
-            name: '2.0.0.10.in-addr.arpa',
-            r_type: 'PTR',
-            content: 'example.com.' }),
+                           r_id: @dns_records[0].id,
+                           ip: '10.0.0.2',
+                           name: '2.0.0.10.in-addr.arpa',
+                           r_type: 'PTR',
+                           content: 'example.com.'
+                         }),
           OpenStruct.new({
-            r_id: @dns_records[1].id,
-            ip: '192.168.0.2',
-            name: '2.0.168.192.in-addr.arpa',
-            r_type: 'PTR',
-            content: 'foo2.' }),
+                           r_id: @dns_records[1].id,
+                           ip: '192.168.0.2',
+                           name: '2.0.168.192.in-addr.arpa',
+                           r_type: 'PTR',
+                           content: 'foo2.'
+                         }),
           OpenStruct.new({
-            r_id: @dns_records[2].id,
-            ip: '192.168.0.3',
-            name: '3.0.168.192.in-addr.arpa',
-            r_type: 'PTR',
-            content: 'foo3.' }),
+                           r_id: @dns_records[2].id,
+                           ip: '192.168.0.3',
+                           name: '3.0.168.192.in-addr.arpa',
+                           r_type: 'PTR',
+                           content: 'foo3.'
+                         }),
           OpenStruct.new({
-            r_id: @dns_records[3].id,
-            ip: '192.168.0.4',
-            name: '4.0.168.192.in-addr.arpa',
-            r_type: 'PTR',
-            content: 'foo4.' }),
+                           r_id: @dns_records[3].id,
+                           ip: '192.168.0.4',
+                           name: '4.0.168.192.in-addr.arpa',
+                           r_type: 'PTR',
+                           content: 'foo4.'
+                         }),
           OpenStruct.new({
-            r_id: @dns_records[4].id,
-            ip: '192.168.0.5',
-            name: '5.0.168.192.in-addr.arpa',
-            r_type: 'PTR',
-            content: 'foo5.' }),
+                           r_id: @dns_records[4].id,
+                           ip: '192.168.0.5',
+                           name: '5.0.168.192.in-addr.arpa',
+                           r_type: 'PTR',
+                           content: 'foo5.'
+                         }),
           OpenStruct.new({
-            r_id: @dns_records[5].id,
-            ip: '192.168.0.6',
-            name: '6.0.168.192.in-addr.arpa',
-            r_type: 'PTR',
-            content: 'foo6.' })
+                           r_id: @dns_records[5].id,
+                           ip: '192.168.0.6',
+                           name: '6.0.168.192.in-addr.arpa',
+                           r_type: 'PTR',
+                           content: 'foo6.'
+                         })
         ]
       end
 
@@ -189,17 +199,17 @@ context DnsRecordsController do
         do_get
         expect(assigns(:records_ipv6)).to eq [
           OpenStruct.new({
-            r_id: @dns_records[1].id,
-            name: '2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa',
-            r_type: 'PTR',
-            content: 'example.com.'
-          }),
+                           r_id: @dns_records[1].id,
+                           name: '2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa',
+                           r_type: 'PTR',
+                           content: 'example.com.'
+                         }),
           OpenStruct.new({
-            r_id: @dns_records[2].id,
-            name: '3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa',
-            r_type: 'PTR',
-            content: 'example2.com.'
-          })
+                           r_id: @dns_records[2].id,
+                           name: '3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa',
+                           r_type: 'PTR',
+                           content: 'example2.com.'
+                         })
         ]
       end
 
@@ -220,17 +230,17 @@ context DnsRecordsController do
         do_get
         expect(assigns(:records_ipv6)).to eq [
           OpenStruct.new({
-            r_id: @dns_records[1].id,
-            name: '2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa',
-            r_type: 'PTR',
-            content: 'example.com.'
-          }),
+                           r_id: @dns_records[1].id,
+                           name: '2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa',
+                           r_type: 'PTR',
+                           content: 'example.com.'
+                         }),
           OpenStruct.new({
-            r_id: @dns_records[2].id,
-            name: '2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa',
-            r_type: 'NS',
-            content: 'example2.com'
-          })
+                           r_id: @dns_records[2].id,
+                           name: '2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa',
+                           r_type: 'NS',
+                           content: 'example2.com'
+                         })
         ]
       end
     end
@@ -407,8 +417,8 @@ context DnsRecordsController do
       it 'should redirect when the dns_record does not belong to account' do
         @dns_record_for_someone_else = \
           create(:dns_record, :the_10_block,
-                  name: '9.0.0.10.in-addr.arpa',
-                  content: 'example.com')
+                 name: '9.0.0.10.in-addr.arpa',
+                 content: 'example.com')
         do_get @params.merge(id: @dns_record_for_someone_else.id)
         expect(flash[:error]).to_not be_nil
         expect(flash[:error]).to match(/You do not have permissions to edit/)
@@ -425,7 +435,7 @@ context DnsRecordsController do
         new_content = 'example2.com.'
         expect(@dns_record.content).to_not eq new_content
         do_put(@params.merge(dns_record: { type: 'PTR',
-                                              content: new_content }))
+                                           content: new_content }))
         expect(response).to redirect_to(reverse_dns_account_dns_records_path(@account))
         expect(flash[:notice]).to_not be_empty
 
@@ -449,7 +459,7 @@ context DnsRecordsController do
         expect(@dns_record.content).to_not eq new_content
         expect(@controller).to receive(:send_notify).with('0.0.10.in-addr.arpa')
         do_put(@params.merge(dns_record: { type: 'PTR',
-                                              content: new_content }))
+                                           content: new_content }))
       end
 
       it 'should not update dns_record if resulting record could not be owned by account' do
@@ -465,7 +475,7 @@ context DnsRecordsController do
         # Now that we make type a CNAME, it can't have RFC 2317 style record name
         # (that is, the record could not be owned by this account)
         do_put @params.merge(dns_record: { name: new_name, type: 'CNAME',
-                                              content: @dns_record.content.chop })
+                                           content: @dns_record.content.chop })
         expect(response).to render_template('dns_records/edit')
       end
     end
@@ -475,7 +485,7 @@ context DnsRecordsController do
         put :destroy, { account_id: @account.id }.merge(opts)
       end
 
-      def mock_dns_record(stubs={})
+      def mock_dns_record(stubs = {})
         @mock_dns_record ||= mock_model(DnsRecord, { ip: '10.0.0.1',
                                                      type: 'NS',
                                                      domain: build(:dns_domain, :the_10_block),
