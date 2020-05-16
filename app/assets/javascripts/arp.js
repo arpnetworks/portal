@@ -18,13 +18,15 @@ function populateIpAddresses(location_code) {
         options += v["ip_address"];
 
         if (v["assigned"]) {
-          options += " (assigned to " + v["assignment"] + ")";
+          options += " (" + v["assignment"] + ")";
         }
 
         options += "</option>";
       });
 
-      $("#ipv4_address_selector").html(options);
+      element = $('#ipv4_address_selector')
+      element.html(options);
+      element.parent().removeClass('is-loading')
     },
     error: function (data) {
       alert(
@@ -38,6 +40,7 @@ $(function () {
   /* Change the IP address drop-down based on the chosen location */
   $("#new_vps_with_os input[name=location]").change(function () {
     if ($(this).is(":checked")) {
+      $('#ipv4_address_selector').parent().addClass('is-loading')
       populateIpAddresses($(this).val());
     }
   });

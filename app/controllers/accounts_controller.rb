@@ -177,7 +177,7 @@ class AccountsController < ProtectedController
 
         if (service_id = vm.service_id)
           svc = Service.find(service_id)
-          assignment = svc.label
+          assignment = svc.label unless svc.label.empty?
         end
       rescue StandardError
         assignment = 'another instance'
