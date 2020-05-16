@@ -9,6 +9,8 @@ Metrics/MethodLength:
   Max: 50
 Metrics/AbcSize:
   IgnoredMethods: ['respond_to']
+Layout/LineLength:
+  Max: 120
 
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
