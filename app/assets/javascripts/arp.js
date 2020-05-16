@@ -24,9 +24,9 @@ function populateIpAddresses(location_code) {
         options += "</option>";
       });
 
-      element = $('#ipv4_address_selector')
+      element = $("#ipv4_address_selector");
       element.html(options);
-      element.parent().removeClass('is-loading')
+      element.parent().removeClass("is-loading");
     },
     error: function (data) {
       alert(
@@ -40,8 +40,15 @@ $(function () {
   /* Change the IP address drop-down based on the chosen location */
   $("#new_vps_with_os input[name=location]").change(function () {
     if ($(this).is(":checked")) {
-      $('#ipv4_address_selector').parent().addClass('is-loading')
+      $("#ipv4_address_selector").parent().addClass("is-loading");
       populateIpAddresses($(this).val());
+    }
+  });
+
+  $("#ssh_key_selector").change(function () {
+    if ($(this).val() == "add") {
+      $("#mymodal").addClass("is-active");
+      $("html").addClass("is-clipped");
     }
   });
 });
