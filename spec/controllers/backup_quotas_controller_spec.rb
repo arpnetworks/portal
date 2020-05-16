@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 context BackupQuotasController do
-
   before(:context) do
     create_user!
   end
@@ -68,7 +67,8 @@ context BackupQuotasController do
     specify 'should redirect back to form' do
       do_post
       expect(response).to redirect_to(ssh_key_account_service_backup_quota_path(\
-        @account.id, @service.id, @bq.id))
+                                        @account.id, @service.id, @bq.id
+                                      ))
     end
 
     context 'when key is empty' do
@@ -80,7 +80,8 @@ context BackupQuotasController do
       specify 'should redirect back to form' do
         do_post(keys: '')
         expect(response).to redirect_to(ssh_key_account_service_backup_quota_path(\
-          @account.id, @service.id, @bq.id))
+                                          @account.id, @service.id, @bq.id
+                                        ))
       end
     end
   end
@@ -103,20 +104,17 @@ context BackupQuotasController do
     end
 
     specify 'should execute shell command to submit key to console.cust (without append)' do
-      expect(Kernel).to receive(:system).\
-        with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$KEYER}@#{@server}", 'add', '0', @login, @quota.to_s, @key)
+      expect(Kernel).to receive(:system)\
+        .with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$KEYER}@#{@server}", 'add', '0', @login, @quota.to_s, @key)
 
       do_ssh_key_send(@server, @login, @key, false, @quota)
     end
 
     specify 'should execute shell command to submit key to console.cust (with append)' do
-      expect(Kernel).to receive(:system).\
-        with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$KEYER}@#{@server}", 'add', '1', @login, @quota.to_s, @key)
+      expect(Kernel).to receive(:system)\
+        .with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$KEYER}@#{@server}", 'add', '1', @login, @quota.to_s, @key)
 
       do_ssh_key_send(@server, @login, @key, true, @quota)
     end
   end
-
-
-
 end

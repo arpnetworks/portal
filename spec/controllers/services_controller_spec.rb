@@ -1,9 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
-
 context ServicesController do
-
   before(:context) do
     create_user!(login: 'user2', create_service: true)
   end

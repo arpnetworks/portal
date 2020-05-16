@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::VlansController do
-
   before(:context) do
     create_admin!
   end
@@ -12,12 +11,11 @@ describe Admin::VlansController do
     @p = { 'vlan': '999', 'label': 'ACME Inc' }
   end
 
-  def mock_vlan(stubs={})
+  def mock_vlan(stubs = {})
     @mock_vlan ||= mock_model(Vlan, stubs)
   end
 
   describe 'responding to GET index' do
-
     it 'should expose all admin_vlans as @admin_vlans' do
       vlans = double('All VLANs')
       expect(Vlan).to receive(:all) { vlans }
@@ -27,11 +25,9 @@ describe Admin::VlansController do
       get :index
       expect(assigns[:vlans]).to eq([mock_vlan])
     end
-
   end
 
   describe 'responding to GET show' do
-
     it 'should expose the requested vlans as @vlans' do
       expect(Vlan).to receive(:find).with('37') { mock_vlan }
       get :show, id: '37'
@@ -39,7 +35,6 @@ describe Admin::VlansController do
     end
 
     describe 'with mime type of xml' do
-
       it 'should render the requested vlans as xml' do
         xml = 'generated XML'
         request.env['HTTP_ACCEPT'] = 'application/xml'
@@ -48,39 +43,31 @@ describe Admin::VlansController do
         get :show, id: '37'
         expect(response.body).to eq(xml)
       end
-
     end
-
   end
 
   describe 'responding to GET new' do
-
     it 'should expose a new vlans as @vlans' do
       expect(Vlan).to receive(:new) { mock_vlan }
       get :new
       expect(assigns[:vlan]).to eq(mock_vlan)
     end
-
   end
 
   describe 'responding to GET edit' do
-
     it 'should expose the requested vlans as @vlans' do
       expect(Vlan).to receive(:find).with('37') { mock_vlan }
       get :edit, id: '37'
       expect(assigns[:vlan]).to eq(mock_vlan)
     end
-
   end
 
   describe 'responding to POST create' do
-
     def do_create
       post :create, vlan: @p
     end
 
     describe 'with valid params' do
-
       it 'should expose a newly created vlans as @vlans' do
         expect(Vlan).to receive(:new).with(@p) { mock_vlan(save: true) }
         do_create
@@ -92,11 +79,9 @@ describe Admin::VlansController do
         do_create
         expect(response).to redirect_to(admin_vlans_path)
       end
-
     end
 
     describe 'with invalid params' do
-
       it 'should expose a newly created but unsaved vlans as @vlans' do
         allow(Vlan).to receive(:new).with(@p) { mock_vlan(save: false) }
         do_create
@@ -108,19 +93,15 @@ describe Admin::VlansController do
         do_create
         expect(response).to render_template('new')
       end
-
     end
-
   end
 
   describe 'responding to PUT udpate' do
-
     def do_update(id = '37')
       patch :update, id: id, vlan: @p
     end
 
     describe 'with valid params' do
-
       it 'should update the requested vlans' do
         expect(Vlan).to receive(:find).with('37') { mock_vlan }
         expect(mock_vlan).to receive(:update).with(@p)
@@ -138,11 +119,9 @@ describe Admin::VlansController do
         do_update('1')
         expect(response).to redirect_to(admin_vlans_path)
       end
-
     end
 
     describe 'with invalid params' do
-
       it 'should update the requested vlans' do
         expect(Vlan).to receive(:find).with('37') { mock_vlan }
         expect(mock_vlan).to receive(:update).with(@p)
@@ -160,13 +139,10 @@ describe Admin::VlansController do
         do_update('1')
         expect(response).to render_template('edit')
       end
-
     end
-
   end
 
   describe 'responding to DELETE destroy' do
-
     def do_destroy(id = '37')
       delete :destroy, id: id
     end
@@ -190,7 +166,6 @@ describe Admin::VlansController do
       do_destroy('1')
       expect(flash[:error]).to_not be_nil
     end
-
   end
 
   describe 'responding to POST shutdown' do
@@ -307,15 +282,15 @@ describe Admin::VlansController do
     end
 
     specify 'should execute shell command to shutdown VLAN' do
-      expect(Kernel).to receive(:system).\
-        with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$HOST_RANCID_USER}@#{$HOST_RANCID}", @otp, 'shutdown_vlan', @vlan_id.to_s, @location)
+      expect(Kernel).to receive(:system)\
+        .with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$HOST_RANCID_USER}@#{$HOST_RANCID}", @otp, 'shutdown_vlan', @vlan_id.to_s, @location)
 
       do_send_command('shutdown_vlan', @vlan_id, @location, @otp)
     end
 
     specify 'should execute shell command to restore VLAN' do
-      expect(Kernel).to receive(:system).\
-        with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$HOST_RANCID_USER}@#{$HOST_RANCID}", @otp, 'restore_vlan', @vlan_id.to_s, @location)
+      expect(Kernel).to receive(:system)\
+        .with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$HOST_RANCID_USER}@#{$HOST_RANCID}", @otp, 'restore_vlan', @vlan_id.to_s, @location)
 
       do_send_command('restore_vlan', @vlan_id, @location, @otp)
     end

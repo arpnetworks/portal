@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::ServicesController do
-
   before(:context) do
     create_admin!
   end
@@ -19,7 +18,7 @@ describe Admin::ServicesController do
     allow(controller).to receive(:login_required)
 
     @last_location = '/foo'
-    allow(controller).to receive(:last_location)     { @last_location }
+    allow(controller).to receive(:last_location) { @last_location }
   end
 
   def do_get(opts = {})
@@ -140,7 +139,7 @@ describe Admin::ServicesController do
     end
   end
 
-  def mock_service(stubs={})
+  def mock_service(stubs = {})
     @mock_service ||= mock_model(Service, stubs)
   end
 

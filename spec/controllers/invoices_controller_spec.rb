@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 context InvoicesController do
-
   before(:context) do
     create_user!
   end
@@ -97,7 +96,7 @@ context InvoicesController do
     def do_post(opts = {})
       post :pay_confirm, { account_id: @account.id,
                            credit_card_number: @cc_num,
-                           confirmed_amount: @confirmed_amount}.merge(opts)
+                           confirmed_amount: @confirmed_amount }.merge(opts)
     end
 
     context 'when payment system is disabled' do
@@ -167,7 +166,8 @@ context InvoicesController do
               expect(@cc).to receive(:charge_with_sales_receipt).with(\
                 @confirmed_amount, @li,
                 email_decline_notice: false,
-                email_sales_receipt: true)
+                email_sales_receipt: true
+              )
               do_post
             end
 
@@ -197,23 +197,23 @@ context InvoicesController do
                 # Payment Record #1
                 @payments_1 = double(:payments_1)
                 expect(@payments_1).to receive(:create).with({
-                  account_id: @account.id,
-                  date: @now,
-                  reference_number: @transaction_id,
-                  method: 'Credit Card',
-                  amount: @inv1.total
-                })
+                                                               account_id: @account.id,
+                                                               date: @now,
+                                                               reference_number: @transaction_id,
+                                                               method: 'Credit Card',
+                                                               amount: @inv1.total
+                                                             })
                 expect(@inv1).to receive(:payments).and_return(@payments_1)
 
                 # Payment Record #2
                 @payments_2 = double(:payments_2)
                 expect(@payments_2).to receive(:create).with({
-                  account_id: @account.id,
-                  date: @now,
-                  reference_number: @transaction_id,
-                  method: 'Credit Card',
-                  amount: @inv2.total
-                })
+                                                               account_id: @account.id,
+                                                               date: @now,
+                                                               reference_number: @transaction_id,
+                                                               method: 'Credit Card',
+                                                               amount: @inv2.total
+                                                             })
                 expect(@inv2).to receive(:payments).and_return(@payments_2)
 
                 do_post

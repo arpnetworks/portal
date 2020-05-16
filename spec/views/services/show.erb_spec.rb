@@ -6,9 +6,9 @@ describe '/services/show.erb' do
   before(:each) do
     assign(:service, stub_model(Service, service_code: stub_model(ServiceCode)))
     assign(:services, [
-      stub_model(Service),
-      stub_model(Service)
-    ])
+             stub_model(Service),
+             stub_model(Service)
+           ])
     assign(:description, '')
     assign(:resources, [])
 
@@ -41,4 +41,3 @@ describe '/services/show.erb' do
     end
   end
 end
-

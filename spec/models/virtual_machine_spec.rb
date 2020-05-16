@@ -203,12 +203,12 @@ context VirtualMachine do
   context 'when creating' do
     context 'with service_id' do
       specify 'should assign VM to service' do
-        @vm = VirtualMachine.create(uuid:       @uuid,
+        @vm = VirtualMachine.create(uuid: @uuid,
                                     service_id: @service.id,
-                                    host:       'foo.arpnetworks.com',
-                                    ram:        1024,
-                                    storage:    20,
-                                    label:      'foo')
+                                    host: 'foo.arpnetworks.com',
+                                    ram: 1024,
+                                    storage: 20,
+                                    label: 'foo')
 
         @vm = VirtualMachine.find_by_uuid(@uuid) # Reload the whole instance
 
@@ -219,7 +219,6 @@ context VirtualMachine do
 
   context 'when updating' do
     context 'with service_id' do
-
       before do
         @service_new = create :service
       end
@@ -252,12 +251,12 @@ context VirtualMachine do
 
       context 'when no prior service was assigned' do
         specify 'should assign VM to service' do
-          @vm = VirtualMachine.create(uuid:       @uuid,
+          @vm = VirtualMachine.create(uuid: @uuid,
                                       service_id: @service.id,
-                                      host:       'foo.arpnetworks.com',
-                                      ram:        1024,
-                                      storage:    20,
-                                      label:      'foo2')
+                                      host: 'foo.arpnetworks.com',
+                                      ram: 1024,
+                                      storage: 20,
+                                      label: 'foo2')
 
           expect(@vm.resource).to_not be_nil
           do_reassign
@@ -274,7 +273,6 @@ context VirtualMachine do
       end
     end
   end
-
 
   ################################
   # END: Testing of Resourceable #

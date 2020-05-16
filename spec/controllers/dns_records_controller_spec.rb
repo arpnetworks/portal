@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 context DnsRecordsController do
-
   before(:context) do
     Account.delete_all
     Service.delete_all
@@ -195,7 +194,6 @@ context DnsRecordsController do
                                name: '3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.c.8.f.2.f.7.0.6.2.ip6.arpa',
                                content: 'example2.com')
 
-
         do_get
         expect(assigns(:records_ipv6)).to eq [
           OpenStruct.new({
@@ -320,7 +318,7 @@ context DnsRecordsController do
       end
 
       it 'should assign new dns_record to correct domain' do
-        domain = DnsDomain.find_by_name('0.0.10.in-addr.arpa') || create(:dns_domain, :the_10_block)
+        domain = DnsDomain.find_by(name: '0.0.10.in-addr.arpa') || create(:dns_domain, :the_10_block)
         new_dns_record = {
           name: '2',
           domain: domain.name,
@@ -465,7 +463,7 @@ context DnsRecordsController do
       it 'should not update dns_record if resulting record could not be owned by account' do
         new_name = '0-3.0.0.10.in-addr.arpa'
         do_put @params.merge(dns_record: { name: new_name, type: 'NS',
-                                              content: @dns_record.content.chop })
+                                           content: @dns_record.content.chop })
         expect(flash[:notice]).to eq 'Changes saved.'
         expect(response).to redirect_to(reverse_dns_account_dns_records_path(@account))
 

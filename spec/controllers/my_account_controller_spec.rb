@@ -29,4 +29,3 @@ describe MyAccountController do
     end
   end
 end
-

@@ -9,7 +9,7 @@ describe Admin::IpBlocksController do
   before do
     login_as_admin!
     @ip_block = mock_model(IpBlock)
-    @params  = { id: @ip_block.id }
+    @params = { id: @ip_block.id }
   end
 
   def do_get(opts = {})
@@ -45,7 +45,7 @@ describe Admin::IpBlocksController do
 
     it 'should allow override seq' do
       do_get(ip_block: { seq: 90 })
-      expect(assigns(:ip_block).seq).to  eq 90
+      expect(assigns(:ip_block).seq).to eq 90
     end
   end
 
@@ -164,7 +164,7 @@ describe Admin::IpBlocksController do
 
     it 'should go back to edit page if error updating' do
       @ip_block = mock_model(IpBlock)
-      allow(controller).to receive(:ip_block_params) {{}}
+      allow(controller).to receive(:ip_block_params) { {} }
       allow(@ip_block).to receive(:update) { false }
       expect(IpBlock).to receive(:find).with(@ip_block.id.to_s) { @ip_block }
       do_put(@params.merge(id: @ip_block.id, ip_block: {}))
@@ -185,7 +185,7 @@ describe Admin::IpBlocksController do
     end
   end
 
-  def mock_ip_block(stubs={})
+  def mock_ip_block(stubs = {})
     @mock_ip_block ||= mock_model(IpBlock, stubs)
   end
 

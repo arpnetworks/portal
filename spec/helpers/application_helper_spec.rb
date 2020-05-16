@@ -24,6 +24,7 @@ describe ApplicationHelper do
     it "should return 'Every X months' for 1 < X < 12 (except for 3)" do
       (2..11).to_a.each do |n|
         next if n == 3
+
         expect(billing_interval_in_words(n)).to eq "Every #{n} months"
       end
     end

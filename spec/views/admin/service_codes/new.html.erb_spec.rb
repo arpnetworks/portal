@@ -13,5 +13,3 @@ describe '/admin/service_codes/new.html.erb' do
     expect(response).to have_tag("form[action='%s'][method=post]" % admin_service_codes_path)
   end
 end
-
-

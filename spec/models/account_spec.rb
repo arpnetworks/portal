@@ -164,7 +164,7 @@ describe Account do
 
       create :service, account: account, service_code: @service_code, ip_blocks: @ip_blocks
 
-      create :service, account: account   # Some other non-IP service
+      create :service, account: account # Some other non-IP service
     end
 
     describe 'ip_block()' do
@@ -296,18 +296,20 @@ describe Account do
     describe 'reverse_dns_zones()' do
       specify 'should return an array of zones in which this account may create records' do
         expect(account.reverse_dns_zones).to eq(\
-          ['0.0.10.in-addr.arpa', 
+          ['0.0.10.in-addr.arpa',
            '0.168.192.in-addr.arpa',
            'd.0.0.d.8.f.2.f.7.0.6.2.ip6.arpa',
-           'f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa'])
+           'f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa']
+        )
       end
 
       specify 'should return IPv4 blocks before IPv6 blocks' do
         expect(account.reverse_dns_zones).to eq(\
-          ['0.0.10.in-addr.arpa', 
+          ['0.0.10.in-addr.arpa',
            '0.168.192.in-addr.arpa',
            'd.0.0.d.8.f.2.f.7.0.6.2.ip6.arpa',
-           'f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa'])
+           'f.e.e.b.8.f.2.f.7.0.6.2.ip6.arpa']
+        )
       end
     end
   end

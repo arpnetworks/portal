@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 describe CreditCardsController do
-
   before(:context) do
     Account.delete_all
     @account = create :account_user, first_name: 'John', last_name: 'Doe'

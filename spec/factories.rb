@@ -148,7 +148,7 @@ FactoryBot.define do
       before(:create) do |r|
         domain = DnsDomain.find_by(name: '0.0.10.in-addr.arpa') ||
                  (create :dns_domain, :the_10_block)
-                 # DnsDomain.create(name:  '0.0.10.in-addr.arpa', type: 'MASTER')
+        # DnsDomain.create(name:  '0.0.10.in-addr.arpa', type: 'MASTER')
 
         r.domain_id = domain.id
       end

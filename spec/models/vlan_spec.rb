@@ -11,7 +11,7 @@ context 'Vlan class with fixtures loaded' do
     create :ip_block, vlan: 106, location: @lax, available: true unless IpBlock.find_by(vlan: 106)
     create :ip_block, vlan: 107, location: @lax, available: true unless IpBlock.find_by(vlan: 107)
     create :ip_block, vlan: 108, location: @lax, available: true unless IpBlock.find_by(vlan: 108)
-    create :vlan, vlan: 1, label: 'Native VLAN',  location: @lax unless Vlan.find_by(vlan: 1)
+    create :vlan, vlan: 1, label: 'Native VLAN', location: @lax unless Vlan.find_by(vlan: 1)
     create :vlan, vlan: 100, label: 'FidoNet',  location: @lax   unless Vlan.find_by(vlan: 100)
     create :vlan, vlan: 101, label: 'VLAN 101', location: @lax   unless Vlan.find_by(vlan: 101)
     create :vlan, vlan: 440, label: 'VLAN 440', location: @lax   unless Vlan.find_by(vlan: 440)

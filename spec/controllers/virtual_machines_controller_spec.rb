@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 context VirtualMachinesController do
-
   before(:context) do
     create_user!
   end
@@ -18,14 +17,12 @@ context VirtualMachinesController do
   end
 
   context 'boot action' do
-
     def do_get(opts = {})
       get :boot, { account_id: @account.id, service_id: @service.id,
                    id: @vm.id }.merge(opts)
     end
 
     context 'with valid VM' do
-
       specify 'should set flash notice' do
         do_get
         expect(flash[:notice_for_vm]).to_not be_nil
@@ -52,7 +49,6 @@ context VirtualMachinesController do
     end
 
     context 'with invalid VM' do
-
       specify 'should not set flash notice' do
         do_get(id: 999)
         expect(flash[:notice_for_vm]).to be_nil
@@ -67,14 +63,12 @@ context VirtualMachinesController do
   end
 
   context 'shutdown action' do
-
     def do_get(opts = {})
       get :shutdown, { account_id: @account.id, service_id: @service.id,
                        id: @vm.id }.merge(opts)
     end
 
     context 'with valid VM' do
-
       specify 'should set flash notice' do
         do_get
         expect(flash[:notice_for_vm]).to_not be_nil
@@ -83,7 +77,7 @@ context VirtualMachinesController do
       specify 'should redirect to service page' do
         do_get
         expect(@response).to redirect_to(account_service_path(@account.id,
-                                                          @service.id))
+                                                              @service.id))
       end
 
       specify "should write request to 'shutdown' VM" do
@@ -94,7 +88,6 @@ context VirtualMachinesController do
     end
 
     context 'with invalid VM' do
-
       specify 'should not set flash notice' do
         do_get(id: 999)
         expect(flash[:notice_for_vm]).to be_nil
@@ -103,20 +96,18 @@ context VirtualMachinesController do
       specify 'should redirect to service page' do
         do_get(id: 999)
         expect(@response).to redirect_to(account_service_path(@account.id,
-                                                          @service.id))
+                                                              @service.id))
       end
     end
   end
 
   context 'shutdown_hard action' do
-
     def do_get(opts = {})
       get :shutdown_hard, { account_id: @account.id, service_id: @service.id,
                             id: @vm.id }.merge(opts)
     end
 
     context 'with valid VM' do
-
       specify 'should set flash notice' do
         do_get
         expect(flash[:notice_for_vm]).to_not be_nil
@@ -125,7 +116,7 @@ context VirtualMachinesController do
       specify 'should redirect to service page' do
         do_get
         expect(@response).to redirect_to(account_service_path(@account.id,
-                                                          @service.id))
+                                                              @service.id))
       end
 
       specify "should write request to 'destroy' VM" do
@@ -136,7 +127,6 @@ context VirtualMachinesController do
     end
 
     context 'with invalid VM' do
-
       specify 'should not set flash notice' do
         do_get(id: 999)
         expect(flash[:notice_for_vm]).to be_nil
@@ -145,13 +135,12 @@ context VirtualMachinesController do
       specify 'should redirect to service page' do
         do_get(id: 999)
         expect(@response).to redirect_to(account_service_path(@account.id,
-                                                          @service.id))
+                                                              @service.id))
       end
     end
   end
 
   context 'iso_change' do
-
     before do
       @iso_files = [
         'OpenBSD-5.4-amd64-install54.iso',
@@ -171,7 +160,6 @@ context VirtualMachinesController do
     end
 
     context 'with valid VM' do
-
       context 'with valid ISO filename' do
         specify 'should set flash notice' do
           do_get
@@ -181,7 +169,7 @@ context VirtualMachinesController do
         specify 'should redirect to service page' do
           do_get
           expect(@response).to redirect_to(account_service_path(@account.id,
-                                                            @service.id))
+                                                                @service.id))
         end
 
         specify 'should write request to change ISO of VM' do
@@ -196,7 +184,7 @@ context VirtualMachinesController do
         specify 'should redirect to service page' do
           do_get(iso_file: 'lskjdlfdjf')
           expect(@response).to redirect_to(account_service_path(@account.id,
-                                                            @service.id))
+                                                                @service.id))
         end
 
         specify 'should not set flash notice' do
@@ -207,7 +195,6 @@ context VirtualMachinesController do
     end
 
     context 'with invalid VM' do
-
       before do
         allow(@account).to receive(:find_virtual_machine_by_id).with('999').and_return(nil)
       end
@@ -245,7 +232,6 @@ context VirtualMachinesController do
   end
 
   context 'ssh_key' do
-
     def do_get(opts = {})
       get :ssh_key, { account_id: @account.id, service_id: @service.id,
                       id: @vm.id }.merge(opts)
@@ -259,7 +245,6 @@ context VirtualMachinesController do
   end
 
   context 'ssh_key_post' do
-
     before do
       @single_key = 'ssh-rsa foo label'
       @two_keys   = "ssh-rsa foo label\nssh-dsa bar label"
@@ -298,11 +283,11 @@ context VirtualMachinesController do
     specify 'should redirect back to form' do
       do_post
       expect(@response).to redirect_to(ssh_key_account_service_virtual_machine_path(\
-        @account.id, @service.id, @vm.id))
+                                         @account.id, @service.id, @vm.id
+                                       ))
     end
 
     context 'when key is empty' do
-
       specify 'should display error' do
         do_post(keys: '')
         expect(flash[:error]).to eq 'Your submission was empty'
@@ -311,13 +296,13 @@ context VirtualMachinesController do
       specify 'should redirect back to form' do
         do_post(keys: '')
         expect(@response).to redirect_to(ssh_key_account_service_virtual_machine_path(\
-          @account.id, @service.id, @vm.id))
+                                           @account.id, @service.id, @vm.id
+                                         ))
       end
     end
   end
 
   context 'ssh_key_send' do
-
     before do
       @login = 'johndoe'
       @key   = 'ssh-rsa foo label'
@@ -333,16 +318,15 @@ context VirtualMachinesController do
     end
 
     specify 'should execute shell command to submit key to console.cust (without append)' do
-      expect(Kernel).to receive(:system).\
-        with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$KEYER}@#{$HOST_CONSOLE}", 'add', '0', @login, @key)
+      expect(Kernel).to receive(:system)\
+        .with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$KEYER}@#{$HOST_CONSOLE}", 'add', '0', @login, @key)
       do_ssh_key_send(@login, @key, false)
     end
 
     specify 'should execute shell command to submit key to console.cust (with append)' do
-      expect(Kernel).to receive(:system).\
-        with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$KEYER}@#{$HOST_CONSOLE}", 'add', '1', @login, @key)
+      expect(Kernel).to receive(:system)\
+        .with('/usr/bin/ssh', '-o', 'ConnectTimeout=5', "#{$KEYER}@#{$HOST_CONSOLE}", 'add', '1', @login, @key)
       do_ssh_key_send(@login, @key, true)
     end
   end
-
 end

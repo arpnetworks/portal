@@ -79,7 +79,7 @@ describe 'IpBlock class with fixtures loaded' do
 
   context 'internal network representation' do
     specify 'should be set automatically on save' do
-      @ip_block  = IpBlock.new(cidr: '10.0.0.0/30')
+      @ip_block = IpBlock.new(cidr: '10.0.0.0/30')
       expect(@ip_block.network).to eq(nil)
       @ip_block.save
       expect(@ip_block.network).to eq(167772160)
@@ -116,7 +116,7 @@ describe 'IpBlock class with fixtures loaded' do
       specify 'should return all subnets' do
         expect(@parent_block.subnets).to eq([@child1, @child2])
       end
-      
+
       specify 'should return empty array if no subnets' do
         @parent_block = IpBlock.create(cidr: '172.16.0.1/24')
         expect(@parent_block.subnets).to eq([])
@@ -152,7 +152,7 @@ describe 'IpBlock class with fixtures loaded' do
             [IpBlock.new(cidr: '10.0.0.192/27').cidr,
              IpBlock.new(cidr: '10.0.0.160/27').cidr,
              IpBlock.new(cidr: '10.0.0.224/27').cidr]
-                                                     )
+          )
         end
 
         specify 'should return empty array if no subnets available' do
@@ -164,7 +164,7 @@ describe 'IpBlock class with fixtures loaded' do
         end
 
         context 'should return only limit records if limit specified' do
-          specify 'as integer' do 
+          specify 'as integer' do
             expect(@parent_block.subnets_available(27).size).to eq(3)
             expect(@parent_block.subnets_available(27, limit: 1).size).to eq(1)
           end
@@ -229,28 +229,28 @@ describe 'IpBlock class with fixtures loaded' do
     context 'for IPv4' do
       specify 'should return text of entries suitable for BIND' do
         @ip_block = IpBlock.new(cidr: '10.0.0.1/28')
-        expect(@ip_block.reverse_dns_delegation_entries(['foo', 'bar'])).to eq(<<-BLOCK
-; BEGIN: RFC 2317 sub-Class C delegation
-;
-0-15\t\tIN\tNS\tfoo.
-\t\tIN\tNS\tbar.
-;
-2\t\tIN\tCNAME\t2.0-15.0.0.10.in-addr.arpa.
-3\t\tIN\tCNAME\t3.0-15.0.0.10.in-addr.arpa.
-4\t\tIN\tCNAME\t4.0-15.0.0.10.in-addr.arpa.
-5\t\tIN\tCNAME\t5.0-15.0.0.10.in-addr.arpa.
-6\t\tIN\tCNAME\t6.0-15.0.0.10.in-addr.arpa.
-7\t\tIN\tCNAME\t7.0-15.0.0.10.in-addr.arpa.
-8\t\tIN\tCNAME\t8.0-15.0.0.10.in-addr.arpa.
-9\t\tIN\tCNAME\t9.0-15.0.0.10.in-addr.arpa.
-10\t\tIN\tCNAME\t10.0-15.0.0.10.in-addr.arpa.
-11\t\tIN\tCNAME\t11.0-15.0.0.10.in-addr.arpa.
-12\t\tIN\tCNAME\t12.0-15.0.0.10.in-addr.arpa.
-13\t\tIN\tCNAME\t13.0-15.0.0.10.in-addr.arpa.
-14\t\tIN\tCNAME\t14.0-15.0.0.10.in-addr.arpa.
-;
-; END
-BLOCK
+        expect(@ip_block.reverse_dns_delegation_entries(['foo', 'bar'])).to eq(<<~BLOCK
+          ; BEGIN: RFC 2317 sub-Class C delegation
+          ;
+          0-15\t\tIN\tNS\tfoo.
+          \t\tIN\tNS\tbar.
+          ;
+          2\t\tIN\tCNAME\t2.0-15.0.0.10.in-addr.arpa.
+          3\t\tIN\tCNAME\t3.0-15.0.0.10.in-addr.arpa.
+          4\t\tIN\tCNAME\t4.0-15.0.0.10.in-addr.arpa.
+          5\t\tIN\tCNAME\t5.0-15.0.0.10.in-addr.arpa.
+          6\t\tIN\tCNAME\t6.0-15.0.0.10.in-addr.arpa.
+          7\t\tIN\tCNAME\t7.0-15.0.0.10.in-addr.arpa.
+          8\t\tIN\tCNAME\t8.0-15.0.0.10.in-addr.arpa.
+          9\t\tIN\tCNAME\t9.0-15.0.0.10.in-addr.arpa.
+          10\t\tIN\tCNAME\t10.0-15.0.0.10.in-addr.arpa.
+          11\t\tIN\tCNAME\t11.0-15.0.0.10.in-addr.arpa.
+          12\t\tIN\tCNAME\t12.0-15.0.0.10.in-addr.arpa.
+          13\t\tIN\tCNAME\t13.0-15.0.0.10.in-addr.arpa.
+          14\t\tIN\tCNAME\t14.0-15.0.0.10.in-addr.arpa.
+          ;
+          ; END
+        BLOCK
                                                                               )
       end
       specify 'only blocks smaller than /24 are supported' do
@@ -262,10 +262,10 @@ BLOCK
     context 'for IPv6' do
       specify 'should return text of entries suitable for BIND' do
         @ip_block = IpBlock.new(cidr: 'fe80:1:c0de::/48')
-        expect(@ip_block.reverse_dns_delegation_entries(['foo', 'bar'])).to eq(<<-BLOCK
-e.d.0.c    IN  NS  foo.
-e.d.0.c    IN  NS  bar.
-BLOCK
+        expect(@ip_block.reverse_dns_delegation_entries(['foo', 'bar'])).to eq(<<~BLOCK
+          e.d.0.c    IN  NS  foo.
+          e.d.0.c    IN  NS  bar.
+        BLOCK
                                                                               )
       end
       specify 'only blocks of size /48 are supported' do
@@ -406,8 +406,9 @@ BLOCK
 
       it 'should search for possible matches' do
         expect(IpBlock).to receive(:where).with(\
-          "cidr like '10.0.0.%' and vlan >= 20").\
-          and_return([])
+          "cidr like '10.0.0.%' and vlan >= 20"
+        )\
+                                          .and_return([])
         go
       end
 
@@ -440,8 +441,9 @@ BLOCK
 
       it 'should search for possible matches' do
         expect(IpBlock).to receive(:where).with(\
-          "cidr like '2607:f2f8:c123:%' and vlan >= 20").\
-          and_return([])
+          "cidr like '2607:f2f8:c123:%' and vlan >= 20"
+        )\
+                                          .and_return([])
         go
       end
 

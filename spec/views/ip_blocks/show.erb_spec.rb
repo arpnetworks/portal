@@ -31,4 +31,3 @@ describe '/services/show.erb' do
     end
   end
 end
-

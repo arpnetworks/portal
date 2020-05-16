@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::ServiceCodesController do
-
   before(:context) do
     create_admin!
   end
@@ -11,12 +10,11 @@ describe Admin::ServiceCodesController do
     login_as_admin!
   end
 
-  def mock_service_code(stubs={})
+  def mock_service_code(stubs = {})
     @mock_service_code ||= mock_model(ServiceCode, stubs)
   end
 
   describe 'responding to GET index' do
-
     it 'should expose all admin_service_codes as @admin_service_codes' do
       expect(ServiceCode).to receive(:all) { [mock_service_code] }
       get :index
@@ -24,7 +22,6 @@ describe Admin::ServiceCodesController do
     end
 
     describe 'with mime type of xml' do
-
       it 'should render all admin_service_codes as xml' do
         request.env['HTTP_ACCEPT'] = 'application/xml'
 
@@ -35,13 +32,10 @@ describe Admin::ServiceCodesController do
         get :index
         expect(response.body).to eq(xml)
       end
-
     end
-
   end
 
   describe 'responding to GET show' do
-
     it 'should expose the requested service_codes as @service_codes' do
       service_code = double(ServiceCode)
       expect(ServiceCode).to receive(:find).with('37') { service_code }
@@ -50,7 +44,6 @@ describe Admin::ServiceCodesController do
     end
 
     describe 'with mime type of xml' do
-
       it 'should render the requested service_codes as xml' do
         request.env['HTTP_ACCEPT'] = 'application/xml'
 
@@ -61,33 +54,26 @@ describe Admin::ServiceCodesController do
         get :show, id: '37'
         expect(response.body).to eq(xml)
       end
-
     end
-
   end
 
   describe 'responding to GET new' do
-
     it 'should expose a new service_codes as @service_codes' do
       expect(ServiceCode).to receive(:new) { mock_service_code }
       get :new
       expect(assigns[:service_code]).to eq(mock_service_code)
     end
-
   end
 
   describe 'responding to GET edit' do
-
     it 'should expose the requested service_codes as @service_codes' do
       expect(ServiceCode).to receive(:find).with('37') { mock_service_code }
       get :edit, id: '37'
       expect(assigns[:service_code]).to eq(mock_service_code)
     end
-
   end
 
   describe 'responding to POST create' do
-
     before do
       @p = { name: 'foo' }
     end
@@ -97,7 +83,6 @@ describe Admin::ServiceCodesController do
     end
 
     describe 'with valid params' do
-
       it 'should expose a newly created service_codes as @service_codes' do
         expect(ServiceCode).to receive(:new).with(@p) { mock_service_code(save: true) }
         do_create
@@ -109,11 +94,9 @@ describe Admin::ServiceCodesController do
         do_create
         expect(response).to redirect_to(admin_service_codes_path)
       end
-
     end
 
     describe 'with invalid params' do
-
       it 'should expose a newly created but unsaved service_codes as @service_codes' do
         allow(ServiceCode).to receive(:new).with(@p) { mock_service_code(save: false) }
         do_create
@@ -125,15 +108,11 @@ describe Admin::ServiceCodesController do
         do_create
         expect(response).to render_template('new')
       end
-
     end
-
   end
 
   describe 'responding to PUT udpate' do
-
     describe 'with valid params' do
-
       it 'should update the requested service_codes' do
         p = { name: 'BANDWIDTH' }
         expect(ServiceCode).to receive(:find).with('37') { mock_service_code }
@@ -152,23 +131,18 @@ describe Admin::ServiceCodesController do
         put :update, id: '1', service_code: { name: 'FOO' }
         expect(response).to redirect_to(admin_service_codes_path)
       end
-
     end
 
     describe 'with invalid params' do
-
       it "should re-render the 'edit' template" do
         allow(ServiceCode).to receive(:find) { mock_service_code(update_attributes: false) }
         put :update, id: '1', service_code: { name: 'FOO' }
         expect(response).to render_template('edit')
       end
-
     end
-
   end
 
   describe 'responding to DELETE destroy' do
-
     it 'should destroy the requested service_codes' do
       expect(ServiceCode).to receive(:find).with('37') { mock_service_code }
       expect(mock_service_code).to receive(:destroy)
@@ -188,7 +162,5 @@ describe Admin::ServiceCodesController do
       delete :destroy, id: '1'
       expect(flash[:error]).to_not be_nil
     end
-
   end
-
 end

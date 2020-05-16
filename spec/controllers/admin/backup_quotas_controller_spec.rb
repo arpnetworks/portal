@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
 require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::BackupQuotasController do
-
   before(:context) do
     create_admin!
   end
@@ -12,22 +11,19 @@ describe Admin::BackupQuotasController do
     @p = { server: 'backup.example.com' }
   end
 
-  def mock_backup_quota(stubs={})
+  def mock_backup_quota(stubs = {})
     @mock_backup_quota ||= mock_model(BackupQuota, stubs)
   end
 
   describe 'responding to GET index' do
-
     it 'should expose all backup_quotas as @backup_quotas' do
       expect(BackupQuota).to receive(:all) { [mock_backup_quota] }
       get :index
       expect(assigns[:backup_quotas]).to eq([mock_backup_quota])
     end
-
   end
 
   describe 'responding to GET new' do
-
     it 'should expose a new backup_quota as @backup_quota' do
       expect(BackupQuota).to receive(:new) { mock_backup_quota }
       get :new
@@ -39,11 +35,9 @@ describe Admin::BackupQuotasController do
       get :new
       expect(assigns(:include_blank)).to be true
     end
-
   end
 
   describe 'responding to GET edit' do
-
     it 'should expose the requested backup_quota as @backup_quota' do
       expect(BackupQuota).to receive(:find).with('37') { mock_backup_quota }
       get :edit, id: '37'
@@ -61,11 +55,9 @@ describe Admin::BackupQuotasController do
       get :edit, id: '37'
       expect(assigns(:include_blank)).to be true
     end
-
   end
 
   describe 'responding to POST create' do
-
     def do_create
       post :create, backup_quota: @p
     end
@@ -101,13 +93,11 @@ describe Admin::BackupQuotasController do
   end
 
   describe 'responding to PUT udpate' do
-
     def do_patch
       patch :update, id: '37', backup_quota: @p
     end
 
     describe 'with valid params' do
-
       it 'should update the requested backup_quota' do
         expect(BackupQuota).to receive(:find).with('37') { mock_backup_quota }
         expect(mock_backup_quota).to receive(:update_attributes).with(@p)
@@ -125,11 +115,9 @@ describe Admin::BackupQuotasController do
         do_patch
         expect(response).to redirect_to(admin_backup_quotas_path)
       end
-
     end
 
     describe 'with invalid params' do
-
       it 'should expose the backup_quota as @backup_quota' do
         allow(BackupQuota).to receive(:find) { mock_backup_quota(update_attributes: false) }
         do_patch
@@ -147,13 +135,10 @@ describe Admin::BackupQuotasController do
         put :update, id: '999'
         expect(response).to redirect_to(admin_backup_quotas_url)
       end
-
     end
-
   end
 
   describe 'responding to DELETE destroy' do
-
     def do_delete(id = '37')
       delete :destroy, id: id
     end
@@ -184,5 +169,4 @@ describe Admin::BackupQuotasController do
       expect(response).to redirect_to(admin_backup_quotas_url)
     end
   end
-
 end
