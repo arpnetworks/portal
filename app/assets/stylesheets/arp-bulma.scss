@@ -3,6 +3,19 @@
 // This imports all of Bulma
 // @import "../../../node_modules/bulma/bulma.sass";
 
+// We want wider margins
+$gap: 128px;
+
+// Let our logo appear at regular size
+$navbar-item-img-max-height: 3rem;
+
+// Defaults (for now)
+$desktop: 960px + (2 * $gap);
+$widescreen: 1152px + (2 * $gap);
+$fullhd: 1344px + (2 * $gap);
+$widescreen-enabled: true;
+$fullhd-enabled: true;
+
 // For a modal with a box, these 3 lines are all that is required
 @import "../../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../../node_modules/bulma/sass/components/modal.sass";

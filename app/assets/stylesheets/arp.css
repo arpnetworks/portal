@@ -226,6 +226,13 @@ table caption {
   border-bottom: 2px solid #669; 
 }
 
+/* caption but for non-tables */
+.arp-header {
+  line-height: 1.33333333333333;
+  margin-bottom: 0.6em;
+  border-bottom: 2px solid #669;
+}
+
 table caption div.title {
   float: left;
 }
