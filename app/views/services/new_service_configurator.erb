@@ -1,0 +1,15 @@
+<h2 class='title is-2 arp-header'><%= @title %></h2>
+
+<div class='container'>
+  <%= form_tag(confirm_account_services_path, :method => 'POST') do %>
+
+    <%= render :partial => "new_" + @service %>
+
+    <div>
+      <%= hidden_field_tag(:service, @service) %>
+      <button type='submit' class='btn btn-info'><i class="fas fa-chevron-right"></i> &nbsp;Continue</button>
+    </div>
+
+  <% end %>
+</div>
+

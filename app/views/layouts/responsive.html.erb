@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ARP Networks Control Panel</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+
+    <!-- Font Awesome 5.0 -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/favicons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png">
+    <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff">
+
+  </head>
+  <body class='page-layout'>
+
+    <div class='container'>
+      <nav class='navbar' role='navigation' aria-label='main navigation'>
+        <div class='navbar-brand'>
+          <a class='navbar-item' href='<%= dashboard_path %>'>
+            <img src='/images/logo-small-new.jpg' alt='Logo' width='264' height='29'/>
+          </a>
+          <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasic">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div class='navbar-menu'>
+          <div class='navbar-start'>
+          </div>
+          <div class='navbar-end'>
+            <div class='navbar-item'>
+              <div class='buttons'>
+
+                <button class='button is-light'>
+                  <span class='icon is-small'>
+                    <i class='fa fa-sign-out-alt' aria-hidden='true'></i>
+                  </span>
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class='container'>
+        <%= render_flash %>
+      </div>
+
+      <div class='container'>
+        <%= yield :layout %>
+      </div>
+
+      <footer class='footer'>
+        <nav class='level'>
+          <div class='level-left'>
+            <div class='level-item'>
+              <div>
+                Icons provided by <a href='http://www.famfamfam.com/'>famfamfam</a>, <a href='http://www.freepik.com/'>Freepik</a>, <a href='http://www.flaticon.com/'>Flaticon</a>, and <a href='http://www.free-country-flags.com/'>Free Country Flags</a>
+              </div>
+            </div>
+          </div>
+
+          <div class='level-right'>
+            <div class='level-item'>
+              <div>
+                Copyright &copy; 1999 - 2020 ARP Networks, Inc.  All Rights Reserved.
+              </div>
+            </div>
+          </div>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>

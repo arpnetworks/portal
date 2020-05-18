@@ -37,7 +37,11 @@ class ServicesController < ProtectedController
     redirect_to(account_service_path(@account, @service))
   end
 
-  def new; end
+  def new
+    @service = params[:service]
+
+    render 'new_service_configurator', layout: 'responsive' if @service == 'vps_with_os'
+  end
 
   # They confirm the new service / MRC to-be-created and also the pro-rated
   # invoice to-be-create
