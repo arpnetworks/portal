@@ -29,9 +29,7 @@ function populateIpAddresses(location_code) {
       element.parent().removeClass("is-loading");
     },
     error: function (data) {
-      alert(
-        "Could not retrieve IP addresses.\nPlease try again later."
-      );
+      alert("Could not retrieve IP addresses.\nPlease try again later.");
     },
   });
 }
@@ -50,5 +48,16 @@ $(function () {
       $("#mymodal").addClass("is-active");
       $("html").addClass("is-clipped");
     }
+  });
+
+  // ---------- //
+  // Navigation //
+  // ---------- //
+
+  // Check for click events on the navbar burger icon
+  $(".navbar-burger").click(function () {
+    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+    $(".navbar-burger").toggleClass("is-active");
+    $(".navbar-menu").toggleClass("is-active");
   });
 });
