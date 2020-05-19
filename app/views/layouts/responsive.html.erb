@@ -54,14 +54,13 @@
           </div>
           <div class='navbar-end'>
             <div class='navbar-item'>
-              <div class='buttons'>
-
-                <button class='button is-light'>
-                  <span class='icon is-small'>
-                    <i class='fa fa-sign-out-alt' aria-hidden='true'></i>
-                  </span>
-                  <span>Logout</span>
-                </button>
+              <div>
+                <div class="logo-caption is-hidden-touch">
+                  Customer Control Panel
+                </div>
+                <div class="basic-nav-links">
+                  <%= link_to('Logout', logout_accounts_path, :class => "logout") %>
+                </div>
               </div>
             </div>
           </div>
@@ -76,8 +75,8 @@
         <%= yield :layout %>
       </div>
 
-      <footer class='footer'>
-        <nav class='level'>
+      <footer class='footer is-paddingless'>
+        <nav class='level arp-footer'>
           <div class='level-left'>
             <div class='level-item'>
               <div>
@@ -88,7 +87,7 @@
 
           <div class='level-right'>
             <div class='level-item'>
-              <div>
+              <div class='copyright'>
                 Copyright &copy; 1999 - 2020 ARP Networks, Inc.  All Rights Reserved.
               </div>
             </div>

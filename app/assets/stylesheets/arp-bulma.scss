@@ -9,6 +9,8 @@ $gap: 128px;
 // Let our logo appear at regular size
 $navbar-item-img-max-height: 3rem;
 
+$footer-background-color: #fff;
+
 // Defaults (for now)
 $desktop: 960px + (2 * $gap);
 $widescreen: 1152px + (2 * $gap);
@@ -37,6 +39,10 @@ $fullhd-enabled: true;
 @import "../../../node_modules/bulma/sass/layout/_all.sass";
 @import "../../../node_modules/bulma/sass/components/level.sass";
 @import "../../../node_modules/bulma/sass/elements/container.sass";
+
+// Helpers
+
+@import "../../../node_modules/bulma/sass/base/helpers.sass";
 
 // Good for completely free-form content
 // @import "../node_modules/bulma/sass/elements/content.sass";
