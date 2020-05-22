@@ -112,22 +112,22 @@ Rails.application.routes.draw do
   get  'admin/search', controller: 'admin/head_quarters', action: 'search'
 
   # Other
-  get "admin/whoami",  controller: 'admin/head_quarters', action: 'whoami'
+  get 'admin/whoami',  controller: 'admin/head_quarters', action: 'whoami'
 
   # Reports
-  get "admin/reports/services", controller: 'admin/reports', action: 'services'
+  get 'admin/reports/services', controller: 'admin/reports', action: 'services'
 
   namespace :api do
     namespace :v1 do
       namespace :internal do
         # VMs
         put 'virtual_machines/:uuid/status/:status', controller: 'virtual_machines',
-                                                     action:     'status'
+                                                     action: 'status'
         put 'virtual_machines/statuses',             controller: 'virtual_machines',
-                                                     action:     'statuses'
+                                                     action: 'statuses'
         # Provisioning
         get 'provisioning/:mac_address/config.tar.gz', controller: 'provisioning',
-                                                       action:     'config'
+                                                       action: 'config'
 
         # Jobs
         put 'jobs/:id/event/:event',       controller: 'jobs',  action: 'event'
