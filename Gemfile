@@ -53,8 +53,6 @@ group :test do
 
   gem 'factory_bot', '~> 4.0'
   gem 'factory_bot_rails', '~> 4.0'
-
-  gem 'simplecov', require: false
 end
 
 group :development do
