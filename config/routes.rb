@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       end
     end
     resources :jobs
+    resources :ssh_keys
   end
 
   get '/noVNC/console', controller: 'virtual_machines', action: 'console'

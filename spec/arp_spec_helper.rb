@@ -41,6 +41,14 @@ def login_with_account!(account)
   allow(Account).to receive(:find).with(account.id) { account }
 end
 
+def mock_login!
+  account = mock_model(Account)
+  allow(Account).to receive(:authenticate).and_return(account)
+  @controller.session[:account_id] = account.id
+  allow(Account).to receive(:find).with(account.id) { account }
+  account
+end
+
 def clear_db!
   CreditCard.delete_all
   BackupQuota.delete_all
