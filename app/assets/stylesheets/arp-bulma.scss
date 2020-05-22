@@ -47,3 +47,12 @@ $fullhd-enabled: true;
 // Good for completely free-form content
 // @import "../node_modules/bulma/sass/elements/content.sass";
 
+// Fix form within a box from making horizontal scroll bars appear
+.box .textarea {
+  max-width: 96%;
+  min-width: 96%;
+}
+
+.box .input {
+  max-width: 96%;
+}

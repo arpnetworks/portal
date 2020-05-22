@@ -45,7 +45,7 @@ $(function () {
 
   $("#ssh_key_selector").change(function () {
     if ($(this).val() == "add") {
-      $("#mymodal").addClass("is-active");
+      $("#ssh_key_dialog").addClass("is-active");
       $("html").addClass("is-clipped");
     }
   });
