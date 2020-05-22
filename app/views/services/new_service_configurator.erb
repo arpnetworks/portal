@@ -11,5 +11,9 @@
     </div>
 
   <% end %>
+
+  <% if @service == 'vps_with_os' %>
+    <%= render partial: 'ssh_key_dialog' %>
+  <% end %>
 </div>
 

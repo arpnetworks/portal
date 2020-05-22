@@ -1,0 +1,39 @@
+
+<div id='ssh_key_dialog' class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <div class='container'>
+
+        <%= form_tag(account_ssh_keys_path, method: 'POST', remote: true) do |f| %>
+          <div class="field">
+            <label class="label">Key Name</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Text input">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">SSH Key</label>
+            <div class="control">
+              <textarea class="textarea" placeholder="ssh-rsa AAAA... you@example.com"></textarea>
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link">Add Key</button>
+            </div>
+            <div class="control">
+              <button class="button is-link is-light">Cancel</button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+
+    </div>
+  </div>
+  <a class="modal-close is-large" aria-label="close"></a>
+</div>
+
