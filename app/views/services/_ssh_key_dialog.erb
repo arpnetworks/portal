@@ -1,4 +1,3 @@
-
 <div id='ssh_key_dialog' class="modal">
   <div class="modal-background"></div>
   <div class="modal-content">
@@ -9,14 +8,16 @@
           <div class="field">
             <label class="label">Key Name</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Text input">
+              <input class="input" type="text" placeholder="" name='ssh_key[name]'>
+              <p class="help">Any name to help you identify this key</p>
             </div>
           </div>
 
           <div class="field">
             <label class="label">SSH Key</label>
             <div class="control">
-              <textarea class="textarea" placeholder="ssh-rsa AAAA... you@example.com"></textarea>
+              <textarea class="textarea" placeholder="ssh-rsa AAAA... you@example.com" name='ssh_key[key]'></textarea>
+              <p class="help">Paste your public SSH key</p>
             </div>
           </div>
 
@@ -25,15 +26,12 @@
               <button class="button is-link">Add Key</button>
             </div>
             <div class="control">
-              <button class="button is-link is-light">Cancel</button>
+              <button class="button is-link is-light modal-cancel" data-target='#ssh_key_dialog'>Cancel</button>
             </div>
           </div>
         <% end %>
+
       </div>
-
-
     </div>
   </div>
-  <a class="modal-close is-large" aria-label="close"></a>
 </div>
-

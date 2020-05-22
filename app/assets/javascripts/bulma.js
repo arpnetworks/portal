@@ -2,6 +2,7 @@ document.addEventListener("keydown", function (event) {
   var e = event || window.event;
   if (e.keyCode === 27) {
     $(".modal-close").parent().removeClass("is-active");
+    $("html").removeClass("is-clipped");
   }
 });
 
@@ -10,6 +11,14 @@ $(function () {
     var target = $(this).data("target");
     $("html").addClass("is-clipped");
     $(target).addClass("is-active");
+  });
+
+  $(".modal-cancel").click(function (e) {
+    e.preventDefault();
+
+    var target = $(this).data("target");
+    $("html").removeClass("is-clipped");
+    $(target).removeClass("is-active");
   });
 
   $.each([".modal-close", ".modal-background"], function (
