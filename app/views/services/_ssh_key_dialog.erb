@@ -6,7 +6,7 @@
 
         <%= form_tag(account_ssh_keys_path, method: 'POST', remote: true) do |f| %>
           <div class="field">
-            <label class="label">Key Name</label>
+            <label class="label">Name</label>
             <div class="control">
               <input class="input" type="text" placeholder="" name='ssh_key[name]'>
               <p class="help">Any name to help you identify this key</p>

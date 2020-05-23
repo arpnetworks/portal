@@ -47,6 +47,8 @@ $(function () {
     if ($(this).val() == "add") {
       $("#ssh_key_dialog").addClass("is-active");
       $("html").addClass("is-clipped");
+
+      $(this).val('none')
     }
   });
 
