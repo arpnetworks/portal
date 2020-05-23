@@ -1,10 +1,16 @@
 document.addEventListener("keydown", function (event) {
   var e = event || window.event;
   if (e.keyCode === 27) {
-    $(".modal-close").parent().removeClass("is-active");
-    $("html").removeClass("is-clipped");
+    closeModals();
   }
 });
+
+function closeModals() {
+  $(".is-active").each(function (index) {
+    $(this).removeClass("is-active");
+    $("html").removeClass("is-clipped");
+  });
+}
 
 $(function () {
   $(".modal-button").click(function () {
