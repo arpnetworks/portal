@@ -51,6 +51,7 @@ function populateSSHKeys(account_id) {
       var element = $("#ssh_keys_selector");
       element.html(checkboxes);
       $("#add_ssh_key").removeClass("is-loading");
+      insertSSHKeyDeleteCallbacks();
     },
     error: function (data) {
       alert("Could not retrieve SSH keys.\nPlease try again later.");
@@ -62,6 +63,7 @@ function resetSSHKeyDialogForm() {
   $.each(["input", "textarea"], function (index, element) {
     $("#ssh_key_dialog_form " + element).each(function (index) {
       $(this).val("");
+      $(this).removeClass("is-danger");
     });
   });
 }
@@ -75,15 +77,41 @@ function buildSSHKeyInputCheckbox(id, name) {
     id +
     "'>" +
     name +
+    "<span class='icon is-small is-danger ssh-key-delete' data-ssh-key-id='" +
+    id +
+    "'><i class='fas fa-times'></i></span>" +
     "</label>";
 
   return checkbox;
+}
+
+function insertSSHKeyDeleteCallbacks() {
+  $(".ssh-key-delete").click(function () {
+    var target = $(this).data("ssh-key-id");
+
+    alert(target)
+  });
 }
 
 function addNewSSHKey(id, name) {
   var checkbox = buildSSHKeyInputCheckbox(id, name);
   $("#ssh_keys_selector").append(checkbox);
   $("#ssh_key_" + id).prop("checked", true);
+  insertSSHKeyDeleteCallbacks();
+}
+
+function errorHandlerSSHKeyDialog(errors) {
+  if (errors.name) {
+    $("#ssh_key_dialog_form_ssh_key_name").addClass("is-danger");
+  } else {
+    $("#ssh_key_dialog_form_ssh_key_name").removeClass("is-danger");
+  }
+
+  if (errors.key) {
+    $("#ssh_key_dialog_form_ssh_key_key").addClass("is-danger");
+  } else {
+    $("#ssh_key_dialog_form_ssh_key_key").removeClass("is-danger");
+  }
 }
 
 $(function () {
@@ -98,10 +126,8 @@ $(function () {
   // Let us add a new key on-the-fly
   $("#add_ssh_key").click(function (e) {
     $("#ssh_key_dialog").addClass("is-active");
+    $("#ssh_key_dialog_form_ssh_key_name").focus();
     $("html").addClass("is-clipped");
-
-    // For when it was a checkbox
-    // $(this).children("input").prop("checked", false);
 
     e.preventDefault();
   });
@@ -119,7 +145,7 @@ $(function () {
         addNewSSHKey(key["id"], key["name"]);
       },
       error: function (response) {
-        alert(response["errors"]);
+        errorHandlerSSHKeyDialog(response.responseJSON.errors);
       },
     });
     e.preventDefault();
