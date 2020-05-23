@@ -12,18 +12,23 @@ class SshKeysController < ProtectedController
     @name = params[:ssh_key][:name]
     @key = params[:ssh_key][:key]
 
+    @json = {}
+
     if @key.blank? || @name.blank?
+      @json[:errors] = {}
+
+      @json[:errors][:name] = "Please provide a key name, such as 'John\'s key'" if @name.blank?
+      @json[:errors][:key] = "Key can't be blank" if @key.blank?
+
       respond_to do |format|
         format.json do
-          render json: {
-            error: "Key name and the actual key are required fields."
-          }, status: :bad_request
+          render json: @json, status: :bad_request
         end
       end
       return
     end
 
-    @account.ssh_keys.create(name: @name, key: @key)
+    @new_key = @account.ssh_keys.create(name: @name, key: @key)
 
     respond_to do |format|
       format.json { render json: { message: 'Success' } }

@@ -55,11 +55,24 @@ describe SshKeysController do
           @key_name = ''
         end
 
-        it 'should return an error' do
+        it 'should not be successful' do
           do_post(format: :json)
 
           expect(@response).to_not be_success
-          expect(@response.body).to include('required fields')
+        end
+
+        it 'should return an errors object' do
+          do_post(format: :json)
+
+          json = JSON.parse(@response.body)
+          expect(json['errors']).to_not be_empty
+        end
+
+        it 'should return an error on key name' do
+          do_post(format: :json)
+
+          json = JSON.parse(@response.body)
+          expect(json['errors']['name']).to_not be_empty
         end
       end
 
@@ -68,11 +81,24 @@ describe SshKeysController do
           @key = ''
         end
 
-        it 'should return an error' do
+        it 'should not be successful' do
           do_post(format: :json)
 
           expect(@response).to_not be_success
-          expect(@response.body).to include('required fields')
+        end
+
+        it 'should return an errors object' do
+          do_post(format: :json)
+
+          json = JSON.parse(@response.body)
+          expect(json['errors']).to_not be_empty
+        end
+
+        it 'should return an error on name' do
+          do_post(format: :json)
+
+          json = JSON.parse(@response.body)
+          expect(json['errors']['key']).to_not be_empty
         end
       end
     end
