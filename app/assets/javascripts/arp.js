@@ -29,7 +29,9 @@ function populateIpAddresses(location_code) {
       element.parent().removeClass("is-loading");
     },
     error: function (data) {
-      alert("Could not retrieve IP addresses.\nPlease try again later.");
+      alert(
+        "Could not retrieve IP addresses.\nPlease try again later."
+      );
     },
   });
 }
@@ -48,7 +50,7 @@ $(function () {
       $("#ssh_key_dialog").addClass("is-active");
       $("html").addClass("is-clipped");
 
-      $(this).val('none')
+      $(this).val("none");
     }
   });
 
