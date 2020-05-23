@@ -8,9 +8,9 @@ function populateIpAddresses(location_code) {
     url: "/provisioning/ip_address",
     data: "location=" + location_code,
     success: function (data) {
-      ips = data["ips"];
+      var ips = data["ips"];
 
-      options = "<option>" + data["caption"] + "</option>";
+      var options = "<option>" + data["caption"] + "</option>";
 
       $.each(ips, function (k, v) {
         options += '<option value="' + v["ip_address"] + '"';
@@ -24,7 +24,7 @@ function populateIpAddresses(location_code) {
         options += "</option>";
       });
 
-      element = $("#ipv4_address_selector");
+      var element = $("#ipv4_address_selector");
       element.html(options);
       element.parent().removeClass("is-loading");
     },
