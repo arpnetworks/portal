@@ -74,14 +74,21 @@ describe SshKeysController do
       end
 
       context 'with key and key name' do
-        it 'should create a new SSH key' do
+        it 'should create a new SSH key and return itself' do
+          @key_id = 99
+          ssh_key = double(SshKey, id: @key_id, name: @key_name)
           mock_ssh_keys = mock_model(SshKey)
           expect(@account).to receive(:ssh_keys).and_return(mock_ssh_keys)
           expect(mock_ssh_keys).to receive(:create).with(name: @key_name,
-                                                         key: @key)
+                                                         key: @key).and_return(ssh_key)
           do_post(format: :json)
           expect(@response).to be_success
-          expect(@response.body).to include('Success')
+
+          json = JSON.parse(@response.body)
+          expect(json['message']).to include('Success')
+          expect(json['key']).to_not be_empty
+          expect(json['key']['id']).to eq ssh_key.id
+          expect(json['key']['name']).to eq ssh_key.name
         end
       end
 

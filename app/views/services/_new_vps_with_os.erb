@@ -28,15 +28,17 @@
 
     <div class='form-section-header-prominent'>Users and SSH keys</div>
 
-    <div>
-      New User Key:
+    <div id='ssh_keys_selector'>
     </div>
-    <div class='select'>
-      <select name='ssh_key' id='ssh_key_selector'>
-        <option value='none'>None</option>
-        <option value='add'>Add New Key</option>
-        <option disabled>-- Existing Keys --</option>
-      </select>
+    <div>
+      <button id='add_ssh_key' class='button is-loading'>
+        <span class='icon'>
+          <i class="fas fa-key"></i>
+        </span>
+        <span>
+        New Key
+        </span>
+      </button>
     </div>
 
   </div>
@@ -57,7 +59,7 @@
       <div>
         IPv4 on first network interface:
       </div>
-      <div class='select  is-loading'>
+      <div class='select is-loading'>
         <select id='ipv4_address_selector'>
           <option></option>
         </select>
@@ -87,5 +89,8 @@
 <br/>
 
 <% content_for :js do %>
-  $(document).ready(populateIpAddresses('lax'))
+  $(document).ready(function() {
+  populateIpAddresses('lax');
+  populateSSHKeys(<%= @account.id %>);
+  });
 <% end %>

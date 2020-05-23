@@ -32,7 +32,13 @@ class SshKeysController < ProtectedController
     @new_key = @account.ssh_keys.create(name: @name, key: @key)
 
     respond_to do |format|
-      format.json { render json: { message: 'Success' } }
+      format.json do
+        render json: { message: 'Success',
+                       key: {
+                         id: @new_key.id,
+                         name: @new_key.name
+                       } }
+      end
     end
   end
 end
