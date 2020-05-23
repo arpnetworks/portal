@@ -1,9 +1,10 @@
 class SshKeysController < ProtectedController
   def index
-    # TODO: Nothing to show yet
+    @ssh_keys = @account.ssh_keys
+
     respond_to do |format|
       format.json do
-        render json: {}
+        render json: @ssh_keys
       end
     end
   end

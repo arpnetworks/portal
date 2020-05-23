@@ -12,9 +12,44 @@ describe SshKeysController do
     end
 
     context 'with JSON' do
-      it 'should be a success' do
-        do_get(format: :json)
-        expect(response).to be_success
+      context 'with keys' do
+        before do
+          @ssh_key_1 = mock_model("SshKey", name: 'foo')
+          @ssh_key_2 = mock_model("SshKey", name: 'bar')
+          @ssh_keys = [@ssh_key_1, @ssh_key_2]
+
+          allow(@account).to receive(:ssh_keys).and_return(@ssh_keys)
+        end
+
+        it 'should be a success' do
+          do_get(format: :json)
+          expect(response).to be_success
+        end
+
+        it 'should return keys JSON object' do
+          do_get(format: :json)
+
+          json = JSON.parse(@response.body)
+          expect(json.size).to eq 2
+        end
+      end
+
+      context 'without keys' do
+        before do
+          allow(@account).to receive(:ssh_keys).and_return([])
+        end
+
+        it 'should be a success' do
+          do_get(format: :json)
+          expect(response).to be_success
+        end
+
+        it 'should return empty JSON' do
+          do_get(format: :json)
+
+          json = JSON.parse(@response.body)
+          expect(json).to be_empty
+        end
       end
     end
   end
