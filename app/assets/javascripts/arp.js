@@ -36,6 +36,14 @@ function populateIpAddresses(location_code) {
   });
 }
 
+function resetSSHKeyDialogForm() {
+  $.each(["input", "textarea"], function (index, element) {
+    $("#ssh_key_dialog_form " + element).each(function (index) {
+      $(this).val("");
+    });
+  });
+}
+
 $(function () {
   /* Change the IP address drop-down based on the chosen location */
   $("#new_vps_with_os input[name=location]").change(function () {
@@ -45,6 +53,7 @@ $(function () {
     }
   });
 
+  // Let us add a new key on-the-fly
   $("#ssh_key_selector").change(function () {
     if ($(this).val() == "add") {
       $("#ssh_key_dialog").addClass("is-active");
@@ -52,6 +61,22 @@ $(function () {
 
       $(this).val("none");
     }
+  });
+
+  $("#ssh_key_dialog_form").on("submit", function (e) {
+    $.ajax({
+      type: "POST",
+      url: this.action,
+      data: $(this).serialize(),
+      success: function (response) {
+        closeModals();
+        resetSSHKeyDialogForm();
+      },
+      error: function (response) {
+        alert(response["errors"]);
+      },
+    });
+    e.preventDefault();
   });
 
   // ---------- //

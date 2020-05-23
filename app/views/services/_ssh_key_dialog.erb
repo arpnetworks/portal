@@ -4,7 +4,7 @@
     <div class="box">
       <div class='container'>
 
-        <%= form_tag(account_ssh_keys_path, method: 'POST', remote: true) do |f| %>
+        <%= form_tag(account_ssh_keys_path, method: 'POST', id: 'ssh_key_dialog_form') do |f| %>
           <div class="field">
             <label class="label">Name</label>
             <div class="control">
