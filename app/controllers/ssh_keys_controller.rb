@@ -14,6 +14,7 @@ class SshKeysController < ProtectedController
   def create
     @name = params[:ssh_key][:name]
     @key = params[:ssh_key][:key]
+    @username = params[:ssh_key][:username] || @account.login
 
     @json = {}
 
@@ -31,14 +32,15 @@ class SshKeysController < ProtectedController
       return
     end
 
-    @new_key = @account.ssh_keys.create(name: @name, key: @key)
+    @new_key = @account.ssh_keys.create(name: @name, key: @key, username: @username)
 
     respond_to do |format|
       format.json do
         render json: { message: 'Success',
                        key: {
                          id: @new_key.id,
-                         name: @new_key.name
+                         name: @new_key.name,
+                         username: @new_key.username
                        } }
       end
     end

@@ -63,6 +63,7 @@ describe SshKeysController do
       opts[:ssh_key] = {}
       opts[:ssh_key][:name] ||= @key_name
       opts[:ssh_key][:key] ||= @key
+      opts[:ssh_key][:username] ||= @username
 
       post :create, { account_id: @account.id }.merge(opts)
     end
@@ -71,16 +72,18 @@ describe SshKeysController do
       before do
         @key_name = 'garry'
         @key = 'ssh-rsa AAA... me@example.com'
+        @username = 'admin'
       end
 
       context 'with key and key name' do
         it 'should create a new SSH key and return itself' do
           @key_id = 99
-          ssh_key = double(SshKey, id: @key_id, name: @key_name)
+          ssh_key = double(SshKey, id: @key_id, name: @key_name, username: @username)
           mock_ssh_keys = mock_model(SshKey)
           expect(@account).to receive(:ssh_keys).and_return(mock_ssh_keys)
           expect(mock_ssh_keys).to receive(:create).with(name: @key_name,
-                                                         key: @key).and_return(ssh_key)
+                                                         key: @key,
+                                                         username: @username).and_return(ssh_key)
           do_post(format: :json)
           expect(@response).to be_success
 
@@ -89,6 +92,7 @@ describe SshKeysController do
           expect(json['key']).to_not be_empty
           expect(json['key']['id']).to eq ssh_key.id
           expect(json['key']['name']).to eq ssh_key.name
+          expect(json['key']['username']).to eq ssh_key.username
         end
       end
 

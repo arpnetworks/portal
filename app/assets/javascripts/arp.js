@@ -45,7 +45,7 @@ function populateSSHKeys(account_id) {
       var checkboxes = "";
 
       $.each(data, function (k, v) {
-        checkboxes += buildSSHKeyInputCheckbox(v["id"], v["name"]);
+        checkboxes += buildSSHKeyInputCheckbox(v["id"], v["name"], v["username"]);
       });
 
       var element = $("#ssh_keys_selector");
@@ -73,14 +73,16 @@ function resetAddSSHKeyButton() {
   $("button#add_ssh_key").removeClass("is-loading");
 }
 
-function buildSSHKeyInputCheckbox(id, name) {
+function buildSSHKeyInputCheckbox(id, name, username) {
   var checkbox =
     "<label>" +
     "<input type='checkbox' name='ssh_keys' id='ssh_key_" +
     id +
     "' value='" +
     id +
-    "'>" +
+    "'>Username: " +
+    username +
+    ", Key Label: " +
     name +
     "<span class='icon is-small is-danger ssh-key-delete' data-ssh-key-id='" +
     id +
@@ -115,8 +117,8 @@ function insertSSHKeyDeleteCallbacks() {
   });
 }
 
-function addNewSSHKey(id, name) {
-  var checkbox = buildSSHKeyInputCheckbox(id, name);
+function addNewSSHKey(id, name, username) {
+  var checkbox = buildSSHKeyInputCheckbox(id, name, username);
   $("#ssh_keys_selector").append(checkbox);
   $("#ssh_key_" + id).prop("checked", true);
   insertSSHKeyDeleteCallbacks();
@@ -168,7 +170,7 @@ $(function () {
 
         closeModals();
         resetSSHKeyDialogForm();
-        addNewSSHKey(key["id"], key["name"]);
+        addNewSSHKey(key["id"], key["name"], key["username"]);
       },
       error: function (response) {
         errorHandlerSSHKeyDialog(response.responseJSON.errors);
