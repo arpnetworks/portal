@@ -24,3 +24,11 @@
     padding-right: 0.5rem;
   }
 }
+
+#os_selector {
+  label {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
