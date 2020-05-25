@@ -14,8 +14,8 @@ describe SshKeysController do
     context 'with JSON' do
       context 'with keys' do
         before do
-          @ssh_key_1 = mock_model("SshKey", name: 'foo')
-          @ssh_key_2 = mock_model("SshKey", name: 'bar')
+          @ssh_key_1 = mock_model('SshKey', name: 'foo')
+          @ssh_key_2 = mock_model('SshKey', name: 'bar')
           @ssh_keys = [@ssh_key_1, @ssh_key_2]
 
           allow(@account).to receive(:ssh_keys).and_return(@ssh_keys)
@@ -142,6 +142,50 @@ describe SshKeysController do
           json = JSON.parse(@response.body)
           expect(json['errors']['key']).to_not be_empty
         end
+      end
+    end
+  end
+
+  context 'handling DELETE /accounts/1/ssh_keys/1' do
+    before do
+      @account = mock_login!
+      @ssh_key_id = '1'
+    end
+
+    def do_delete(opts)
+      delete :destroy, { account_id: @account.id, id: @ssh_key_id }.merge(opts)
+    end
+
+    context 'with key' do
+      before do
+        @ssh_key = double(SshKey)
+        mock_ssh_keys = double('mock_ssh_keys')
+        allow(@account).to receive(:ssh_keys).and_return(mock_ssh_keys)
+        allow(mock_ssh_keys).to receive(:find_by).with(id: @ssh_key_id).and_return(@ssh_key)
+      end
+
+      it 'should be successful' do
+        allow(@ssh_key).to receive(:destroy).and_return(true)
+        do_delete(format: :json)
+        expect(@response).to be_success
+      end
+
+      it 'should destroy key' do
+        expect(@ssh_key).to receive(:destroy)
+        do_delete(format: :json)
+      end
+    end
+
+    context 'without key' do
+      before do
+        mock_ssh_keys = double('mock_ssh_keys')
+        allow(@account).to receive(:ssh_keys).and_return(mock_ssh_keys)
+        allow(mock_ssh_keys).to receive(:find_by).with(id: @ssh_key_id).and_return(nil)
+      end
+
+      it 'should not be successful' do
+        do_delete(format: :json)
+        expect(@response).to_not be_success
       end
     end
   end

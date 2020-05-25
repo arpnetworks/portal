@@ -1,4 +1,6 @@
 class SshKeysController < ProtectedController
+  before_action :find_ssh_key, only: %i[destroy]
+
   def index
     @ssh_keys = @account.ssh_keys
 
@@ -40,5 +42,34 @@ class SshKeysController < ProtectedController
                        } }
       end
     end
+  end
+
+  def destroy
+    if @ssh_key.nil?
+      respond_to do |format|
+        format.json do
+          render json: { errors: { message: 'Key not found' } }, status: :not_found
+        end
+      end
+    else
+      if @ssh_key.destroy
+        respond_to do |format|
+          format.json { render json: {} }
+        end
+      else
+        respond_to do |format|
+          format.json do
+            render json: { errors: { message: 'Could not delete key' } }, status: :bad_request
+          end
+        end
+      end
+    end
+  end
+
+  protected
+
+  def find_ssh_key
+    id = params[:id]
+    @ssh_key = @account.ssh_keys.find_by(id: id)
   end
 end
