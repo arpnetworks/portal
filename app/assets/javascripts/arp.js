@@ -152,7 +152,7 @@ $(function () {
   // Let us add a new key on-the-fly
   $("#add_ssh_key").click(function (e) {
     $("#ssh_key_dialog").addClass("is-active");
-    $("#ssh_key_dialog_form_ssh_key_name").focus();
+    $("#ssh_key_dialog_form_ssh_key_key").focus();
     $("html").addClass("is-clipped");
 
     e.preventDefault();
