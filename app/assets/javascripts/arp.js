@@ -66,6 +66,11 @@ function resetSSHKeyDialogForm() {
       $(this).removeClass("is-danger");
     });
   });
+  resetAddSSHKeyButton();
+}
+
+function resetAddSSHKeyButton() {
+  $("button#add_ssh_key").removeClass("is-loading");
 }
 
 function buildSSHKeyInputCheckbox(id, name) {
@@ -93,7 +98,7 @@ function insertSSHKeyDeleteCallbacks() {
     var id = $(this).data("ssh-key-id");
 
     var checkbox = $("#ssh_key_" + id);
-    checkbox.prop("checked", false)
+    checkbox.prop("checked", false);
     checkbox.parent().addClass("disabled");
 
     $.ajax({
@@ -129,6 +134,8 @@ function errorHandlerSSHKeyDialog(errors) {
   } else {
     $("#ssh_key_dialog_form_ssh_key_key").removeClass("is-danger");
   }
+
+  resetAddSSHKeyButton();
 }
 
 $(function () {
@@ -150,6 +157,8 @@ $(function () {
   });
 
   $("#ssh_key_dialog_form").on("submit", function (e) {
+    $("button#add_ssh_key").addClass("is-loading");
+
     $.ajax({
       type: "POST",
       url: this.action,
