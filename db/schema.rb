@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200512232154) do
+ActiveRecord::Schema.define(version: 20200525225305) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "login",               limit: 255
@@ -304,6 +304,7 @@ ActiveRecord::Schema.define(version: 20200512232154) do
     t.string   "key_type",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "username",           limit: 255
   end
 
   add_index "ssh_keys", ["account_id"], name: "index_ssh_keys_on_account_id", using: :btree
