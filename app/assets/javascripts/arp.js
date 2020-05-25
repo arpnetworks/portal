@@ -86,10 +86,27 @@ function buildSSHKeyInputCheckbox(id, name) {
 }
 
 function insertSSHKeyDeleteCallbacks() {
-  $(".ssh-key-delete").click(function () {
-    var target = $(this).data("ssh-key-id");
+  var els = $(".ssh-key-delete");
+  els.off(); // Remove anything previously bound
 
-    alert(target)
+  els.click(function () {
+    var id = $(this).data("ssh-key-id");
+
+    var checkbox = $("#ssh_key_" + id);
+    checkbox.prop("checked", false)
+    checkbox.parent().addClass("disabled");
+
+    $.ajax({
+      type: "DELETE",
+      url: "/accounts/000/ssh_keys/" + id,
+      success: function (response) {
+        var element = $("#ssh_key_" + id);
+        element.parent().remove();
+      },
+      error: function (response) {
+        alert("Oops, something went wrong.");
+      },
+    });
   });
 }
 
