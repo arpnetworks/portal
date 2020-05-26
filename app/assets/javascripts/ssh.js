@@ -31,8 +31,10 @@ function sanitizeKey(key) {
   return key;
 }
 
-module.exports = {
-  usernameFromPubKey: usernameFromPubKey,
-  labelFromPubKey: labelFromPubKey,
-  sanitizeKey: sanitizeKey,
-};
+if (typeof module !== "undefined") {
+  module.exports = {
+    usernameFromPubKey: usernameFromPubKey,
+    labelFromPubKey: labelFromPubKey,
+    sanitizeKey: sanitizeKey,
+  };
+}
