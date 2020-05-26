@@ -158,6 +158,10 @@ $(function () {
     e.preventDefault();
   });
 
+  $("#ssh_key_dialog_form_cancel_button").click(function (e) {
+    resetSSHKeyDialogForm();
+  })
+
   $("#ssh_key_dialog_form").on("submit", function (e) {
     $("button#add_ssh_key").addClass("is-loading");
 
