@@ -187,6 +187,23 @@ $(function () {
     e.preventDefault();
   });
 
+  $("#ssh_key_dialog_form_ssh_key_key").on("focusout", function (e) {
+    var key = $(this).val();
+    var label = labelFromPubKey(key);
+    var username = usernameFromPubKey(key);
+
+    var label_input = $("#ssh_key_dialog_form_ssh_key_name");
+    var username_input = $("#ssh_key_dialog_form_ssh_key_username");
+
+    if (label_input.val() == "") {
+      label_input.val(label);
+    }
+
+    if (username_input.val() == "") {
+      username_input.val(username);
+    }
+  });
+
   // ---------- //
   // Navigation //
   // ---------- //
