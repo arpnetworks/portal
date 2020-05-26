@@ -45,7 +45,11 @@ function populateSSHKeys(account_id) {
       var checkboxes = "";
 
       $.each(data, function (k, v) {
-        checkboxes += buildSSHKeyInputCheckbox(v["id"], v["name"], v["username"]);
+        checkboxes += buildSSHKeyInputCheckbox(
+          v["id"],
+          v["name"],
+          v["username"]
+        );
       });
 
       var element = $("#ssh_keys_selector");
@@ -160,7 +164,7 @@ $(function () {
 
   $("#ssh_key_dialog_form_cancel_button").click(function (e) {
     resetSSHKeyDialogForm();
-  })
+  });
 
   $("#ssh_key_dialog_form").on("submit", function (e) {
     $("button#add_ssh_key").addClass("is-loading");

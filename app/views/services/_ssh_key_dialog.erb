@@ -6,18 +6,18 @@
 
         <%= form_tag(account_ssh_keys_path, method: 'POST', id: 'ssh_key_dialog_form') do |f| %>
           <div class="field">
-            <label class="label">Label</label>
-            <div class="control">
-              <input class="input" type="text" placeholder="" name='ssh_key[name]' id='ssh_key_dialog_form_ssh_key_name'>
-              <p class="help">Any label to help you identify this key</p>
-            </div>
-          </div>
-
-          <div class="field">
             <label class="label">SSH Key</label>
             <div class="control">
               <textarea class="textarea" placeholder="ssh-rsa AAAA... you@example.com" name='ssh_key[key]' id='ssh_key_dialog_form_ssh_key_key'></textarea>
               <p class="help">Paste your public SSH key</p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Label</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="" name='ssh_key[name]' id='ssh_key_dialog_form_ssh_key_name'>
+              <p class="help">Any label to help you identify this key</p>
             </div>
           </div>
 
