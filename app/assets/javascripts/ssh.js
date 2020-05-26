@@ -1,19 +1,15 @@
 function usernameFromPubKey(key) {
-  var key = sanitizeKey(key)
+  var label = labelFromPubKey(key);
+  var username = label.split("@")[0];
 
-  if(key.length > 0) {
-
-
-  }
-
-  return "";
+  return username;
 }
 
 function labelFromPubKey(key) {
-  var key = sanitizeKey(key)
+  var key = sanitizeKey(key);
 
-  if(key.length > 0) {
-    key.split(' ')[2]
+  if (key.length > 0) {
+    return key.split(" ")[2];
   }
 
   return "";
@@ -21,13 +17,18 @@ function labelFromPubKey(key) {
 
 function sanitizeKey(key) {
   try {
-    if (key.length > 32) {
-    } else {
+    if (key.length < 32) {
       throw "Key length too small";
+    }
+
+    if (key.split(" ").length != 3) {
+      throw "Key has bad format";
     }
   } catch (err) {
     return "";
   }
+
+  return key;
 }
 
 module.exports = {
