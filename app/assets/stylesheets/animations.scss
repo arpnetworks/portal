@@ -1,0 +1,42 @@
+@import "utils";
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+
+  @-o-keyframes #{$name} {
+    @content;
+  }
+
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+@include keyframes(fadeIn) {
+  from {
+    background-color: yellow;
+    opacity: 0;
+  }
+
+  to {
+    background-color: white;
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0, 0.5, 0, 1);
+  animation-fill-mode: both;
+  animation-name: fadeIn;
+}

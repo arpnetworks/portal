@@ -125,6 +125,7 @@ function addNewSSHKey(id, name, username) {
   var checkbox = buildSSHKeyInputCheckbox(id, name, username);
   $("#ssh_keys_selector").append(checkbox);
   $("#ssh_key_" + id).prop("checked", true);
+  $("#ssh_key_" + id).parent().addClass('fade-in');
   insertSSHKeyDeleteCallbacks();
 }
 
