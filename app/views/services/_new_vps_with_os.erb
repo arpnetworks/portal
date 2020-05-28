@@ -6,7 +6,7 @@
       <select name='plan'>
         <option>Please Choose</option>
         <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
-          <option value='<%= k %>'>
+          <option value='<%= k %>'<%= k == 'small' ? ' selected' : '' %>>
           <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB HD, <%= plan['bandwidth'] / 1000 %> TB Bandwidth: $<%= plan['mrc'] %>
           </option>
         <% end %>

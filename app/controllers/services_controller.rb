@@ -225,35 +225,42 @@ class ServicesController < ProtectedController
   end
 
   def verify_form
-    case @service
-    when 'vps'
-      session['form']['location'] = params[:location]
-      session['form']['plan'] = params[:plan]
-      session['form']['os'] = params[:os]
-    when 'metal'
-      raise
-    when 'thunder'
-      raise
-    when 'bgp'
-      session['form']['asn'] = params[:asn]
-      session['form']['full_routes'] = params[:full_routes]
-      session['form']['prefixes'] = params[:prefixes]
-      session['form']['location'] = params[:location]
-      session['form']['family'] = params[:family]
+    begin
+      case @service
+      when 'vps', 'vps_with_os'
+        # Make sure plan hasn't been messed with
+        raise ArgumentError if VirtualMachine.plans['vps'][params[:plan]].nil?
 
-      asn = params[:asn]
+        session['form']['location'] = params[:location]
+        session['form']['plan'] = params[:plan]
+        session['form']['os'] = params[:os]
+      when 'metal'
+        raise
+      when 'thunder'
+        raise
+      when 'bgp'
+        session['form']['asn'] = params[:asn]
+        session['form']['full_routes'] = params[:full_routes]
+        session['form']['prefixes'] = params[:prefixes]
+        session['form']['location'] = params[:location]
+        session['form']['family'] = params[:family]
 
-      if asn.blank?
-        session[:form][:errors] = { asn: "ASN can't be blank" }
-        redirect_to(new_account_service_path + "?service=#{@service}") && return
+        asn = params[:asn]
+
+        if asn.blank?
+          session[:form][:errors] = { asn: "ASN can't be blank" }
+          redirect_to(new_account_service_path + "?service=#{@service}") && return
+        end
+
+        if asn !~ /^[0-9]+$/
+          session[:form][:errors] = { asn: 'ASN can only contain numbers' }
+          redirect_to(new_account_service_path + "?service=#{@service}") && return
+        end
+      when 'backup'
+        raise
       end
-
-      if asn !~ /^[0-9]+$/
-        session[:form][:errors] = { asn: 'ASN can only contain numbers' }
-        redirect_to(new_account_service_path + "?service=#{@service}") && return
-      end
-    when 'backup'
-      raise
+    rescue ArgumentError => e
+      redirect_to(new_account_service_path + "?service=#{@service}") && return
     end
 
     session[:form][:errors] = {}

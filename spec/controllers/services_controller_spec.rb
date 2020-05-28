@@ -87,4 +87,37 @@ context ServicesController do
       expect(flash[:notice]).to_not be_empty
     end
   end
+
+  context 'confirm' do
+    before do
+      allow(@account).to receive(:beta_features?).and_return(true) # TODO: Remove after beta
+      allow(controller).to receive(:check_cc_exists_and_current).and_return(true)
+      allow(controller).to receive(:check_account_isnt_blank).and_return(true)
+    end
+
+    def do_post(opts = {})
+      post :confirm, { account_id: @account.id }.merge(opts)
+    end
+
+    context 'chosen service is VPS with OS' do
+      before do
+        @opts = {
+          service: 'vps_with_os'
+        }
+      end
+
+      context 'chosen plan is invalid' do
+        before do
+          @opts = @opts.merge({
+                                plan: 'invalid'
+                              })
+        end
+
+        it 'should go back to choose plan page' do
+          do_post(@opts)
+          expect(response).to redirect_to(new_account_service_path(@account.id) + '?service=' + @opts[:service])
+        end
+      end
+    end
+  end
 end
