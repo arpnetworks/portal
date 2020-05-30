@@ -90,6 +90,8 @@ context ServicesController do
 
   context 'confirm' do
     before do
+      session['form'] = {}
+
       allow(@account).to receive(:beta_features?).and_return(true) # TODO: Remove after beta
       allow(controller).to receive(:check_cc_exists_and_current).and_return(true)
       allow(controller).to receive(:check_account_isnt_blank).and_return(true)
@@ -110,6 +112,51 @@ context ServicesController do
         before do
           @opts = @opts.merge({
                                 plan: 'invalid'
+                              })
+        end
+
+        it 'should go back to choose plan page' do
+          do_post(@opts)
+          expect(response).to redirect_to(new_account_service_path(@account.id) + '?service=' + @opts[:service])
+        end
+      end
+
+      context 'IP has not been chosen' do
+        before do
+          @opts = @opts.merge({
+                                plan: 'small',
+                                os: 'freebsd-12.1-amd64',
+                                location: 'lax',
+                                ipv4: ''
+                              })
+        end
+
+        it 'should go back to choose plan page' do
+          do_post(@opts)
+          expect(response).to redirect_to(new_account_service_path(@account.id) + '?service=' + @opts[:service])
+        end
+      end
+
+      context 'OS has not been chosen' do
+        before do
+          @opts = @opts.merge({
+                                plan: 'small',
+                                os: ''
+                              })
+        end
+
+        it 'should go back to choose plan page' do
+          do_post(@opts)
+          expect(response).to redirect_to(new_account_service_path(@account.id) + '?service=' + @opts[:service])
+        end
+      end
+
+      context 'Location has not been chosen' do
+        before do
+          @opts = @opts.merge({
+                                plan: 'small',
+                                os: 'freebsd-12.1-amd64',
+                                location: ''
                               })
         end
 
