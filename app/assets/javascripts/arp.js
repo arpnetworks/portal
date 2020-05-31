@@ -156,30 +156,34 @@ function errorHandlerSSHKeyDialog(errors) {
 
 function PlanSelectorHeaderError(state) {
   if (state == true) {
-    $("#plan_selector_header").addClass("has-text-danger");
+    $("select[name=plan]").addClass("has-text-danger")
+    $("#plan_selector_header").addClass("has-text-danger error-bounce");
     $("#plan_selector_header_error").removeClass("is-hidden");
   } else {
-    $("#plan_selector_header").removeClass("has-text-danger");
+    $("select[name=plan]").removeClass("has-text-danger")
+    $("#plan_selector_header").removeClass("has-text-danger error-bounce");
     $("#plan_selector_header_error").addClass("is-hidden");
   }
 }
 
 function OSSelectorHeaderError(state) {
   if (state == true) {
-    $("#os_selector_header").addClass("has-text-danger");
+    $("#os_selector_header").addClass("has-text-danger error-bounce");
     $("#os_selector_header_error").removeClass("is-hidden");
   } else {
-    $("#os_selector_header").removeClass("has-text-danger");
+    $("#os_selector_header").removeClass("has-text-danger error-bounce");
     $("#os_selector_header_error").addClass("is-hidden");
   }
 }
 
 function IPv4AddressSelectorHeaderError(state) {
   if (state == true) {
-    $("#ipv4_address_selector_header").addClass("has-text-danger");
+    $("#ipv4_address_selector").addClass("has-text-danger")
+    $("#ipv4_address_selector_header").addClass("has-text-danger error-bounce");
     $("#ipv4_address_selector_header_error").removeClass("is-hidden");
   } else {
-    $("#ipv4_address_selector_header").removeClass("has-text-danger");
+    $("#ipv4_address_selector").removeClass("has-text-danger")
+    $("#ipv4_address_selector_header").removeClass("has-text-danger error-bounce");
     $("#ipv4_address_selector_header_error").addClass("is-hidden");
   }
 }
