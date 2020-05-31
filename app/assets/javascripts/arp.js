@@ -28,7 +28,9 @@ function populateIpAddresses(location_code) {
 
       if (hasIPs == false) {
         options +=
-          "<option value='' disabled>No IPs Available in " + data["location"] + "</option>";
+          "<option value='' disabled>No IPs Available in " +
+          data["location"] +
+          "</option>";
       }
 
       var element = $("#ipv4_address_selector");
@@ -156,12 +158,14 @@ function errorHandlerSSHKeyDialog(errors) {
 
 function PlanSelectorHeaderError(state) {
   if (state == true) {
-    $("select[name=plan]").addClass("has-text-danger")
+    $("select[name=plan]").addClass("has-text-danger");
     $("#plan_selector_header").addClass("has-text-danger error-bounce");
     $("#plan_selector_header_error").removeClass("is-hidden");
   } else {
-    $("select[name=plan]").removeClass("has-text-danger")
-    $("#plan_selector_header").removeClass("has-text-danger error-bounce");
+    $("select[name=plan]").removeClass("has-text-danger");
+    $("#plan_selector_header").removeClass(
+      "has-text-danger error-bounce"
+    );
     $("#plan_selector_header_error").addClass("is-hidden");
   }
 }
@@ -171,19 +175,25 @@ function OSSelectorHeaderError(state) {
     $("#os_selector_header").addClass("has-text-danger error-bounce");
     $("#os_selector_header_error").removeClass("is-hidden");
   } else {
-    $("#os_selector_header").removeClass("has-text-danger error-bounce");
+    $("#os_selector_header").removeClass(
+      "has-text-danger error-bounce"
+    );
     $("#os_selector_header_error").addClass("is-hidden");
   }
 }
 
 function IPv4AddressSelectorHeaderError(state) {
   if (state == true) {
-    $("#ipv4_address_selector").addClass("has-text-danger")
-    $("#ipv4_address_selector_header").addClass("has-text-danger error-bounce");
+    $("#ipv4_address_selector").addClass("has-text-danger");
+    $("#ipv4_address_selector_header").addClass(
+      "has-text-danger error-bounce"
+    );
     $("#ipv4_address_selector_header_error").removeClass("is-hidden");
   } else {
-    $("#ipv4_address_selector").removeClass("has-text-danger")
-    $("#ipv4_address_selector_header").removeClass("has-text-danger error-bounce");
+    $("#ipv4_address_selector").removeClass("has-text-danger");
+    $("#ipv4_address_selector_header").removeClass(
+      "has-text-danger error-bounce"
+    );
     $("#ipv4_address_selector_header_error").addClass("is-hidden");
   }
 }
