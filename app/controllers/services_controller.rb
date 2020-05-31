@@ -230,14 +230,15 @@ class ServicesController < ProtectedController
       when 'vps', 'vps_with_os'
         # Make sure plan hasn't been messed with
         raise ArgumentError if VirtualMachine.plans['vps'][params[:plan]].nil?
+        raise ArgumentError if params[:location].blank?
 
         if @service == 'vps_with_os'
           %i[os ipv4].each do |mandatory|
             raise ArgumentError if params[mandatory].blank?
           end
-        end
 
-        raise ArgumentError if params[:location].blank?
+          session['form']['ipv4'] = params[:ipv4]
+        end
 
         session['form']['location'] = params[:location]
         session['form']['plan'] = params[:plan]

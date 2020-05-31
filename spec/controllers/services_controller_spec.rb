@@ -108,6 +108,26 @@ context ServicesController do
         }
       end
 
+      context 'with valid parameters' do
+        before do
+          @params = {
+            plan: 'small',
+            os: 'freebsd-12.1-amd64',
+            location: 'lax',
+            ipv4: '10.0.0.1'
+          }
+          @opts = @opts.merge(@params)
+        end
+
+        it 'should save parameters in the form session' do
+          do_post(@opts)
+
+          %i[plan os location ipv4].each do |param|
+            expect(session['form'][param.to_s]).to eq @params[param]
+          end
+        end
+      end
+
       context 'with invalid parameters' do
         before do
           @opts = @opts.merge({
@@ -115,7 +135,6 @@ context ServicesController do
                                 os: 'freebsd-12.1-amd64',
                                 location: 'lax',
                                 ipv4: '10.0.0.1'
-
                               })
         end
 
