@@ -1,7 +1,10 @@
 <h2 class='title is-2 arp-header'><%= @title %></h2>
 
 <div class='container'>
-  <%= form_tag(confirm_account_services_path, :method => 'POST') do %>
+
+  <% @id = 'new_service_configurator' if @service == 'vps_with_os' %>
+
+  <%= form_tag(confirm_account_services_path, :method => 'POST', :id => @id) do %>
 
     <%= render :partial => "new_" + @service %>
 

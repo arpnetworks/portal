@@ -154,12 +154,43 @@ function errorHandlerSSHKeyDialog(errors) {
   resetAddSSHKeyButton();
 }
 
+function PlanSelectorHeaderError(state) {
+  if (state == true) {
+    $("#plan_selector_header").addClass("has-text-danger");
+    $("#plan_selector_header_error").removeClass("is-hidden");
+  } else {
+    $("#plan_selector_header").removeClass("has-text-danger");
+    $("#plan_selector_header_error").addClass("is-hidden");
+  }
+}
+
+function OSSelectorHeaderError(state) {
+  if (state == true) {
+    $("#os_selector_header").addClass("has-text-danger");
+    $("#os_selector_header_error").removeClass("is-hidden");
+  } else {
+    $("#os_selector_header").removeClass("has-text-danger");
+    $("#os_selector_header_error").addClass("is-hidden");
+  }
+}
+
+function IPv4AddressSelectorHeaderError(state) {
+  if (state == true) {
+    $("#ipv4_address_selector_header").addClass("has-text-danger");
+    $("#ipv4_address_selector_header_error").removeClass("is-hidden");
+  } else {
+    $("#ipv4_address_selector_header").removeClass("has-text-danger");
+    $("#ipv4_address_selector_header_error").addClass("is-hidden");
+  }
+}
+
 $(function () {
   /* Change the IP address drop-down based on the chosen location */
   $("#new_vps_with_os input[name=location]").change(function () {
     if ($(this).is(":checked")) {
       $("#ipv4_address_selector").parent().addClass("is-loading");
       populateIpAddresses($(this).val());
+      IPv4AddressSelectorHeaderError(false);
     }
   });
 
@@ -211,6 +242,46 @@ $(function () {
 
     if (username_input.val() == "") {
       username_input.val(username);
+    }
+  });
+
+  // ----------- //
+  // Validations //
+  // ----------- //
+
+  $("select[name=plan]").on("click", function (e) {
+    PlanSelectorHeaderError(false);
+  });
+  $("input[name=os]").on("click", function (e) {
+    OSSelectorHeaderError(false);
+  });
+  $("#ipv4_address_selector").on("click", function (e) {
+    IPv4AddressSelectorHeaderError(false);
+  });
+
+  $("#new_service_configurator").on("submit", function (e) {
+    var hasErrors = false;
+
+    var element = $("select[name=plan]");
+    if (element.val() == "") {
+      PlanSelectorHeaderError(true);
+      hasErrors = true;
+    }
+
+    var element = $("#ipv4_address_selector");
+    if (element.val() == "") {
+      IPv4AddressSelectorHeaderError(true);
+      hasErrors = true;
+    }
+
+    var os_selected = $("input[name=os]:checked").val();
+    if (os_selected == "" || os_selected == undefined) {
+      OSSelectorHeaderError(true);
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
+      e.preventDefault();
     }
   });
 

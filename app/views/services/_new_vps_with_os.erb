@@ -1,10 +1,15 @@
 <div id='new_vps_with_os' class="columns">
 
   <div class='column'>
-    <div class='form-section-header-prominent'>VPS Plan / Size:</div>
-    <div class='select '>
+    <div class='form-section-header-prominent' id='plan_selector_header'>
+      <span class="icon is-small is-right is-hidden" id='plan_selector_header_error'>
+        <i class="fas fa-exclamation-triangle"></i>
+      </span>
+      VPS Plan / Size:
+    </div>
+    <div class='select'>
       <select name='plan'>
-        <option>Please Choose</option>
+        <option value=''>Please Choose</option>
         <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
           <option value='<%= k %>'<%= k == 'small' ? ' selected' : '' %>>
           <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB HD, <%= plan['bandwidth'] / 1000 %> TB Bandwidth: $<%= plan['mrc'] %>
@@ -13,7 +18,12 @@
       </select>
     </div>
 
-    <div class='form-section-header-prominent'>Operating System:</div>
+    <div class='form-section-header-prominent' id='os_selector_header'>
+      <span class="icon is-small is-right is-hidden" id='os_selector_header_error'>
+        <i class="fas fa-exclamation-triangle"></i>
+      </span>
+      Operating System:
+    </div>
     <div id='os_selector'>
       <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
         <% v['series'].sort { |a, b| b['version'] <=> a['version'] }.each do |series| %>
@@ -52,7 +62,12 @@
       </div>
     </div>
 
-    <div class='form-section-header-prominent'>IP Address Assignments</div>
+    <div class='form-section-header-prominent' id='ipv4_address_selector_header'>
+      <span class="icon is-small is-right is-hidden" id='ipv4_address_selector_header_error'>
+        <i class="fas fa-exclamation-triangle"></i>
+      </span>
+      IP Address Assignments
+    </div>
     <div>
       <div>
         IPv4 on first network interface:
@@ -63,9 +78,11 @@
         </select>
       </div>
 
-      <div>
+      <!--
+        <div>
         <input type='checkbox' id='ip_manual_input'> Let me type my own
-      </div>
+        </div>
+        //-->
     </div>
 
     <div class='small-note'>
