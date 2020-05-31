@@ -8,11 +8,13 @@ function populateIpAddresses(location_code) {
     url: "/provisioning/ip_address",
     data: "location=" + location_code,
     success: function (data) {
+      var hasIPs = false;
       var ips = data["ips"];
 
-      var options = "<option>" + data["caption"] + "</option>";
+      var options = "<option value=''>" + data["caption"] + "</option>";
 
       $.each(ips, function (k, v) {
+        hasIPs = true;
         options += '<option value="' + v["ip_address"] + '"';
         options += (v["assigned"] ? " disabled" : "") + ">";
         options += v["ip_address"];
@@ -23,6 +25,11 @@ function populateIpAddresses(location_code) {
 
         options += "</option>";
       });
+
+      if (hasIPs == false) {
+        options +=
+          "<option value='' disabled>No IPs Available</option>";
+      }
 
       var element = $("#ipv4_address_selector");
       element.html(options);
@@ -125,7 +132,9 @@ function addNewSSHKey(id, name, username) {
   var checkbox = buildSSHKeyInputCheckbox(id, name, username);
   $("#ssh_keys_selector").append(checkbox);
   $("#ssh_key_" + id).prop("checked", true);
-  $("#ssh_key_" + id).parent().addClass('fade-in');
+  $("#ssh_key_" + id)
+    .parent()
+    .addClass("fade-in");
   insertSSHKeyDeleteCallbacks();
 }
 
