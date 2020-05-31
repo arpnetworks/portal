@@ -144,7 +144,7 @@ describe AccountsController do
           json_response = JSON.parse(@response.body)
           caption = json_response['caption']
 
-          expect(caption).to match(/Please Choose .* LAX/)
+          expect(caption).to match(/Please Choose/)
         end
 
         it 'should include IP address in hash' do
