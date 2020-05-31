@@ -28,7 +28,7 @@ function populateIpAddresses(location_code) {
 
       if (hasIPs == false) {
         options +=
-          "<option value='' disabled>No IPs Available</option>";
+          "<option value='' disabled>No IPs Available in " + data["location"] + "</option>";
       }
 
       var element = $("#ipv4_address_selector");

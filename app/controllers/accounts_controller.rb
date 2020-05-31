@@ -194,8 +194,8 @@ class AccountsController < ProtectedController
     end
 
     @response['ips'] = @ips
-    @response['caption'] = 'Please Choose an IP in ' + \
-                           location_code.upcase
+    @response['location'] = location_code.upcase
+    @response['caption'] = 'Please Choose'
 
     respond_to do |format|
       format.json { render json: @response }
