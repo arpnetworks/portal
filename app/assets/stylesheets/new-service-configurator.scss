@@ -1,4 +1,4 @@
-#ssh_keys_selector {
+#ssh_key_selector {
   margin-bottom: 1rem;
 
   label {
@@ -23,6 +23,12 @@
     font-size: 0.75rem;
     padding-right: 0.5rem;
   }
+}
+
+#ssh_key_selector_error_message {
+  font-size: 0.75rem;
+  padding-bottom: 0.75rem;
+
 }
 
 #os_selector {

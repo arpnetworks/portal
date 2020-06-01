@@ -36,9 +36,23 @@
       <% end %>
     </div>
 
-    <div class='form-section-header-prominent'>Users and SSH keys</div>
+    <div class='form-section-header-prominent' id='ssh_key_selector_header'>
+      <span class="icon is-small is-right is-hidden" id='ssh_key_selector_header_error'>
+        <i class="fas fa-exclamation-triangle"></i>
+      </span>
+      Users and SSH keys
+    </div>
 
-    <div id='ssh_keys_selector'>
+    <div id='ssh_key_selector_error_message' class='is-hidden has-text-danger'>
+      <div>
+        Are you sure?
+      </div>
+      <div>
+        If you don't add an SSH key, you won't be able to login without additional work.
+      </div>
+    </div>
+
+    <div id='ssh_key_selector'>
     </div>
     <div>
       <button id='add_ssh_key' class='button is-loading is-small'>
@@ -50,6 +64,7 @@
         </span>
       </button>
     </div>
+
   </div>
 
   <div class='column'>

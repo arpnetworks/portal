@@ -61,10 +61,10 @@ function populateSSHKeys(account_id) {
         );
       });
 
-      var element = $("#ssh_keys_selector");
+      var element = $("#ssh_key_selector");
       element.html(checkboxes);
       $("#add_ssh_key").removeClass("is-loading");
-      insertSSHKeyDeleteCallbacks();
+      insertSSHKeyCallbacks();
     },
     error: function (data) {
       alert("Could not retrieve SSH keys.\nPlease try again later.");
@@ -130,14 +130,25 @@ function insertSSHKeyDeleteCallbacks() {
   });
 }
 
+function insertSSHKeyClickCallbacks() {
+  $("input[name=ssh_keys]").on("click", function (e) {
+    SSHKeySelectorHeaderError(false);
+  });
+}
+
+function insertSSHKeyCallbacks() {
+  insertSSHKeyDeleteCallbacks();
+  insertSSHKeyClickCallbacks();
+}
+
 function addNewSSHKey(id, name, username) {
   var checkbox = buildSSHKeyInputCheckbox(id, name, username);
-  $("#ssh_keys_selector").append(checkbox);
+  $("#ssh_key_selector").append(checkbox);
   $("#ssh_key_" + id).prop("checked", true);
   $("#ssh_key_" + id)
     .parent()
     .addClass("fade-in");
-  insertSSHKeyDeleteCallbacks();
+  insertSSHKeyCallbacks();
 }
 
 function errorHandlerSSHKeyDialog(errors) {
@@ -198,6 +209,22 @@ function IPv4AddressSelectorHeaderError(state) {
   }
 }
 
+function SSHKeySelectorHeaderError(state) {
+  if (state == true) {
+    $("#ssh_key_selector_header").addClass(
+      "has-text-danger error-bounce"
+    );
+    $("#ssh_key_selector_header_error").removeClass("is-hidden");
+    $("#ssh_key_selector_error_message").removeClass("is-hidden");
+  } else {
+    $("#ssh_key_selector_header").removeClass(
+      "has-text-danger error-bounce"
+    );
+    $("#ssh_key_selector_header_error").addClass("is-hidden");
+    $("#ssh_key_selector_error_message").addClass("is-hidden");
+  }
+}
+
 $(function () {
   /* Change the IP address drop-down based on the chosen location */
   $("#new_vps_with_os input[name=location]").change(function () {
@@ -213,6 +240,7 @@ $(function () {
     $("#ssh_key_dialog").addClass("is-active");
     $("#ssh_key_dialog_form_ssh_key_key").focus();
     $("html").addClass("is-clipped");
+    SSHKeySelectorHeaderError(false);
 
     e.preventDefault();
   });
@@ -263,6 +291,8 @@ $(function () {
   // Validations //
   // ----------- //
 
+  var SSHKeySelectorIveBeenWarned = false;
+
   $("select[name=plan]").on("click", function (e) {
     PlanSelectorHeaderError(false);
   });
@@ -292,6 +322,15 @@ $(function () {
     if (os_selected == "" || os_selected == undefined) {
       OSSelectorHeaderError(true);
       hasErrors = true;
+    }
+
+    var ssh_keys_selected = $("input[name=ssh_keys]:checked").val();
+    if (SSHKeySelectorIveBeenWarned == false) {
+      if (ssh_keys_selected == "" || ssh_keys_selected == undefined) {
+        SSHKeySelectorHeaderError(true);
+        hasErrors = true;
+        SSHKeySelectorIveBeenWarned = true;
+      }
     }
 
     if (hasErrors) {
