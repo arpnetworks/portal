@@ -16,7 +16,13 @@ function populateIpAddresses(location_code) {
       $.each(ips, function (k, v) {
         hasIPs = true;
         options += '<option value="' + v["ip_address"] + '"';
-        options += (v["assigned"] ? " disabled" : "") + ">";
+
+        if (v["selected"]) {
+          options += (v["selected"] ? " selected" : "") + ">";
+        } else {
+          options += (v["assigned"] ? " disabled" : "") + ">";
+        }
+
         options += v["ip_address"];
 
         if (v["assigned"]) {

@@ -1,7 +1,7 @@
 class AccountsController < ProtectedController
   protect_from_forgery except: %i[login_attempt login]
 
-  skip_before_filter :login_required, only: %i[new
+  skip_before_action :login_required, only: %i[new
                                                create
                                                forgot_password
                                                forgot_password_post
@@ -55,11 +55,11 @@ class AccountsController < ProtectedController
       params[:account].delete(:password_confirmation)
     end
 
-    if @account.update_attributes(account_params)
+    if @account.update(account_params)
       flash[:notice] = 'Changes saved.'
 
       # Return to edit page
-      redirect_to action: 'edit' and return
+      redirect_to(action: 'edit') && return
     end
 
     # Don't show password on form
@@ -79,7 +79,7 @@ class AccountsController < ProtectedController
     if @email.nil? || @email.blank?
       flash[:notice] = 'Please enter your email address'
     else
-      @account = Account.find_by_email(@email)
+      @account = Account.find_by(email: @email)
       raise ActiveRecord::RecordNotFound unless @account
 
       @new_password = newpass(8)
@@ -109,13 +109,13 @@ class AccountsController < ProtectedController
     if params[:account] && (account = Account.authenticate(params[:account][:login],
                                                            params[:account][:password]))
       session[:account_id] = account.id
-      account.visited_at = Time.now unless account.visited_at
-      account.update_attribute(:visited_at, Time.now)
+      account.visited_at = Time.zone.now unless account.visited_at
+      account.update_attribute(:visited_at, Time.zone.now)
 
       cookies[:login] = { value: account.login, expires: 1.year.from_now }
 
       flash[:notice] = "Welcome #{account.display_name}, it is nice to see you."
-      redirect_back_or_default(dashboard_path) and return true
+      redirect_back_or_default(dashboard_path) && (return true)
     else
       flash[:error] = 'Incorrect username and/or password, please try again.'
       redirect_to login_accounts_path
@@ -159,12 +159,16 @@ class AccountsController < ProtectedController
     @response = {}
     @ips      = {}
 
+    selected_ip = nil
+    selected_ip = session['form']['ipv4'] if session['form'] && session['form']['ipv4']
+
     ips_available.each do |ip|
       @ips[ip.to_s] = {
         ip_address: ip,
         assigned: false,
         assignment: nil,
-        location: location.code
+        location: location.code,
+        selected: (ip.to_s == selected_ip)
       }
     end
     ips_in_use.each do |ip|
@@ -183,14 +187,15 @@ class AccountsController < ProtectedController
         assignment = 'another instance'
       end
 
-      if ip
-        @ips[ip.to_s] = {
-          ip_address: ip,
-          assigned: true,
-          assignment: assignment,
-          location: location.code
-        }
-      end
+      next unless ip
+
+      @ips[ip.to_s] = {
+        ip_address: ip,
+        assigned: true,
+        assignment: assignment,
+        location: location.code,
+        selected: false
+      }
     end
 
     @response['ips'] = @ips
@@ -208,7 +213,7 @@ class AccountsController < ProtectedController
   def newpass(len)
     chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
     newpass = ''
-    1.upto(len) { |i| newpass << chars[rand(chars.size - 1)] }
+    1.upto(len) { |_i| newpass << chars[rand(chars.size - 1)] }
     newpass
   end
 
