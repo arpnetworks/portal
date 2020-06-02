@@ -47,14 +47,14 @@ class ServicesController < ProtectedController
   # invoice to-be-create
   def confirm
     case @service
-    when 'vps'
+    when 'vps', 'vps_with_os'
       plan = params[:plan]
       plan_struct = VirtualMachine.plans['vps'][plan]
 
       @billing_amount = plan_struct['mrc']
       @code           = 'VPS'
       @code_obj       = ServiceCode.find_by(name: @code)
-      @service_title  = 'Generic VM'
+      @service_title  = (@service == 'vps_with_os' ? 'Rapid VM' : 'Generic VM')
       @billing_amount_pro_rated = pro_rated_total(@billing_amount)
 
       @pending_service = @account.services.create(
@@ -123,6 +123,8 @@ class ServicesController < ProtectedController
       service.save
 
       case session[:service_to_enable]
+      when 'vps_with_os'
+        provision_vps_with_os!(service)
       when 'vps'
         plan = session[:form]['plan']
         plan_struct = VirtualMachine.plans['vps'][plan]
@@ -302,5 +304,29 @@ class ServicesController < ProtectedController
     (1.0 - todays_date / end_of_month_date) * amount
   rescue StandardError
     amount
+  end
+
+  def provision_vps_with_os!(service)
+    plan = session[:form]['plan']
+    plan_struct = VirtualMachine.plans['vps'][plan]
+
+    os = session[:form]['os']
+
+    # Mostly for informational purposes...
+    Mailer.new_service_vps_with_os(@account,
+                                   plan,
+                                   session['form']['location'],
+                                   os,
+                                   plan_struct['bandwidth']).deliver_now
+
+    os_template = os
+
+    VirtualMachine.provision!(service,
+                              host: @initial_vm_host,
+                              ram: plan_struct['ram'],
+                              storage: plan_struct['storage'],
+                              os_template: os_template,
+                              ip_address: session['form']['ipv4'],
+                              do_config_disk: true)
   end
 end

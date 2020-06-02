@@ -113,6 +113,20 @@ class Mailer < ActionMailer::Base
     mail(to: @recipients, subject: @subject, from: @from)
   end
 
+  def new_service_vps_with_os(account, plan, location, os, bandwidth)
+    @subject    = "ORDER: Rapid VPS"
+    @recipients = ["gdolley+tickets@arpnetworks.com", "ben@arpnetworks.com"]
+    @from       = account.email
+
+    @account   = account
+    @plan      = plan
+    @location  = location
+    @os        = os
+    @bandwidth = bandwidth
+
+    mail(to: @recipients, subject: @subject, from: @from)
+  end
+
   def simple_notification(subject, body)
     @subject    = subject
     @recipients = ['gdolley@arpnetworks.com']

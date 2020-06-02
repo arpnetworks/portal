@@ -468,6 +468,9 @@ class VirtualMachine < ActiveRecord::Base
 
     @blank          = opts[:blank] # Force creation of blank VM (not from an OS template)
 
+    @do_config_disk = opts[:do_config_disk] # Create a cloud-init config disk
+    @config_disk_options = opts[:config_disk_options]
+
     @pool = opts[:pool]
     @pool_obj = Pool.find_by_name(@pool || 'rbd')
 
@@ -540,6 +543,10 @@ class VirtualMachine < ActiveRecord::Base
     # Define it on the host and create its disk volume
     @vm.define!
     @vm.create_volume!(:blank => @blank)
+
+    if @do_config_disk
+      @vm.create_config_disk!(@config_disk_options)
+    end
   end
 
   def self.generate_unique_label(service, prefix = '')
