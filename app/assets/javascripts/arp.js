@@ -51,7 +51,7 @@ function populateIpAddresses(location_code) {
   });
 }
 
-function populateSSHKeys(account_id) {
+function populateSSHKeys(account_id, checked) {
   $.ajax({
     dataType: "json",
     url: "/accounts/" + account_id + "/ssh_keys",
