@@ -14,8 +14,8 @@ describe SshKeysController do
     context 'with JSON' do
       context 'with keys' do
         before do
-          @ssh_key_1 = mock_model('SshKey', name: 'foo')
-          @ssh_key_2 = mock_model('SshKey', name: 'bar')
+          @ssh_key_1 = build(:ssh_key, name: 'foo', id: 1)
+          @ssh_key_2 = build(:ssh_key, name: 'bar', id: 2)
           @ssh_keys = [@ssh_key_1, @ssh_key_2]
 
           allow(@account).to receive(:ssh_keys).and_return(@ssh_keys)
@@ -31,6 +31,27 @@ describe SshKeysController do
 
           json = JSON.parse(@response.body)
           expect(json.size).to eq 2
+        end
+
+        context 'with selected keys in session' do
+          before do
+            session['form'] = {
+              'ssh_keys' => [@ssh_key_1.id]
+            }
+          end
+
+          it 'should return keys JSON object with one selected' do
+            do_get(format: :json)
+
+            json = JSON.parse(@response.body)
+
+            @copy = JSON.parse(@ssh_key_1.to_json)
+            @copy2 = JSON.parse(@ssh_key_2.to_json)
+
+            expect(json.include?(@copy.merge('selected' => true))).to be true
+            expect(json.include?(@copy2)).to be true
+            expect(json.size).to eq 2
+          end
         end
       end
 

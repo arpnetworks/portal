@@ -43,6 +43,10 @@ FactoryBot.define do
     end
   end
 
+  factory :ssh_key do
+    account
+  end
+
   factory :resource do
     service
   end

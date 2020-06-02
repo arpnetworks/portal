@@ -2,11 +2,26 @@ class SshKeysController < ProtectedController
   before_action :find_ssh_key, only: %i[destroy]
 
   def index
-    @ssh_keys = @account.ssh_keys
+    @ssh_keys = JSON.parse(@account.ssh_keys.to_json)
+
+    @ssh_keys_with_selections = @ssh_keys.map do |key|
+      if session['form'] &&
+         session['form']['ssh_keys'] &&
+         (session['form']['ssh_keys'].include?(key['id'].to_s) ||
+          session['form']['ssh_keys'].include?(key['id']))
+          # It's a number if it looks like a fucking number
+
+        key = key.merge({
+                          selected: true
+                        })
+      end
+
+      key
+    end
 
     respond_to do |format|
       format.json do
-        render json: @ssh_keys
+        render json: @ssh_keys_with_selections
       end
     end
   end
