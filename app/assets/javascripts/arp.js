@@ -181,11 +181,10 @@ function PlanSelectorHeaderError(state) {
     $("#plan_selector_header").addClass("has-text-danger error-bounce");
     $("#plan_selector_header_error").removeClass("is-hidden");
   } else {
-
     // Reset the CSS animation
     // Thanks to: https://css-tricks.com/restart-css-animation/
     var elm = $("#plan_selector_header")[0],
-        newone = elm.cloneNode(true);
+      newone = elm.cloneNode(true);
     elm.parentNode.replaceChild(newone, elm);
 
     $("select[name=plan]").removeClass("has-text-danger");
@@ -201,11 +200,10 @@ function OSSelectorHeaderError(state) {
     $("#os_selector_header").addClass("has-text-danger error-bounce");
     $("#os_selector_header_error").removeClass("is-hidden");
   } else {
-
     // Reset the CSS animation
     // Thanks to: https://css-tricks.com/restart-css-animation/
     var elm = $("#os_selector_header")[0],
-        newone = elm.cloneNode(true);
+      newone = elm.cloneNode(true);
     elm.parentNode.replaceChild(newone, elm);
 
     $("#os_selector_header").removeClass(
@@ -223,11 +221,10 @@ function IPv4AddressSelectorHeaderError(state) {
     );
     $("#ipv4_address_selector_header_error").removeClass("is-hidden");
   } else {
-
     // Reset the CSS animation
     // Thanks to: https://css-tricks.com/restart-css-animation/
     var elm = $("#ipv4_address_selector_header")[0],
-        newone = elm.cloneNode(true);
+      newone = elm.cloneNode(true);
     elm.parentNode.replaceChild(newone, elm);
 
     $("#ipv4_address_selector").removeClass("has-text-danger");

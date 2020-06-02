@@ -9,7 +9,7 @@ class SshKeysController < ProtectedController
          session['form']['ssh_keys'] &&
          (session['form']['ssh_keys'].include?(key['id'].to_s) ||
           session['form']['ssh_keys'].include?(key['id']))
-          # It's a number if it looks like a fucking number
+        # It's a number if it looks like a fucking number
 
         key = key.merge({
                           selected: true
