@@ -114,7 +114,8 @@ context ServicesController do
             plan: 'small',
             os: 'freebsd-12.1-amd64',
             location: 'lax',
-            ipv4: '10.0.0.1'
+            ipv4: '10.0.0.1',
+            ssh_keys: ['101', '304']
           }
           @opts = @opts.merge(@params)
         end
@@ -122,7 +123,7 @@ context ServicesController do
         it 'should save parameters in the form session' do
           do_post(@opts)
 
-          %i[plan os location ipv4].each do |param|
+          %i[plan os location ipv4 ssh_keys].each do |param|
             expect(session['form'][param.to_s]).to eq @params[param]
           end
         end

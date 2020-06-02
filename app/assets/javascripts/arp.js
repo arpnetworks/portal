@@ -95,7 +95,7 @@ function resetAddSSHKeyButton() {
 function buildSSHKeyInputCheckbox(id, name, username) {
   var checkbox =
     "<label>" +
-    "<input type='checkbox' name='ssh_keys' id='ssh_key_" +
+    "<input type='checkbox' name='ssh_keys[]' id='ssh_key_" +
     id +
     "' value='" +
     id +
@@ -137,7 +137,7 @@ function insertSSHKeyDeleteCallbacks() {
 }
 
 function insertSSHKeyClickCallbacks() {
-  $("input[name=ssh_keys]").on("click", function (e) {
+  $("input[name='ssh_keys[]']").on("click", function (e) {
     SSHKeySelectorHeaderError(false);
   });
 }
@@ -330,7 +330,7 @@ $(function () {
       hasErrors = true;
     }
 
-    var ssh_keys_selected = $("input[name=ssh_keys]:checked").val();
+    var ssh_keys_selected = $("input[name='ssh_keys[]']:checked").val();
     if (SSHKeySelectorIveBeenWarned == false) {
       if (ssh_keys_selected == "" || ssh_keys_selected == undefined) {
         SSHKeySelectorHeaderError(true);

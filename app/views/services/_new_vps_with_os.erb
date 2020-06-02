@@ -116,7 +116,7 @@
 
 <% content_for :js do %>
   $(document).ready(function() {
-  populateIpAddresses('lax');
+  populateIpAddresses('<%= session['form']['location'] || 'lax' %>');
   populateSSHKeys(<%= @account.id %>);
   });
 <% end %>

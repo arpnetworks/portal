@@ -238,6 +238,7 @@ class ServicesController < ProtectedController
           end
 
           session['form']['ipv4'] = params[:ipv4]
+          session['form']['ssh_keys'] = params[:ssh_keys]
         end
 
         session['form']['location'] = params[:location]
