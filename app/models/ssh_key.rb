@@ -29,15 +29,14 @@ class SshKey < ActiveRecord::Base
     keys.each do |key|
       key = SshKey.find key[:id]
 
-      if key
-        h << {
-          name: key.username,
-          ssh_authorized_keys: [
-            key.key
-          ]
-        }
+      next unless key
 
-      end
+      h << {
+        name: key.username,
+        ssh_authorized_keys: [
+          key.key
+        ]
+      }
     end
 
     h.to_json
