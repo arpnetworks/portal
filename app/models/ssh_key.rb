@@ -18,11 +18,34 @@ class SshKey < ActiveRecord::Base
     }
   end
 
+  # keys = [ { id: 1, opts = {} },
+  #            id: 2, opts = {} } ]
+  #
+  # We'll lookup opts but you can also pass any override
+  def self.to_config_disk_json(keys)
+    return '{}' if keys.empty?
+
+    h = []
+    keys.each do |key|
+      key = SshKey.find key[:id]
+
+      if key
+        h << {
+          name: key.username,
+          ssh_authorized_keys: [
+            key.key
+          ]
+        }
+
+      end
+    end
+
+    h.to_json
+  end
+
   protected
 
   def ensure_username
-    if username.blank?
-      self.username = account.login
-    end
+    self.username = account.login if username.blank?
   end
 end
