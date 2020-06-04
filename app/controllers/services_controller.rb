@@ -325,12 +325,14 @@ class ServicesController < ProtectedController
     session[:form]['ssh_keys'].each do |id|
       ssh_keys_and_options << {
         id: id,
-        opts: {} # Not in use yet
+        opts: {
+          password_plaintext: SecureRandom.base64(16)
+        }
       }
     end
 
     config_disk_options = {
-      users: SshKey.to_config_disk_json(ssh_keys_and_options)
+      users: JSON.parse(SshKey.to_config_disk_json(ssh_keys_and_options))
     }
 
     VirtualMachine.provision!(service,
