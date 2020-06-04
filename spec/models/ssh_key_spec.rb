@@ -36,6 +36,23 @@ context SshKey do
         end
 
         context 'with a user password' do
+          before do
+            @opts = {
+              password_plaintext: 'foo'
+            }
+          end
+
+          it 'should return user with password' do
+            json = SshKey.to_config_disk_json([{ id: @ssh_key_1.id, opts: @opts }])
+
+            expect(json).to eq [{
+              name: @ssh_key_1.username,
+              ssh_authorized_keys: [
+                @ssh_key_1.key
+              ],
+              password_plaintext: 'foo'
+            }].to_json
+          end
         end
       end
 

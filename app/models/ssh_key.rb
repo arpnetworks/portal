@@ -37,14 +37,17 @@ class SshKey < ActiveRecord::Base
     h = []
     skip = []
     keys.each do |key|
+      key_hash = key
       key = SshKey.find key[:id]
       next unless key
       next if skip.include?(key.username)
 
+      key_hash[:opts] ||= {}
       h << {
         name: key.username,
         ssh_authorized_keys: grouped_keys[key.username]
-      }
+      }.merge(key_hash[:opts])
+
       skip << key.username
     end
 
