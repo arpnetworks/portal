@@ -25,18 +25,27 @@ class SshKey < ActiveRecord::Base
   def self.to_config_disk_json(keys)
     return '{}' if keys.empty?
 
-    h = []
+    grouped_keys = {}
     keys.each do |key|
       key = SshKey.find key[:id]
-
       next unless key
+
+      grouped_keys[key.username] ||= []
+      grouped_keys[key.username] << key.key
+    end
+
+    h = []
+    skip = []
+    keys.each do |key|
+      key = SshKey.find key[:id]
+      next unless key
+      next if skip.include?(key.username)
 
       h << {
         name: key.username,
-        ssh_authorized_keys: [
-          key.key
-        ]
+        ssh_authorized_keys: grouped_keys[key.username]
       }
+      skip << key.username
     end
 
     h.to_json
