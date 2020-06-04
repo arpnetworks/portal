@@ -14,6 +14,8 @@ if redis_conf = @config[Rails.env]
 end
 
 def build_and_reload_conserver(host)
+  return if Rails.env == 'test'
+
   ARP_REDIS.lpush("queue:#{host}",
                   "{ \"class\": \"ConserverCfBuilderWorker\", \"args\": null, \"jid\": \"#{SecureRandom.hex(12)}\", \"retry\": true, \"enqueued_at\": #{Time.now.to_f.to_s}, \"created_at\": #{Time.now.to_f.to_s} }");
 end
