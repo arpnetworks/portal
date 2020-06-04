@@ -321,12 +321,25 @@ class ServicesController < ProtectedController
 
     os_template = os
 
+    ssh_keys_and_options = []
+    session[:form]['ssh_keys'].each do |id|
+      ssh_keys_and_options << {
+        id: id,
+        opts: {} # Not in use yet
+      }
+    end
+
+    config_disk_options = {
+      users: SshKey.to_config_disk_json(ssh_keys_and_options)
+    }
+
     VirtualMachine.provision!(service,
                               host: @initial_vm_host,
                               ram: plan_struct['ram'],
                               storage: plan_struct['storage'],
                               os_template: os_template,
                               ip_address: session['form']['ipv4'],
-                              do_config_disk: true)
+                              do_config_disk: true,
+                              config_disk_options: config_disk_options)
   end
 end

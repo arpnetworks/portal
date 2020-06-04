@@ -18,8 +18,8 @@ class SshKey < ActiveRecord::Base
     }
   end
 
-  # keys = [ { id: 1, opts = {} },
-  #            id: 2, opts = {} } ]
+  # keys = [ { id: 1, opts: {} },
+  #          { id: 2, opts: {} } ]
   #
   # We'll lookup opts but you can also pass any override
   def self.to_config_disk_json(keys)
