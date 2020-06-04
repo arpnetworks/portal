@@ -18,9 +18,13 @@ context SshKey do
           expect(json).to eq({})
         end
       end
+
       context 'with single key' do
-        it 'should return a user with key' do
+        before do
           allow(SshKey).to receive(:find).with(@ssh_key_1.id).and_return @ssh_key_1
+        end
+
+        it 'should return a user with key' do
           json = SshKey.to_config_disk_json([{ id: @ssh_key_1.id }])
 
           expect(json).to eq [{
@@ -46,6 +50,42 @@ context SshKey do
       end
 
       context 'with multiple keys' do
+        before do
+          allow(SshKey).to receive(:find).with(@ssh_key_1.id).and_return @ssh_key_1
+          allow(SshKey).to receive(:find).with(@ssh_key_2.id).and_return @ssh_key_2
+          allow(SshKey).to receive(:find).with(@ssh_key_3.id).and_return @ssh_key_3
+        end
+
+        it 'should return multiple keys' do
+          json = SshKey.to_config_disk_json([
+                                              { id: @ssh_key_1.id },
+                                              { id: @ssh_key_2.id },
+                                              { id: @ssh_key_3.id }
+                                            ])
+
+          expect(json).to eq [
+            {
+              name: @ssh_key_1.username,
+              ssh_authorized_keys: [
+                @ssh_key_1.key
+              ]
+            },
+            {
+              name: @ssh_key_2.username,
+              ssh_authorized_keys: [
+                @ssh_key_2.key
+              ]
+
+            },
+            {
+              name: @ssh_key_3.username,
+              ssh_authorized_keys: [
+                @ssh_key_3.key
+              ]
+
+            }
+          ].to_json
+        end
       end
 
       context 'with keys with common usernames' do
