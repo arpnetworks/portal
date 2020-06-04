@@ -326,7 +326,8 @@ class ServicesController < ProtectedController
       ssh_keys_and_options << {
         id: id,
         opts: {
-          password_plaintext: SecureRandom.base64(16)
+          password_plaintext: SecureRandom.base64(16),
+          sudo_nopasswd: true
         }
       }
     end
