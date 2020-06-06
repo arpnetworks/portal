@@ -54,7 +54,13 @@ class ServicesController < ProtectedController
       @billing_amount = plan_struct['mrc']
       @code           = 'VPS'
       @code_obj       = ServiceCode.find_by(name: @code)
-      @service_title  = (@service == 'vps_with_os' ? 'Rapid VM' : 'Generic VM')
+
+      @service_title = if @service == 'vps_with_os'
+                         VirtualMachine.os_display_name_from_code($CLOUD_OS, params[:os]) + ' VPS'
+                       else
+                         'Generic VM'
+                       end
+
       @billing_amount_pro_rated = pro_rated_total(@billing_amount)
 
       @pending_service = @account.services.create(
@@ -322,7 +328,7 @@ class ServicesController < ProtectedController
     os_template = os
 
     ssh_keys_and_options = []
-    session[:form]['ssh_keys'].each do |id|
+    session[:form]['ssh_keys']&.each do |id|
       ssh_keys_and_options << {
         id: id,
         opts: {
@@ -340,6 +346,7 @@ class ServicesController < ProtectedController
                               host: @initial_vm_host,
                               ram: plan_struct['ram'],
                               storage: plan_struct['storage'],
+                              os: VirtualMachine.os_display_name_from_code($CLOUD_OS, os, { version: true }),
                               os_template: os_template,
                               ip_address: session['form']['ipv4'],
                               do_config_disk: true,
