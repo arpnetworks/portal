@@ -25,21 +25,21 @@ context VirtualMachine do
     end
 
     after :context do
-      DnsDomain.find_by_name('arpnetworks.com').destroy
+      DnsDomain.find_by(name: 'arpnetworks.com').destroy
     end
 
     specify 'should be created upon VM creation with IPs assigned' do
       label = 'bar'
       record_name = "#{label}.cust.arpnetworks.com"
 
-      expect(DnsRecord.find_by_name(record_name)).to be_nil
+      expect(DnsRecord.find_by(name: record_name)).to be_nil
 
       @vm = create :virtual_machine, {
         uuid: @uuid,
         label: label
       }
 
-      @vm.virtual_machines_interfaces[0].update_attributes(
+      @vm.virtual_machines_interfaces[0].update(
         ip_address: @ip_address,
         ipv6_address: @ipv6_address
       )
@@ -47,17 +47,17 @@ context VirtualMachine do
       @vm.resource.service.account = @account
       @vm.save
 
-      dns_record = DnsRecord.find_by_name_and_type(record_name, 'A')
+      dns_record = DnsRecord.find_by(name: record_name, type: 'A')
       expect(dns_record).to_not be_nil
       expect(dns_record.content).to eq @ip_address
 
-      dns_record = DnsRecord.find_by_name_and_type(record_name, 'AAAA')
+      dns_record = DnsRecord.find_by(name: record_name, type: 'AAAA')
       expect(dns_record).to_not be_nil
       expect(dns_record.content).to eq @ipv6_address
     end
 
     specify 'should be updated upon VM label change' do
-      @vm.virtual_machines_interfaces[0].update_attributes(
+      @vm.virtual_machines_interfaces[0].update(
         ip_address: @ip_address,
         ipv6_address: @ipv6_address
       )
@@ -65,8 +65,8 @@ context VirtualMachine do
       @vm.resource.service.account = @account
       @vm.save # This will create the initial records
 
-      v4_record = DnsRecord.find_by_name_and_type(@vm.dns_record_name, 'A')
-      v6_record = DnsRecord.find_by_name_and_type(@vm.dns_record_name, 'AAAA')
+      v4_record = DnsRecord.find_by(name: @vm.dns_record_name, type: 'A')
+      v6_record = DnsRecord.find_by(name: @vm.dns_record_name, type: 'AAAA')
 
       label = 'a-new-label'
       @vm.label = label
@@ -77,7 +77,7 @@ context VirtualMachine do
     end
 
     specify 'should be updated upon IP address change' do
-      @vm.virtual_machines_interfaces[0].update_attributes(
+      @vm.virtual_machines_interfaces[0].update(
         ip_address: @ip_address,
         ipv6_address: @ipv6_address
       )
@@ -85,8 +85,8 @@ context VirtualMachine do
       @vm.resource.service.account = @account
       @vm.save # This will create the initial records
 
-      v4_record = DnsRecord.find_by_name_and_type(@vm.dns_record_name, 'A')
-      v6_record = DnsRecord.find_by_name_and_type(@vm.dns_record_name, 'AAAA')
+      v4_record = DnsRecord.find_by(name: @vm.dns_record_name, type: 'A')
+      v6_record = DnsRecord.find_by(name: @vm.dns_record_name, type: 'AAAA')
 
       ipv4 = '192.168.0.1'
       ipv6 = 'fe80::3'
@@ -119,7 +119,7 @@ context VirtualMachine do
       @vm.save
     end
     specify 'should be deleted upon VM destruction' do
-      @vm.virtual_machines_interfaces[0].update_attributes(
+      @vm.virtual_machines_interfaces[0].update(
         ip_address: @ip_address,
         ipv6_address: @ipv6_address
       )
@@ -127,16 +127,16 @@ context VirtualMachine do
       @vm.resource.service.account = @account
       @vm.save # This will create the initial records
 
-      v4_record = DnsRecord.find_by_name_and_type(@vm.dns_record_name, 'A')
-      v6_record = DnsRecord.find_by_name_and_type(@vm.dns_record_name, 'AAAA')
+      v4_record = DnsRecord.find_by(name: @vm.dns_record_name, type: 'A')
+      v6_record = DnsRecord.find_by(name: @vm.dns_record_name, type: 'AAAA')
 
       expect(v4_record).to_not be_nil
       expect(v6_record).to_not be_nil
 
       @vm.destroy
 
-      expect(DnsRecord.find_by_id(v4_record.id)).to be_nil
-      expect(DnsRecord.find_by_id(v6_record.id)).to be_nil
+      expect(DnsRecord.find_by(id: v4_record.id)).to be_nil
+      expect(DnsRecord.find_by(id: v6_record.id)).to be_nil
     end
 
     specify 'should not be created upon VM creation belonging to ARP Networks' do
@@ -149,14 +149,14 @@ context VirtualMachine do
 
       begin
         @account = Account.find 1
-      rescue
+      rescue StandardError
         @account = create(:account, id: 1)
       end
 
       @vm.resource.service.account = @account
 
       @vm.virtual_machines_interfaces.create
-      @vm.virtual_machines_interfaces[0].update_attributes(
+      @vm.virtual_machines_interfaces[0].update(
         ip_address: '10.0.0.1',
         ipv6_address: 'fe80::2'
       )
@@ -169,7 +169,7 @@ context VirtualMachine do
 
       begin
         @account = Account.find 1
-      rescue
+      rescue StandardError
         @account = create(:account, id: 1)
       end
 
@@ -210,7 +210,7 @@ context VirtualMachine do
                                     storage: 20,
                                     label: 'foo')
 
-        @vm = VirtualMachine.find_by_uuid(@uuid) # Reload the whole instance
+        @vm = VirtualMachine.find_by(uuid: @uuid) # Reload the whole instance
 
         expect(@vm.resource.service).to eq @service
       end
