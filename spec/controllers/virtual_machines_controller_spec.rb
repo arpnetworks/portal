@@ -215,9 +215,9 @@ context VirtualMachinesController do
   context 'write_request()' do
     specify 'should write request with parameters' do
       vm = @vm
-      ts = 1234567890
+      ts = 1_234_567_890
 
-      %w(start shutdown destroy).each do |command|
+      %w[start shutdown destroy].each do |command|
         io = double('io')
         expect(io).to receive(:puts).with("#{command} #{vm.uuid} #{vm.host} ")
 
@@ -225,7 +225,7 @@ context VirtualMachinesController do
         expect(File).to receive(:open).with("tmp/requests/#{vm.uuid}-#{ts}", 'w').and_yield(io)
 
         VirtualMachinesController.new.instance_eval do
-          write_request(vm, "#{command}")
+          write_request(vm, command.to_s)
         end
       end
     end
