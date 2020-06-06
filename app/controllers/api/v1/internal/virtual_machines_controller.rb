@@ -1,6 +1,6 @@
 class Api::V1::Internal::VirtualMachinesController < ApiController
-  before_filter :trusted_hosts
-  before_filter :find_virtual_machine, only: [:status]
+  before_action :trusted_hosts
+  before_action :find_virtual_machine, only: [:status]
 
   def status
     @old_status = @virtual_machine.status
@@ -9,7 +9,7 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
     @virtual_machine.status = @new_status
     @virtual_machine.save
 
-    render :text => "Updated status for VM #{@virtual_machine.uuid} from #{@old_status} to #{@new_status}\n"
+    render text: "Updated status for VM #{@virtual_machine.uuid} from #{@old_status} to #{@new_status}\n"
   end
 
   # Like status, but in batch
@@ -20,12 +20,12 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
       uuid, status = vm_and_status.split(',')
 
       begin
-        vm = VirtualMachine.find_by_uuid_and_status(uuid, status)
+        vm = VirtualMachine.find_by(uuid: uuid, status: status)
 
         # If found, this VM's status has not changed, so we do not need to update
         # anything, otherwise...
         unless vm
-          vm = VirtualMachine.find_by_uuid(uuid)
+          vm = VirtualMachine.find_by(uuid: uuid)
 
           if vm
             vm.status = status
@@ -33,11 +33,11 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
           end
         end
       rescue Exception => e
-        render :text => "We encountered an error: #{e.message}" and return
+        render(text: "We encountered an error: #{e.message}") && (return)
       end
     end
 
-    render :text => "Performed without errors"
+    render text: 'Performed without errors'
   end
 
   private
@@ -46,12 +46,12 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
     uuid = params[:uuid]
 
     begin
-      @virtual_machine = VirtualMachine.find_by_uuid(uuid)
+      @virtual_machine = VirtualMachine.find_by(uuid: uuid)
 
-      raise ActiveRecord::RecordNotFound if !@virtual_machine
+      raise ActiveRecord::RecordNotFound unless @virtual_machine
     rescue ActiveRecord::RecordNotFound
-      render :text => "Virtual Machine with UUID #{uuid} not found\n", :status => 404
-      return
+      render text: "Virtual Machine with UUID #{uuid} not found\n", status: :not_found
+      nil
     end
   end
 
