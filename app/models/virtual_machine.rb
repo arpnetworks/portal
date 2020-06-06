@@ -546,6 +546,10 @@ class VirtualMachine < ActiveRecord::Base
 
     if @do_config_disk
       @vm.create_config_disk!(@config_disk_options)
+
+      # After the above final task, the VM must be started for it to
+      # auto-provision itself with the config disk
+      @vm.change_state!('start')
     end
   end
 
