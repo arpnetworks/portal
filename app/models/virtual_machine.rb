@@ -562,4 +562,27 @@ class VirtualMachine < ActiveRecord::Base
 
     raise 'Nothing random found after 5 tries.  We should really, never, ever get here.'
   end
+
+  def self.os_display_name_from_code(cloud_os_struct, code, opts = {})
+    @reverse_struct = {}
+
+    cloud_os_struct.each do |_k, v|
+      v['series'].each do |version|
+        @reverse_struct[version['code']] = {
+          title: v['title'],
+          version: version['version']
+        }
+      end
+    end
+
+    @ret = ''
+    @ret = @reverse_struct[code][:title] if @reverse_struct[code]
+    @ret += ' ' + @reverse_struct[code][:version] if opts[:version]
+
+    if @ret.empty?
+      return nil
+    else
+      @ret
+    end
+  end
 end

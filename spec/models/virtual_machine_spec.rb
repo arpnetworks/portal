@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../rails_helper'
+require File.dirname(__FILE__) + '/../arp_spec_helper'
 
 context VirtualMachine do
   before do
@@ -277,4 +278,82 @@ context VirtualMachine do
   ################################
   # END: Testing of Resourceable #
   ################################
+
+  context 'self.os_display_name_from_code()' do
+    before do
+      @cloud_os_struct_yaml = <<-YAML
+        cloud_os:
+          freebsd:
+            title: FreeBSD
+            series:
+              - version: '12.1'
+                code: 'freebsd-12.1-amd64'
+              - version: '11.3'
+                code: 'freebsd-11.3-amd64'
+          openbsd:
+            title: OpenBSD
+            series:
+              - version: '6.6'
+                code: 'openbsd-6.6-amd64'
+                pending: true
+          ubuntu:
+            title: Ubuntu Linux
+            series:
+              - version: '20.04'
+                code: 'ubuntu-20.04-amd64'
+      YAML
+
+      @cloud_os_struct = YAML.safe_load(@cloud_os_struct_yaml)['cloud_os']
+    end
+
+    context 'with freebsd-12.1-amd64 code' do
+      before do
+        @code = 'freebsd-12.1-amd64'
+      end
+
+      it 'should return FreeBSD' do
+        expect(VirtualMachine.os_display_name_from_code(@cloud_os_struct, @code)).to eq 'FreeBSD'
+      end
+
+      context 'with desired version' do
+        before do
+          @opts = { version: true }
+        end
+
+        it 'should return FreeBSD 12.1' do
+          expect(VirtualMachine.os_display_name_from_code(@cloud_os_struct, @code, @opts)).to eq 'FreeBSD 12.1'
+        end
+      end
+    end
+
+    context 'with openbsd-6.6-amd64 code' do
+      before do
+        @code = 'openbsd-6.6-amd64'
+      end
+
+      it 'should return OpenBSD' do
+        expect(VirtualMachine.os_display_name_from_code(@cloud_os_struct, @code)).to eq 'OpenBSD'
+      end
+
+      context 'with desired version' do
+        before do
+          @opts = { version: true }
+        end
+
+        it 'should return OpenBSD 6.6' do
+          expect(VirtualMachine.os_display_name_from_code(@cloud_os_struct, @code, @opts)).to eq 'OpenBSD 6.6'
+        end
+      end
+    end
+
+    context 'with non-existent code' do
+      before do
+        @code = 'centos-8.1-amd64'
+      end
+
+      it 'should return nil' do
+        expect(VirtualMachine.os_display_name_from_code(@cloud_os_struct, @code)).to be_nil
+      end
+    end
+  end
 end
