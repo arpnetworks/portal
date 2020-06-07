@@ -2,6 +2,8 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
   before_action :trusted_hosts
   before_action :find_virtual_machine, only: [:status]
 
+  skip_before_action :verify_authenticity_token, only: %i[status statuses]
+
   def status
     @old_status = @virtual_machine.status
     @new_status = params[:status]
