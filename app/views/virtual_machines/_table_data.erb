@@ -74,7 +74,7 @@
       <td class="storage" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.storage %> GB</td>
       <td <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.os %></td>
       <td <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.uuid %></td>
-      <td class="status" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.display_status %></td>
+      <td class="status" <%= virtual_machines_table_onClick(virtual_machine) %>><span class="<%= virtual_machine.status %>"><%= virtual_machine.display_status %></span></td>
 
     </tr>
   <% end %>

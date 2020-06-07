@@ -1,0 +1,39 @@
+@mixin vm-status {
+  background-repeat: no-repeat;
+  padding-left: 18px;
+  background-position: 0px 0px;
+}
+
+table.virtual_machines {
+  td.status {
+    .running {
+      @include vm-status;
+
+      background-image: url(/images/icons/bullet_green.png);
+    }
+
+    .stopping {
+      @include vm-status;
+
+      background-image: url(/images/icons/bullet_red.png);
+    }
+
+    .shutoff {
+      @include vm-status;
+
+      background-image: url(/images/icons/bullet_red.png);
+    }
+
+    .crashed {
+      @include vm-status;
+
+      background-image: url(/images/icons/bullet_red.png);
+    }
+
+    .suspended {
+      @include vm-status;
+
+      background-image: url(/images/icons/bullet_red.png);
+    }
+  }
+}
