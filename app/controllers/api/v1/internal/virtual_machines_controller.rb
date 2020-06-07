@@ -24,12 +24,22 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
       uuids[uuid] = status
     end
 
-    all_vms = VirtualMachine.where(uuid: uuids.keys)
+    sql_partial = ''
+    uuids.keys.each do |k|
+      sql_partial += "'#{k}', "
+    end
+    sql_partial = sql_partial[0..-3]
+
+    all_vms_raw = VirtualMachine.connection.select_all("SELECT uuid,status FROM virtual_machines WHERE uuid IN (" + sql_partial + ")")
 
     begin
-      all_vms.each do |vm|
-        new_status = uuids[vm.uuid]
-        vm.update_column(:status, new_status) if vm.status != new_status
+      all_vms_raw.each do |vm_and_status_in_db|
+        status_in_db = vm_and_status_in_db['status']
+        new_status = uuids[vm_and_status_in_db['uuid']]
+        if status_in_db != new_status
+          vm = VirtualMachine.find_by(uuid: vm_and_status_in_db['uuid'])
+          vm.update_column(:status, new_status)
+        end
       end
     rescue Exception => e
       render(text: "We encountered an error: #{e.message}") && (return)
