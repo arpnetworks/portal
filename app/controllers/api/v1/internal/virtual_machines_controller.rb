@@ -18,23 +18,21 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
   def statuses
     data = request.raw_post.to_s
 
+    uuids = {}
     data.split(';').each do |vm_and_status|
       uuid, status = vm_and_status.split(',')
+      uuids[uuid] = status
+    end
 
-      begin
-        vm = VirtualMachine.find_by(uuid: uuid, status: status)
+    all_vms = VirtualMachine.where(uuid: uuids.keys)
 
-        # If found, this VM's status has not changed, so we do not need to update
-        # anything, otherwise...
-        unless vm
-          vm = VirtualMachine.find_by(uuid: uuid)
-
-          # Does not run callbacks
-          vm&.update_column(:status, status)
-        end
-      rescue Exception => e
-        render(text: "We encountered an error: #{e.message}") && (return)
+    begin
+      all_vms.each do |vm|
+        new_status = uuids[vm.uuid]
+        vm.update_column(:status, new_status) if vm.status != new_status
       end
+    rescue Exception => e
+      render(text: "We encountered an error: #{e.message}") && (return)
     end
 
     render text: 'Performed without errors'
