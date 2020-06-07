@@ -197,6 +197,8 @@ class ServicesController < ProtectedController
   end
 
   def check_cc_exists_and_current
+    return if @account.beta_billing_exempt?
+
     if @account.credit_card.nil? || !@account.current?
       render 'new_gate'
 
