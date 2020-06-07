@@ -473,6 +473,11 @@ table.virtual_machines .storage {
   white-space: nowrap;
 }
 
+table.virtual_machines .status {
+  width: 2em;
+  white-space: nowrap;
+}
+
 table.virtual_machines tr.odd, table.virtual_machines tr.even {
   cursor: pointer;
 }

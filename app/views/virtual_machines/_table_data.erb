@@ -33,6 +33,7 @@
     <th class="storage">Storage</th>
     <th>Operating System</th>
     <th>UUID</th>
+    <th>Status</th>
   </tr>
 </thead>
 <tbody>
@@ -73,6 +74,7 @@
       <td class="storage" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.storage %> GB</td>
       <td <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.os %></td>
       <td <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.uuid %></td>
+      <td class="status" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.display_status %></td>
 
     </tr>
   <% end %>

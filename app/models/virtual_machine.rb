@@ -421,6 +421,20 @@ class VirtualMachine < ActiveRecord::Base
     pool && pool.name
   end
 
+  # The English (or other language) friendly version of VM status
+  def display_status
+    case status
+    when 'running'
+      'Running'
+    when 'stopping'
+      'Shutting Down'
+    when 'shutoff'
+      'Powered Off'
+    else
+      status
+    end
+  end
+
   def define!(opts = {})
     Jobs::DefineVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
   end

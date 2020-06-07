@@ -1,6 +1,6 @@
 module VirtualMachinesHelper
   def virtual_machines_colspan(admin)
-    admin ? 6 : 5
+    admin ? 7 : 6
   end
 
   def virtual_machines_table_onClick(vm)
