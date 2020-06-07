@@ -29,10 +29,8 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
         unless vm
           vm = VirtualMachine.find_by(uuid: uuid)
 
-          if vm
-            vm.status = status
-            vm.save
-          end
+          # Does not run callbacks
+          vm&.update_column(:status, status)
         end
       rescue Exception => e
         render(text: "We encountered an error: #{e.message}") && (return)
