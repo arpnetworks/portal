@@ -423,6 +423,11 @@ class VirtualMachine < ActiveRecord::Base
 
   # The English (or other language) friendly version of VM status
   def display_status
+    # Provisioning Status has priority
+    if display_provisioning_status != 'Done'
+      return display_provisioning_status
+    end
+
     case status
     when 'running'
       'Running'
@@ -438,17 +443,10 @@ class VirtualMachine < ActiveRecord::Base
   # The English (or other language) friendly version of VM provisioning status
   def display_provisioning_status
     case provisioning_status.to_s
-
-      # Assume if we don't have a status, then it's a VM set up prior to
-      # this field existing
-    when ''
-      'Done'
     when 'initializing'
       'Initializing'
-    when 'done'
-      'Done'
     else
-      provisioning_status
+      'Done'
     end
   end
 

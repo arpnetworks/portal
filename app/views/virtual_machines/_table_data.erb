@@ -81,7 +81,7 @@
       <td class="uuid" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.uuid %></td>
       <% end %>
       <td class="ip_address" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.display_ip_address %></td>
-      <td class="status" <%= virtual_machines_table_onClick(virtual_machine) %>><span class="<%= virtual_machine.status %>"><%= virtual_machine.display_status %></span></td>
+      <td class="status" <%= virtual_machines_table_onClick(virtual_machine) %>><span class="<%= (virtual_machine.display_provisioning_status != 'Done') ? virtual_machine.provisioning_status : virtual_machine.status %>"><%= virtual_machine.display_status %></span></td>
 
     </tr>
   <% end %>

@@ -35,6 +35,12 @@ table.virtual_machines {
 
       background-image: url(/images/icons/bullet_red.png);
     }
+
+    .initializing {
+      @include vm-status;
+
+      background-image: url(/images/icons/bullet_yellow.png);
+    }
   }
 
   td.ip_address {
@@ -45,5 +51,12 @@ table.virtual_machines {
   td.uuid {
     width: 5em;
     white-space: nowrap;
+  }
+}
+
+table.virtual_machine_detail {
+  td.notice {
+    background-color: #fff8e1;
+    line-height: 1.2;
   }
 }

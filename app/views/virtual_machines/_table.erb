@@ -12,6 +12,27 @@
         @virtual_machine.vnc_port != '' &&
         @virtual_machine.vnc_password != '' %>
 
+
+      <% if @virtual_machine.provisioning_status == 'initializing' %>
+      <tr>
+        <td></td>
+        <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+          Provisioning Notice
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="notice">
+          <i class="fas fa-exclamation-triangle"></i>
+          During the first few minutes of activation, your server may still be finishing installing and booting.
+          Click "View Console" below to watch it in action, but please don't interrupt what it is doing.
+
+          Your server may still be finishing installing and booting.  Please don't interrupt what it is doing.
+        </td>
+      </tr>
+      <% end %>
+
       <tr>
         <td></td>
         <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
