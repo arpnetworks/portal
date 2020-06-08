@@ -47,6 +47,20 @@ development:
     vm_base: /home/provisioning/vm
     scripts:
       make_config: ./make-it.sh
+    cloud_os:
+      freebsd:
+        title: FreeBSD
+        series:
+          - version: '12.1'
+            code: 'freebsd-12.1-amd64'
+          - version: '11.3'
+            code: 'freebsd-11.3-amd64'
+      openbsd:
+        title: OpenBSD
+        series:
+          - version: '6.6'
+            code: 'openbsd-6.6-amd64'
+            pending: true
   jobs:
     queue_health_exclusions:
       - 1
@@ -95,6 +109,20 @@ test:
     initial_host:
       lax: lax-host.example.com
       fra: fra-host.example.com
+    cloud_os:
+      freebsd:
+        title: FreeBSD
+        series:
+          - version: '12.1'
+            code: 'freebsd-12.1-amd64'
+          - version: '11.3'
+            code: 'freebsd-11.3-amd64'
+      openbsd:
+        title: OpenBSD
+        series:
+          - version: '6.6'
+            code: 'openbsd-6.6-amd64'
+            pending: true
   jobs:
     queue_health_exclusions:
       - 1
