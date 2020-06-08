@@ -5,6 +5,9 @@ env:
 
 cache: bundler
 
+before_install:
+  - sudo apt-get -y install mysql
+
 before_script:
   - "mysql -e 'create database arp_customer_cp_test;'"
   - "mysql -e 'create database powerdns_test;'"
