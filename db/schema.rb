@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200608053038) do
+ActiveRecord::Schema.define(version: 20200608103428) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "login",               limit: 255
@@ -294,6 +294,18 @@ ActiveRecord::Schema.define(version: 20200608053038) do
 
   add_index "services", ["account_id"], name: "account_id", using: :btree
   add_index "services", ["service_code_id"], name: "service_code_id", using: :btree
+
+  create_table "ssh_host_keys", force: :cascade do |t|
+    t.integer  "virtual_machine_id", limit: 4
+    t.text     "key",                limit: 65535
+    t.string   "fingerprint_md5",    limit: 255
+    t.string   "fingerprint_sha256", limit: 255
+    t.string   "key_type",           limit: 64
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ssh_host_keys", ["virtual_machine_id"], name: "index_ssh_host_keys_on_virtual_machine_id", using: :btree
 
   create_table "ssh_keys", force: :cascade do |t|
     t.integer  "account_id",         limit: 4

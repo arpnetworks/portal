@@ -3,6 +3,8 @@ class VirtualMachine < ActiveRecord::Base
   include Textilizable
 
   has_many :virtual_machines_interfaces
+  has_many :ssh_host_keys
+
   belongs_to :pool
 
   textilizable :notes
