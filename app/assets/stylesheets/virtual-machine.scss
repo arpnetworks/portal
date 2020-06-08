@@ -36,4 +36,14 @@ table.virtual_machines {
       background-image: url(/images/icons/bullet_red.png);
     }
   }
+
+  td.ip_address {
+    width: 3em;
+    white-space: nowrap;
+  }
+
+  td.uuid {
+    width: 5em;
+    white-space: nowrap;
+  }
 }

@@ -33,7 +33,9 @@
     <th class="storage">Storage</th>
     <th>Operating System</th>
     <th>UUID</th>
+    <th>IP Address</th>
     <th>Status</th>
+
   </tr>
 </thead>
 <tbody>
@@ -73,7 +75,8 @@
       <td class="ram"     <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.ram %> MB</td>
       <td class="storage" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.storage %> GB</td>
       <td <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.os %></td>
-      <td <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.uuid %></td>
+      <td class="uuid" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.uuid %></td>
+      <td class="ip_address" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.display_ip_address %></td>
       <td class="status" <%= virtual_machines_table_onClick(virtual_machine) %>><span class="<%= virtual_machine.status %>"><%= virtual_machine.display_status %></span></td>
 
     </tr>
