@@ -435,6 +435,19 @@ class VirtualMachine < ActiveRecord::Base
     end
   end
 
+  def display_ip_address
+    begin
+      raise if virtual_machines_interfaces.empty?
+
+      first_ip_address = virtual_machines_interfaces.first.ip_address
+      raise if first_ip_address.blank?
+
+      first_ip_address
+    rescue StandardError => e
+      'Not Available'
+    end
+  end
+
   def define!(opts = {})
     Jobs::DefineVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
   end

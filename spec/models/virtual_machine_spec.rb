@@ -279,6 +279,54 @@ context VirtualMachine do
   # END: Testing of Resourceable #
   ################################
 
+  context 'display_ip_address()' do
+    before do
+      @ip_address = '10.0.0.1'
+    end
+
+    context 'without VM interfaces' do
+      before do
+        allow(@vm).to receive(:virtual_machines_interfaces).and_return([])
+      end
+
+      it 'should return no available info' do
+        expect(@vm.display_ip_address).to eq 'Not Available'
+      end
+    end
+
+    context 'with VM interfaces' do
+      before do
+        allow(@vm.virtual_machines_interfaces.first).to receive(:ip_address).and_return @ip_address
+      end
+
+      context 'with non-empty IP address' do
+        it 'should return IP address' do
+          expect(@vm.display_ip_address).to eq @ip_address
+        end
+      end
+
+      context 'with nil IP address' do
+        before do
+          allow(@vm.virtual_machines_interfaces.first).to receive(:ip_address).and_return nil
+        end
+
+        it 'should return no available info' do
+          expect(@vm.display_ip_address).to eq 'Not Available'
+        end
+      end
+
+      context 'with blank IP address' do
+        before do
+          allow(@vm.virtual_machines_interfaces.first).to receive(:ip_address).and_return ''
+        end
+
+        it 'should return no available info' do
+          expect(@vm.display_ip_address).to eq 'Not Available'
+        end
+      end
+    end
+  end
+
   context 'self.os_display_name_from_code()' do
     before do
       @cloud_os_struct_yaml = <<-YAML
