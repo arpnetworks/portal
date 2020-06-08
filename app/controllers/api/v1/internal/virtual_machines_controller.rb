@@ -25,12 +25,12 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
     end
 
     sql_partial = ''
-    uuids.keys.each do |k|
+    uuids.each_key do |k|
       sql_partial += "'#{k}', "
     end
     sql_partial = sql_partial[0..-3]
 
-    all_vms_raw = VirtualMachine.connection.select_all("SELECT uuid,status FROM virtual_machines WHERE uuid IN (" + sql_partial + ")")
+    all_vms_raw = VirtualMachine.connection.select_all('SELECT uuid,status FROM virtual_machines WHERE uuid IN (' + sql_partial + ')')
 
     begin
       all_vms_raw.each do |vm_and_status_in_db|
