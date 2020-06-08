@@ -1,8 +1,8 @@
 class Api::V1::Internal::VirtualMachinesController < ApiController
-  before_action :trusted_hosts
-  before_action :find_virtual_machine, only: [:status]
+  before_action :trusted_hosts, except: [:phone_home]
+  before_action :find_virtual_machine, only: %i[status phone_home]
 
-  skip_before_action :verify_authenticity_token, only: %i[status statuses]
+  skip_before_action :verify_authenticity_token
 
   def status
     @old_status = @virtual_machine.status
@@ -46,6 +46,12 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
     end
 
     render text: 'Performed without errors'
+  end
+
+  def phone_home
+    @virtual_machine.update(provisioning_status: 'done')
+
+    render text: "Done\n"
   end
 
   private

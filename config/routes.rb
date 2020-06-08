@@ -126,6 +126,8 @@ Rails.application.routes.draw do
                                                      action: 'status'
         put 'virtual_machines/statuses',             controller: 'virtual_machines',
                                                      action: 'statuses'
+        post 'virtual_machines/phone_home/:uuid',    controller: 'virtual_machines',
+                                                     action: 'phone_home'
         # Provisioning
         get 'provisioning/:mac_address/config.tar.gz', controller: 'provisioning',
                                                        action: 'config'
