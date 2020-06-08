@@ -585,6 +585,8 @@ class VirtualMachine < ActiveRecord::Base
     @reverse_struct = {}
 
     cloud_os_struct.each do |_k, v|
+      next unless v['series']
+
       v['series'].each do |version|
         @reverse_struct[version['code']] = {
           title: v['title'],
