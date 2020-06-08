@@ -5,8 +5,8 @@ env:
 
 cache: bundler
 
-before_install:
-  - sudo apt-get -y install mysql-server
+services:
+  - mysql
 
 before_script:
   - "mysql -e 'create database arp_customer_cp_test;'"
