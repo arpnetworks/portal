@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200525225305) do
+ActiveRecord::Schema.define(version: 20200608053038) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "login",               limit: 255
@@ -310,24 +310,25 @@ ActiveRecord::Schema.define(version: 20200525225305) do
   add_index "ssh_keys", ["account_id"], name: "index_ssh_keys_on_account_id", using: :btree
 
   create_table "virtual_machines", force: :cascade do |t|
-    t.string   "uuid",               limit: 64,    null: false
-    t.string   "os",                 limit: 32
-    t.integer  "ram",                limit: 4
-    t.integer  "storage",            limit: 4
-    t.integer  "pool_id",            limit: 4
-    t.text     "notes",              limit: 65535
+    t.string   "uuid",                limit: 64,    null: false
+    t.string   "os",                  limit: 32
+    t.integer  "ram",                 limit: 4
+    t.integer  "storage",             limit: 4
+    t.integer  "pool_id",             limit: 4
+    t.text     "notes",               limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "console_login",      limit: 64
-    t.string   "conserver_password", limit: 128
-    t.string   "host",               limit: 128
-    t.integer  "vnc_port",           limit: 4
-    t.string   "vnc_password",       limit: 64
-    t.string   "label",              limit: 128
-    t.string   "os_template",        limit: 128
-    t.integer  "websocket_port",     limit: 4
-    t.integer  "serial_port",        limit: 4
-    t.string   "status",             limit: 64
+    t.string   "console_login",       limit: 64
+    t.string   "conserver_password",  limit: 128
+    t.string   "host",                limit: 128
+    t.integer  "vnc_port",            limit: 4
+    t.string   "vnc_password",        limit: 64
+    t.string   "label",               limit: 128
+    t.string   "os_template",         limit: 128
+    t.integer  "websocket_port",      limit: 4
+    t.integer  "serial_port",         limit: 4
+    t.string   "status",              limit: 64
+    t.string   "provisioning_status", limit: 64
   end
 
   add_index "virtual_machines", ["pool_id"], name: "pool_id", using: :btree
