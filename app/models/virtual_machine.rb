@@ -435,6 +435,23 @@ class VirtualMachine < ActiveRecord::Base
     end
   end
 
+  # The English (or other language) friendly version of VM provisioning status
+  def display_provisioning_status
+    case provisioning_status.to_s
+
+      # Assume if we don't have a status, then it's a VM set up prior to
+      # this field existing
+    when ''
+      'Done'
+    when 'initializing'
+      'Initializing'
+    when 'done'
+      'Done'
+    else
+      provisioning_status
+    end
+  end
+
   def display_ip_address
     begin
       raise if virtual_machines_interfaces.empty?
