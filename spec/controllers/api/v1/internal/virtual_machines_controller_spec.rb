@@ -39,30 +39,48 @@ describe Api::V1::Internal::VirtualMachinesController do
           @key_dsa = 'ssh-dsa AAAAA... root@example.com'
           @key_ecdsa = 'ssh-ecdsa AAAAA... root@example.com'
           @key_ed25519 = 'ssh-ed25519 AAAAA... root@example.com'
-        end
 
-        it 'should blow away existing keys' do
-          expect(@vm).to receive(:destroy_ssh_host_keys)
-          do_post
-          expect(@response).to be_success
-        end
-
-        it 'should set host keys' do
           @opts = {
             pub_key_rsa: @key_rsa,
             pub_key_dsa: @key_dsa,
             pub_key_ecdsa: @key_ecdsa,
             pub_key_ed25519: @key_ed25519
           }
+        end
 
-          expect(@vm).to receive(:set_ssh_host_key).with(@key_rsa)
-          expect(@vm).to receive(:set_ssh_host_key).with(@key_dsa)
-          expect(@vm).to receive(:set_ssh_host_key).with(@key_ecdsa)
-          expect(@vm).to receive(:set_ssh_host_key).with(@key_ed25519)
+        context 'with existing set empty' do
+          before do
+            allow(@vm.ssh_host_keys).to receive(:empty?).and_return(true)
+          end
 
-          do_post(@opts)
+          it 'should set host keys' do
+            expect(@vm).to receive(:set_ssh_host_key).with(@key_rsa)
+            expect(@vm).to receive(:set_ssh_host_key).with(@key_dsa)
+            expect(@vm).to receive(:set_ssh_host_key).with(@key_ecdsa)
+            expect(@vm).to receive(:set_ssh_host_key).with(@key_ed25519)
 
-          expect(@response).to be_success
+            do_post(@opts)
+
+            expect(@response).to be_success
+          end
+        end
+
+        context 'with non-empty existing set' do
+          before do
+            allow(@vm.ssh_host_keys).to receive(:empty?).and_return(false)
+            allow(@vm).to receive(:update)
+          end
+
+          it 'should not set host keys' do
+            expect(@vm).to_not receive(:set_ssh_host_key)
+            expect(@vm).to_not receive(:set_ssh_host_key)
+            expect(@vm).to_not receive(:set_ssh_host_key)
+            expect(@vm).to_not receive(:set_ssh_host_key)
+
+            do_post(@opts)
+
+            expect(@response).to be_success
+          end
         end
       end
     end
