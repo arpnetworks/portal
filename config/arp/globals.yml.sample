@@ -65,6 +65,10 @@ development:
   jobs:
     queue_health_exclusions:
       - 1
+  export:
+    exclusions:
+      account_ids:
+        - 1000
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp

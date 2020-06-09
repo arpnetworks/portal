@@ -16,6 +16,7 @@ accounts = Account.all.select do |a|
   a.email !~ /-DELETED/ and
   a.email !~ /-BANNED/ and
   a.email !~ /-DISABLED/ and
+  $EXPORT['exclusions']['account_ids'].include?(a.id)
 
   # If you never had a service, then you're not in the list
   !a.services.empty? and

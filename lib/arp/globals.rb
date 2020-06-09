@@ -44,4 +44,6 @@ if conf = @config[Rails.env]
   $CLOUD_OS         = $PROVISIONING['cloud_os']
 
   $JOBS_QUEUE_HEALTH_EXCLUSIONS = conf['jobs']['queue_health_exclusions']
+
+  $EXPORT           = conf['export']
 end
