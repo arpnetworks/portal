@@ -83,7 +83,7 @@ end
 
 desc "Backup (mysqldump) production databases and rsync to local box"
 task :backup do
-  on 'foo.example.com' do |host|
+  on @deploy['configs']['backup_host'] do |host|
     [['production', 'arp_customer_cp'], ['powerdns_production', 'powerdns']].each do |stuff|
       conf_entry = stuff[0]
       database   = stuff[1]

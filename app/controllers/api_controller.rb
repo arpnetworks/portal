@@ -18,6 +18,10 @@ class ApiController < ApplicationController
   def trusted_vm_hosts
     @remote_ip = request.env['REMOTE_ADDR']
 
+    if Rails.env == 'development'
+      return true if @remote_ip == '127.0.0.1'
+    end
+
     if @remote_ip.in?($PROXY_HOSTS) || @remote_ip == '127.0.0.1'
        @remote_ip = request.env['HTTP_X_FORWARDED_FOR']
     end
