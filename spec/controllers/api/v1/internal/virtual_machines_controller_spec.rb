@@ -41,6 +41,12 @@ describe Api::V1::Internal::VirtualMachinesController do
           @key_ed25519 = 'ssh-ed25519 AAAAA... root@example.com'
         end
 
+        it 'should blow away existing keys' do
+          expect(@vm).to receive(:destroy_ssh_host_keys)
+          do_post
+          expect(@response).to be_success
+        end
+
         it 'should set host keys' do
           @opts = {
             pub_key_rsa: @key_rsa,

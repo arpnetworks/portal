@@ -334,6 +334,10 @@ class VirtualMachine < ActiveRecord::Base
     end
   end
 
+  def destroy_ssh_host_keys
+    ssh_host_keys.destroy_all
+  end
+
   def cluster
     cluster = nil
 

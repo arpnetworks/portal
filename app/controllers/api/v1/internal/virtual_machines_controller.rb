@@ -51,6 +51,9 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
   def phone_home
     @virtual_machine.update(provisioning_status: 'done')
 
+    # Start with a blank slate, in case this VM has been re-provisioned
+    @virtual_machine.destroy_ssh_host_keys
+
     [params[:pub_key_rsa],
      params[:pub_key_dsa],
      params[:pub_key_ecdsa],
