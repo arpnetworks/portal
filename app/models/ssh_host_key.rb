@@ -15,9 +15,17 @@ class SshHostKey < ActiveRecord::Base
     key_file.close
 
     %w[md5 sha256].each do |fingerprint_hash|
-      argv = %W{/usr/bin/ssh-keygen -E #{fingerprint_hash} -l -f #{key_file.path}}
+      argv = %W[/usr/bin/ssh-keygen -E #{fingerprint_hash} -l -f #{key_file.path}]
       stdout, stderr, status = Open3.capture3(argv.shelljoin)
-      self.send('fingerprint_' + fingerprint_hash + '=', stdout)
+
+      if status.exitstatus > 0
+        logger.error "Received non-zero exit status when executing: #{argv.join(' ')}"
+        logger.error 'stdout: ' + stdout.strip
+        logger.error 'stderr: ' + stderr.strip
+        logger.error 'status: ' + status.to_s
+      else
+        send('fingerprint_' + fingerprint_hash + '=', stdout)
+      end
     end
 
     key_file.unlink

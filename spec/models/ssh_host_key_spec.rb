@@ -25,6 +25,12 @@ context SshHostKey do
           expect(@ssh_host_key.fingerprint_md5).to include('MD5:0a:ea:3e:a8:c5:bd:20:5b:a1:a8:e8:6f:b4:e5:b4:fa')
 
         end
+
+        it 'should generate fingerprints from callback upon creation' do
+          @ssh_host_key = create(:ssh_host_key, key: @rsa_key)
+          expect(@ssh_host_key.fingerprint_sha256).to include('SHA256:l29Gm4WNrcMHoIJYaz0SDLSUSt+4bGBTZmdzw7vI6a8')
+          expect(@ssh_host_key.fingerprint_md5).to include('MD5:0a:ea:3e:a8:c5:bd:20:5b:a1:a8:e8:6f:b4:e5:b4:fa')
+        end
       end
     end
   end
