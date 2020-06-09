@@ -318,20 +318,10 @@ class VirtualMachine < ActiveRecord::Base
   end
 
   def set_ssh_host_key(key)
-    begin
-      key_type = key.split(' ')[0].sub('ssh-', '')
+    return if key.blank?
+    return if key == 'N/A' # cloud-init sometimes does this
 
-      if host_key = ssh_host_keys.find_by(key_type: key_type)
-        # Overwrite existing one
-        host_key.key = key
-        host_key.save
-      else
-        host_key = ssh_host_keys.create(key: key)
-      end
-
-      host_key
-    rescue StandardError => e
-    end
+    ssh_host_keys.create(key: key)
   end
 
   def destroy_ssh_host_keys

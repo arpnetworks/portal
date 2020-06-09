@@ -290,38 +290,31 @@ context VirtualMachine do
         @key_type = 'rsa'
       end
 
-      context 'when no key already exists' do
-        before do
-          allow(@vm.ssh_host_keys).to receive(:find_by).with(key_type: 'rsa').and_return nil
-        end
+      it 'should create a key' do
+        expect(@vm.ssh_host_keys).to receive(:create).with(key: @ssh_host_key)
+        @vm.set_ssh_host_key(@ssh_host_key)
+      end
+    end
 
-        it 'should save new key' do
-          expect(@vm.ssh_host_keys).to receive(:create).with(key: @ssh_host_key)
-          @vm.set_ssh_host_key(@ssh_host_key)
-        end
-
-        it 'should return new key' do
-          @retval = 'a new key'
-          allow(@vm.ssh_host_keys).to receive(:create).and_return(@retval)
-          expect(@vm.set_ssh_host_key(@ssh_host_key)).to eq @retval
-        end
+    context 'with N/A key from cloud-init' do
+      before do
+        @ssh_host_key = 'N/A'
       end
 
-      context 'when key already exists' do
-        before do
-          @existing_ssh_host_key = build(:ssh_host_key)
-          allow(@vm.ssh_host_keys).to receive(:find_by).with(key_type: 'rsa').and_return @existing_ssh_host_key
-        end
+      it 'should not create a key' do
+        expect(@vm.ssh_host_keys).to_not receive(:create)
+        @vm.set_ssh_host_key(@ssh_host_key)
+      end
+    end
 
-        it 'should overwrite key with new one' do
-          expect(@existing_ssh_host_key).to receive(:key=).with(@ssh_host_key)
-          expect(@existing_ssh_host_key).to receive(:save)
-          @vm.set_ssh_host_key(@ssh_host_key)
-        end
+    context 'with blank key' do
+      before do
+        @ssh_host_key = ''
+      end
 
-        it 'should return overwritten key' do
-          expect(@vm.set_ssh_host_key(@ssh_host_key)).to eq @existing_ssh_host_key
-        end
+      it 'should not create a key' do
+        expect(@vm.ssh_host_keys).to_not receive(:create)
+        @vm.set_ssh_host_key(@ssh_host_key)
       end
     end
   end
