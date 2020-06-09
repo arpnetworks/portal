@@ -62,10 +62,10 @@ context SshHostKey do
           @ssh_host_key = build(:ssh_host_key, key: 'ssh-whatisthis?! AAAA... foo')
         end
 
-        it 'should set key_type to a new one' do
+        it 'should not set key_type' do
           expect(@ssh_host_key.key_type).to be_nil
           @ssh_host_key.send(:set_key_type)
-          expect(@ssh_host_key.key_type).to eq 'whatisthis?!'
+          expect(@ssh_host_key.key_type).to be_nil
         end
       end
     end

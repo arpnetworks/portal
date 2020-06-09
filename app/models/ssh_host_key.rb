@@ -26,8 +26,7 @@ class SshHostKey < ActiveRecord::Base
       when 'ssh-ed25519'
         self.key_type = 'ed25519'
       else
-        new_type = key_type[0].sub('ssh-', '')
-        self.key_type = new_type
+        self.key_type = nil
       end
     rescue StandardError => e
     end
