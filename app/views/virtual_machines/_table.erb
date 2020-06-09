@@ -256,6 +256,28 @@
 
     <% end %>
 
+    <% unless @virtual_machine.ssh_host_keys.empty? %>
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        SSH Host Keys
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+        <pre>
+          <% @virtual_machine.ssh_host_keys.each do |key| %>
+ <%= key.fingerprint_sha256.strip %>
+          <% end %>
+
+          <% @virtual_machine.ssh_host_keys.each do |key| %>
+ <%= key.fingerprint_md5.strip + "\n" %><% end %></pre>
+      </td>
+    </tr>
+    <% end %>
+
     <tr>
       <td></td>
       <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
