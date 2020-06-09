@@ -32,6 +32,33 @@ describe Api::V1::Internal::VirtualMachinesController do
         do_post
         expect(@vm.provisioning_status).to eq 'done'
       end
+
+      context 'with SSH host keys' do
+        before do
+          @key_rsa = 'ssh-rsa AAAAA... root@example.com'
+          @key_dsa = 'ssh-dsa AAAAA... root@example.com'
+          @key_ecdsa = 'ssh-ecdsa AAAAA... root@example.com'
+          @key_ed25519 = 'ssh-ed25519 AAAAA... root@example.com'
+        end
+
+        it 'should set host keys' do
+          @opts = {
+            pub_key_rsa: @key_rsa,
+            pub_key_dsa: @key_dsa,
+            pub_key_ecdsa: @key_ecdsa,
+            pub_key_ed25519: @key_ed25519
+          }
+
+          expect(@vm).to receive(:set_ssh_host_key).with(@key_rsa)
+          expect(@vm).to receive(:set_ssh_host_key).with(@key_dsa)
+          expect(@vm).to receive(:set_ssh_host_key).with(@key_ecdsa)
+          expect(@vm).to receive(:set_ssh_host_key).with(@key_ed25519)
+
+          do_post(@opts)
+
+          expect(@response).to be_success
+        end
+      end
     end
   end
 end

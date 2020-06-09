@@ -51,10 +51,12 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
   def phone_home
     @virtual_machine.update(provisioning_status: 'done')
 
-    @virtual_machine.ssh_host_keys.create(key: params[:pub_key_rsa], key_type: 'rsa') if params[:pub_key_rsa]
-    @virtual_machine.ssh_host_keys.create(key: params[:pub_key_dsa], key_type: 'dsa') if params[:pub_key_dsa]
-    @virtual_machine.ssh_host_keys.create(key: params[:pub_key_ecdsa], key_type: 'ecdsa') if params[:pub_key_ecdsa]
-    @virtual_machine.ssh_host_keys.create(key: params[:pub_key_ed25519], key_type: 'ed25519') if params[:pub_key_ed25519]
+    [params[:pub_key_rsa],
+     params[:pub_key_dsa],
+     params[:pub_key_ecdsa],
+     params[:pub_key_ed25519]].each do |key|
+       @virtual_machine.set_ssh_host_key(key) if key
+     end
 
     render text: "Done\n"
   end
