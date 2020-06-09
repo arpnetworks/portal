@@ -47,6 +47,7 @@ development:
     vm_base: /home/provisioning/vm
     scripts:
       make_config: ./make-it.sh
+      ssh_keygen: /usr/bin/ssh-keygen
     cloud_os:
       freebsd:
         title: FreeBSD
@@ -109,6 +110,8 @@ test:
     initial_host:
       lax: lax-host.example.com
       fra: fra-host.example.com
+    scripts:
+      ssh_keygen: /usr/bin/ssh-keygen
     cloud_os:
       freebsd:
         title: FreeBSD

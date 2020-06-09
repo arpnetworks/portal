@@ -15,7 +15,7 @@ class SshHostKey < ActiveRecord::Base
     key_file.close
 
     %w[md5 sha256].each do |fingerprint_hash|
-      argv = %W[/usr/bin/ssh-keygen -E #{fingerprint_hash} -l -f #{key_file.path}]
+      argv = %W[#{$PROVISIONING['scripts']['ssh_keygen']} -E #{fingerprint_hash} -l -f #{key_file.path}]
       stdout, stderr, status = Open3.capture3(argv.shelljoin)
 
       if status.exitstatus > 0
