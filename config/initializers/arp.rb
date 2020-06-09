@@ -8,5 +8,6 @@ require 'arp/redis'
 require 'arp/hosts'
 
 require 'digest'
+require 'open3'
 
 include Format
