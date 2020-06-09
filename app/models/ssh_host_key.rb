@@ -7,14 +7,18 @@ class SshHostKey < ActiveRecord::Base
 
   def display_fingerprint_md5
     parts = fingerprint_md5.strip.split(' ')
-    [parts[1], parts[3]].join(' ')
+    label = parts[3]
+    label = '' if label == 'comment'
+    [parts[1], label].join(' ')
   rescue
     ""
   end
 
   def display_fingerprint_sha256
     parts = fingerprint_sha256.strip.split(' ')
-    [parts[1], parts[3]].join(' ')
+    label = parts[3]
+    label = '' if label == 'comment'
+    [parts[1], label].join(' ')
   rescue
     ""
   end
