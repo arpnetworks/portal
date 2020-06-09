@@ -279,6 +279,53 @@ context VirtualMachine do
   # END: Testing of Resourceable #
   ################################
 
+  describe 'set_ssh_host_key()' do
+    before do
+      @vm = build(:virtual_machine)
+    end
+
+    context 'with RSA key' do
+      before do
+        @ssh_host_key = 'ssh-rsa AAAA... foo'
+        @key_type = 'rsa'
+      end
+
+      context 'when no key already exists' do
+        before do
+          allow(@vm.ssh_host_keys).to receive(:find_by).with(key_type: 'rsa').and_return nil
+        end
+
+        it 'should save new key' do
+          expect(@vm.ssh_host_keys).to receive(:create).with(key: @ssh_host_key)
+          @vm.set_ssh_host_key(@ssh_host_key)
+        end
+
+        it 'should return new key' do
+          @retval = 'a new key'
+          allow(@vm.ssh_host_keys).to receive(:create).and_return(@retval)
+          expect(@vm.set_ssh_host_key(@ssh_host_key)).to eq @retval
+        end
+      end
+
+      context 'when key already exists' do
+        before do
+          @existing_ssh_host_key = build(:ssh_host_key)
+          allow(@vm.ssh_host_keys).to receive(:find_by).with(key_type: 'rsa').and_return @existing_ssh_host_key
+        end
+
+        it 'should overwrite key with new one' do
+          expect(@existing_ssh_host_key).to receive(:key=).with(@ssh_host_key)
+          expect(@existing_ssh_host_key).to receive(:save)
+          @vm.set_ssh_host_key(@ssh_host_key)
+        end
+
+        it 'should return overwritten key' do
+          expect(@vm.set_ssh_host_key(@ssh_host_key)).to eq @existing_ssh_host_key
+        end
+      end
+    end
+  end
+
   context 'display_ip_address()' do
     before do
       @ip_address = '10.0.0.1'

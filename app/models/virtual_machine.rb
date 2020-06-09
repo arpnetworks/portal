@@ -317,6 +317,23 @@ class VirtualMachine < ActiveRecord::Base
     ARP_REDIS.lpush("queue:#{host}", job.to_json);
   end
 
+  def set_ssh_host_key(key)
+    begin
+      key_type = key.split(' ')[0].sub('ssh-', '')
+
+      if host_key = ssh_host_keys.find_by(key_type: key_type)
+        # Overwrite existing one
+        host_key.key = key
+        host_key.save
+      else
+        host_key = ssh_host_keys.create(key: key)
+      end
+
+      host_key
+    rescue StandardError => e
+    end
+  end
+
   def cluster
     cluster = nil
 
