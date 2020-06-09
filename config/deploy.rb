@@ -66,10 +66,7 @@ set :assets_roles, [:app]
 namespace :deploy do
   desc 'Copy stragglers'
   task :copy_stragglers do
-    stragglers = [
-      'bin/arp/provisioning/create_new_vps_account.rb',
-      'lib/arp/utils.rb'
-    ]
+    stragglers = @deploy['configs']['stragglers']
 
     stragglers.each do |straggler|
       on roles(:app) do
