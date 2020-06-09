@@ -268,12 +268,15 @@
       <td></td>
       <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
         <pre>
+
           <% @virtual_machine.ssh_host_keys.each do |key| %>
- <%= key.fingerprint_sha256.strip %>
+ <%= key.display_fingerprint_sha256 %>
           <% end %>
 
           <% @virtual_machine.ssh_host_keys.each do |key| %>
- <%= key.fingerprint_md5.strip + "\n" %><% end %></pre>
+ <%= key.display_fingerprint_md5 %>
+          <% end %>
+        </pre>
       </td>
     </tr>
     <% end %>

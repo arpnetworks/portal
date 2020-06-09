@@ -5,6 +5,20 @@ class SshHostKey < ActiveRecord::Base
 
   before_save :generate_fingerprints
 
+  def display_fingerprint_md5
+    parts = fingerprint_md5.strip.split(' ')
+    [parts[1], parts[3]].join(' ')
+  rescue
+    ""
+  end
+
+  def display_fingerprint_sha256
+    parts = fingerprint_sha256.strip.split(' ')
+    [parts[1], parts[3]].join(' ')
+  rescue
+    ""
+  end
+
   protected
 
   def generate_fingerprints
