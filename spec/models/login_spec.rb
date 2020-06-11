@@ -68,6 +68,17 @@ context Login do
               expect(cred.username).to eq @username
               expect(cred.password).to eq @password
             end
+
+            context 'and the wrong key' do
+              before do
+                @key = "somethin" * 4
+              end
+
+              it 'should return a blank password' do
+                credentials = Login.get_credentials(@vm, @key)
+                expect(credentials.first.password).to eq ""
+              end
+            end
           end
         end
 

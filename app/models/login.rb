@@ -29,9 +29,14 @@ class Login < ActiveRecord::Base
     logins.each do |login|
       decipher = OpenSSL::Cipher::AES256.new :CBC
       decipher.decrypt
-      decipher.iv = Base64.decode64(login.iv)
-      decipher.key = key
-      login.password = decipher.update(Base64.decode64(login.password)) + decipher.final
+
+      begin
+        decipher.iv = Base64.decode64(login.iv)
+        decipher.key = key
+        login.password = decipher.update(Base64.decode64(login.password)) + decipher.final
+      rescue StandardError
+        login.password = ''
+      end
     end
   end
 end
