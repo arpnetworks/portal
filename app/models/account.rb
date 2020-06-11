@@ -665,5 +665,9 @@ class Account < ActiveRecord::Base
       u = find_by(login: login, active: true)
       u && u.authenticated?(password) ? u : nil
     end
+
+    def generate_derived_key(password, salt)
+      OpenSSL::KDF.scrypt(password, salt: salt, N: 2**14, r: 8, p: 1, length: 32)
+    end
   end
 end
