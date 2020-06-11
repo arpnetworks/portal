@@ -11,8 +11,8 @@ class SshHostKey < ActiveRecord::Base
     label = parts[3]
     label = '' if label == 'comment'
     [parts[1], label].join(' ')
-  rescue
-    ""
+  rescue StandardError
+    ''
   end
 
   def display_fingerprint_sha256
@@ -20,16 +20,14 @@ class SshHostKey < ActiveRecord::Base
     label = parts[3]
     label = '' if label == 'comment'
     [parts[1], label].join(' ')
-  rescue
-    ""
+  rescue StandardError
+    ''
   end
 
   protected
 
   def prune_bad_keys
-    if key == 'N/A'
-      self.key = ""
-    end
+    self.key = '' if key == 'N/A'
   end
 
   def generate_fingerprints
