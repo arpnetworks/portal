@@ -4,6 +4,7 @@ class VirtualMachine < ActiveRecord::Base
 
   has_many :virtual_machines_interfaces
   has_many :ssh_host_keys
+  has_many :logins
 
   belongs_to :pool
 
