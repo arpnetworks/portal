@@ -84,8 +84,8 @@
       <td class="status" <%= virtual_machines_table_onClick(virtual_machine) %>>
 
         <% if virtual_machine.display_provisioning_status != 'Done' %>
-          <span class="icon has-text-warning">
-              <i class="fas fa-circle-notch fa-spin"></i>
+          <span class="icon has-text-info">
+              <i class="fas fa-circle"></i>
           </span>
         <% else %>
           <%
