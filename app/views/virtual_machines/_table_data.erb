@@ -81,7 +81,31 @@
       <td class="uuid" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.uuid %></td>
       <% end %>
       <td class="ip_address" <%= virtual_machines_table_onClick(virtual_machine) %>><%= virtual_machine.display_ip_address %></td>
-      <td class="status" <%= virtual_machines_table_onClick(virtual_machine) %>><span class="<%= (virtual_machine.display_provisioning_status != 'Done') ? virtual_machine.provisioning_status : virtual_machine.status %>"><%= virtual_machine.display_status %></span></td>
+      <td class="status" <%= virtual_machines_table_onClick(virtual_machine) %>>
+
+        <% if virtual_machine.display_provisioning_status != 'Done' %>
+          <span class="icon has-text-warning">
+              <i class="fas fa-circle-notch fa-spin"></i>
+          </span>
+        <% else %>
+          <%
+            case virtual_machine.status
+            when 'running'
+              icon_style = 'success'
+            when 'initializing'
+              icon_style = 'warning'
+            else
+              icon_style = 'danger'
+            end
+          %>
+        <span class="icon has-text-<%= icon_style %>">
+            <i class="fas fa-circle"></i>
+        </span>
+        <% end %>
+        <span>
+          <%= virtual_machine.display_status %>
+        </span>
+      </td>
 
     </tr>
   <% end %>
