@@ -18,8 +18,8 @@ class Login < ActiveRecord::Base
 
       vm.logins.create({
                          username: username,
-                         password: Base64.encode64(encrypted_password),
-                         iv: Base64.encode64(iv)
+                         password: Base64.encode64(encrypted_password).strip,
+                         iv: Base64.encode64(iv).strip
                        })
     rescue StandardError
     end
