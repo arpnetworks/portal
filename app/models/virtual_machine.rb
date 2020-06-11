@@ -493,6 +493,14 @@ class VirtualMachine < ActiveRecord::Base
     Jobs::CreateConfigDisk.new.perform({ vm: self, opts: opts }.to_json)
   end
 
+  def create_login_records!(users, key)
+    return if users.blank?
+
+    users.each do |user|
+      Login.set_credentials!(self, user['name'], user['password_plaintext'], key)
+    end
+  end
+
   # ****************************
   # ** This is the motherload **
   # ****************************
@@ -604,6 +612,8 @@ class VirtualMachine < ActiveRecord::Base
       @vm.create_config_disk!(@config_disk_options)
 
       @vm.update(provisioning_status: 'initializing')
+      @vm.create_login_records!(@config_disk_options[:users],
+                                @config_disk_options[:arpnet_dk]) if @config_disk_options[:users]
 
       # After the above final task, the VM must be started for it to
       # auto-provision itself with the config disk

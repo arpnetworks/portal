@@ -116,7 +116,7 @@ class AccountsController < ProtectedController
 
       # A symmetric key used for encryption/decryption, derived from a
       # secret that only the user knows (e.g. their password)
-      session[:dk] = Account.generate_derived_key(params[:account][:password], account.dk_salt)
+      session[:dk] = account.generate_derived_key(params[:account][:password])
 
       flash[:notice] = "Welcome #{account.display_name}, it is nice to see you."
       redirect_back_or_default(dashboard_path) && (return true)

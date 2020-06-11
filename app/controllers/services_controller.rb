@@ -334,14 +334,15 @@ class ServicesController < ProtectedController
       ssh_keys_and_options << {
         id: id,
         opts: {
-          password_plaintext: SecureRandom.base64(16),
+          password_plaintext: %x[/usr/bin/pwgen -nc 12 1].strip,
           sudo_nopasswd: true
         }
       }
     end
 
     config_disk_options = {
-      users: JSON.parse(SshKey.to_config_disk_json(ssh_keys_and_options))
+      users: JSON.parse(SshKey.to_config_disk_json(ssh_keys_and_options)),
+      arpnet_dk: session[:dk]
     }
 
     VirtualMachine.provision!(service,

@@ -663,6 +663,10 @@ class Account < ActiveRecord::Base
     line_items
   end
 
+  def generate_derived_key(password)
+    Account.generate_derived_key(password, dk_salt)
+  end
+
   class <<self
 
     # Authenticates a user by their login name and unencrypted password.
@@ -673,12 +677,14 @@ class Account < ActiveRecord::Base
     end
 
     def generate_derived_key(password, salt)
-      # Only in OpenSSL 1.1.x
+      # Only in OpenSSL 1.1.x, but it's better
       # OpenSSL::KDF.scrypt(password, salt: salt, N: 2**14, r: 8, p: 1, length: 32)
 
       hash = OpenSSL::Digest::SHA256.new
       len = hash.digest_length
-      OpenSSL::KDF.pbkdf2_hmac(password, salt: salt, iterations: 20_000, length: len, hash: hash)
+      key = OpenSSL::KDF.pbkdf2_hmac(password, salt: salt, iterations: 20_000, length: len, hash: hash)
+
+      Base64.encode64(key)
     end
   end
 end

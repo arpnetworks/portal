@@ -11,6 +11,7 @@ class Login < ActiveRecord::Base
     cipher.encrypt
 
     begin
+      key = Base64.decode64(key)
       cipher.key = key
       iv = cipher.random_iv
 
@@ -21,7 +22,8 @@ class Login < ActiveRecord::Base
                          password: Base64.encode64(encrypted_password).strip,
                          iv: Base64.encode64(iv).strip
                        })
-    rescue StandardError
+    rescue StandardError => e
+      logger.error "We have an error in Login.set_credentials!(): " + e.message unless Rails.env == 'test'
     end
   end
 
@@ -36,9 +38,11 @@ class Login < ActiveRecord::Base
 
       begin
         decipher.iv = Base64.decode64(login.iv)
-        decipher.key = key
+        decipher.key = Base64.decode64(key)
         login.password = decipher.update(Base64.decode64(login.password)) + decipher.final
-      rescue StandardError
+      rescue StandardError => e
+        logger.error "We have an error in Login.get_credentials(): " + e.message unless Rails.env == 'test'
+
         login.password = ''
       end
     end
