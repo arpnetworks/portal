@@ -64,11 +64,14 @@
 
       <% if @enable_admin_view %>
           <% unless @sub_admin_view %>
-          <%= link_to(image_tag('/images/icons/pencil.png', :alt => "Edit"), edit_admin_virtual_machine_path(virtual_machine.id)) %>
-          <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"),
-                      admin_virtual_machine_path(virtual_machine.id),
-                      :method => :delete,
-                      :data => { :confirm => 'Are you sure you want to delete this virtual machine?  THIS CANNOT BE UNDONE.' }) %>
+          <span class="icon has-text-warning">
+            <a href='<%= edit_admin_virtual_machine_path(virtual_machine.id) %>'><i class="fas fa-edit"></i></a>
+          </span>
+          <span class="icon has-text-danger">
+            <a href='<%= admin_virtual_machine_path(virtual_machine.id) %>'
+               data-confirm="Are you sure you want to delete this service?  All *RESOURCES* assigned to this service will **ALSO BE DELETED**.  THIS CANNOT BE UNDONE."
+               rel="nofollow" data-method="delete" ><i class="fas fa-times"></i></a>
+          </span>
           <% end %>
         <td class="account"><%= h(admin_account_path_from_resource(virtual_machine.resource)) %></td>
       <% end %>
