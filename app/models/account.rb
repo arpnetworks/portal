@@ -20,6 +20,12 @@ class Account < ActiveRecord::Base
   validates_format_of        :email_billing, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\s*\Z/i, :allow_blank => true
   validates_format_of        :email2       , :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\s*\Z/i, :allow_blank => true
 
+  before_create :generate_dk_salt
+
+  def generate_dk_salt
+    self.dk_salt = SecureRandom.alphanumeric(16)
+  end
+
   scope :suspended, -> { where("vlan_shutdown = 1") }
 
   def validate
