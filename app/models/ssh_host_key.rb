@@ -3,6 +3,7 @@ class SshHostKey < ActiveRecord::Base
 
   validates :key, presence: true
 
+  before_save :prune_bad_keys
   before_save :generate_fingerprints
 
   def display_fingerprint_md5
@@ -24,6 +25,12 @@ class SshHostKey < ActiveRecord::Base
   end
 
   protected
+
+  def prune_bad_keys
+    if key == 'N/A'
+      self.key = ""
+    end
+  end
 
   def generate_fingerprints
     return if key.blank?
