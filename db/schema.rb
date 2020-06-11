@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200609084635) do
+ActiveRecord::Schema.define(version: 20200611081628) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "login",               limit: 255
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20200609084635) do
     t.datetime "vlan_shutdown_at"
     t.boolean  "beta_features",                   default: false, null: false
     t.boolean  "beta_billing_exempt",             default: false, null: false
+    t.string   "dk_salt",             limit: 32
   end
 
   create_table "backup_quotas", force: :cascade do |t|
@@ -214,6 +215,17 @@ ActiveRecord::Schema.define(version: 20200609084635) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "logins", force: :cascade do |t|
+    t.integer  "virtual_machine_id", limit: 4
+    t.string   "username",           limit: 64
+    t.string   "password",           limit: 255
+    t.string   "iv",                 limit: 64
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "logins", ["virtual_machine_id"], name: "index_logins_on_virtual_machine_id", using: :btree
 
   create_table "payments", force: :cascade do |t|
     t.integer  "account_id",       limit: 4,                                            null: false
