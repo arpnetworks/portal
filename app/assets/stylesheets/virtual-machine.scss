@@ -1,3 +1,4 @@
+// No longer used
 @mixin vm-status {
   background-repeat: no-repeat;
   padding-left: 12px;
@@ -5,44 +6,6 @@
 }
 
 table.virtual_machines {
-  td.status {
-    .running {
-      @include vm-status;
-
-      background-image: url(/images/icons/bullet_green.png);
-    }
-
-    .stopping {
-      @include vm-status;
-
-      background-image: url(/images/icons/bullet_red.png);
-    }
-
-    .shutoff {
-      @include vm-status;
-
-      background-image: url(/images/icons/bullet_red.png);
-    }
-
-    .crashed {
-      @include vm-status;
-
-      background-image: url(/images/icons/bullet_red.png);
-    }
-
-    .suspended {
-      @include vm-status;
-
-      background-image: url(/images/icons/bullet_red.png);
-    }
-
-    .initializing {
-      @include vm-status;
-
-      background-image: url(/images/icons/bullet_yellow.png);
-    }
-  }
-
   td.ip_address {
     width: 3em;
     white-space: nowrap;
