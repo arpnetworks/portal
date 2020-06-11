@@ -673,7 +673,12 @@ class Account < ActiveRecord::Base
     end
 
     def generate_derived_key(password, salt)
-      OpenSSL::KDF.scrypt(password, salt: salt, N: 2**14, r: 8, p: 1, length: 32)
+      # Only in OpenSSL 1.1.x
+      # OpenSSL::KDF.scrypt(password, salt: salt, N: 2**14, r: 8, p: 1, length: 32)
+
+      hash = OpenSSL::Digest::SHA256.new
+      len = hash.digest_length
+      OpenSSL::KDF.pbkdf2_hmac(password, salt: salt, iterations: 20_000, length: len, hash: hash)
     end
   end
 end
