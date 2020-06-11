@@ -30,6 +30,18 @@ context Login do
             expect(logins.size).to eq 1
             expect(logins.first.password).to_not eq @password
           end
+
+          context 'and a bad key' do
+            before do
+              @key = 'too short'
+            end
+
+            it 'should do nothing' do
+              Login.delete_all
+              do_set_credentials
+              expect(Login.count).to eq 0
+            end
+          end
         end
 
         context 'without VM' do
@@ -71,12 +83,12 @@ context Login do
 
             context 'and the wrong key' do
               before do
-                @key = "somethin" * 4
+                @key = 'somethin' * 4
               end
 
               it 'should return a blank password' do
                 credentials = Login.get_credentials(@vm, @key)
-                expect(credentials.first.password).to eq ""
+                expect(credentials.first.password).to eq ''
               end
             end
           end

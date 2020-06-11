@@ -9,16 +9,20 @@ class Login < ActiveRecord::Base
 
     cipher = OpenSSL::Cipher::AES256.new :CBC
     cipher.encrypt
-    cipher.key = key
-    iv = cipher.random_iv
 
-    encrypted_password = cipher.update(password) + cipher.final
+    begin
+      cipher.key = key
+      iv = cipher.random_iv
 
-    vm.logins.create({
-                       username: username,
-                       password: Base64.encode64(encrypted_password),
-                       iv: Base64.encode64(iv)
-                     })
+      encrypted_password = cipher.update(password) + cipher.final
+
+      vm.logins.create({
+                         username: username,
+                         password: Base64.encode64(encrypted_password),
+                         iv: Base64.encode64(iv)
+                       })
+    rescue StandardError
+    end
   end
 
   def self.get_credentials(vm, key)
