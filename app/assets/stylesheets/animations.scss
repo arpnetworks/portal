@@ -34,11 +34,34 @@
   }
 }
 
-.fade-in {
+
+%fade-in {
   animation-duration: 1s;
   animation-timing-function: cubic-bezier(0, 0.5, 0, 1);
   animation-fill-mode: both;
+}
+
+.fade-in {
+  @extend %fade-in;
   animation-name: fadeIn;
+}
+
+// I know there's a SASS'y-er way to do this...
+@include keyframes(fadeInGray) {
+  from {
+    background-color: yellow;
+    opacity: 0;
+  }
+
+  to {
+    background-color: hsl(0, 0%, 96%);
+    opacity: 1;
+  }
+}
+
+.fade-in-gray {
+  @extend %fade-in;
+  animation-name: fadeInGray;
 }
 
 @include keyframes(errorNotice) {
