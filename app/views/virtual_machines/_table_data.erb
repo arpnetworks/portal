@@ -95,7 +95,7 @@
             when 'initializing'
               icon_style = 'warning'
             else
-              icon_style = 'danger'
+              icon_style = 'warning'
             end
           %>
         <span class="icon has-text-<%= icon_style %>">
@@ -103,7 +103,7 @@
         </span>
         <% end %>
         <span>
-          <%= virtual_machine.display_status %>
+          <%= virtual_machine.display_status || 'Unknown' %>
         </span>
       </td>
 
