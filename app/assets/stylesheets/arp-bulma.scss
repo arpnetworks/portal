@@ -40,6 +40,9 @@ $fullhd-enabled: true;
 @import "../../../node_modules/bulma/sass/components/level.sass";
 @import "../../../node_modules/bulma/sass/elements/container.sass";
 
+// Notifications
+@import "../../../node_modules/bulma/sass/elements/notification.sass";
+
 // Helpers
 
 @import "../../../node_modules/bulma/sass/base/helpers.sass";

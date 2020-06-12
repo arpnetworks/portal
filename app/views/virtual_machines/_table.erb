@@ -23,13 +23,54 @@
 
       <tr>
         <td></td>
-        <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="notice">
+        <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+            <div class="notification is-warning is-light">
           <span class="icon has-text-warning">
               <i class="fas fa-cog fa-spin"></i>
           </span>
           Your server is still installing and booting.  Please don't interrupt what it is doing.
+            </div>
         </td>
       </tr>
+      <% end %>
+
+      <% @logins = Login.get_credentials(@virtual_machine, session[:dk]) %>
+      <% unless @logins.empty? %>
+      <tr>
+        <td></td>
+        <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+          Initial Logins
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+          <div id='initial_logins' class="magic-password" style='margin-top: 1rem'>
+            <div class='notification'>
+            <% @logins.each do |login| %>
+              <span class="icon">
+                <i class="fas fa-lock"></i>
+              </span>
+              <span>Password for <strong><%= login.username %></strong> is: <%= login.password %></span>
+              <span class="icon">
+                <i class="far fa-copy"></i>
+              </span>
+              <br/>
+            <% end %>
+            </div>
+            <div class="notification" style='margin-bottom: 1rem'>
+              <span class="icon has-text-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+              </span>
+              <span>
+                Please change your passwords.  For security, credentials here will be removed periodically.
+              </span>
+            </div>
+          </div>
+        </td>
+      </tr>
+
       <% end %>
 
       <tr>
