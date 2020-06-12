@@ -375,4 +375,21 @@ $(function () {
     $(".navbar-burger").toggleClass("is-active");
     $(".navbar-menu").toggleClass("is-active");
   });
+
+  // ------------ //
+  // clipboard.js //
+  // ------------ //
+  var clipboard = new ClipboardJS(".copy-button");
+
+  clipboard.on("success", function (e) {
+    e.clearSelection();
+
+    var target = e.trigger.dataset["clipboardTarget"];
+    $(target).addClass("fade-in-gray");
+    resetCSSAnimation(target);
+  });
+
+  clipboard.on("error", function (e) {
+    console.log(e);
+  });
 });

@@ -5,3 +5,9 @@
   -o-#{$property}: #{$values};
   #{$property}: #{$values};
 }
+
+.copy-button {
+  &:hover {
+    cursor: pointer;
+  }
+}
