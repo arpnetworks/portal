@@ -47,8 +47,26 @@
   </tbody>
 </table>
 
+<div class="columns">
+  <div class="column has-text-centered">
+    <button class='button is-small' id='go-back'>
+      <span class="icon is-small">
+        <i class="fas fa-chevron-left"></i>
+      </span>
+      <span>
+        No, Make Changes
+      </span>
+    </button>
+  </div>
+</div>
+
 <script type='text/javascript'>
   $("form#authorize").submit(function() {
     $(this).find("button[type='submit']").attr("disabled", true);
   });
+
+  $("button#go-back").click(function(e) {
+    window.location.replace('<%= new_account_service_path %>?utf8=%E2%9C%93&service=vps_with_os');
+    e.preventDefault();
+  })
 </script>
