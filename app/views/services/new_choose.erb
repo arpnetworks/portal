@@ -9,7 +9,7 @@
           <ul>
             <% if @account.beta_features %>
               <%= radio_button_tag(:service, "vps_with_os", false) %>
-              <%= label_tag(:service_vps_with_os, "VPS (with OS)") %>
+              <%= label_tag(:service_vps_with_os, "VPS") %>
             <% else %>
             <li>
               <%= radio_button_tag(:service, "vps_with_os", false, :disabled => true) %>
