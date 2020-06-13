@@ -85,21 +85,24 @@
 
         <% if virtual_machine.display_provisioning_status != 'Done' %>
           <span class="icon has-text-info">
-              <i class="fas fa-circle"></i>
+              <i class="fas fa-cogs"></i>
           </span>
         <% else %>
           <%
             case virtual_machine.status
             when 'running'
               icon_style = 'success'
+              icon = 'far fa-dot-circle'
             when 'initializing'
               icon_style = 'warning'
+              icon = 'fas fa-circle'
             else
-              icon_style = 'warning'
+              icon_style = 'danger'
+              icon = 'fas fa-power-off'
             end
           %>
         <span class="icon has-text-<%= icon_style %>">
-            <i class="fas fa-circle"></i>
+          <i class="<%= icon %>"></i>
         </span>
         <% end %>
         <span>
