@@ -2,9 +2,9 @@ class VirtualMachine < ActiveRecord::Base
   include Resourceable
   include Textilizable
 
-  has_many :virtual_machines_interfaces
-  has_many :ssh_host_keys
-  has_many :logins
+  has_many :virtual_machines_interfaces, dependent: :destroy
+  has_many :ssh_host_keys, dependent: :destroy
+  has_many :logins, dependent: :destroy
 
   belongs_to :pool
 
