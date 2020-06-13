@@ -11,7 +11,9 @@
       <select name='plan'>
         <option value=''>Please Choose</option>
         <% VirtualMachine.plans['vps'].sort_by { |k, v| v['mrc'] }.each do |k, plan| %>
-          <option value='<%= k %>'<%= k == 'small' ? ' selected' : '' %>>
+          <%# <option value='<%= k %1>'<%= k == 'small' ? ' selected' : '' %1>> %>
+          <% selected_plan = (p = session['form']['plan']) ? p : 'small' %>
+          <option value='<%= k %>'<%= selected_plan == k ? ' selected' : '' %>>
           <%= plan['ram'] %> MB RAM, <%= plan['storage'] %> GB HD, <%= plan['bandwidth'] / 1000 %> TB Bandwidth: $<%= plan['mrc'] %>
           </option>
         <% end %>
@@ -27,7 +29,7 @@
     <div id='os_selector'>
       <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
         <% v['series'].sort { |a, b| b['version'] <=> a['version'] }.each do |series| %>
-          <input type='radio' id='os_<%= series['code'] %>' name='os' value='<%= series['code'] %>' <%= series['pending'] && 'disabled' %>>
+          <input type='radio' id='os_<%= series['code'] %>' name='os' value='<%= series['code'] %>' <%= series['pending'] && 'disabled' %> <%= session['form']['os'] == series['code'] ? 'checked' : '' %>>
           <label for='os_<%= series['code'] %>' class='<%= series['pending'] && 'disabled' %>'><img src='/images/icons/os/<%= k %>.png' width="16" height="16" alt='<%= v['title'] %> icon'>
             <%= v['title'] %> <%= series['version'] %>
           </label>
@@ -106,10 +108,6 @@
 
   </div>
 </div>
-
-<br/>
-<br/>
-<br/>
 
 <% content_for :js do %>
   $(document).ready(function() {
