@@ -8,9 +8,19 @@
 
     <%= render :partial => "new_" + @service %>
 
-    <div>
-      <%= hidden_field_tag(:service, @service) %>
-      <button type='submit' class='btn btn-info'><i class="fas fa-chevron-right"></i> &nbsp;Continue</button>
+    <%= hidden_field_tag(:service, @service) %>
+
+    <div class="columns">
+      <div class="column has-text-centered">
+        <button type='submit' class='button is-link'>
+          <span class="icon is-small">
+            <i class="fas fa-chevron-right"></i>
+          </span>
+          <span>
+            Continue
+          </span>
+        </button>
+      </div>
     </div>
 
   <% end %>
