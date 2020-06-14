@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200611081628) do
+ActiveRecord::Schema.define(version: 20200613093259) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "login",               limit: 255
@@ -126,6 +126,12 @@ ActiveRecord::Schema.define(version: 20200611081628) do
   end
 
   add_index "credit_cards", ["account_id"], name: "account_id", using: :btree
+
+  create_table "exports", force: :cascade do |t|
+    t.datetime "exported_at"
+    t.integer  "records",     limit: 4
+    t.string   "record_type", limit: 128
+  end
 
   create_table "hosts", force: :cascade do |t|
     t.integer  "location_id", limit: 4,   null: false
