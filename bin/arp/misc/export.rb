@@ -22,7 +22,7 @@ Export.record_export!("Account") do |last_export|
     a.email !~ /-DELETED/ and
     a.email !~ /-BANNED/ and
     a.email !~ /-DISABLED/ and
-    $EXPORT['exclusions']['account_ids'].include?(a.id)
+    !$EXPORT['exclusions']['account_ids'].include?(a.id) and
 
     # If you never had a service, then you're not in the list
     !a.services.empty? and
