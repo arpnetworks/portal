@@ -123,9 +123,17 @@ task :backup do
         if conf['adapter'] == 'mysql2'
           mysql = `which mysql mysql5`.split("\n")
           if mysql && mysql[0]
+            if conf['database'] !~ /powerdns/
+              puts "Saving exports table"
+              `mysqldump -u #{conf['username']} -h #{conf['host'] || '127.0.0.1'} -p #{conf['database']} --no-create-info --tables exports > /tmp/exports.sql`
+            end
             puts "Loading data from #{filename} into *local* development DB"
             puts "Executing `bunzip2 -c #{filename} | #{mysql[0]} -u #{conf['username']} -h #{conf['host'] || '127.0.0.1'} -p #{conf['database']}`"
             `bunzip2 -c #{filename} | #{mysql[0]} -u #{conf['username']} -h #{conf['host'] || '127.0.0.1'} -p #{conf['database']}`
+            if conf['database'] !~ /powerdns/
+              puts "Restoring exports table"
+              `cat /tmp/exports.sql | #{mysql[0]} -u #{conf['username']} -h #{conf['host'] || '127.0.0.1'} -p #{conf['database']}`
+            end
           end
         end
       end
