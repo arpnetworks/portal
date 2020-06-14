@@ -2,11 +2,14 @@
 
 require 'csv'
 
-# Rails
-APP_PATH = File.expand_path('../../../../config/application', __FILE__)
-require_relative '../../../config/boot'
-require APP_PATH
-Rails.application.require_environment!
+# If we're running this from Spring, we'll already have APP_PATH
+unless APP_PATH
+  # Rails
+  APP_PATH = File.expand_path('../../../../config/application', __FILE__)
+  require_relative '../../../config/boot'
+  require APP_PATH
+  Rails.application.require_environment!
+end
 
 puts "Email, Name, Company, Address, Customer Since, Cancellation Date, Suspension Date, Customer Type, Customer Status, Label, MRC, Balance"
 
