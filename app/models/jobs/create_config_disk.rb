@@ -61,7 +61,7 @@ class Jobs::CreateConfigDisk < Job
             encoding: 'b64',
             content: encoded,
             owner: 'root:root',
-            path: '/etc/ttys',
+            path: '/etc/resolv.conf',
             permissions: '0644'
           }
         end
