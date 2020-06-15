@@ -86,9 +86,7 @@ class Jobs::DefineVM < Job
     case os
     when 'freebsd'
       case os_version
-      when '11.3'
-        opt_params[:attach_config_disk] = true
-      when '12.1'
+      when '11.3','12.1'
         opt_params[:attach_config_disk] = true
       end
     when 'ubuntu'
@@ -99,6 +97,11 @@ class Jobs::DefineVM < Job
     when 'centos'
       case os_version
       when '8.1'
+        opt_params[:attach_config_disk] = true
+      end
+    when 'debian'
+      case os_version
+      when '9.12','10.4'
         opt_params[:attach_config_disk] = true
       end
     end
