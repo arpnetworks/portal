@@ -64,6 +64,7 @@ class Jobs::CreateConfigDisk < Job
             path: '/etc/ttys',
             permissions: '0644'
           }
+        end
       end
     end
 
