@@ -104,6 +104,8 @@ class Jobs::DefineVM < Job
       when '9.12','10.4'
         opt_params[:attach_config_disk] = true
       end
+    when 'fedora'
+      opt_params[:attach_config_disk] = true
     end
 
     work = {
