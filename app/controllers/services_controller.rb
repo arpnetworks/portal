@@ -167,8 +167,13 @@ class ServicesController < ProtectedController
 
     session[:pending_invoice_ids].each do |invoice_id|
       invoice = Invoice.find(invoice_id)
-      invoice.pending = false
-      invoice.save
+
+      if @account.beta_billing_exempt?
+        invoice.destroy
+      else
+        invoice.pending = false
+        invoice.save
+      end
     end
 
     case session[:service_to_enable]
