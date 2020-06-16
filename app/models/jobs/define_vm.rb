@@ -91,7 +91,7 @@ class Jobs::DefineVM < Job
       end
     when 'ubuntu'
       case os_version
-      when '20.04'
+      when '18.04','20.04'
         opt_params[:attach_config_disk] = true
       end
     when 'centos'
