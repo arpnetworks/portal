@@ -17,7 +17,7 @@ class Jobs::DefineVM < Job
     os, os_version, arch = vm.os_template.split('-')
 
     # Defaults
-    iso = 'systemrescuecd-x86-4.6.1.iso'
+    iso = 'systemrescuecd-amd64-6.1.5.iso'
     opt_params = {
       :cache => 'none',
       :io    => 'native',
