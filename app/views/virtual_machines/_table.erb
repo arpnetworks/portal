@@ -433,7 +433,8 @@
 
 <% if @enable_admin_view %>
   <div>
-    <strong><%= @virtual_machine.uuid %></strong>, <%= link_to 'VM Service', admin_service_path(@virtual_machine.service_id) %>
+    <span id='vm-uuid' class='copy-button' data-clipboard-action="copy" data-clipboard-target="#vm-uuid">
+      <strong><%= @virtual_machine.uuid %></strong></span>, <%= link_to 'VM Service', admin_service_path(@virtual_machine.service_id) %>
   <br/><br/>
   </div>
 <% end %>
