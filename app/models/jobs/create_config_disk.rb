@@ -66,6 +66,19 @@ class Jobs::CreateConfigDisk < Job
           }
         end
       end
+    when 'opensuse_leap_jeos'
+      template_file = "config/cloud-init/images/#{vm.os_template}/etc/resolv.conf"
+      if File.exists?(template_file)
+        ttys = File.open(template_file).read
+        encoded = Base64.encode64(ttys).gsub(/\n/,"")
+        opts[:write_files] << {
+          encoding: 'b64',
+          content: encoded,
+          owner: 'root:root',
+          path: '/etc/resolv.conf',
+          permissions: '0644'
+        }
+      end
     end
 
     # Extract network info from VM object
