@@ -106,6 +106,8 @@ class Jobs::DefineVM < Job
       end
     when 'fedora'
       opt_params[:attach_config_disk] = true
+    when 'opensuse_leap_jeos'
+      opt_params[:attach_config_disk] = true
     end
 
     work = {
