@@ -108,6 +108,8 @@ class Jobs::DefineVM < Job
       opt_params[:attach_config_disk] = true
     when 'opensuse_leap_jeos'
       opt_params[:attach_config_disk] = true
+    when 'archlinux'
+      opt_params[:attach_config_disk] = true
     end
 
     work = {
