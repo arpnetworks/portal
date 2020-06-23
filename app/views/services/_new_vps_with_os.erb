@@ -27,7 +27,7 @@
       Operating System:
     </div>
     <div id='os_selector'>
-      <% $CLOUD_OS.sort_by { |k, v| v['title'] }.each do |k, v| %>
+      <% $CLOUD_OS.sort_by { |k, v| v['title'].downcase }.each do |k, v| %>
         <% v['series'].sort { |a, b| b['version'] <=> a['version'] }.each do |series| %>
           <input type='radio' id='os_<%= series['code'] %>' name='os' value='<%= series['code'] %>' <%= series['pending'] && 'disabled' %> <%= session['form']['os'] == series['code'] ? 'checked' : '' %>>
           <label for='os_<%= series['code'] %>' class='<%= series['pending'] && 'disabled' %>'><img src='/images/icons/os/<%= k %>.png' width="16" height="16" alt='<%= v['title'] %> icon'>
