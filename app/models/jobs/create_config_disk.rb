@@ -66,7 +66,7 @@ class Jobs::CreateConfigDisk < Job
           }
         end
       end
-    when 'opensuse_leap_jeos', 'gentoo'
+    when 'opensuse_leap_jeos'
       template_file = "config/cloud-init/images/#{vm.os_template}/etc/resolv.conf"
       if File.exists?(template_file)
         ttys = File.open(template_file).read
