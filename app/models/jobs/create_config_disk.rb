@@ -28,6 +28,7 @@ class Jobs::CreateConfigDisk < Job
       opts[:flavor] = 'bsd'
     when 'openbsd'
       opts[:flavor] = 'bsd'
+      opts[:passwd_hash] = 'blowfish'
     end
 
     # We need slight tweaks to some files, for some OS/distros
