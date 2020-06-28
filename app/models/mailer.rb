@@ -2,10 +2,10 @@ class Mailer < ActionMailer::Base
   helper ActionView::Helpers::UrlHelper
 
   def forgot_password(controller, account, new_password)
-    raise "No new password provided" if new_password.nil? or new_password.blank?
-    raise "Controller not specified" if controller.nil?
+    raise 'No new password provided' if new_password.nil? || new_password.blank?
+    raise 'Controller not specified' if controller.nil?
 
-    @subject    = "ARP Networks Account Information"
+    @subject = 'ARP Networks Account Information'
 
     @controller   = controller
     @account      = account
@@ -13,16 +13,16 @@ class Mailer < ActionMailer::Base
 
     @recipients = account.email
     @from       = 'support@arpnetworks.com'
-    @sent_on    = Time.now
-    @headers    = { "Return-Path" => "support@arpnetworks.com" }
+    @sent_on    = Time.zone.now
+    @headers    = { 'Return-Path' => 'support@arpnetworks.com' }
 
     mail(to: @recipients, subject: @subject, from: @from, cc: @cc, headers: @headers)
   end
 
   def swip_reassign_simple(form, downstream_org, ip_block)
-    @subject    = "REASSIGN SIMPLE API-2E8C-0886-4817-96AD"
-    @recipients = ["hostmaster@arin.net"]
-    @from       = "gdolley@arpnetworks.com"
+    @subject    = 'REASSIGN SIMPLE API-2E8C-0886-4817-96AD'
+    @recipients = ['hostmaster@arin.net']
+    @from       = 'gdolley@arpnetworks.com'
 
     @form           = form
     @ip_block       = ip_block
@@ -34,11 +34,11 @@ class Mailer < ActionMailer::Base
   def vps_monitoring_reminder(vm)
     account = vm.account
 
-    @subject    = "VPS Status"
+    @subject    = 'VPS Status'
     @recipients = [account.email]
     # @recipients = "gdolley@arpnetworks.com"
-    @cc         = "gdolley@arpnetworks.com"
-    @from       = "support@arpnetworks.com"
+    @cc         = 'gdolley@arpnetworks.com'
+    @from       = 'support@arpnetworks.com'
 
     @account = account
     @vm = vm
@@ -47,22 +47,20 @@ class Mailer < ActionMailer::Base
   end
 
   def irr_route_object(action, prefix)
-    raise "action must be ADD or REMOVE" if action != 'ADD' && action != 'REMOVE'
+    raise 'action must be ADD or REMOVE' if action != 'ADD' && action != 'REMOVE'
 
     @subject    = "#{prefix.prefix} #{action} OBJECT"
     # @recipients = "gdolley@arpnetworks.com"
-    @recipients = "auto-dbm@altdb.net"
-    @from       = "ip-admin@arpnetworks.com"
+    @recipients = 'auto-dbm@altdb.net'
+    @from       = 'ip-admin@arpnetworks.com'
 
     additional = ''
 
-    if action == 'REMOVE'
-      additional += "delete: No longer announced\n"
-    end
+    additional += "delete: No longer announced\n" if action == 'REMOVE'
 
     @prefix     = prefix
     @route_s    = prefix.version == 6 ? 'route6: ' : 'route:  '
-    @changed    = Time.new.strftime("%Y%m%d")
+    @changed    = Time.zone.now.strftime('%Y%m%d')
     @password   = $IRR_PASSWORD
     @additional = additional
 
@@ -70,14 +68,14 @@ class Mailer < ActionMailer::Base
   end
 
   def irr_as_set(as_sets)
-    @subject    = "MODIFY OBJECT"
+    @subject    = 'MODIFY OBJECT'
     # @recipients = "gdolley@arpnetworks.com"
-    @recipients = "auto-dbm@altdb.net"
-    @from       = "ip-admin@arpnetworks.com"
+    @recipients = 'auto-dbm@altdb.net'
+    @from       = 'ip-admin@arpnetworks.com'
 
-    @members    = as_sets.join(', ')
+    @members = as_sets.join(', ')
 
-    @changed     = Time.new.strftime("%Y%m%d")
+    @changed     = Time.zone.now.strftime('%Y%m%d')
     @password    = $IRR_PASSWORD
     @additional  = ''
 
@@ -85,8 +83,8 @@ class Mailer < ActionMailer::Base
   end
 
   def new_service_bgp(account, asn, full_routes, prefixes, location, family)
-    @subject    = "ORDER: BGP Session"
-    @recipients = ["gdolley+tickets@arpnetworks.com", "ben@arpnetworks.com"]
+    @subject    = 'ORDER: BGP Session'
+    @recipients = ['gdolley+tickets@arpnetworks.com', 'ben@arpnetworks.com']
     @from       = account.email
 
     @account  = account
@@ -100,8 +98,8 @@ class Mailer < ActionMailer::Base
   end
 
   def new_service_vps(account, plan, location, os, bandwidth)
-    @subject    = "ORDER: VPS without OS"
-    @recipients = ["gdolley+tickets@arpnetworks.com", "ben@arpnetworks.com"]
+    @subject    = 'ORDER: VPS without OS'
+    @recipients = ['gdolley+tickets@arpnetworks.com', 'ben@arpnetworks.com']
     @from       = account.email
 
     @account   = account
@@ -114,8 +112,8 @@ class Mailer < ActionMailer::Base
   end
 
   def new_service_vps_with_os(account, plan, location, os, bandwidth)
-    @subject    = "ORDER: Rapid VPS"
-    @recipients = ["gdolley+tickets@arpnetworks.com", "ben@arpnetworks.com"]
+    @subject    = 'ORDER: Rapid VPS'
+    @recipients = ['gdolley+tickets@arpnetworks.com', 'ben@arpnetworks.com']
     @from       = account.email
 
     @account   = account
@@ -132,7 +130,7 @@ class Mailer < ActionMailer::Base
     @recipients = ['gdolley@arpnetworks.com']
     @from       = 'support@arpnetworks.com'
 
-    @body       = body
+    @body = body
 
     mail(to: @recipients, subject: @subject, from: @from)
   end
