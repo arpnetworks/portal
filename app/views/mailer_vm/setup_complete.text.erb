@@ -6,17 +6,20 @@ IPv4 Address: <%= @vps.display_ip_address %>
 Storage: <%= @vps.storage %> GB SSD
 RAM: <%= @vps.ram %> MB
 
-<% unless @vps.ssh_host_keys.empty? -%>
-SSH Host Key Fingerprints:
-<% @vps.ssh_host_keys.each do |key| -%><%= key.display_fingerprint_sha256 + "\n" %><% end %>
-<% @vps.ssh_host_keys.each do |key| -%><%= key.display_fingerprint_md5    + "\n" %><% end %>
-<% end -%>
 You may login to your server using SSH with the key(s) you provided, or using the "View Console" button in the Portal.
 
 The "Initial Logins" section under Virtual Machine Detail show your login credentials.  Please change these.
 
 Thank you for choosing ARP Networks!
 
-P.S. You actually *can* reply to this email. 😮
+P.S. You actually *can* reply to this email 😁 ...and for your convenience:
 
+Server UUID:
+<%= @vps.uuid %>
+
+<% unless @vps.ssh_host_keys.empty? -%>
+SSH Host Key Fingerprints:
+<% @vps.ssh_host_keys.each do |key| -%><%= key.display_fingerprint_sha256 + "\n" %><% end %>
+<% @vps.ssh_host_keys.each do |key| -%><%= key.display_fingerprint_md5    + "\n" %><% end %>
+<% end -%>
 <%= render partial: 'mailer/signatures/support' %>
