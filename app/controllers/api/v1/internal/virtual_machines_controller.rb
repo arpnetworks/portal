@@ -60,6 +60,12 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
        end
     end
 
+    begin
+      MailerVm.setup_complete(@virtual_machine)
+    rescue StandardError => e
+      logger.error "There was an error sending the VM setup complete email: " + e.message
+    end
+
     render text: "Done\n"
   end
 
