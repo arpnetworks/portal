@@ -45,7 +45,11 @@
 <tbody>
   <% if @invoices.nil? || @invoices.size == 0 %>
     <tr>
+      <% if @enable_summary_view %>
+      <td class="no_records" colspan="5">
+      <% else %>
       <td class="no_records" colspan="<%= invoices_colspan(@enable_admin_view, action_name) %>">
+      <% end %>
         No invoices found
       </td>
     </tr>
