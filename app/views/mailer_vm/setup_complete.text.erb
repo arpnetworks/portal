@@ -8,7 +8,7 @@ RAM: <%= @vps.ram %> MB
 
 You may login to your server using SSH with the key(s) you provided, or using the "View Console" button in the Portal.
 
-The "Initial Logins" section under Virtual Machine Detail show your login credentials.  Please change these.
+The "Initial Logins" section under Virtual Machine Detail shows your login credentials.  Please change these.
 
 Thank you for choosing ARP Networks!
 
@@ -19,6 +19,7 @@ Server UUID:
 
 <% unless @vps.ssh_host_keys.empty? -%>
 SSH Host Key Fingerprints:
+
 <% @vps.ssh_host_keys.each do |key| -%><%= key.display_fingerprint_sha256 + "\n" %><% end %>
 <% @vps.ssh_host_keys.each do |key| -%><%= key.display_fingerprint_md5    + "\n" %><% end %>
 <% end -%>
