@@ -1190,8 +1190,6 @@ form.su input {
  **************************************************/
 
 div.main-menu {
-  float: left;
-  width: 22%;
   height: 400px;
   margin: 5px;
   margin-top: 0.5em;
@@ -1244,8 +1242,6 @@ div.main-menu div.menu-item {
 }
 
 div.dashboard-summaries {
-  float: right;
-  width: 75%;
 }
 
 /***************************************************

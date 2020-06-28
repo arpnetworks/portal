@@ -5,7 +5,8 @@
   </p>
 </div>
 
-<br style="clear:both" />
+<div class="columns">
+  <div class="column is-one-fifth">
 
 <div class="main-menu">
   <div class="title">Main Menu</div>
@@ -31,6 +32,9 @@
     <a href='<%= remove_account_services_path(@account) %>', class='btn btn-small btn-danger'><i class="fas fa-times"></i> Remove Service</a>
   </div>
 </div>
+
+  </div>
+  <div class="column">
 
 <div class="dashboard-summaries">
   <div class="notice-green">
@@ -77,6 +81,9 @@
   <% if @unpaid_invoices && @unpaid_invoices.size > 0 %>
     <%= render :partial => 'invoices/pay_button' %>
   <% end %>
+</div>
+
+</div>
 </div>
 
 <hr />

@@ -15,6 +15,8 @@ class MyAccountController < ProtectedController
     @enable_summary_view = true
 
     @jobs = @account.jobs.recent.order('created_at desc').limit(5)
+
+    render layout: 'responsive'
   end
 
   protected
