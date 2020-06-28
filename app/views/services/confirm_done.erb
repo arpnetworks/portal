@@ -10,13 +10,25 @@
           </div>
           <br/>
 
-          <div>
-            For services with instant provisioning, your dashboard will show real-time progress of provisioning status.
-          </div>
+          <% if @thank_you_message == :vps_with_os %>
+            <div>
+              Provisioning time is about <strong>2 - 3 minutes</strong>.
+            </div>
 
-          <div>
-            For services requiring manual provisioning, we'll reach out to you when things are ready to go!
-          </div>
+            <div>
+              Your dashboard will show real-time progress and you'll also receive an email when provisioning is finished.
+            </div>
+
+          <% else %>
+            <div>
+              For services with instant provisioning, your dashboard will show real-time progress of provisioning status.
+            </div>
+
+            <div>
+              For services requiring manual provisioning, we'll reach out to you when things are ready to go!
+            </div>
+          <% end %>
+
           <br/>
 
           <div>

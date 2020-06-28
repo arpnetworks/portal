@@ -116,6 +116,8 @@ class ServicesController < ProtectedController
     # so go back to dashboard
     redirect_to dashboard_path if session[:service_to_enable].nil?
 
+    @thank_you_message = :generic
+
     loc = session['form']['location']
     if %w[lax fra].include?(loc)
       @initial_vm_host = $PROVISIONING['initial_host'][loc]
@@ -131,6 +133,7 @@ class ServicesController < ProtectedController
       case session[:service_to_enable]
       when 'vps_with_os'
         provision_vps_with_os!(service)
+        @thank_you_message = :vps_with_os
       when 'vps'
         plan = session[:form]['plan']
         plan_struct = VirtualMachine.plans['vps'][plan]
