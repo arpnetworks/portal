@@ -1,13 +1,10 @@
 <%= @account.display_name %>,
 
-Your server has finished provisioning.
-
-Operating System: <%= @vps.os %>
+Your <%= @vps.os %> server in <%= @vps.location.display_name_simple %> has finished provisioning.
 
 IPv4 Address: <%= @vps.display_ip_address %>
-Location: <%= @vps.location.display_name_simple %>
-RAM: <%= @vps.ram %> MB
 Storage: <%= @vps.storage %> GB SSD
+RAM: <%= @vps.ram %> MB
 
 <% unless @vps.ssh_host_keys.empty? -%>
 SSH Host Key Fingerprints:
