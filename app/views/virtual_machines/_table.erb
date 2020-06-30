@@ -12,7 +12,6 @@
         @virtual_machine.vnc_port != '' &&
         @virtual_machine.vnc_password != '' %>
 
-
       <% if @virtual_machine.provisioning_status == 'initializing' %>
       <tr>
         <td></td>
@@ -319,6 +318,19 @@
       </td>
     </tr>
     <% end %>
+
+    <tr>
+      <td></td>
+      <td class='th-minor' colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>">
+        UUID
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
+        <%= @virtual_machine.uuid %>
+      </td>
+    </tr>
 
     <tr>
       <td></td>

@@ -22,6 +22,8 @@ class ServicesController < ProtectedController
        @service.service_code.name == 'THUNDER'
       @iso_files = iso_files
     end
+
+    render layout: 'responsive'
   end
 
   def update_label
