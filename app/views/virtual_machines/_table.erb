@@ -312,10 +312,17 @@
     <tr>
       <td></td>
       <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
-        <pre><% @virtual_machine.ssh_host_keys.each do |key| %><%= key.display_fingerprint_sha256 %>
+        <% %w(sha256 md5).each do |hash| %>
+          <% @virtual_machine.ssh_host_keys.each do |key| %>
+            <% fp, algo = key.send("display_fingerprint_#{hash}").split(' ') %>
+            <span class='key-fingerprint' id='key-fingerprint-<%= hash %>-<%= key.id %>'><%= fp %></span>
+            <span class='key-fingerprint-algo'><%= algo %></span>
+            <span class="icon copy-button" data-clipboard-action="copy" data-clipboard-target="#key-fingerprint-<%= hash %>-<%= key.id %>">
+              <i class="far fa-copy"></i>
+            </span>
+            <br/>
+          <% end %>
         <% end %>
-<% @virtual_machine.ssh_host_keys.each do |key| %><%= key.display_fingerprint_md5 %>
-<% end %></pre>
       </td>
     </tr>
     <% end %>
