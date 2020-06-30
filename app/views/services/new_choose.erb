@@ -3,23 +3,23 @@
   <tbody>
     <tr>
       <td>
+
+        <div class="notice-cool">
+          <i class="fas fa-clock"></i> All VPS services are now fulfilled within <strong>3 minutes</strong>
+        </div>
+
         Which service would you like to add?
 
         <%= form_tag("", :method => 'GET') do %>
           <ul>
-            <% if @account.beta_features %>
-              <%= radio_button_tag(:service, "vps_with_os", false) %>
-              <%= label_tag(:service_vps_with_os, "VPS") %>
-            <% else %>
             <li>
-              <%= radio_button_tag(:service, "vps_with_os", false, :disabled => true) %>
-              <%= label_tag(:service_vps_with_os, "VPS (with OS) (Coming in July 2020)", :class => 'disabled') %>
+              <%= radio_button_tag(:service, "vps_with_os", false) %>
+              <%= label_tag(:service_vps_with_os, "Loaded VPS (recommended)") %>
             </li>
-            <% end %>
 
             <li>
               <%= radio_button_tag(:service, "vps") %>
-              <%= label_tag(:service_vps, "VPS (without OS, blank disk)") %>
+              <%= label_tag(:service_vps, "Skinny VPS, blank disk, roll-your-own (for advanced users)") %>
             </li>
 
             <!--

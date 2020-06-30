@@ -229,7 +229,7 @@ class ServicesController < ProtectedController
       if %w[vps_with_os vps bgp].include?(@service)
         case @service
         when 'vps_with_os'
-          return true if @account.beta_features?
+          return true # was beta
         else
           return true
         end

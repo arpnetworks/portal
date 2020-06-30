@@ -34,7 +34,7 @@ function populateIpAddresses(location_code) {
 
       if (hasIPs == false) {
         options +=
-          "<option value='' disabled>You have no IPs in " +
+          "<option value='' disabled>You have no available IPs in " +
           data["location"] +
           "</option>";
       }
