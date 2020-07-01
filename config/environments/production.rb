@@ -83,4 +83,21 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Exception Notifier
+  config.middleware.use ExceptionNotification::Rack,
+    email: {
+      email_prefix: "[ARP Networks Portal] ",
+      sender_address: %{"Application Error" <info@arpnetworks.com>},
+      exception_recipients: %w{gdolley@arpnetworks.com}
+    },
+    slack: {
+        webhook_url: $SLACK_WEBHOOK_URL,
+        channel: "#general",
+        username: "production-exception",
+        additional_parameters: {
+          icon_emoji: ":large_blue_circle:",
+          mrkdwn: true
+        }
+      }
 end
