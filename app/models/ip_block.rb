@@ -5,7 +5,7 @@ class IpBlock < ApplicationRecord
   belongs_to :parent_block, :class_name => 'IpBlock', :foreign_key => 'ip_block_id', :optional => true
   belongs_to :location
 
-  validates :column, presence: 'cidr'
+  validates :cidr, presence: true
   validate :proper_parent_block
 
   textilizable :notes

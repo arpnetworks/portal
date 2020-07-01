@@ -1,6 +1,4 @@
 class Export < ApplicationRecord
-  belongs_to :virtual_machine
-
   validates :exported_at, presence: true
 
   def self.record_export!(record_type)
