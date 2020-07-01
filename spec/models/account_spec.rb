@@ -233,7 +233,7 @@ describe Account do
         @dns_record_for_me = create :dns_record, :the_10_block, name: '2.0.0.10.in-addr.arpa',
                                                                 content: 'example.com'
 
-        DnsRecord.delete_all("type != 'CNAME'")
+        DnsRecord.where("type != 'CNAME'").delete_all
         @dns_record_for_me.type = 'CNAME'
         expect(account.owns_dns_record?(@dns_record_for_me)).to be(true)
       end
@@ -318,7 +318,7 @@ describe Account do
   context 'Bandwidth Quota' do
     before do
       Service.delete_all
-      Account.delete_all('id > 2')
+      Account.where('id > 2').delete_all
 
       @garrys_bq = create :bandwidth_quota
       create :service, account: account, bandwidth_quotas: [@garrys_bq]
