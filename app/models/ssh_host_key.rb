@@ -31,7 +31,7 @@ class SshHostKey < ApplicationRecord
   end
 
   def generate_fingerprints
-    return if key.blank?
+    throw(:abort) if key.blank?
 
     key_file = Tempfile.new
     key_file.write(key)
