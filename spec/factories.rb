@@ -95,7 +95,7 @@ FactoryBot.define do
   end
 
   factory :virtual_machine do
-    sequence :uuid do |n|
+    sequence :uuid do |_n|
       UUID.generate
     end
     sequence :label do |n|
@@ -175,7 +175,7 @@ FactoryBot.define do
     server { 'backup01.cust.arpnetworks.com' }
     username { 'garry' }
     group { 'sftpusers' }
-    quota { 20000000 }
+    quota { 20_000_000 }
     home_dir { '/home/sftpusers/home/garry' }
     chroot_dir { '/home/sftpusers/home' }
     notes { '' }
@@ -184,7 +184,7 @@ FactoryBot.define do
   factory :credit_card do
     association :account
     display_number { '1111' }
-    number { 4111111111111111 }
+    number { 4_111_111_111_111_111 }
     month { '12' }
     year { '2036' }
     first_name { 'John' }

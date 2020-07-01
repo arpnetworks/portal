@@ -1,8 +1,5 @@
 class ApplicationController < ActionController::Base
-  # TODO
-  # include ExceptionNotifiable
-
-  before_filter :clean_slate
+  before_action :clean_slate
 
   # TODO: Do we still need this?
   # helper :all # include all helpers, all the time

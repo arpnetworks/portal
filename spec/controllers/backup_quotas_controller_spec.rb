@@ -9,7 +9,7 @@ context BackupQuotasController do
   before do
     @account = login_as_user!
 
-    @bq = mock_model(BackupQuota, server: 'foo.example.com', username: 'foo', quota: 200000)
+    @bq = mock_model(BackupQuota, server: 'foo.example.com', username: 'foo', quota: 200_000)
     allow(@account).to receive(:find_backup_quota_by_id) { @bq }
     @service = mock_model(Service)
     allow(Service).to receive(:find).with(@service.id.to_s) { @service }
@@ -21,8 +21,8 @@ context BackupQuotasController do
 
   context 'ssh_key' do
     def do_get(opts = {})
-      get :ssh_key, { account_id: @account.id, service_id: @service.id,
-                      id: @bq.id }.merge(opts)
+      get :ssh_key, params: { account_id: @account.id, service_id: @service.id,
+                              id: @bq.id }.merge(opts)
     end
 
     specify 'should render SSH key submission form' do
@@ -42,8 +42,8 @@ context BackupQuotasController do
     end
 
     def do_post(opts = {})
-      post :ssh_key_post, { account_id: @account.id, service_id: @service.id,
-                            id: @bq.id, keys: @single_key }.merge(opts)
+      post :ssh_key_post, params: { account_id: @account.id, service_id: @service.id,
+                                    id: @bq.id, keys: @single_key }.merge(opts)
     end
 
     specify 'should submit key' do
@@ -91,7 +91,7 @@ context BackupQuotasController do
       @server = 'localhost'
       @login = 'johndoe'
       @key   = 'ssh-rsa foo label'
-      @quota = 5000000
+      @quota = 5_000_000
 
       # We don't want SSH to actually execute
       allow(Kernel).to receive(:system) { nil }

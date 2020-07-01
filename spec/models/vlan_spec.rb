@@ -38,7 +38,7 @@ context 'Vlan class with fixtures loaded' do
 
   context 'in_use()' do
     before do
-      Vlan.delete_all('vlan > 440')
+      Vlan.where('vlan > 440').delete_all
       @in_use = Vlan.in_use(@lax.id)
     end
 

@@ -13,12 +13,12 @@ describe Admin::IpBlocksController do
   end
 
   def do_get(opts = {})
-    get :index, opts
+    get :index, params: opts
   end
 
   describe 'handling GET /admin/ip_blocks/new' do
     def do_get(opts = {})
-      get :new, opts
+      get :new, params: opts
     end
 
     it 'should display new ip_block form' do
@@ -51,7 +51,7 @@ describe Admin::IpBlocksController do
 
   describe 'handling POST /admin/ip_blocks' do
     def do_post(opts = {})
-      post :create, opts
+      post :create, params: opts
     end
 
     it 'should create new ip_block' do
@@ -87,7 +87,7 @@ describe Admin::IpBlocksController do
 
   describe 'handling GET /admin/ip_blocks/tree' do
     def do_get(opts = {})
-      get :tree, opts
+      get :tree, params: opts
     end
 
     it 'IP blocks should be the superblocks' do
@@ -98,7 +98,7 @@ describe Admin::IpBlocksController do
 
   describe 'handling GET /admin/ip_blocks/1' do
     def do_get(opts = {})
-      get :show, opts
+      get :show, params: opts
     end
 
     it 'should show the ip_block' do
@@ -120,7 +120,7 @@ describe Admin::IpBlocksController do
 
   describe 'handling GET /admin/ip_blocks/1/edit' do
     def do_get(opts = {})
-      get :edit, opts
+      get :edit, params: opts
     end
 
     it 'should show the ip_block' do
@@ -147,7 +147,7 @@ describe Admin::IpBlocksController do
 
   describe 'handling PUT /admin/ip_blocks/1/edit' do
     def do_put(opts = {})
-      put :update, opts
+      put :update, params: opts
     end
 
     it 'should update the ip_block' do
@@ -198,12 +198,12 @@ describe Admin::IpBlocksController do
     it 'should destroy the requested ip_blocks' do
       expect(IpBlock).to receive(:find).with('37') { mock_ip_block }
       expect(mock_ip_block).to receive(:destroy)
-      delete :destroy, id: '37'
+      delete :destroy, params: { id: '37' }
     end
 
     it 'should redirect to the location that brought us here' do
       allow(IpBlock).to receive(:find) { mock_ip_block(destroy: true) }
-      delete :destroy, id: '1'
+      delete :destroy, params: { id: '1' }
       expect(response).to redirect_to(@last_location)
     end
 
@@ -211,7 +211,7 @@ describe Admin::IpBlocksController do
       bad_monkey = mock_model(IpBlock)
       expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, 'bad')
       allow(IpBlock).to receive(:find).and_return(bad_monkey)
-      delete :destroy, id: '1'
+      delete :destroy, params: { id: '1' }
       expect(flash[:error]).to_not be_nil
     end
   end
@@ -222,7 +222,7 @@ describe Admin::IpBlocksController do
       expect(IpBlock).to receive(:find).with('37') { mock_ip_block }
 
       expect(mock_ip_block).to receive(:subnets_available).with(@prefixlen, Strategy: :leftmost, limit: nil)
-      get :subnet, id: '37', prefixlen: @prefixlen
+      get :subnet, params: { id: '37', prefixlen: @prefixlen }
     end
   end
 
@@ -233,7 +233,7 @@ describe Admin::IpBlocksController do
     end
 
     def do_get(opts = {})
-      get :swip, opts
+      get :swip, params: opts
     end
 
     it 'should be success' do
@@ -265,16 +265,16 @@ describe Admin::IpBlocksController do
 
   describe 'handling POST /admin/ip_block/1/swip_submit' do
     before do
-      @ip_block = mock_model(IpBlock, origin_as: 25795)
+      @ip_block = mock_model(IpBlock, origin_as: 25_795)
       allow(IpBlock).to receive(:find) { @ip_block }
     end
 
     def do_post(opts = {})
-      post :swip_submit, opts
+      post :swip_submit, params: opts
     end
 
     it 'should retreive registration_action from form' do
-      %w(new modify remove).each do |registration_action|
+      %w[new modify remove].each do |registration_action|
         do_post @params.merge(form: { registration_action: registration_action })
         form = assigns(:form)
         expect(form.registration_action).to_not be_nil

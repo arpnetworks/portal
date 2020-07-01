@@ -23,7 +23,6 @@ context SshHostKey do
           @ssh_host_key.send(:generate_fingerprints)
 
           expect(@ssh_host_key.fingerprint_md5).to include('MD5:0a:ea:3e:a8:c5:bd:20:5b:a1:a8:e8:6f:b4:e5:b4:fa')
-
         end
 
         it 'should generate fingerprints from callback upon creation' do

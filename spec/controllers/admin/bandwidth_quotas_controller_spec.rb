@@ -43,26 +43,26 @@ describe Admin::BandwidthQuotasController do
   describe 'responding to GET edit' do
     it 'should expose the requested bandwidth_quota as @bandwidth_quota' do
       expect(BandwidthQuota).to receive(:find).with('37') { mock_bandwidth_quota }
-      get :edit, id: '37'
+      get :edit, params: { id: '37' }
       expect(assigns[:bandwidth_quota]).to eq(mock_bandwidth_quota)
     end
 
     it 'should redirect to the admin_bandwidth_quotas list if bandwidth_quota cannot be found' do
       allow(BandwidthQuota).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
-      get :edit, id: '999'
+      get :edit, params: { id: '999' }
       expect(response).to redirect_to(admin_bandwidth_quotas_url)
     end
 
     it 'should set @include_blank' do
       expect(BandwidthQuota).to receive(:find).with('37') { mock_bandwidth_quota }
-      get :edit, id: '37'
+      get :edit, params: { id: '37' }
       expect(assigns[:include_blank]).to be true
     end
   end
 
   describe 'responding to POST create' do
     def do_create(bandwidth_quota = nil)
-      post :create, bandwidth_quota: (bandwidth_quota || @p)
+      post :create, params: { bandwidth_quota: (bandwidth_quota || @p) }
     end
 
     describe 'with valid params' do
@@ -97,7 +97,7 @@ describe Admin::BandwidthQuotasController do
 
   describe 'responding to PATCH udpate' do
     def do_update(id = '37')
-      patch :update, id: id, bandwidth_quota: @p
+      patch :update, params: { id: id, bandwidth_quota: @p }
     end
 
     describe 'with valid params' do
@@ -143,7 +143,7 @@ describe Admin::BandwidthQuotasController do
 
   describe 'responding to DELETE destroy' do
     def do_destroy(id = '37')
-      delete :destroy, id: id
+      delete :destroy, params: { id: id }
     end
 
     it 'should destroy the requested bandwidth_quotas' do

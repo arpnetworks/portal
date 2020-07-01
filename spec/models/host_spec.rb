@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../rails_helper'
 
 context Host do
   before do
-    @hostnames = %w(vtr1.example.com vtr2.example.com vtr3.example.com)
+    @hostnames = %w[vtr1.example.com vtr2.example.com vtr3.example.com]
 
     @hostnames.each do |host|
       create :host, hostname: host

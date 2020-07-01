@@ -1,5 +1,5 @@
 class DnsRecordsController < ProtectedController
-  before_filter :find_dns_record, :only => [:edit, :update, :destroy]
+  before_action :find_dns_record, :only => [:edit, :update, :destroy]
 
   def reverse_dns
     @ip_blocks = @account.ip_blocks

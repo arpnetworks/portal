@@ -22,12 +22,12 @@ describe Admin::VirtualMachinesController do
   end
 
   def do_get(opts = {})
-    get :index, opts
+    get :index, params: opts
   end
 
   describe 'handling GET /admin/virtual_machines/new' do
     def do_get(opts = {})
-      get :new, opts
+      get :new, params: opts
     end
 
     it 'should display new virtual_machine form' do
@@ -49,7 +49,7 @@ describe Admin::VirtualMachinesController do
 
   describe 'handling POST /admin/virtual_machines' do
     def do_post(opts = {})
-      post :create, opts
+      post :create, params: opts
     end
 
     it 'should create new virtual_machine' do
@@ -84,7 +84,7 @@ describe Admin::VirtualMachinesController do
 
   describe 'handling GET /admin/virtual_machines/1' do
     def do_get(opts = {})
-      get :show, opts
+      get :show, params: opts
     end
 
     it 'should show the virtual_machine' do
@@ -111,7 +111,7 @@ describe Admin::VirtualMachinesController do
 
   describe 'handling GET /admin/virtual_machines/1/edit' do
     def do_get(opts = {})
-      get :edit, opts
+      get :edit, params: opts
     end
 
     it 'should show the virtual_machine' do
@@ -134,7 +134,7 @@ describe Admin::VirtualMachinesController do
 
   describe 'handling PUT /admin/virtual_machines/1/edit' do
     def do_put(opts = {})
-      put :update, opts
+      put :update, params: opts
     end
 
     it 'should update the virtual_machine' do
@@ -172,12 +172,12 @@ describe Admin::VirtualMachinesController do
     it 'should destroy the requested virtual_machines' do
       expect(VirtualMachine).to receive(:find).with('37').and_return(mock_virtual_machine)
       expect(mock_virtual_machine).to receive(:destroy)
-      delete :destroy, id: '37'
+      delete :destroy, params: { id: '37' }
     end
 
     it 'should redirect to the location that brought us here' do
       allow(VirtualMachine).to receive(:find).and_return(mock_virtual_machine(destroy: true))
-      delete :destroy, id: '1'
+      delete :destroy, params: { id: '1' }
       expect(response).to redirect_to(@last_location)
     end
 
@@ -185,7 +185,7 @@ describe Admin::VirtualMachinesController do
       bad_monkey = mock_model(VirtualMachine)
       expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, 'bad')
       allow(VirtualMachine).to receive(:find).and_return(bad_monkey)
-      delete :destroy, id: '1'
+      delete :destroy, params: { id: '1' }
       expect(flash[:error]).to_not be_nil
     end
   end

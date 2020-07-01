@@ -21,12 +21,12 @@ describe Admin::AccountsController do
   end
 
   def do_get(opts = {})
-    get :index, opts
+    get :index, params: opts
   end
 
   describe 'handling GET /admin/accounts/new' do
     def do_get(opts = {})
-      get :new, opts
+      get :new, params: opts
     end
 
     it 'should display new account form' do
@@ -43,7 +43,7 @@ describe Admin::AccountsController do
 
   describe 'handling POST /admin/accounts' do
     def do_post(opts = {})
-      post :create, opts
+      post :create, params: opts
     end
 
     it 'should create new account' do
@@ -71,7 +71,7 @@ describe Admin::AccountsController do
 
   describe 'handling GET /admin/accounts/1' do
     def do_get(opts = {})
-      get :show, opts
+      get :show, params: opts
     end
 
     it 'should show the account' do
@@ -92,7 +92,7 @@ describe Admin::AccountsController do
 
   describe 'handling GET /admin/accounts/1/edit' do
     def do_get(opts = {})
-      get :edit, opts
+      get :edit, params: opts
     end
 
     it 'should show the account' do
@@ -112,7 +112,7 @@ describe Admin::AccountsController do
 
   describe 'handling PUT /admin/accounts/1' do
     def do_put(opts = {})
-      put :update, opts
+      put :update, params: opts
     end
 
     it 'should go back to edit page if error updating' do
@@ -148,13 +148,13 @@ describe Admin::AccountsController do
       allow(controller).to receive(:last_location) { '/foo' }
       expect(Account).to receive(:find).with('37') { mock_account }
       expect(mock_account).to receive(:destroy)
-      delete :destroy, id: '37'
+      delete :destroy, params: { id: '37' }
     end
 
     it 'should redirect to the location that brought us here' do
       allow(controller).to receive(:last_location) { '/foo' }
       allow(Account).to receive(:find) { mock_account(destroy: true) }
-      delete :destroy, id: '1'
+      delete :destroy, params: { id: '1' }
       expect(response).to redirect_to('/foo')
     end
 
@@ -162,7 +162,7 @@ describe Admin::AccountsController do
       bad_monkey = double(Account)
       expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, 'foo')
       allow(Account).to receive(:find) { bad_monkey }
-      delete :destroy, id: '1'
+      delete :destroy, params: { id: '1' }
       expect(flash[:error]).to_not be_nil
     end
   end

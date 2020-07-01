@@ -9,7 +9,7 @@ RSpec.describe MailerVm, type: :mailer do
       @location = double(:location, display_name_simple: 'Los Angeles')
       allow(@vm).to receive(:account).and_return(@account)
       allow(@vm).to receive(:location).and_return(@location)
-      allow(@vm).to receive(:os).and_return("OpenBSD 6.7")
+      allow(@vm).to receive(:os).and_return('OpenBSD 6.7')
     end
 
     context 'with mailer' do

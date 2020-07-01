@@ -1,5 +1,5 @@
 class MyAccountController < ProtectedController
-  before_filter :default_params, :except => [:edit]
+  before_action :default_params, :except => [:edit]
 
   def dashboard
     expiry = Account.tender_token_expiry_timestamp

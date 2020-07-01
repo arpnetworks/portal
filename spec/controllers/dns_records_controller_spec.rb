@@ -35,7 +35,7 @@ context DnsRecordsController do
 
   context 'handling GET /accounts/1/reverse_dns' do
     def do_get(opts = {})
-      get :reverse_dns, { account_id: @account.id }.merge(opts)
+      get :reverse_dns, params: { account_id: @account.id }.merge(opts)
     end
 
     specify 'should be a success' do
@@ -257,7 +257,7 @@ context DnsRecordsController do
 
     describe 'handling GET /account/1/dns_record/1/new' do
       def do_get(opts = {})
-        get :new, { account_id: @account.id }.merge(opts)
+        get :new, params: { account_id: @account.id }.merge(opts)
       end
 
       it 'should display new dns_record form' do
@@ -283,7 +283,7 @@ context DnsRecordsController do
 
     describe 'handling POST /accounts/1/dns_records' do
       def do_post(opts = {})
-        post :create, { account_id: @account.id }.merge(opts)
+        post :create, params: { account_id: @account.id }.merge(opts)
       end
 
       it 'should create new dns_record' do
@@ -397,7 +397,7 @@ context DnsRecordsController do
 
     context 'handling GET /accounts/1/dns_records/1/edit' do
       def do_get(opts = {})
-        get :edit, { account_id: @account.id }.merge(opts)
+        get :edit, params: { account_id: @account.id }.merge(opts)
       end
 
       it 'should show the dns_record' do
@@ -426,7 +426,7 @@ context DnsRecordsController do
 
     context 'handling PUT /accounts/1/dns_records/1/edit' do
       def do_put(opts = {})
-        put :update, { account_id: @account.id }.merge(opts)
+        put :update, params: { account_id: @account.id }.merge(opts)
       end
 
       it 'should update the dns_record' do
@@ -480,7 +480,7 @@ context DnsRecordsController do
 
     describe 'handling DELETE /accounts/1/dns_records/1' do
       def do_destroy(opts = {})
-        put :destroy, { account_id: @account.id }.merge(opts)
+        put :destroy, params: { account_id: @account.id }.merge(opts)
       end
 
       def mock_dns_record(stubs = {})

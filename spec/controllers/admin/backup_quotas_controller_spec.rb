@@ -40,26 +40,26 @@ describe Admin::BackupQuotasController do
   describe 'responding to GET edit' do
     it 'should expose the requested backup_quota as @backup_quota' do
       expect(BackupQuota).to receive(:find).with('37') { mock_backup_quota }
-      get :edit, id: '37'
+      get :edit, params: { id: '37' }
       expect(assigns[:backup_quota]).to eq(mock_backup_quota)
     end
 
     it 'should redirect to the admin_backup_quotas list if backup_quota cannot be found' do
       allow(BackupQuota).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
-      get :edit, id: '999'
+      get :edit, params: { id: '999' }
       expect(response).to redirect_to(admin_backup_quotas_url)
     end
 
     it 'should set @include_blank' do
       expect(BackupQuota).to receive(:find).with('37') { mock_backup_quota }
-      get :edit, id: '37'
+      get :edit, params: { id: '37' }
       expect(assigns(:include_blank)).to be true
     end
   end
 
   describe 'responding to POST create' do
     def do_create
-      post :create, backup_quota: @p
+      post :create, params: { backup_quota: @p }
     end
 
     describe 'with valid params' do
@@ -94,7 +94,7 @@ describe Admin::BackupQuotasController do
 
   describe 'responding to PUT udpate' do
     def do_patch
-      patch :update, id: '37', backup_quota: @p
+      patch :update, params: { id: '37', backup_quota: @p }
     end
 
     describe 'with valid params' do
@@ -132,7 +132,7 @@ describe Admin::BackupQuotasController do
 
       it 'should redirect to the admin_backup_quotas list if backup_quota cannot be found' do
         allow(BackupQuota).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
-        put :update, id: '999'
+        put :update, params: { id: '999' }
         expect(response).to redirect_to(admin_backup_quotas_url)
       end
     end
@@ -140,7 +140,7 @@ describe Admin::BackupQuotasController do
 
   describe 'responding to DELETE destroy' do
     def do_delete(id = '37')
-      delete :destroy, id: id
+      delete :destroy, params: { id: id }
     end
 
     it 'should destroy the requested backup_quotas' do

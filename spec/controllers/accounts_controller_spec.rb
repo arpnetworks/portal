@@ -10,9 +10,9 @@ describe AccountsController do
 
   describe AccountsController, 'during account creation' do
     it 'should not allow periods in login name' do
-      post :create, account: { login: 'foobar.baz', password: 'barbarbar',
-                               password_confirmation: 'barbarbar',
-                               email: 'foo@example.com' }
+      post :create, params: { account: { login: 'foobar.baz', password: 'barbarbar',
+                                         password_confirmation: 'barbarbar',
+                                         email: 'foo@example.com' } }
 
       expect(assigns(:account)).to_not be_valid
       expect(response).to render_template('new')
@@ -22,7 +22,7 @@ describe AccountsController do
   describe AccountsController, 'when logging in' do
     it 'should remember the requested location in a non-logged-in state and redirect.' do
       request.session[:return_to] = 'http://www.google.com'
-      post :login_attempt, account: { login: @user.login, password: 'mysecret' }
+      post :login_attempt, params: { account: { login: @user.login, password: 'mysecret' } }
       expect(response).to redirect_to('http://www.google.com')
     end
 
@@ -45,18 +45,18 @@ describe AccountsController do
     end
 
     it 'should respond with success' do
-      get :edit, id: @user.id
+      get :edit, params: { id: @user.id }
       expect(@response).to be_success
     end
 
     it 'should get account info from current logged in user' do
-      get :edit, id: @user.id
+      get :edit, params: { id: @user.id }
       expect(assigns(:account)).to eq @user
     end
 
     it 'should not get account info from another user' do
       @other = create(:account_user, login: 'other')
-      get :edit, id: @other.id
+      get :edit, params: { id: @other.id }
       expect(assigns(:account)).to_not eq @other
     end
   end
@@ -64,7 +64,7 @@ describe AccountsController do
   describe 'Show account' do
     it 'should redirect to edit' do
       @user = login_as_user!
-      get :show, id: @user.id
+      get :show, params: { id: @user.id }
       expect(@response).to redirect_to(edit_account_path(@user))
     end
   end
@@ -83,7 +83,7 @@ describe AccountsController do
     end
 
     def do_get_ip_address_inventory
-      get :ip_address_inventory, location: @location, format: :json
+      get :ip_address_inventory, params: { location: @location, format: :json }
     end
 
     context 'with valid location' do

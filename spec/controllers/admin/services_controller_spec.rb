@@ -22,12 +22,12 @@ describe Admin::ServicesController do
   end
 
   def do_get(opts = {})
-    get :index, opts
+    get :index, params: opts
   end
 
   describe 'handling GET /admin/services/new' do
     def do_get(opts = {})
-      get :new, opts
+      get :new, params: opts
     end
 
     it 'should display new service form' do
@@ -44,14 +44,14 @@ describe Admin::ServicesController do
 
   describe 'handling POST /admin/services' do
     def do_post(opts = {})
-      post :create, opts
+      post :create, params: opts
     end
 
     it 'should create new service' do
       num_records = Service.count
       some_account = Account.first
       do_post(@params.merge(service: { account_id: some_account.id, title: 'foo' }))
-      expect(Service.count).to eq (num_records + 1)
+      expect(Service.count).to eq(num_records + 1)
       expect(response).to redirect_to(admin_services_path)
       expect(flash[:notice]).to_not be_nil
     end
@@ -73,7 +73,7 @@ describe Admin::ServicesController do
 
   describe 'handling GET /admin/services/1' do
     def do_get(opts = {})
-      get :show, opts
+      get :show, params: opts
     end
 
     it 'should show the service' do
@@ -92,7 +92,7 @@ describe Admin::ServicesController do
 
   describe 'handling GET /admin/services/1/edit' do
     def do_get(opts = {})
-      get :edit, opts
+      get :edit, params: opts
     end
 
     it 'should show the service' do
@@ -110,7 +110,7 @@ describe Admin::ServicesController do
 
   describe 'handling PUT /admin/services/1/edit' do
     def do_put(opts = {})
-      put :update, opts
+      put :update, params: opts
     end
 
     it 'should update the service' do
@@ -147,12 +147,12 @@ describe Admin::ServicesController do
     it 'should destroy the requested services' do
       expect(Service).to receive(:find).with('37').and_return(mock_service)
       expect(mock_service).to receive(:destroy)
-      delete :destroy, id: '37'
+      delete :destroy, params: { id: '37' }
     end
 
     it 'should redirect to the location that brought us here' do
       allow(Service).to receive(:find).and_return(mock_service(destroy: true))
-      delete :destroy, id: '1'
+      delete :destroy, params: { id: '1' }
       expect(response).to redirect_to(@last_location)
     end
 
@@ -160,7 +160,7 @@ describe Admin::ServicesController do
       bad_monkey = mock_model(Service)
       expect(bad_monkey).to receive(:destroy).and_raise(ActiveRecord::StatementInvalid, 'bad')
       allow(Service).to receive(:find).and_return(bad_monkey)
-      delete :destroy, id: '1'
+      delete :destroy, params: { id: '1' }
       expect(flash[:error]).to_not be_nil
     end
   end

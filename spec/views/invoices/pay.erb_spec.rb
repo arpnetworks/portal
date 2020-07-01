@@ -58,7 +58,7 @@ describe '/invoices/pay.erb' do
 
         it 'should have hidden input for credit card number' do
           render template: '/invoices/pay.erb'
-          expect(response).to have_tag("input[type=hidden][name=credit_card_number][value='%s']" % @cc_num)
+          expect(response).to have_tag(format("input[type=hidden][name=credit_card_number][value='%s']", @cc_num))
         end
       end
 
@@ -85,7 +85,7 @@ describe '/invoices/pay.erb' do
 
       it 'should have hidden input for amount to pay' do
         render template: '/invoices/pay.erb'
-        expect(response).to have_tag("input[type=hidden][name=confirmed_amount][value='%s']" % @outstanding_balance)
+        expect(response).to have_tag(format("input[type=hidden][name=confirmed_amount][value='%s']", @outstanding_balance))
       end
     end
   end

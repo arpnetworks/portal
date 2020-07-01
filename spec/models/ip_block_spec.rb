@@ -82,7 +82,7 @@ describe 'IpBlock class with fixtures loaded' do
       @ip_block = IpBlock.new(cidr: '10.0.0.0/30')
       expect(@ip_block.network).to eq(nil)
       @ip_block.save
-      expect(@ip_block.network).to eq(167772160)
+      expect(@ip_block.network).to eq(167_772_160)
     end
   end
 
@@ -229,7 +229,7 @@ describe 'IpBlock class with fixtures loaded' do
     context 'for IPv4' do
       specify 'should return text of entries suitable for BIND' do
         @ip_block = IpBlock.new(cidr: '10.0.0.1/28')
-        expect(@ip_block.reverse_dns_delegation_entries(['foo', 'bar'])).to eq(<<~BLOCK
+        expect(@ip_block.reverse_dns_delegation_entries(%w[foo bar])).to eq(<<~BLOCK
           ; BEGIN: RFC 2317 sub-Class C delegation
           ;
           0-15\t\tIN\tNS\tfoo.
@@ -251,7 +251,7 @@ describe 'IpBlock class with fixtures loaded' do
           ;
           ; END
         BLOCK
-                                                                              )
+                                                                           )
       end
       specify 'only blocks smaller than /24 are supported' do
         @ip_block = IpBlock.new(cidr: '10.0.0.0/24')
@@ -262,11 +262,11 @@ describe 'IpBlock class with fixtures loaded' do
     context 'for IPv6' do
       specify 'should return text of entries suitable for BIND' do
         @ip_block = IpBlock.new(cidr: 'fe80:1:c0de::/48')
-        expect(@ip_block.reverse_dns_delegation_entries(['foo', 'bar'])).to eq(<<~BLOCK
+        expect(@ip_block.reverse_dns_delegation_entries(%w[foo bar])).to eq(<<~BLOCK
           e.d.0.c    IN  NS  foo.
           e.d.0.c    IN  NS  bar.
         BLOCK
-                                                                              )
+                                                                           )
       end
       specify 'only blocks of size /48 are supported' do
         @ip_block = IpBlock.new(cidr: 'fe80::/64')
@@ -417,7 +417,7 @@ describe 'IpBlock class with fixtures loaded' do
           @ip_blocks = [
             IpBlock.new(cidr: '10.0.0.0/30'),
             IpBlock.new(cidr: '10.0.0.8/29'),
-            IpBlock.new(cidr: '10.0.0.16/28'),
+            IpBlock.new(cidr: '10.0.0.16/28')
           ]
           allow(IpBlock).to receive(:where).and_return(@ip_blocks)
         end
@@ -452,7 +452,7 @@ describe 'IpBlock class with fixtures loaded' do
           @ip_blocks = [
             IpBlock.new(cidr: '2607:f2f8:c000::/48'),
             IpBlock.new(cidr: '2607:f2f8:c123::/48'),
-            IpBlock.new(cidr: '2607:f2f8:c400::/48'),
+            IpBlock.new(cidr: '2607:f2f8:c400::/48')
           ]
           allow(IpBlock).to receive(:where).and_return(@ip_blocks)
         end

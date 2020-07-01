@@ -8,7 +8,7 @@ describe SshKeysController do
     end
 
     def do_get(opts = {})
-      get :index, { account_id: @account.id }.merge(opts)
+      get :index, params: { account_id: @account.id }.merge(opts)
     end
 
     context 'with JSON' do
@@ -86,7 +86,7 @@ describe SshKeysController do
       opts[:ssh_key][:key] ||= @key
       opts[:ssh_key][:username] ||= @username
 
-      post :create, { account_id: @account.id }.merge(opts)
+      post :create, params: { account_id: @account.id }.merge(opts)
     end
 
     context 'with JSON' do
@@ -178,7 +178,7 @@ describe SshKeysController do
     end
 
     def do_delete(opts)
-      delete :destroy, { account_id: @account.id, id: @ssh_key_id }.merge(opts)
+      delete :destroy, params: { account_id: @account.id, id: @ssh_key_id }.merge(opts)
     end
 
     context 'with key' do

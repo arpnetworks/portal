@@ -1,7 +1,7 @@
 class Admin::HeadQuartersController < ProtectedController
-  before_filter :is_arp_admin?, :except => [:search, :index]
-  before_filter :is_arp_sub_admin?, :only => [:search, :index]
-  before_filter :set_admin_state
+  before_action :is_arp_admin?, :except => [:search, :index]
+  before_action :is_arp_sub_admin?, :only => [:search, :index]
+  before_action :set_admin_state
 
   protect_from_forgery :except => [:su]
 

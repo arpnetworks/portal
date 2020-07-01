@@ -18,8 +18,8 @@ context VirtualMachinesController do
 
   context 'boot action' do
     def do_get(opts = {})
-      get :boot, { account_id: @account.id, service_id: @service.id,
-                   id: @vm.id }.merge(opts)
+      get :boot, params: { account_id: @account.id, service_id: @service.id,
+                           id: @vm.id }.merge(opts)
     end
 
     context 'with valid VM' do
@@ -64,8 +64,8 @@ context VirtualMachinesController do
 
   context 'shutdown action' do
     def do_get(opts = {})
-      get :shutdown, { account_id: @account.id, service_id: @service.id,
-                       id: @vm.id }.merge(opts)
+      get :shutdown, params: { account_id: @account.id, service_id: @service.id,
+                               id: @vm.id }.merge(opts)
     end
 
     context 'with valid VM' do
@@ -103,8 +103,8 @@ context VirtualMachinesController do
 
   context 'shutdown_hard action' do
     def do_get(opts = {})
-      get :shutdown_hard, { account_id: @account.id, service_id: @service.id,
-                            id: @vm.id }.merge(opts)
+      get :shutdown_hard, params: { account_id: @account.id, service_id: @service.id,
+                                    id: @vm.id }.merge(opts)
     end
 
     context 'with valid VM' do
@@ -153,10 +153,10 @@ context VirtualMachinesController do
     end
 
     def do_get(opts = {})
-      get :iso_change, { account_id: @account.id,
-                         service_id: @service.id,
-                         iso_file: @iso_files[0],
-                         id: @vm.id }.merge(opts)
+      get :iso_change, params: { account_id: @account.id,
+                                 service_id: @service.id,
+                                 iso_file: @iso_files[0],
+                                 id: @vm.id }.merge(opts)
     end
 
     context 'with valid VM' do
@@ -233,8 +233,8 @@ context VirtualMachinesController do
 
   context 'ssh_key' do
     def do_get(opts = {})
-      get :ssh_key, { account_id: @account.id, service_id: @service.id,
-                      id: @vm.id }.merge(opts)
+      get :ssh_key, params: { account_id: @account.id, service_id: @service.id,
+                              id: @vm.id }.merge(opts)
     end
 
     specify 'should render SSH key submission form' do
@@ -254,8 +254,8 @@ context VirtualMachinesController do
     end
 
     def do_post(opts = {})
-      post :ssh_key_post, { account_id: @account.id, service_id: @service.id,
-                            id: @vm.id, keys: @single_key }.merge(opts)
+      post :ssh_key_post, params: { account_id: @account.id, service_id: @service.id,
+                                    id: @vm.id, keys: @single_key }.merge(opts)
     end
 
     specify 'should submit key' do

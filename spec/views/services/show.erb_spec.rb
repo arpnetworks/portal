@@ -14,7 +14,7 @@ describe '/services/show.erb' do
 
     @resources = [
       stub_model(Resource),
-      stub_model(Resource),
+      stub_model(Resource)
     ]
 
     assign(:account, stub_model(Account))

@@ -1,5 +1,5 @@
 class Admin::BackupQuotasController < Admin::HeadQuartersController
-  before_filter :find_backup_quota, :only => [:edit, :update, :destroy]
+  before_action :find_backup_quota, :only => [:edit, :update, :destroy]
 
   # GET /admin_backup_quotas
   # GET /admin_backup_quotas.xml

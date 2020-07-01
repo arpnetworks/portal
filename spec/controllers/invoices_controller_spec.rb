@@ -20,7 +20,7 @@ context InvoicesController do
 
   context 'index action' do
     specify 'should respond with success' do
-      get :index, account_id: @account.id
+      get :index, params: { account_id: @account.id }
       expect(@response).to be_success
     end
   end
@@ -33,7 +33,7 @@ context InvoicesController do
     end
 
     def do_get(opts = {})
-      get :pay, { account_id: @account.id }.merge(opts)
+      get :pay, params: { account_id: @account.id }.merge(opts)
     end
 
     specify 'should respond with success' do
@@ -94,9 +94,9 @@ context InvoicesController do
 
   context 'pay_confirm action' do
     def do_post(opts = {})
-      post :pay_confirm, { account_id: @account.id,
-                           credit_card_number: @cc_num,
-                           confirmed_amount: @confirmed_amount }.merge(opts)
+      post :pay_confirm, params: { account_id: @account.id,
+                                   credit_card_number: @cc_num,
+                                   confirmed_amount: @confirmed_amount }.merge(opts)
     end
 
     context 'when payment system is disabled' do

@@ -13,7 +13,7 @@ describe CreditCardsController do
 
   describe 'handling GET /account/1/credit_cards/new' do
     def do_get(opts = {})
-      get :new, { account_id: @account.id }.merge(opts)
+      get :new, params: { account_id: @account.id }.merge(opts)
     end
 
     it 'should assign new credit card record' do
@@ -36,7 +36,7 @@ describe CreditCardsController do
     before do
       @credit_card = {
         'number' => '4111111111111111',
-        'month' => 04,
+        'month' => 0o4,
         'year' => 2014,
         'first_name' => 'John',
         'last_name' => 'Doe'
@@ -44,7 +44,7 @@ describe CreditCardsController do
     end
 
     def do_post(opts = {})
-      post :create, { account_id: @account.id }.merge(opts)
+      post :create, params: { account_id: @account.id }.merge(opts)
     end
 
     context 'with new credit card' do

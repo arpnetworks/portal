@@ -1,5 +1,5 @@
 class InvoicesController < ProtectedController
-  before_filter :payment_system_maintenance, :only => [:pay, :pay_confirm]
+  before_action :payment_system_maintenance, :only => [:pay, :pay_confirm]
 
   def index
     @invoices = @account.invoices.active.paginate(:page => params[:page],

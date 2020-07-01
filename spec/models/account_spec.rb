@@ -170,7 +170,7 @@ describe Account do
 
     describe 'ip_block()' do
       it 'should return service with IP_BLOCK service code belonging to this account' do
-        expect(account.ip_block).to eq(Service.find_by_service_code_id_and_account_id(@service_code.id, account.id))
+        expect(account.ip_block).to eq(Service.find_by(service_code_id: @service_code.id, account_id: account.id))
       end
 
       it 'should not return an IP_BLOCK service if the service has been deleted' do

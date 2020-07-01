@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../../../arp_spec_helper'
 describe Api::V1::Internal::VirtualMachinesController do
   context 'handling POST /api/v1/internal/virtual_machines/phone_home/:uuid' do
     def do_post(opts = {})
-      post :phone_home, { uuid: @UUID }.merge(opts)
+      post :phone_home, params: { uuid: @UUID }.merge(opts)
     end
 
     context 'when VM UUID is invalid' do

@@ -8,9 +8,7 @@ def create_user!(opts = {})
 
   if opts[:create_service]
     # A regular user should have at least one service
-    if @user.services.empty?
-      @user.services << create(:service, description: 'cool stuff')
-    end
+    @user.services << create(:service, description: 'cool stuff') if @user.services.empty?
   end
 
   @user

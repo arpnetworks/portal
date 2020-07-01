@@ -11,7 +11,7 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
     @virtual_machine.status = @new_status
     @virtual_machine.save
 
-    render text: "Updated status for VM #{@virtual_machine.uuid} from #{@old_status} to #{@new_status}\n"
+    render plain: "Updated status for VM #{@virtual_machine.uuid} from #{@old_status} to #{@new_status}\n"
   end
 
   # Like status, but in batch
@@ -42,10 +42,10 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
         end
       end
     rescue Exception => e
-      render(text: "We encountered an error: #{e.message}") && (return)
+      render(plain: "We encountered an error: #{e.message}") && (return)
     end
 
-    render text: 'Performed without errors'
+    render plain: 'Performed without errors'
   end
 
   def phone_home
@@ -63,10 +63,10 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
     begin
       MailerVm.setup_complete(@virtual_machine).deliver_now
     rescue StandardError => e
-      logger.error "There was an error sending the VM setup complete email: " + e.message
+      logger.error 'There was an error sending the VM setup complete email: ' + e.message
     end
 
-    render text: "Done\n"
+    render plain: "Done\n"
   end
 
   private
@@ -79,7 +79,7 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
 
       raise ActiveRecord::RecordNotFound unless @virtual_machine
     rescue ActiveRecord::RecordNotFound
-      render text: "Virtual Machine with UUID #{uuid} not found\n", status: :not_found
+      render plain: "Virtual Machine with UUID #{uuid} not found\n", status: :not_found
       nil
     end
   end
