@@ -110,7 +110,7 @@ class DnsRecordsController < ProtectedController
     end
 
     @dns_record[:name].sub!(/#{to_strip}$/, '')
-    params[:dns_record][:name].sub!(/#{to_strip}$/, '')
+    params[:dns_record][:name] = params[:dns_record][:name].sub(/#{to_strip}$/, '')
 
     render :action => 'new'
   end

@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../rails_helper'
+require File.dirname(__FILE__) + '/../arp_spec_helper'
 
 describe Service do
   describe 'give_me_totals()' do
@@ -70,7 +71,7 @@ describe Service do
       time = 2.days.ago
       @service.deleted_at = time
       @service.destroy
-      expect(@service.deleted_at).to eq(time)
+      expect(@service.deleted_at.strftime("%m/%d/%y %H:%M:%S")).to eql(time.strftime("%m/%d/%y %H:%M:%S"))
     end
   end
 end
