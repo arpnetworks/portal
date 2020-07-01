@@ -1,4 +1,4 @@
-class BgpSession < ActiveRecord::Base
+class BgpSession < ApplicationRecord
   include Resourceable
 
   has_many :prefixes, :class_name => 'BgpSessionsPrefix', :dependent => :destroy

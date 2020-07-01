@@ -1,4 +1,4 @@
-class Resource < ActiveRecord::Base
+class Resource < ApplicationRecord
   belongs_to :service
   belongs_to :assignable, :polymorphic => :true
 

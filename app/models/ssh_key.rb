@@ -1,4 +1,4 @@
-class SshKey < ActiveRecord::Base
+class SshKey < ApplicationRecord
   include ActiveModel::Serializers::JSON
 
   belongs_to :account

@@ -1,4 +1,4 @@
-class SshHostKey < ActiveRecord::Base
+class SshHostKey < ApplicationRecord
   belongs_to :virtual_machine
 
   validates :key, presence: true

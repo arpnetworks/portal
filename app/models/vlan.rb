@@ -1,4 +1,4 @@
-class Vlan < ActiveRecord::Base
+class Vlan < ApplicationRecord
   belongs_to :location
 
   def self.next_available(opts = {})

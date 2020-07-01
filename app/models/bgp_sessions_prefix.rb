@@ -1,4 +1,4 @@
-class BgpSessionsPrefix < ActiveRecord::Base
+class BgpSessionsPrefix < ApplicationRecord
   belongs_to :bgp_session
 
   before_save   :set_prefixlen_mix_man

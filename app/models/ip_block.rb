@@ -1,11 +1,11 @@
-class IpBlock < ActiveRecord::Base
+class IpBlock < ApplicationRecord
   include Resourceable
   include Textilizable
 
-  belongs_to :parent_block, :class_name => 'IpBlock', :foreign_key => 'ip_block_id'
+  belongs_to :parent_block, :class_name => 'IpBlock', :foreign_key => 'ip_block_id', :optional => true
   belongs_to :location
 
-  validates_presence_of :cidr
+  validates :column, presence: 'cidr'
   validate :proper_parent_block
 
   textilizable :notes

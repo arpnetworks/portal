@@ -1,4 +1,4 @@
-class Pool < ActiveRecord::Base
+class Pool < ApplicationRecord
   has_many :virtual_machines
 
   def display_name

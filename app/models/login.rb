@@ -1,4 +1,4 @@
-class Login < ActiveRecord::Base
+class Login < ApplicationRecord
   belongs_to :virtual_machine
 
   validates :username, presence: true

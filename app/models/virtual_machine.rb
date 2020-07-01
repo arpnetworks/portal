@@ -1,4 +1,4 @@
-class VirtualMachine < ActiveRecord::Base
+class VirtualMachine < ApplicationRecord
   include Resourceable
   include Textilizable
 

@@ -1,4 +1,4 @@
-class Mailer < ActionMailer::Base
+class Mailer < ApplicationMailer
   helper ActionView::Helpers::UrlHelper
 
   def forgot_password(controller, account, new_password)

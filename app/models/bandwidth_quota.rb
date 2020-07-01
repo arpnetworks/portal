@@ -1,4 +1,4 @@
-class BandwidthQuota < ActiveRecord::Base
+class BandwidthQuota < ApplicationRecord
   self.table_name = 'bandwidth_quotas'
 
   include Resourceable

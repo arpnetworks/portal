@@ -1,3 +1,3 @@
-class ServiceCode < ActiveRecord::Base
+class ServiceCode < ApplicationRecord
   has_many :services
 end

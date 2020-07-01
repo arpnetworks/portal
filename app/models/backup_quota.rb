@@ -1,4 +1,4 @@
-class BackupQuota < ActiveRecord::Base
+class BackupQuota < ApplicationRecord
   self.table_name = 'backup_quotas'
 
   include Resourceable

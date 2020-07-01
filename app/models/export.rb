@@ -1,4 +1,4 @@
-class Export < ActiveRecord::Base
+class Export < ApplicationRecord
   belongs_to :virtual_machine
 
   validates :exported_at, presence: true

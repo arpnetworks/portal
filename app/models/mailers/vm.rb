@@ -1,4 +1,4 @@
-class MailerVm < ActionMailer::Base
+class MailerVm < ApplicationMailer
   helper ActionView::Helpers::UrlHelper
 
   def setup_complete(vps)
