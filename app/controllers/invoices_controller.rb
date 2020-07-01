@@ -20,6 +20,8 @@ class InvoicesController < ProtectedController
       cc_e  = cookies['cc_e']
       cc_iv = cookies['cc_iv']
 
+      cc_e = Base64.decode64(cc_e) if cc_e
+
       if cc_e && cc_iv
         @credit_card_number = SimpleCrypt.decrypt(cc_e, cc_iv).to_s
 

@@ -58,7 +58,7 @@ context InvoicesController do
         @cc_iv = 'hzghaqxusktkvghydsjavcialquzxvbexxjqbcrdtwlrqncnnt'
         @cc_e = SimpleCrypt.encrypt(@cc_num, @cc_iv)
 
-        @request.cookies['cc_e']  = @cc_e
+        @request.cookies['cc_e']  = Base64.encode64(@cc_e)
         @request.cookies['cc_iv'] = @cc_iv
       end
 
