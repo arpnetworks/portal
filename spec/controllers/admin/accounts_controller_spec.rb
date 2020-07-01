@@ -131,7 +131,7 @@ describe Admin::AccountsController do
 
     it 'should not update password if one is not supplied' do
       allow(Account).to receive(:find) { @account }
-      expect(@account).to receive(:update).with(@account_params.stringify_keys!)
+      expect(@account).to receive(:update).with(ActionController::Parameters.new(@account_params.stringify_keys!).permit(:login, :email))
 
       do_put(@params.merge(id: @account.id, account: @account_params.merge(
         password: '', password_confirmation: ''

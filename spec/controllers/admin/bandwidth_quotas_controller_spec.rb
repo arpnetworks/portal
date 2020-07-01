@@ -67,21 +67,21 @@ describe Admin::BandwidthQuotasController do
 
     describe 'with valid params' do
       it 'should expose a newly created bandwidth_quota as @bandwidth_quota' do
-        expect(BandwidthQuota).to receive(:new).with(@p) { mock_bandwidth_quota(save: true) }
+        expect(BandwidthQuota).to receive(:new).with(ActionController::Parameters.new(@p).permit(:commit)) { mock_bandwidth_quota(save: true) }
         do_create
         expect(assigns[:bandwidth_quota]).to eq(mock_bandwidth_quota)
       end
 
       it 'should redirect to all service codes' do
         allow(BandwidthQuota).to receive(:new) { mock_bandwidth_quota(save: true) }
-        do_create(bandwidth_quota: {})
+        do_create(bandwidth_quota: { notes: 'foo' })
         expect(response).to redirect_to(admin_bandwidth_quotas_path)
       end
     end
 
     describe 'with invalid params' do
       it 'should expose a newly created but unsaved bandwidth_quota as @bandwidth_quota' do
-        allow(BandwidthQuota).to receive(:new).with(@p) { mock_bandwidth_quota(save: false) }
+        allow(BandwidthQuota).to receive(:new).with(ActionController::Parameters.new(@p).permit(:commit)) { mock_bandwidth_quota(save: false) }
         do_create
         expect(assigns(:bandwidth_quota)).to eq(mock_bandwidth_quota)
         expect(assigns[:include_blank]).to be true
@@ -89,7 +89,7 @@ describe Admin::BandwidthQuotasController do
 
       it "should re-render the 'new' template" do
         allow(BandwidthQuota).to receive(:new) { mock_bandwidth_quota(save: false) }
-        do_create(bandwidth_quota: {})
+        do_create(bandwidth_quota: { notes: 'foo' })
         expect(response).to render_template('new')
       end
     end
@@ -103,7 +103,7 @@ describe Admin::BandwidthQuotasController do
     describe 'with valid params' do
       it 'should update the requested bandwidth_quota' do
         expect(BandwidthQuota).to receive(:find).with('37') { mock_bandwidth_quota }
-        expect(mock_bandwidth_quota).to receive(:update).with(@p)
+        expect(mock_bandwidth_quota).to receive(:update).with(ActionController::Parameters.new(@p).permit(:commit))
         do_update
       end
 

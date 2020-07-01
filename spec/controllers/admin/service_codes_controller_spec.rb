@@ -84,7 +84,7 @@ describe Admin::ServiceCodesController do
 
     describe 'with valid params' do
       it 'should expose a newly created service_codes as @service_codes' do
-        expect(ServiceCode).to receive(:new).with(@p) { mock_service_code(save: true) }
+        expect(ServiceCode).to receive(:new).with(ActionController::Parameters.new(@p).permit(:name)) { mock_service_code(save: true) }
         do_create
         expect(assigns(:service_code)).to eq(mock_service_code)
       end
@@ -98,7 +98,7 @@ describe Admin::ServiceCodesController do
 
     describe 'with invalid params' do
       it 'should expose a newly created but unsaved service_codes as @service_codes' do
-        allow(ServiceCode).to receive(:new).with(@p) { mock_service_code(save: false) }
+        allow(ServiceCode).to receive(:new).with(ActionController::Parameters.new(@p).permit(:name)) { mock_service_code(save: false) }
         do_create
         expect(assigns(:service_code)).to eq(mock_service_code)
       end
@@ -116,18 +116,18 @@ describe Admin::ServiceCodesController do
       it 'should update the requested service_codes' do
         p = { name: 'BANDWIDTH' }
         expect(ServiceCode).to receive(:find).with('37') { mock_service_code }
-        expect(mock_service_code).to receive(:update_attributes)
+        expect(mock_service_code).to receive(:update)
         put :update, params: { id: '37', service_code: p }
       end
 
       it 'should expose the requested service_codes as @service_codes' do
-        allow(ServiceCode).to receive(:find) { mock_service_code(update_attributes: true) }
+        allow(ServiceCode).to receive(:find) { mock_service_code(update: true) }
         put :update, params: { id: '1', service_code: { name: 'FOO' } }
         expect(assigns(:service_code)).to eq(mock_service_code)
       end
 
       it 'should redirect to all service codes' do
-        allow(ServiceCode).to receive(:find) { mock_service_code(update_attributes: true) }
+        allow(ServiceCode).to receive(:find) { mock_service_code(update: true) }
         put :update, params: { id: '1', service_code: { name: 'FOO' } }
         expect(response).to redirect_to(admin_service_codes_path)
       end
@@ -135,7 +135,7 @@ describe Admin::ServiceCodesController do
 
     describe 'with invalid params' do
       it "should re-render the 'edit' template" do
-        allow(ServiceCode).to receive(:find) { mock_service_code(update_attributes: false) }
+        allow(ServiceCode).to receive(:find) { mock_service_code(update: false) }
         put :update, params: { id: '1', service_code: { name: 'FOO' } }
         expect(response).to render_template('edit')
       end

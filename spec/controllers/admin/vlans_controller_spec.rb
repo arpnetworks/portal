@@ -69,7 +69,7 @@ describe Admin::VlansController do
 
     describe 'with valid params' do
       it 'should expose a newly created vlans as @vlans' do
-        expect(Vlan).to receive(:new).with(@p) { mock_vlan(save: true) }
+        expect(Vlan).to receive(:new).with(ActionController::Parameters.new(@p).permit(:vlan, :label)) { mock_vlan(save: true) }
         do_create
         expect(assigns(:vlan)).to eq(mock_vlan)
       end
@@ -83,7 +83,7 @@ describe Admin::VlansController do
 
     describe 'with invalid params' do
       it 'should expose a newly created but unsaved vlans as @vlans' do
-        allow(Vlan).to receive(:new).with(@p) { mock_vlan(save: false) }
+        allow(Vlan).to receive(:new).with(ActionController::Parameters.new(@p).permit(:vlan, :label)) { mock_vlan(save: false) }
         do_create
         expect(assigns(:vlan)).to eq(mock_vlan)
       end
@@ -104,7 +104,7 @@ describe Admin::VlansController do
     describe 'with valid params' do
       it 'should update the requested vlans' do
         expect(Vlan).to receive(:find).with('37') { mock_vlan }
-        expect(mock_vlan).to receive(:update).with(@p)
+        expect(mock_vlan).to receive(:update).with(ActionController::Parameters.new(@p).permit(:vlan, :label))
         do_update
       end
 
@@ -124,7 +124,7 @@ describe Admin::VlansController do
     describe 'with invalid params' do
       it 'should update the requested vlans' do
         expect(Vlan).to receive(:find).with('37') { mock_vlan }
-        expect(mock_vlan).to receive(:update).with(@p)
+        expect(mock_vlan).to receive(:update).with(ActionController::Parameters.new(@p).permit(:vlan, :label))
         do_update
       end
 

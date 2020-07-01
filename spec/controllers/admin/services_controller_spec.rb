@@ -125,7 +125,7 @@ describe Admin::ServicesController do
 
     it 'should go back to edit page if error updating' do
       # Using mocks/stubs here
-      @service = mock_model(Service, update_attributes: false)
+      @service = mock_model(Service, update: false)
       expect(Service).to receive(:find).with(@service.id.to_s).and_return(@service)
 
       do_put(@params.merge(id: @service.id, service: { title: 'foo' }))

@@ -64,7 +64,7 @@ describe Admin::BackupQuotasController do
 
     describe 'with valid params' do
       it 'should expose a newly created backup_quota as @backup_quota' do
-        expect(BackupQuota).to receive(:new).with(@p) { mock_backup_quota(save: true) }
+        expect(BackupQuota).to receive(:new).with(ActionController::Parameters.new(@p).permit(:server)) { mock_backup_quota(save: true) }
         do_create
         expect(assigns(:backup_quota)).to eq(mock_backup_quota)
       end
@@ -78,7 +78,7 @@ describe Admin::BackupQuotasController do
 
     describe 'with invalid params' do
       it 'should expose a newly created but unsaved backup_quota as @backup_quota' do
-        allow(BackupQuota).to receive(:new).with(@p) { mock_backup_quota(save: false) }
+        allow(BackupQuota).to receive(:new).with(ActionController::Parameters.new(@p).permit(:server)) { mock_backup_quota(save: false) }
         do_create
         expect(assigns[:backup_quota]).to eq(mock_backup_quota)
         expect(assigns[:include_blank]).to be true
@@ -100,7 +100,7 @@ describe Admin::BackupQuotasController do
     describe 'with valid params' do
       it 'should update the requested backup_quota' do
         expect(BackupQuota).to receive(:find).with('37') { mock_backup_quota }
-        expect(mock_backup_quota).to receive(:update_attributes).with(@p)
+        expect(mock_backup_quota).to receive(:update_attributes).with(ActionController::Parameters.new(@p).permit(:server))
         do_patch
       end
 

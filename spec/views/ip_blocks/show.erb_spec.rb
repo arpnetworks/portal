@@ -1,4 +1,7 @@
 require File.dirname(__FILE__) + '/../../rails_helper'
+require File.dirname(__FILE__) + '/../../arp_spec_helper'
+
+include IpBlocksHelper
 
 describe '/services/show.erb' do
   include RSpecHtmlMatchers
