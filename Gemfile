@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby '2.6.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '= 5.1.7'
+gem 'rails', '=5.1.7'
 # Use MySQL as the database for Active Record
 gem 'mysql2', '~> 0.4.0'
 # Use SCSS for stylesheets
@@ -33,6 +33,9 @@ gem 'jbuilder', '~> 2.5'
 # Use Unicorn as the app server
 gem 'unicorn'
 
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.1.0', require: false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -47,6 +50,7 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
 
 group :test do
