@@ -6,7 +6,7 @@ class DnsRecord < ActiveRecord::Base
   self.table_name = "records"
   self.inheritance_column = "inheritance_type"
 
-  belongs_to :dns_domain, :foreign_key => 'domain_id'
+  belongs_to :dns_domain, :foreign_key => 'domain_id', optional: true
   alias :domain :dns_domain
 
   validates_presence_of :content

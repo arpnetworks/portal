@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../../rails_helper'
+require File.dirname(__FILE__) + '/../../arp_spec_helper'
 
 describe '/services/show.erb' do
   include RSpecHtmlMatchers
@@ -13,8 +14,8 @@ describe '/services/show.erb' do
     assign(:resources, [])
 
     @resources = [
-      stub_model(Resource),
-      stub_model(Resource)
+      stub_model(Resource, service: stub_model(Service), assignable: stub_model(IpBlock)),
+      stub_model(Resource, service: stub_model(Service), assignable: stub_model(BgpSession))
     ]
 
     assign(:account, stub_model(Account))

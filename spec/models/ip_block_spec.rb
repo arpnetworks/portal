@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../rails_helper'
+require File.dirname(__FILE__) + '/../arp_spec_helper'
 
 describe 'IpBlock class with fixtures loaded' do
   before do

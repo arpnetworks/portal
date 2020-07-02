@@ -48,6 +48,7 @@ FactoryBot.define do
   end
 
   factory :ssh_host_key do
+    virtual_machine
   end
 
   factory :resource do
