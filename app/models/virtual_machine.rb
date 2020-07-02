@@ -219,8 +219,8 @@ class VirtualMachine < ApplicationRecord
     # In case serial console password was changed
     build_and_reload_conserver!
 
-    if host_changed?
-      build_and_reload_conserver(host_was.split('.')[0]) rescue nil
+    if saved_change_to_host?
+      build_and_reload_conserver(host_before_last_save.split('.')[0]) rescue nil
     end
   end
 

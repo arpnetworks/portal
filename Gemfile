@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby '2.6.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '=5.0.7.2'
+gem 'rails', '= 5.1.7'
 # Use MySQL as the database for Active Record
 gem 'mysql2', '~> 0.4.0'
 # Use SCSS for stylesheets
@@ -43,6 +43,10 @@ group :development, :test do
   gem 'capistrano-passenger', require: false
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-rbenv', '~> 2.1', require: false
+
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '>= 2.15'
+  gem 'selenium-webdriver'
 end
 
 group :test do
@@ -60,7 +64,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '~> 3.0.5'
+  gem 'listen', '>= 3.0.5', '< 3.2'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
