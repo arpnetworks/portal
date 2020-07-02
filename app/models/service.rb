@@ -2,7 +2,7 @@ class Service < ApplicationRecord
   include Textilizable
 
   belongs_to :account
-  belongs_to :service_code
+  belongs_to :service_code, optional: true
 
   has_many :resources,        :dependent => :destroy
 
