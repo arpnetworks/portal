@@ -40,7 +40,7 @@ context DnsRecordsController do
 
     specify 'should be a success' do
       do_get
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     specify 'should be a success even if account has no IP blocks' do
@@ -48,7 +48,7 @@ context DnsRecordsController do
       login_with_account!(account)
       expect(account.ip_blocks).to eq []
       do_get(account_id: account.id)
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     specify 'should retrieve IP blocks' do
@@ -263,13 +263,13 @@ context DnsRecordsController do
       it 'should display new dns_record form' do
         do_get
         expect(assigns(:dns_record)).to be_new_record
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'should set default type to PTR' do
         do_get
         expect(assigns(:dns_record).type).to eq 'PTR'
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'should redirect back if account has no reverse DNS zones' do
@@ -402,7 +402,7 @@ context DnsRecordsController do
 
       it 'should show the dns_record' do
         do_get @params
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(assigns(:dns_record).id).to eq @dns_record.id
       end
 

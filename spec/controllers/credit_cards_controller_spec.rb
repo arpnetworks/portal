@@ -23,7 +23,7 @@ describe CreditCardsController do
 
     it 'should be successful' do
       do_get
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'should pre-fill Name of Card field with account full name' do

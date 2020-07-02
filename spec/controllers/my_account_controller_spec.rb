@@ -14,7 +14,7 @@ describe MyAccountController do
 
       it 'should be success' do
         get :dashboard
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'should render dashboard template' do

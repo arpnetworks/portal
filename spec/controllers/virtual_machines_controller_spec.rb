@@ -239,7 +239,7 @@ context VirtualMachinesController do
 
     specify 'should render SSH key submission form' do
       do_get
-      expect(@response).to be_success
+      expect(@response).to be_successful
       expect(@response).to render_template('ssh_key')
     end
   end

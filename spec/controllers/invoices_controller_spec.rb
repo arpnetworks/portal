@@ -21,7 +21,7 @@ context InvoicesController do
   context 'index action' do
     specify 'should respond with success' do
       get :index, params: { account_id: @account.id }
-      expect(@response).to be_success
+      expect(@response).to be_successful
     end
   end
 
@@ -38,7 +38,7 @@ context InvoicesController do
 
     specify 'should respond with success' do
       do_get
-      expect(@response).to be_success
+      expect(@response).to be_successful
     end
 
     context 'when payment system is disabled' do

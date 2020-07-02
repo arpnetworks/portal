@@ -32,7 +32,7 @@ describe Admin::AccountsController do
     it 'should display new account form' do
       do_get
       expect(assigns(:account)).to be_new_record
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'should set @include_blank' do
@@ -65,7 +65,7 @@ describe Admin::AccountsController do
     it 'should display a list of accounts' do
       do_get
       expect(assigns(:accounts)).to_not be_empty
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
@@ -77,7 +77,7 @@ describe Admin::AccountsController do
     it 'should show the account' do
       allow(Account).to receive(:find) { @account }
       do_get @params
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response).to render_template('admin/accounts/show')
       expect(assigns(:account).id).to eq @account.id
     end
@@ -98,7 +98,7 @@ describe Admin::AccountsController do
     it 'should show the account' do
       allow(Account).to receive(:find) { @account }
       do_get @params
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(assigns(:account).id).to eq @account.id
     end
 

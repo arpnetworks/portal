@@ -17,7 +17,7 @@ context ServicesController do
   context 'index action' do
     specify 'should respond with success' do
       get :index, params: { account_id: @account.id }
-      expect(@response).to be_success
+      expect(@response).to be_successful
     end
   end
 
@@ -28,7 +28,7 @@ context ServicesController do
 
     specify 'should respond with success' do
       get :show, params: { account_id: @account.id, id: @service.id }
-      expect(@response).to be_success
+      expect(@response).to be_successful
       expect(@response).to render_template('show')
     end
 

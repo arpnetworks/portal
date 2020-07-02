@@ -46,7 +46,7 @@ describe AccountsController do
 
     it 'should respond with success' do
       get :edit, params: { id: @user.id }
-      expect(@response).to be_success
+      expect(@response).to be_successful
     end
 
     it 'should get account info from current logged in user' do
@@ -72,7 +72,7 @@ describe AccountsController do
   describe 'Forgot password' do
     it 'should not require login' do
       get :forgot_password
-      expect(@response).to be_success
+      expect(@response).to be_successful
       expect(@response).to render_template('forgot_password')
     end
   end
@@ -102,7 +102,7 @@ describe AccountsController do
 
         it 'should mark them in use' do
           do_get_ip_address_inventory
-          expect(@response).to be_success
+          expect(@response).to be_successful
 
           json_response = JSON.parse(@response.body)
           ips = json_response['ips']
@@ -116,7 +116,7 @@ describe AccountsController do
 
         it 'should have further assignment information' do
           do_get_ip_address_inventory
-          expect(@response).to be_success
+          expect(@response).to be_successful
 
           json_response = JSON.parse(@response.body)
           ips = json_response['ips']
@@ -139,7 +139,7 @@ describe AccountsController do
 
         it 'should set caption for location' do
           do_get_ip_address_inventory
-          expect(@response).to be_success
+          expect(@response).to be_successful
 
           json_response = JSON.parse(@response.body)
           caption = json_response['caption']
@@ -149,7 +149,7 @@ describe AccountsController do
 
         it 'should include IP address in hash' do
           do_get_ip_address_inventory
-          expect(@response).to be_success
+          expect(@response).to be_successful
 
           json_response = JSON.parse(@response.body)
           ips = json_response['ips']
@@ -163,7 +163,7 @@ describe AccountsController do
 
         it 'should mark them available' do
           do_get_ip_address_inventory
-          expect(@response).to be_success
+          expect(@response).to be_successful
 
           json_response = JSON.parse(@response.body)
           ips = json_response['ips']
@@ -177,7 +177,7 @@ describe AccountsController do
 
         it 'should be assigned to the correct location' do
           do_get_ip_address_inventory
-          expect(@response).to be_success
+          expect(@response).to be_successful
 
           json_response = JSON.parse(@response.body)
           ips = json_response['ips']
@@ -191,7 +191,7 @@ describe AccountsController do
 
         it 'should not have any further assignment information' do
           do_get_ip_address_inventory
-          expect(@response).to be_success
+          expect(@response).to be_successful
 
           json_response = JSON.parse(@response.body)
           ips = json_response['ips']
@@ -213,7 +213,7 @@ describe AccountsController do
       it 'should return empty set' do
         do_get_ip_address_inventory
 
-        expect(@response).to_not be_success
+        expect(@response).to_not be_successful
         expect(@response.body).to include('No such location')
       end
     end

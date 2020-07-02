@@ -33,7 +33,7 @@ describe Admin::VirtualMachinesController do
     it 'should display new virtual_machine form' do
       do_get
       expect(assigns(:virtual_machine)).to be_new_record
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'should set @include_blank' do
@@ -77,7 +77,7 @@ describe Admin::VirtualMachinesController do
     it 'should display a list of virtual machines' do
       do_get
       expect(assigns(:virtual_machines)).to_not be_empty
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response).to render_template('index')
     end
   end
@@ -89,14 +89,14 @@ describe Admin::VirtualMachinesController do
 
     it 'should show the virtual_machine' do
       do_get @params
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response).to render_template('virtual_machines/show')
       expect(assigns(:virtual_machine).id).to eq @virtual_machine.id
     end
 
     it 'should show the virtual_machine when provided UUID' do
       do_get @params.merge(id: @virtual_machine.uuid)
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response).to render_template('virtual_machines/show')
       expect(assigns(:virtual_machine).id).to eq @virtual_machine.id
       expect(assigns(:virtual_machine).uuid).to eq @virtual_machine.uuid
@@ -116,7 +116,7 @@ describe Admin::VirtualMachinesController do
 
     it 'should show the virtual_machine' do
       do_get @params
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(assigns(:virtual_machine).id).to eq @virtual_machine.id
     end
 

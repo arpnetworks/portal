@@ -33,7 +33,7 @@ describe Admin::ServicesController do
     it 'should display new service form' do
       do_get
       expect(assigns(:service)).to be_new_record
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'should set @include_blank' do
@@ -67,7 +67,7 @@ describe Admin::ServicesController do
     it 'should display a list of services' do
       do_get
       expect(assigns(:services)).to_not be_empty
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
@@ -78,7 +78,7 @@ describe Admin::ServicesController do
 
     it 'should show the service' do
       do_get @params
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response).to render_template('services/show')
       expect(assigns(:service).id).to eq @service.id
     end
@@ -97,7 +97,7 @@ describe Admin::ServicesController do
 
     it 'should show the service' do
       do_get @params
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(assigns(:service).id).to eq @service.id
     end
 

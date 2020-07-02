@@ -23,7 +23,7 @@ describe SshKeysController do
 
         it 'should be a success' do
           do_get(format: :json)
-          expect(response).to be_success
+          expect(response).to be_successful
         end
 
         it 'should return keys JSON object' do
@@ -62,7 +62,7 @@ describe SshKeysController do
 
         it 'should be a success' do
           do_get(format: :json)
-          expect(response).to be_success
+          expect(response).to be_successful
         end
 
         it 'should return empty JSON' do
@@ -106,7 +106,7 @@ describe SshKeysController do
                                                          key: @key,
                                                          username: @username).and_return(ssh_key)
           do_post(format: :json)
-          expect(@response).to be_success
+          expect(@response).to be_successful
 
           json = JSON.parse(@response.body)
           expect(json['message']).to include('Success')
@@ -125,7 +125,7 @@ describe SshKeysController do
         it 'should not be successful' do
           do_post(format: :json)
 
-          expect(@response).to_not be_success
+          expect(@response).to_not be_successful
         end
 
         it 'should return an errors object' do
@@ -151,7 +151,7 @@ describe SshKeysController do
         it 'should not be successful' do
           do_post(format: :json)
 
-          expect(@response).to_not be_success
+          expect(@response).to_not be_successful
         end
 
         it 'should return an errors object' do
@@ -192,7 +192,7 @@ describe SshKeysController do
       it 'should be successful' do
         allow(@ssh_key).to receive(:destroy).and_return(true)
         do_delete(format: :json)
-        expect(@response).to be_success
+        expect(@response).to be_successful
       end
 
       it 'should destroy key' do
@@ -210,7 +210,7 @@ describe SshKeysController do
 
       it 'should not be successful' do
         do_delete(format: :json)
-        expect(@response).to_not be_success
+        expect(@response).to_not be_successful
       end
     end
   end

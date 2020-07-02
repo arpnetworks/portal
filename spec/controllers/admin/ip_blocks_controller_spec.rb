@@ -24,7 +24,7 @@ describe Admin::IpBlocksController do
     it 'should display new ip_block form' do
       do_get
       expect(assigns(:ip_block)).to be_new_record
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'should set @include_blank' do
@@ -80,7 +80,7 @@ describe Admin::IpBlocksController do
       create :ip_block
       do_get
       expect(assigns(:ip_blocks)).to_not be_empty
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response).to render_template('index')
     end
   end
@@ -105,7 +105,7 @@ describe Admin::IpBlocksController do
       @ip_block = mock_ip_block
       allow(IpBlock).to receive(:find) { @ip_block }
       do_get @params
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response).to render_template('ip_blocks/show')
       expect(assigns(:ip_block).id).to eq @ip_block.id
     end
@@ -127,7 +127,7 @@ describe Admin::IpBlocksController do
       @ip_block = mock_ip_block
       allow(IpBlock).to receive(:find) { @ip_block }
       do_get @params
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(assigns(:ip_block).id).to eq @ip_block.id
     end
 
@@ -238,7 +238,7 @@ describe Admin::IpBlocksController do
 
     it 'should be success' do
       do_get @params
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'should render REASSIGN SIMPLE fill-in form' do

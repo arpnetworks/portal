@@ -15,7 +15,7 @@ describe Api::V1::Internal::VirtualMachinesController do
 
       it 'should return 404' do
         do_post
-        expect(@response).to_not be_success
+        expect(@response).to_not be_successful
         expect(@response.status).to eq 404
       end
     end
@@ -61,7 +61,7 @@ describe Api::V1::Internal::VirtualMachinesController do
 
             do_post(@opts)
 
-            expect(@response).to be_success
+            expect(@response).to be_successful
           end
         end
 
@@ -79,7 +79,7 @@ describe Api::V1::Internal::VirtualMachinesController do
 
             do_post(@opts)
 
-            expect(@response).to be_success
+            expect(@response).to be_successful
           end
         end
       end
