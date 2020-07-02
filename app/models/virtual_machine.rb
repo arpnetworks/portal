@@ -6,7 +6,7 @@ class VirtualMachine < ApplicationRecord
   has_many :ssh_host_keys, dependent: :destroy
   has_many :logins, dependent: :destroy
 
-  belongs_to :pool
+  belongs_to :pool, optional: true
 
   textilizable :notes
 
