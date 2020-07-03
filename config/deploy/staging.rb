@@ -7,7 +7,7 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-
+server 'snow.arpnetworks.com', roles: %w(app db)
 
 # role-based syntax
 # ==================
@@ -21,7 +21,8 @@
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
-
+set :branch, 'rails5'
+set :deploy_to, "/var/www/portal-staging"
 
 # Configuration
 # =============

@@ -69,7 +69,7 @@ group :development do
   gem 'rubocop-rspec'
 end
 
-group :production do
+group :production, :staging do
   gem 'passenger', '~> 5.0'
   gem 'slack-notifier'
 end
