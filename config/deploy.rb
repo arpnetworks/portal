@@ -25,6 +25,7 @@ set :branch, 'production'
 
 # Default value for :linked_files is []
 append :linked_files, "config/database.yml",
+                      "config/master.key",
                       "config/arp/globals.yml",
                       "config/arp/password_encryption.yml",
                       "config/arp/tender.yml",
