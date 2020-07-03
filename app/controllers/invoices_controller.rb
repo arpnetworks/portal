@@ -22,12 +22,18 @@ class InvoicesController < ProtectedController
 
       cc_e = Base64.decode64(cc_e) if cc_e
 
-      if cc_e && cc_iv
-        @credit_card_number = SimpleCrypt.decrypt(cc_e, cc_iv).to_s
+      @credit_card_number = nil
 
-        # Only if the cookie matches current card, do we use it
-        unless @credit_card_number =~ /#{@credit_card.display_number}$/
-          @credit_card_number = nil
+      if cc_e && cc_iv
+        begin
+          @credit_card_number = SimpleCrypt.decrypt(cc_e, cc_iv).to_s
+
+          # Only if the cookie matches current card, do we use it
+          unless @credit_card_number =~ /#{@credit_card.display_number}$/
+            @credit_card_number = nil
+          end
+        rescue OpenSSL::Cipher::CipherError => e
+          Mailer.simple_notification("Credit Card Error", e.message).deliver_now
         end
       end
     end

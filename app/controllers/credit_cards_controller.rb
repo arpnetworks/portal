@@ -50,11 +50,11 @@ class CreditCardsController < ProtectedController
       iv = (0...50).map{ ('a'..'z').to_a[rand(26)] }.join
       cookies[:cc_iv] = {
         :value => iv,
-        :expires => 10.years.from_now
+        :expires => 4.years.from_now
       }
       cookies[:cc_e] = {
-        :value => SimpleCrypt.encrypt(@credit_card.number, iv),
-        :expires => 10.years.from_now
+        :value => Base64.encode64(SimpleCrypt.encrypt(@credit_card.number, iv)),
+        :expires => 4.years.from_now
       }
     end
 
