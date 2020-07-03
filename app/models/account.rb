@@ -654,7 +654,7 @@ class Account < ApplicationRecord
         date = line_item.date.strftime("%m-%d-%Y")
         line_items << {
           :code => line_item.code,
-          :description => date + ": " + line_item.description,
+          :description => date + ": " + line_item.description.to_s,
           :amount => line_item.amount.to_f
         }
       end
