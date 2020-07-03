@@ -1,6 +1,6 @@
 class Api::V1::Internal::ProvisioningController < ApiController
-  before_filter :trusted_hosts
-  before_filter :find_virtual_machine, only: [:config]
+  before_action :trusted_hosts
+  before_action :find_virtual_machine, only: [:config]
 
   def config
     @vm_base = Rails.root + $PROVISIONING['vm_base']

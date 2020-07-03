@@ -1,7 +1,7 @@
 class Api::V1::Internal::UtilsController < ApiController
-  before_filter :trusted_vm_hosts,      only: [:console_logins]
-  before_filter :trusted_console_hosts, only: [:console_passwd_file]
-  before_filter :trusted_monitor_hosts, only: [:redis_ping, :job_queue_health]
+  before_action :trusted_vm_hosts,      only: [:console_logins]
+  before_action :trusted_console_hosts, only: [:console_passwd_file]
+  before_action :trusted_monitor_hosts, only: [:redis_ping, :job_queue_health]
 
   skip_before_action :verify_authenticity_token, only: [:console_logins]
 
