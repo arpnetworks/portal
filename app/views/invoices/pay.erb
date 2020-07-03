@@ -7,7 +7,7 @@
     Your account does not have a credit card.
 
     <p>
-    <%= link_to '<i class="fas fa-credit-card"></i> &nbsp;Add Credit Card', new_account_credit_card_path(@account.id), class: 'btn btn-success' %>
+    <a href='<%= new_account_credit_card_path(@account.id) %>' class='btn btn-success'><i class="fas fa-credit-card"></i> Add Credit Card</a>
     </p>
   </div>
 <% else %>
