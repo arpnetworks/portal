@@ -33,3 +33,6 @@ backups/
 bin/arp/provisioning/create_new_vps_account.rb
 
 node_modules/
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
