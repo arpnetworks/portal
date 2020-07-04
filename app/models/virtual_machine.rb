@@ -170,7 +170,7 @@ class VirtualMachine < ApplicationRecord
   end
 
   def create_or_update_dns_records!
-    if ip_address && ipv6_address
+    if ip_address
       if account.id > 1
         arpnetworks_domain = DnsDomain.find_by_name('arpnetworks.com')
 
@@ -179,7 +179,7 @@ class VirtualMachine < ApplicationRecord
              (@ipv4_dns_record.name != dns_record_name ||
               @ipv4_dns_record.content != ip_address)
             @ipv4_dns_record.update_attributes(
-              :name    => dns_record_name,
+              :name => dns_record_name,
               :content => ip_address
             )
             @ipv4_dns_record.save
@@ -193,21 +193,23 @@ class VirtualMachine < ApplicationRecord
             end
           end
 
-          if @ipv6_dns_record &&
-             (@ipv6_dns_record.name != dns_record_name ||
-              @ipv6_dns_record.content != ipv6_address)
-            @ipv6_dns_record.update_attributes(
-              :name    => dns_record_name,
-              :content => ipv6_address
-            )
-            @ipv6_dns_record.save
-          else
-            if DnsRecord.find_by_name_and_type(dns_record_name, 'AAAA') == nil
-              arpnetworks_domain.records.create(
+          if ipv6_address
+            if @ipv6_dns_record &&
+               (@ipv6_dns_record.name != dns_record_name ||
+                @ipv6_dns_record.content != ipv6_address)
+              @ipv6_dns_record.update_attributes(
                 :name => dns_record_name,
-                :type => 'AAAA',
                 :content => ipv6_address
               )
+              @ipv6_dns_record.save
+            else
+              if DnsRecord.find_by_name_and_type(dns_record_name, 'AAAA') == nil
+                arpnetworks_domain.records.create(
+                  :name => dns_record_name,
+                  :type => 'AAAA',
+                  :content => ipv6_address
+                )
+              end
             end
           end
         end
