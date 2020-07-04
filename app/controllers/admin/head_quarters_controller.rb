@@ -21,7 +21,7 @@ class Admin::HeadQuartersController < ProtectedController
   end
 
   def whoami
-    render :text => %x{whoami}
+    render plain: %x{whoami}
   end
 
   def search

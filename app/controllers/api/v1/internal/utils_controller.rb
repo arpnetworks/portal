@@ -26,7 +26,7 @@ class Api::V1::Internal::UtilsController < ApiController
         end
       end
 
-      render :text => @response
+      render plain: @response
     end
   end
 
@@ -58,28 +58,28 @@ class Api::V1::Internal::UtilsController < ApiController
       end
     end
 
-    render :text => @file
+    render plain: @file
   end
 
   def redis_ping
     begin
       ARP_REDIS.ping
     rescue Exception => e
-      render :text => e.message, :status => 500
+      render plain: e.message, status: 500
       return
     end
 
-    render :text => "OK\n"
+    render plain: "OK\n"
   end
 
   def job_queue_health
     failed_jobs = Job.failed.where(["updated_at >= ? and account_id not in (#{$JOBS_QUEUE_HEALTH_EXCLUSIONS.join(',')})", 24.hours.ago])
 
     if failed_jobs.empty?
-      render :text => "OK\n"
+      render plain: "OK\n"
     else
       num = failed_jobs.size
-      render :text => "#{num} failed job(s)\n", :status => 500
+      render plain: "#{num} failed job(s)\n", status: 500
     end
   end
 end

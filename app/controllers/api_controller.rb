@@ -11,7 +11,7 @@ class ApiController < ApplicationController
     @hosts = $TRUSTED_CONSOLE_HOSTS
 
     unless @hosts.include?(@remote_ip)
-      render :text => "Access denied from #{@remote_ip}\n", :status => 403 and return
+      render :plain => "Access denied from #{@remote_ip}\n", :status => 403 and return
     end
   end
 
@@ -29,7 +29,7 @@ class ApiController < ApplicationController
     @hosts = $TRUSTED_VM_HOSTS
 
     unless @hosts.include?(@remote_ip)
-      render :text => "Access denied from #{@remote_ip}\n", :status => 403 and return
+      render :plain => "Access denied from #{@remote_ip}\n", :status => 403 and return
     end
   end
 
@@ -46,7 +46,7 @@ class ApiController < ApplicationController
     @hosts = $TRUSTED_MONITOR_HOSTS
 
     unless @hosts.include?(@remote_ip)
-      render :text => "Access denied from #{@remote_ip}\n", :status => 403 and return
+      render :plain => "Access denied from #{@remote_ip}\n", :status => 403 and return
     end
   end
 end

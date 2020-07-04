@@ -9,7 +9,7 @@ class Api::V1::Internal::JobsController < ApiController
     args  = params[:args]
 
     unless event
-      render :text => "No event specified\n", :status => 412 and return
+      render :plain => "No event specified\n", :status => 412 and return
     end
 
     begin
@@ -24,7 +24,7 @@ class Api::V1::Internal::JobsController < ApiController
         text += "Valid transitions: #{valid_transitions.join(', ')}\n"
       end
 
-      render :text => text, :status => 500 and return
+      render :plain => text, :status => 500 and return
     end
 
     case event
@@ -40,7 +40,7 @@ class Api::V1::Internal::JobsController < ApiController
       end
     end
 
-    render :text => "Job #{@job.id} state is now #{@job.aasm_state}\n"
+    render :plain => "Job #{@job.id} state is now #{@job.aasm_state}\n"
   end
 
   private
@@ -51,7 +51,7 @@ class Api::V1::Internal::JobsController < ApiController
     begin
       @job = Job.find id
     rescue ActiveRecord::RecordNotFound
-      render :text => "Job #{id} not found\n", :status => 404
+      render :plain => "Job #{id} not found\n", :status => 404
     end
   end
 
