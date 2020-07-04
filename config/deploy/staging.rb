@@ -21,7 +21,7 @@ server 'snow.arpnetworks.com', roles: %w(app db)
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
-set :branch, 'rails5'
+set :branch, 'master'
 set :deploy_to, "/var/www/portal-staging"
 
 # Configuration

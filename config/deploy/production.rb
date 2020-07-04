@@ -8,7 +8,7 @@
 # server "db.example.com", user: "deploy", roles: %w{db}
 
 server 'snow.arpnetworks.com', roles: %w(app db)
-set :branch, 'production-before-rails-5-upgrade-20200703'
+set :branch, 'production'
 
 # role-based syntax
 # ==================
