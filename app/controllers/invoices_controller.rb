@@ -33,7 +33,7 @@ class InvoicesController < ProtectedController
             @credit_card_number = nil
           end
         rescue OpenSSL::Cipher::CipherError => e
-          Mailer.simple_notification("Credit Card Error", e.message).deliver_now
+          Mailer.simple_notification("Credit Card Error", e.message + "\n" + "Account ID: #{@account.id} (#{@account.display_account_name})").deliver_now
         end
       end
     end
