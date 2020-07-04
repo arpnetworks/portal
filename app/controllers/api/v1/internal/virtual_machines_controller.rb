@@ -58,12 +58,12 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
        params[:pub_key_ed25519]].each do |key|
          @virtual_machine.set_ssh_host_key(key) if key
        end
-    end
 
-    begin
-      MailerVm.setup_complete(@virtual_machine).deliver_now
-    rescue StandardError => e
-      logger.error 'There was an error sending the VM setup complete email: ' + e.message
+       begin
+         MailerVm.setup_complete(@virtual_machine).deliver_now
+       rescue StandardError => e
+         logger.error 'There was an error sending the VM setup complete email: ' + e.message
+       end
     end
 
     render plain: "Done\n"
