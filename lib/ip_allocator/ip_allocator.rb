@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'netaddr'
-
 # IPAllocator
 #
 # Synopsis:
@@ -20,8 +17,7 @@ require 'netaddr'
 #
 # Requirements:
 #
-#   * RubyGems
-#   * NetAddr gem
+#   * NetAddr 1.5.x
 #
 class IPAllocator
   # initialize()

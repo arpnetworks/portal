@@ -9,8 +9,6 @@ rescue LoadError
   require 'activerecord'
 end
 
-gem 'netaddr'
-
 # Our models
 # ----------
 
