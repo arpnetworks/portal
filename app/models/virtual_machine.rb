@@ -480,14 +480,14 @@ class VirtualMachine < ApplicationRecord
   end
 
   def define!(opts = {})
-    Jobs::DefineVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
+    Jobs::DefineVm.new.perform({ :account_id => account.id, :vm => self }.to_json)
   end
 
   def create_volume!(opts = {})
     if opts[:blank]
-      Jobs::CreateVolumeForVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
+      Jobs::CreateVolumeForVm.new.perform({ :account_id => account.id, :vm => self }.to_json)
     else
-      Jobs::CreateVolumeFromTemplateForVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
+      Jobs::CreateVolumeFromTemplateForVm.new.perform({ :account_id => account.id, :vm => self }.to_json)
     end
   end
 

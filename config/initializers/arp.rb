@@ -10,8 +10,4 @@ require 'arp/hosts'
 require 'digest'
 require 'open3'
 
-# Rails doesn't auto-load mailers outside of app/models, so do it
-# explicitly here
-require 'mailers/vm'
-
 include Format
