@@ -1,4 +1,4 @@
-class Jobs::DefineVM < Job
+class Jobs::DefineVm < Job
   def perform(args_json)
     args = JSON.parse(args_json)
 
