@@ -10,6 +10,7 @@
     "bulma": "0.8.2"
   },
   "devDependencies": {
+    "jest": "^26.1.0",
     "webpack-dev-server": "^3.11.0"
   }
 }
