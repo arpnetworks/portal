@@ -178,7 +178,7 @@ class VirtualMachine < ApplicationRecord
           if @ipv4_dns_record &&
              (@ipv4_dns_record.name != dns_record_name ||
               @ipv4_dns_record.content != ip_address)
-            @ipv4_dns_record.update_attributes(
+            @ipv4_dns_record.update(
               :name => dns_record_name,
               :content => ip_address
             )
@@ -197,7 +197,7 @@ class VirtualMachine < ApplicationRecord
             if @ipv6_dns_record &&
                (@ipv6_dns_record.name != dns_record_name ||
                 @ipv6_dns_record.content != ipv6_address)
-              @ipv6_dns_record.update_attributes(
+              @ipv6_dns_record.update(
                 :name => dns_record_name,
                 :content => ipv6_address
               )
