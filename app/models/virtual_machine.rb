@@ -14,7 +14,7 @@ class VirtualMachine < ApplicationRecord
   @@per_page = 10
 
   validates_presence_of   :label
-  validates_uniqueness_of :label
+  validates_uniqueness_of :label, case_sensitive: false
   validates_format_of     :label, :with => /\A[a-zA-Z0-9\-]+\z/
 
   validates_presence_of   :host
