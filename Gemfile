@@ -35,7 +35,7 @@ group :development, :test do
   gem 'capistrano', '~> 3.10', require: false
   gem 'capistrano-bundler', '~> 1.3', require: false
   gem 'capistrano-passenger', require: false
-  gem 'capistrano-rails', '~> 1.4', require: false
+  gem 'capistrano-rails', '~> 1.5', require: false
   gem 'capistrano-rbenv', '~> 2.1', require: false
 
   # Adds support for Capybara system testing and selenium driver
