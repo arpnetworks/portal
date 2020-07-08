@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>ARP Networks Control Panel</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= csrf_meta_tags %>
 
   <!-- Font Awesome 5.0 -->
@@ -79,7 +79,6 @@
 
 <script type='text/javascript'>
   <%= yield :js %>
-  $(window).konami(function(){ alert('Download more RAM! Free, Fast, and Instant!\nhttp://www.downloadmoreram.com/')})
 </script>
 
 </body>
