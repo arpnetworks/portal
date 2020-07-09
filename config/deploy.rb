@@ -47,7 +47,7 @@ append :linked_dirs, "log",
                      "vm-base" # For VM auto-provisioning
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, { path: "/home/garry/sys/bin:$PATH" }
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }

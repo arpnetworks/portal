@@ -25,7 +25,10 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
+# For older assets pipeline which we still use
 gem 'sprockets', '~> 4'
+# Use Uglifier as compressor for JavaScript assets, in older assets pipeline
+gem 'uglifier', '>= 4.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
