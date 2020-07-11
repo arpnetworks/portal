@@ -68,6 +68,8 @@ set :rbenv_ruby, File.read('.ruby-version').strip
 set :assets_roles, [:app]
 set :maintenance_roles, -> { roles([:app])  }
 
+set :maintenance_template_path, File.expand_path("../../app/assets/maintenance.html.erb", __FILE__)
+
 namespace :deploy do
   desc 'Copy stragglers'
   task :copy_stragglers do
