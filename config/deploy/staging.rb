@@ -33,7 +33,6 @@ set :deploy_to, "/var/www/portal-staging"
 # Feel free to add new variables to customise your setup.
 
 
-
 # Custom SSH Options
 # ==================
 # You may pass any option but keep in mind that net/ssh understands a

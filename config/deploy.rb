@@ -43,6 +43,7 @@ append :linked_dirs, "log",
                      "tmp/pids",
                      "tmp/cache",
                      "tmp/sockets",
+                     "public/system",
                      ".bundle",
                      "vm-base" # For VM auto-provisioning
 
@@ -65,6 +66,7 @@ set :rbenv_ruby, File.read('.ruby-version').strip
 
 # Defaults to [:web]
 set :assets_roles, [:app]
+set :maintenance_roles, -> { roles([:app])  }
 
 namespace :deploy do
   desc 'Copy stragglers'
