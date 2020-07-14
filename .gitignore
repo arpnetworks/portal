@@ -36,3 +36,7 @@ node_modules/
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+yarn-error.log
+public/assets/
+public/packs/
