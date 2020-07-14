@@ -93,7 +93,7 @@ task :backup do
         filenamep = "#{database}-production.dump.#{Time.now.to_f}-to-diff.sql"
         filename  = "/tmp/#{filenamep}"
       end
-      text = capture "cat /var/www/portal.arpnetworks.com/current/config/database.yml"
+      text = capture "cat /var/www/portal/current/config/database.yml"
       yaml = YAML::load(text)
       conf = yaml[conf_entry]
 
