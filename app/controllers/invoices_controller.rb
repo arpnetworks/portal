@@ -34,6 +34,8 @@ class InvoicesController < ProtectedController
           end
         rescue OpenSSL::Cipher::CipherError => e
           Mailer.simple_notification("Credit Card Error", e.message + "\n" + "Account ID: #{@account.id} (#{@account.display_account_name})").deliver_now
+          cookies.delete(:cc_e)
+          cookies.delete(:cc_iv)
         end
       end
     end

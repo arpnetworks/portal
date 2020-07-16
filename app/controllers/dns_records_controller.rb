@@ -132,7 +132,7 @@ class DnsRecordsController < ProtectedController
       return
     end
 
-    if @dns_record.update_attributes(params_to_update)
+    if @dns_record.update(params_to_update)
       flash[:notice] = "Changes saved."
       simple_email("DNS: #{@account.display_account_name} updated #{@dns_record.name} #{@dns_record.type} #{@dns_record.content}", "") rescue nil
       send_notify(@dns_record.domain.name)
