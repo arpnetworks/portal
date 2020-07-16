@@ -46,4 +46,6 @@ if conf = @config[Rails.env]
   $JOBS_QUEUE_HEALTH_EXCLUSIONS = conf['jobs']['queue_health_exclusions']
 
   $EXPORT           = conf['export']
+  $DNS              = conf['dns']
+  $DNS_NOTIFY_CMD   = $DNS['notify_command']
 end

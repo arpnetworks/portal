@@ -189,7 +189,9 @@ class DnsRecordsController < ProtectedController
   end
 
   def send_notify(domain)
-    Kernel.system("pdns_control", "notify", domain)
+    cmd = $DNS_NOTIFY_CMD + " " + domain
+    cmd_array = cmd.split(' ')
+    Kernel.system(*cmd_array)
   end
 
   def dns_record_params

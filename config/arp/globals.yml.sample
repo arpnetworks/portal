@@ -133,3 +133,5 @@ test:
   jobs:
     queue_health_exclusions:
       - 1
+  dns:
+    notify_command: pdns_control notify
