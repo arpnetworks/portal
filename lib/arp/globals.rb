@@ -23,6 +23,7 @@ if conf = @config[Rails.env]
   $HOST_CACTI_ADD_GRAPH_FOR_VLAN_SCRIPT = conf['hosts']['cacti_scripts']['add_graph_for_vlan']
   $HOST_CACTI_ADD_CUSTOMER_SCRIPT       = conf['hosts']['cacti_scripts']['add_customer']
   $HOST_CACTI_GET_GRAPH_ID_FOR_VLAN_SCRIPT = conf['hosts']['cacti_scripts']['get_graph_id_for_vlan']
+  $HOST_CACTI_DESTROY_VLAN_SCRIPT = conf['hosts']['cacti_scripts']['destroy_vlan']
   $HOST_PORTAL      = conf['hosts']['portal']
 
   $VLAN_MIN = conf['vlan_min']
@@ -42,6 +43,7 @@ if conf = @config[Rails.env]
 
   $PROVISIONING     = conf['provisioning']
   $CLOUD_OS         = $PROVISIONING['cloud_os']
+  $CANCEL_SCRIPT    = $PROVISIONING['scripts']['cancel']
 
   $JOBS_QUEUE_HEALTH_EXCLUSIONS = conf['jobs']['queue_health_exclusions']
 

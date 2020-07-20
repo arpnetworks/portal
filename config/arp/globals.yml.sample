@@ -96,6 +96,7 @@ test:
       add_graph_for_vlan: /home/cacti/bin/bar.sh
       add_customer: /home/cacti/bin/baz.sh
       get_graph_id_for_vlan: /home/cacti/bin/boo.sh
+      destroy_vlan: /home/cacti/bin/vlan.sh
     portal: portal.example.com
   vlan_min: 20
   keyer: keymaster
@@ -116,6 +117,7 @@ test:
       fra: fra-host.example.com
     scripts:
       ssh_keygen: /usr/bin/ssh-keygen
+      cancel: /home/scripts/foo.sh
     cloud_os:
       freebsd:
         title: FreeBSD
