@@ -14,8 +14,6 @@ unless Object.const_defined?(:APP_PATH)
   Rails.application.require_environment!
 end
 
-# require 'common'
-
 def usage
   puts './cancel_vps.rb <UUID>'
 end
@@ -65,12 +63,12 @@ def yesno(s)
   yn.downcase == 'y'
 end
 
-if $ARGV.size < 1
+if ARGV.size < 1
   usage
   exit 1
 end
 
-@UUID = $ARGV[0]
+@UUID = ARGV[0]
 @hostname = `hostname`.chomp
 
 @vm = VirtualMachine.find_by(uuid: @UUID)
