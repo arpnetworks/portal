@@ -8,7 +8,7 @@
 # If we're running this from Spring, we'll already have APP_PATH
 unless Object.const_defined?(:APP_PATH)
   # Rails
-  APP_PATH = File.expand_path('../../../../config/application', __FILE__)
+  APP_PATH = File.expand_path('../../../config/application', __dir__)
   require_relative '../../../config/boot'
   require APP_PATH
   Rails.application.require_environment!
@@ -24,7 +24,7 @@ if $ARGV[0] == '--help'
 end
 
 def usage
-  puts "./reporting.rb [order]"
+  puts './reporting.rb [order]'
 end
 
 def main
@@ -42,27 +42,23 @@ def main
 
   total = 0
   accounts.each do |a|
-    unless skip.include?(a.company)
-      account_string = "#{a.display_account_name} (#{a.id}):"
-      num_of_spaces = 60 - account_string.length
+    next if skip.include?(a.company)
 
-      if num_of_spaces < 0
-        num_of_spaces = 1
-      end
+    account_string = "#{a.display_account_name} (#{a.id}):"
+    num_of_spaces = 60 - account_string.length
 
-      spacer = " " * num_of_spaces
-      puts "#{account_string} #{spacer} #{a.mrc(:formatted => true)}"
+    num_of_spaces = 1 if num_of_spaces < 0
 
-      if a.credit_card.nil?
-        puts "   WARNING!  This account does not have a credit card"
-      end
+    spacer = ' ' * num_of_spaces
+    puts "#{account_string} #{spacer} #{a.mrc(formatted: true)}"
 
-      total += a.mrc
-    end
+    puts '   WARNING!  This account does not have a credit card' if a.credit_card.nil?
+
+    total += a.mrc
   end
 
-  puts ""
-  puts "Total: " + money(total)
+  puts ''
+  puts 'Total: ' + money(total)
 end
 
 main
