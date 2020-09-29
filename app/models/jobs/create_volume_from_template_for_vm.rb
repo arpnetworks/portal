@@ -1,4 +1,4 @@
-class Jobs::CreateVolumeFromTemplateForVM < Jobs::CreateVolume
+class Jobs::CreateVolumeFromTemplateForVm < Jobs::CreateVolume
   def perform(args_json)
     args = JSON.parse(args_json)
 

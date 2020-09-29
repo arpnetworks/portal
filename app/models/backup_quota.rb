@@ -3,5 +3,5 @@ class BackupQuota < ApplicationRecord
 
   include Resourceable
 
-  validates_uniqueness_of :username, scope: :server
+  validates_uniqueness_of :username, scope: :server, case_sensitive: false
 end

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ARP Networks Control Panel</title>
+
+    <style>
+
+body {
+  width: 600px;
+  margin: 100px auto;
+  font: 300 120% "OpenSans", "Helvetica Neue", "Helvetica", Arial, Verdana, sans-serif;
+}
+
+    h1 {
+      font-weight: 300;
+    }
+    html {
+      min-height: 100vh;
+      min-width: 300px;
+      overflow-x: hidden;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+    }
+    </style>
+
+  </head>
+  <body class='page-layout'>
+
+    <div class='container'>
+      <h1>ARP Networks Portal Maintenance</h1>
+
+      <p>The system is down for <%= reason ? reason : "maintenance" %>
+      as of <%= Time.now.strftime("%F %H:%M %Z") %>.</p>
+
+      <p>It'll be back <%= deadline ? deadline : "shortly" %>.</p>
+    </div>
+
+  </body>
+</html>

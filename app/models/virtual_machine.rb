@@ -14,7 +14,7 @@ class VirtualMachine < ApplicationRecord
   @@per_page = 10
 
   validates_presence_of   :label
-  validates_uniqueness_of :label
+  validates_uniqueness_of :label, case_sensitive: false
   validates_format_of     :label, :with => /\A[a-zA-Z0-9\-]+\z/
 
   validates_presence_of   :host
@@ -178,7 +178,7 @@ class VirtualMachine < ApplicationRecord
           if @ipv4_dns_record &&
              (@ipv4_dns_record.name != dns_record_name ||
               @ipv4_dns_record.content != ip_address)
-            @ipv4_dns_record.update_attributes(
+            @ipv4_dns_record.update(
               :name => dns_record_name,
               :content => ip_address
             )
@@ -197,7 +197,7 @@ class VirtualMachine < ApplicationRecord
             if @ipv6_dns_record &&
                (@ipv6_dns_record.name != dns_record_name ||
                 @ipv6_dns_record.content != ipv6_address)
-              @ipv6_dns_record.update_attributes(
+              @ipv6_dns_record.update(
                 :name => dns_record_name,
                 :content => ipv6_address
               )
@@ -480,14 +480,14 @@ class VirtualMachine < ApplicationRecord
   end
 
   def define!(opts = {})
-    Jobs::DefineVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
+    Jobs::DefineVm.new.perform({ :account_id => account.id, :vm => self }.to_json)
   end
 
   def create_volume!(opts = {})
     if opts[:blank]
-      Jobs::CreateVolumeForVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
+      Jobs::CreateVolumeForVm.new.perform({ :account_id => account.id, :vm => self }.to_json)
     else
-      Jobs::CreateVolumeFromTemplateForVM.new.perform({ :account_id => account.id, :vm => self }.to_json)
+      Jobs::CreateVolumeFromTemplateForVm.new.perform({ :account_id => account.id, :vm => self }.to_json)
     end
   end
 

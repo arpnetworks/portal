@@ -1,5 +1,5 @@
 class Location < ApplicationRecord
-  validates_uniqueness_of :code
+  validates :code, uniqueness: { case_sensitive: false }
 
   def display_name
     "#{name} (#{code})"
