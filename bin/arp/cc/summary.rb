@@ -51,7 +51,7 @@ grand_total = 0
              end
 
   grand_total += total
-  puts friendly + ": " + money(total)
+  puts friendly.to_s + ": " + money(total)
 end
 
 puts "\n"
