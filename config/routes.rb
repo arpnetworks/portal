@@ -128,6 +128,9 @@ Rails.application.routes.draw do
                                                      action: 'statuses'
         post 'virtual_machines/phone_home/:uuid',    controller: 'virtual_machines',
                                                      action: 'phone_home'
+        get 'virtual_machines/:uuid/callback/:event', controller: 'virtual_machines',
+                                                      action: 'callback'
+
         # Provisioning
         get 'provisioning/:mac_address/config.tar.gz', controller: 'provisioning',
                                                        action: 'config'
