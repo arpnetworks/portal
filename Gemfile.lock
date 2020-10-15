@@ -366,7 +366,7 @@ DEPENDENCIES
   mysql2 (~> 0.4.0)
   passenger (~> 5.0)
   puma (~> 4.1)
-  rails (~> 6.0.3, >= 6.0.3.3)
+  rails (~> 6.0.3, >= 6.0.3.4)
   rails-controller-testing
   redcarpet
   redis
