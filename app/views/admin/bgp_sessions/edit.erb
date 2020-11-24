@@ -36,9 +36,6 @@
 
   <h3><%= router %></h3>
 
-  <% if router == 's3.lax' %>
-    Sorry, you still have to do this one manually
-  <% else %>
   <% if @account %>
 
   <%# I hate ERB %>
@@ -53,7 +50,7 @@
     <% if @bgp_session.session_type_info == 'v4' -%>no ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
     <% prefixes_v4.each do |prefix| -%>ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> permit <%= prefix %> le 24
     <% end -%>ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> deny 0.0.0.0/0 le 32
-    <% end -%><% if @bgp_session.session_type_info == 'v6' && @bgp_session.peer_host =~ /s?.fra/ -%>no ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
+    <% end -%><% if @bgp_session.session_type_info == 'v6' -%>no ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
     <% prefixes_v6.each do |prefix| -%>ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> permit <%= prefix %>
     <% end -%>ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> deny ::/0 le 128
     <% end -%>
@@ -62,15 +59,11 @@
 
     neighbor <%= @bgp_session.peer_ip_address_z %> remote-as <%= (router == 's1.lax' && @bgp_session.asn > 65535) ? '23456' :  @bgp_session.asn.to_s %>
     neighbor <%= @bgp_session.peer_ip_address_z %> description Customer: <%= @bgp_session.resource.service.account.display_name %>
-  <% if @bgp_session.peer_host =~ /s?.fra/ %>
     address-family ip<%= @bgp_session.session_type_info %>
-  <% end %>
     neighbor <%= @bgp_session.peer_ip_address_z %> activate
     neighbor <%= @bgp_session.peer_ip_address_z %> prefix-list pl-cust-as<%= @bgp_session.asn.to_s %> in
     neighbor <%= @bgp_session.peer_ip_address_z %> peer-group <%= peer_group %>
-  <% if @bgp_session.peer_host =~ /s?.fra/ %>
     exit-address-family
-  <% end %>
     end
   <% end %>
   </pre>
@@ -83,7 +76,7 @@
     conf t
 
     <% if @bgp_session.session_type_info == 'v4' -%>no ip prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
-    <% end -%><% if @bgp_session.session_type_info == 'v6' && @bgp_session.peer_host =~ /s?.fra/ -%>no ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
+    <% end -%><% if @bgp_session.session_type_info == 'v6' -%>no ipv6 prefix-list pl-cust-as<%= @bgp_session.asn.to_s %>
     <% end -%>
 
     router bgp 25795
@@ -91,7 +84,6 @@
     no neighbor <%= @bgp_session.peer_ip_address_z %>
 
     end
-  <% end %>
   </pre>
 
   </div>
