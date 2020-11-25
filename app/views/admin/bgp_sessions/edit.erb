@@ -57,7 +57,7 @@
 
     router bgp 25795
 
-    neighbor <%= @bgp_session.peer_ip_address_z %> remote-as <%= (router == 's1.lax' && @bgp_session.asn > 65535) ? '23456' :  @bgp_session.asn.to_s %>
+    neighbor <%= @bgp_session.peer_ip_address_z %> remote-as <%= @bgp_session.asn.to_s %>
     neighbor <%= @bgp_session.peer_ip_address_z %> description Customer: <%= @bgp_session.resource.service.account.display_name %>
     address-family ip<%= @bgp_session.session_type_info %>
     neighbor <%= @bgp_session.peer_ip_address_z %> activate
