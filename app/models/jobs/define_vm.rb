@@ -28,7 +28,7 @@ class Jobs::DefineVm < Job
     case os
     when 'freebsd'
       # Default
-      iso = 'FreeBSD-12.1-RELEASE-amd64-disc1.iso'
+      iso = 'FreeBSD-12.2-RELEASE-amd64-disc1.iso'
 
       case os_version
       when /^9\./
@@ -48,7 +48,7 @@ class Jobs::DefineVm < Job
       when /^6\.7/
         iso = 'OpenBSD-6.7-amd64-install67.iso'
       else
-        iso = 'OpenBSD-6.0-amd64-install60.iso'
+        iso = 'OpenBSD-6.8-amd64-install68.iso'
       end
 
       unless vm.cluster == 'kzt'
@@ -91,7 +91,7 @@ class Jobs::DefineVm < Job
     case os
     when 'freebsd'
       case os_version
-      when '11.3','12.1'
+      when '11.3','12.1','12.2'
         opt_params[:attach_config_disk] = true
       end
     when 'ubuntu'
@@ -119,7 +119,7 @@ class Jobs::DefineVm < Job
       opt_params[:attach_config_disk] = true
     when 'openbsd'
       case os_version
-      when '6.7'
+      when '6.7','6.8'
         opt_params[:attach_config_disk] = true
       end
     end
