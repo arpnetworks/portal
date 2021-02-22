@@ -82,7 +82,7 @@ div.squares img {
 }
 
 pre {
-  font-family: monospace;
+  font-family: 'Roboto Mono', monospace;
   font-size: 14px;
   line-height: 1;
   margin: 0;
@@ -508,6 +508,11 @@ table.virtual_machine_detail div.vm-action-buttons button {
 
 table.virtual_machine_detail div.vm-action-buttons-notes {
   margin-top: 10px;
+}
+
+table.virtual_machine_detail div.vm-action-buttons-notes span.command {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
 }
 
 table.virtual_machine_detail td.cd-rom {
