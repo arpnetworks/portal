@@ -9,7 +9,7 @@ describe '/admin/service_codes/edit.html.erb' do
   end
 
   it 'should render edit form' do
-    render template: '/admin/service_codes/edit.html.erb'
+    render template: '/admin/service_codes/edit', formats: [:html]
 
     expect(response).to have_tag("form[action='#{admin_service_code_path(@service_code)}'][method=post]")
   end

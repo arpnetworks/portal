@@ -14,7 +14,7 @@ describe '/invoices/pay.erb' do
     end
 
     it 'should display thank you greeting' do
-      render template: '/invoices/pay.erb'
+      render template: '/invoices/pay'
       expect(response).to have_tag('div[class=notice-green]', text: /All invoices are paid.*Thank you/)
     end
   end
@@ -31,7 +31,7 @@ describe '/invoices/pay.erb' do
       end
 
       it 'should display button to add credit card' do
-        render template: '/invoices/pay.erb'
+        render template: '/invoices/pay'
         expect(response).to have_tag('div[class=notice-green]', text: /Your account does not have a credit card/)
         expect(response).to have_tag("a[href='%s']" % new_account_credit_card_path(@account.id), text: /Add Credit Card/)
       end
@@ -47,7 +47,7 @@ describe '/invoices/pay.erb' do
       end
 
       it 'should display link to change credit card' do
-        render template: '/invoices/pay.erb'
+        render template: '/invoices/pay'
         expect(response).to have_tag("a[href='%s']" % new_account_credit_card_path(@account.id), text: /submit a new one/)
       end
 
@@ -57,7 +57,7 @@ describe '/invoices/pay.erb' do
         end
 
         it 'should have hidden input for credit card number' do
-          render template: '/invoices/pay.erb'
+          render template: '/invoices/pay'
           expect(response).to have_tag(format("input[type=hidden][name=credit_card_number][value='%s']", @cc_num))
         end
       end
@@ -68,23 +68,23 @@ describe '/invoices/pay.erb' do
         end
 
         it 'should display input for credit card number' do
-          render template: '/invoices/pay.erb'
+          render template: '/invoices/pay'
           expect(response).to have_tag('input[type=text][name=credit_card_number]')
         end
       end
 
       it 'should display current card to use' do
-        render template: '/invoices/pay.erb'
+        render template: '/invoices/pay'
         expect(response).to have_tag('div[id=credit-card]', text: /Credit Card.*\*\*1111/m)
       end
 
       it 'should display confirmation button' do
-        render template: '/invoices/pay.erb'
+        render template: '/invoices/pay'
         expect(response).to have_tag('button[type=submit]', text: /Authorize/)
       end
 
       it 'should have hidden input for amount to pay' do
-        render template: '/invoices/pay.erb'
+        render template: '/invoices/pay'
         expect(response).to have_tag(format("input[type=hidden][name=confirmed_amount][value='%s']", @outstanding_balance))
       end
     end

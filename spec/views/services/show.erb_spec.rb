@@ -25,7 +25,7 @@ describe '/services/show.erb' do
     it "should display 'No further details'" do
       assigns[:description] = ''
       assign(:description, '')
-      render template: '/services/show.erb'
+      render template: '/services/show'
       expect(response).to have_tag('td', /No further details/)
     end
 
@@ -37,7 +37,7 @@ describe '/services/show.erb' do
       assign(:service, @service)
       assign(:resources, @resources)
 
-      render template: '/services/show.erb'
+      render template: '/services/show'
       expect(response).to_not have_tag('td', text: /No further details/)
     end
   end

@@ -8,7 +8,7 @@ describe '/admin/service_codes/new.html.erb' do
   end
 
   it 'should render new form' do
-    render template: '/admin/service_codes/new.html.erb'
+    render template: '/admin/service_codes/new', formats: [:html]
 
     expect(response).to have_tag("form[action='%s'][method=post]" % admin_service_codes_path)
   end

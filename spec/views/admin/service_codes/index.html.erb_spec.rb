@@ -9,6 +9,6 @@ describe '/admin/service_codes/index.html.erb' do
   end
 
   it 'should render list of service_codes' do
-    render template: '/admin/service_codes/index.html.erb'
+    render template: '/admin/service_codes/index', formats: [:html]
   end
 end

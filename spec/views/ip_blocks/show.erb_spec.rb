@@ -15,7 +15,7 @@ describe '/services/show.erb' do
     end
 
     it "should not display 'Additional' section" do
-      render '/ip_blocks/table_data.erb'
+      render '/ip_blocks/table_data'
       expect(response).to_not have_tag('td.th-minor', text: /Additional/)
     end
   end
@@ -29,7 +29,7 @@ describe '/services/show.erb' do
     end
 
     it "should not display 'Additional' section" do
-      render '/ip_blocks/table_data.erb'
+      render '/ip_blocks/table_data'
       expect(response).to have_tag('td.th-minor', text: /Additional/)
     end
   end
