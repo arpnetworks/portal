@@ -24,13 +24,13 @@ table.virtual_machine_detail {
   }
 
   .plain-password {
-    font-family: monospace;
-    font-size: 1rem;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.85rem;
   }
 }
 
 .key-fingerprint,
 .key-fingerprint-algo {
-  font-family: monospace;
-  font-size: 1rem;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
 }
