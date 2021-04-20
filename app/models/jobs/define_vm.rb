@@ -42,6 +42,8 @@ class Jobs::DefineVm < Job
         iso = 'FreeBSD-10.3-RELEASE-amd64-disc1.iso'
       when /^11\./
         iso = 'FreeBSD-11.3-RELEASE-amd64-disc1.iso'
+      when /^13\./
+        iso = 'FreeBSD-13.0-RELEASE-amd64-disc1.iso'
       end
     when 'openbsd'
       case os_version
@@ -91,7 +93,7 @@ class Jobs::DefineVm < Job
     case os
     when 'freebsd'
       case os_version
-      when '11.3','12.1','12.2'
+      when '11.3','12.1','12.2','13.0'
         opt_params[:attach_config_disk] = true
       end
     when 'ubuntu'
