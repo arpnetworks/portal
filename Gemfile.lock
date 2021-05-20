@@ -175,7 +175,7 @@ GEM
       rack
       rake (>= 0.8.1)
     public_suffix (4.0.6)
-    puma (4.3.7)
+    puma (4.3.8)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
@@ -366,7 +366,7 @@ DEPENDENCIES
   listen (~> 3.2)
   mysql2 (~> 0.4.0)
   passenger (~> 5.0)
-  puma (~> 4.1)
+  puma (~> 4.3)
   rails (~> 6.0.3, >= 6.0.3.4)
   rails-controller-testing
   redcarpet
