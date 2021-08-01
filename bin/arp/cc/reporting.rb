@@ -16,9 +16,9 @@ end
 
 include Format
 
-$ORDER = $ARGV[0]
+$ORDER = ARGV[0]
 
-if $ARGV[0] == '--help'
+if ARGV[0] == '--help'
   usage
   exit 1
 end
