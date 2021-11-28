@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2020_07_07_063150) do
 
-  create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "login"
     t.string "password"
     t.string "first_name"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.string "dk_salt", limit: 32
   end
 
-  create_table "backup_quotas", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "backup_quotas", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "server"
     t.string "username", limit: 64
     t.string "group", limit: 64
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["server", "username"], name: "index_backup_quotas_on_server_and_username", unique: true
   end
 
-  create_table "bandwidth_quotas", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "bandwidth_quotas", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "commit", default: 0, null: false
     t.string "commit_unit", limit: 16, default: "GB", null: false
     t.float "commit_overage", default: 0.0, null: false
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.datetime "updated_at"
   end
 
-  create_table "bgp_sessions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "bgp_sessions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.string "as_set", limit: 64
   end
 
-  create_table "bgp_sessions_prefixes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "bgp_sessions_prefixes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "bgp_session_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["bgp_session_id"], name: "bgp_session_id"
   end
 
-  create_table "charges", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "charges", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "credit_card_id", null: false
     t.date "date"
     t.decimal "amount", precision: 10, scale: 2, null: false
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["credit_card_id"], name: "credit_card_id"
   end
 
-  create_table "credit_cards", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "credit_cards", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "account_id", null: false
     t.string "month", limit: 2
     t.string "year", limit: 4
@@ -128,7 +128,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.string "record_type", limit: 128
   end
 
-  create_table "hosts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "hosts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "location_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["location_id"], name: "location_id"
   end
 
-  create_table "invoices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "invoices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "account_id", null: false
     t.text "bill_to"
     t.date "date"
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["account_id"], name: "account_id"
   end
 
-  create_table "invoices_line_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "invoices_line_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "invoice_id", null: false
     t.date "date"
     t.string "code"
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["invoice_id"], name: "invoice_id"
   end
 
-  create_table "invoices_payments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "invoices_payments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "invoice_id"
     t.integer "payment_id"
     t.datetime "created_at"
@@ -170,7 +170,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["payment_id"], name: "payment_id"
   end
 
-  create_table "ip_blocks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "ip_blocks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "ip_block_id"
     t.integer "location_id"
     t.string "cidr", limit: 128
@@ -187,7 +187,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["location_id"], name: "location_id"
   end
 
-  create_table "jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "account_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -204,7 +204,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["jid"], name: "index_jobs_on_jid", unique: true
   end
 
-  create_table "locations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "locations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "name"
     t.string "code"
     t.datetime "created_at"
@@ -221,7 +221,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["virtual_machine_id"], name: "index_logins_on_virtual_machine_id"
   end
 
-  create_table "payments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "payments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "account_id", null: false
     t.text "reference_number"
     t.date "date"
@@ -236,21 +236,21 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["account_id"], name: "account_id"
   end
 
-  create_table "pools", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "pools", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "name"
     t.string "pool_type"
   end
 
-  create_table "resources", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "resources", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "service_id"
     t.integer "assignable_id"
     t.string "assignable_type"
     t.index ["service_id", "assignable_id", "assignable_type"], name: "service_id_assignable_id_assignable_type_unique", unique: true
   end
 
-  create_table "sales_receipts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "sales_receipts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "account_id", null: false
     t.text "sold_to"
     t.date "date"
@@ -260,7 +260,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["account_id"], name: "account_id"
   end
 
-  create_table "sales_receipts_line_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "sales_receipts_line_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "sales_receipt_id", null: false
     t.string "code"
     t.text "description"
@@ -270,13 +270,13 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["sales_receipt_id"], name: "sales_receipt_id"
   end
 
-  create_table "service_codes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "service_codes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "services", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "services", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "account_id", null: false
     t.integer "service_code_id"
     t.string "title"
@@ -306,7 +306,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["virtual_machine_id"], name: "index_ssh_host_keys_on_virtual_machine_id"
   end
 
-  create_table "ssh_keys", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "ssh_keys", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "account_id"
     t.string "name"
     t.text "key"
@@ -319,7 +319,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["account_id"], name: "index_ssh_keys_on_account_id"
   end
 
-  create_table "virtual_machines", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "virtual_machines", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "uuid", limit: 64, null: false
     t.string "os", limit: 32
     t.integer "ram"
@@ -343,7 +343,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.index ["uuid"], name: "index_virtual_machines_on_uuid", unique: true
   end
 
-  create_table "virtual_machines_interfaces", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "virtual_machines_interfaces", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "virtual_machine_id"
     t.string "mac_address"
     t.string "ip_address"
@@ -354,7 +354,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.datetime "updated_at"
   end
 
-  create_table "vlans", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "vlans", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "vlan", limit: 2, null: false
     t.string "label"
     t.integer "location_id"
