@@ -59,8 +59,8 @@ Quick Start::
 
   Should return simply "OK"
 
-  Testing
-  -------
+Testing
+-------
 
   Initialize::
 
