@@ -42,6 +42,9 @@ group :development, :test do
   gem 'capistrano-rbenv', '~> 2.1', require: false
   gem 'capistrano-maintenance', '~> 1.2', require: false
 
+  gem "ed25519"
+  gem "bcrypt_pbkdf", require: false
+
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
