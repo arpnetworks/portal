@@ -19,6 +19,8 @@ Quick Start::
   git clone git@github.com:arpnetworks/portal.git
   cd portal
 
+  git checkout -b docker origin/docker
+
   cp .env-sample .env
 
   # IMPORTANT!
@@ -41,6 +43,7 @@ Quick Start::
 
   # Build stack and create initial DB
   docker-compose build
+  docker-compose run web yarn install
   docker-compose run web rails db:setup
 
   # Run stack!
@@ -55,6 +58,23 @@ Quick Start::
     http://localhost:3000/api/v1/internal/jobs/health
 
   Should return simply "OK"
+
+  Testing
+  -------
+
+  Initialize::
+
+    # Use the root password from your .env
+    docker-compose exec db mysql -u root --password=<pass> -e 'create database powerdns_test'
+    docker-compose exec db mysql -u root --password=<pass> powerdns_test < powerdns_test.sql
+
+  You can run the full test suite with::
+
+    docker-compose run web rspec
+
+  For a more verbose output::
+
+    docker-compose run web rspec --format doc
 
 Copyright
 ---------
