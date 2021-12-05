@@ -19,8 +19,6 @@ Quick Start::
   git clone git@github.com:arpnetworks/portal.git
   cd portal
 
-  git checkout -b docker origin/docker
-
   cp .env-sample .env
 
   # IMPORTANT!
