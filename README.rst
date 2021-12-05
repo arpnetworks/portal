@@ -45,15 +45,15 @@ Quick Start::
   # Run stack!
   docker-compose up
 
-  Visit::
+Visit::
 
-    http://localhost:3000
+  http://localhost:3000
 
-  or::
+or::
 
-    http://localhost:3000/api/v1/internal/jobs/health
+  http://localhost:3000/api/v1/internal/jobs/health
 
-  Should return simply "OK"
+Should return simply "OK"
 
 Testing
 -------
