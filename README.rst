@@ -49,7 +49,9 @@ Visit::
 
   http://localhost:3000
 
-or::
+You can create a new account or see `db/seeds.rb` for some default accounts.
+
+Also::
 
   http://localhost:3000/api/v1/internal/jobs/health
 
