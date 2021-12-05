@@ -1,14 +1,14 @@
 production:
-  host: localhost
-  port: 9000
+  host: redis
+  port: 6379
   db: 0
 
 development:
-  host: localhost
-  port: 9000
+  host: redis
+  port: 6379
   db: 0
 
 test:
-  host: localhost
-  port: 9000
+  host: redis
+  port: 6379
   db: 0

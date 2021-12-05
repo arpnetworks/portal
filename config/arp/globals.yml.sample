@@ -69,6 +69,8 @@ development:
     exclusions:
       account_ids:
         - 1000
+  dns:
+    notify_command: pdns_control notify
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -135,5 +137,9 @@ test:
   jobs:
     queue_health_exclusions:
       - 1
+  export:
+    exclusions:
+      account_ids:
+        - 1000
   dns:
     notify_command: pdns_control notify
