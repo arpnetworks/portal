@@ -77,5 +77,5 @@ Testing
 Copyright
 ---------
 
-Copyright (c) 2008 - 2021 [ARP Networks, Inc.](https://arpnetworks.com)
+Copyright (c) 2008 - 2021 `ARP Networks, Inc. <https://arpnetworks.com>`_
 
