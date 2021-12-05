@@ -1,9 +1,7 @@
-# portal
-Port of the official [ARP Networks](https://arpnetworks.com) [Portal](https://portal.arpnetworks.com) ~~to Rails 4~~
+The official `ARP Networks`_ `Portal`_, now on Rails 6!
 
-Now on Rails 6!
-
-[![Build Status](https://travis-ci.org/arpnetworks/portal.svg?branch=master)](https://travis-ci.org/arpnetworks/portal)
+.. _ARP Networks: https://arpnetworks.com
+.. _Portal: https://portal.arpnetworks.com
 
 Installation
 ------------
@@ -60,22 +58,21 @@ Quick Start::
 Testing
 -------
 
-  Initialize::
+Initialize::
 
-    # Use the root password from your .env
-    docker-compose exec db mysql -u root --password=<pass> -e 'create database powerdns_test'
-    docker-compose exec db mysql -u root --password=<pass> powerdns_test < powerdns_test.sql
+  # Use the root password from your .env
+  docker-compose exec db mysql -u root --password=<pass> -e 'create database powerdns_test'
+  docker-compose exec db mysql -u root --password=<pass> powerdns_test < powerdns_test.sql
 
-  You can run the full test suite with::
+You can run the full test suite with::
 
-    docker-compose run web rspec
+  docker-compose run web rspec
 
-  For a more verbose output::
+For a more verbose output::
 
-    docker-compose run web rspec --format doc
+  docker-compose run web rspec --format doc
 
 Copyright
 ---------
 
 Copyright (c) 2008 - 2021 `ARP Networks, Inc. <https://arpnetworks.com>`_
-
