@@ -414,6 +414,12 @@ class Account < ApplicationRecord
     !services.empty? && !active?
   end
 
+  def in_stripe?
+    return false unless stripe_customer_id
+
+    !stripe_customer_id.empty?
+  end
+
   # An empty account is one that has never had any active services
   # associated with it
   def empty?

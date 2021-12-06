@@ -151,6 +151,38 @@ describe Account do
     end
   end
 
+  describe 'in_stripe?()' do
+    context 'when stripe_customer_id is nil' do
+      before :each do
+        account.stripe_customer_id = nil
+      end
+
+      it 'should return false' do
+        expect(account.in_stripe?).to eq false
+      end
+    end
+
+    context 'when stripe_customer_id is blank' do
+      before do
+        account.stripe_customer_id = ''
+      end
+
+      it 'should return false' do
+        expect(account.in_stripe?).to eq false
+      end
+    end
+
+    context 'when stripe_customer_id is not empty' do
+      before do
+        account.stripe_customer_id = 'cus_Kj1sZ4oXZPkeeq'
+      end
+
+      it 'should return true' do
+        expect(account.in_stripe?).to eq true
+      end
+    end
+  end
+
   context 'IPs and DNS Records' do
     before do
       Service.delete_all
