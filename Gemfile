@@ -8,7 +8,7 @@ gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use MySQL as the database for Active Record
 gem 'mysql2', '~> 0.4.0'
 # Use Puma as the app server
-gem 'puma', '~> 4.1'
+gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -37,7 +37,6 @@ group :development, :test do
   # Use Capistrano for deployment
   gem 'capistrano', '~> 3.10', require: false
   gem 'capistrano-bundler', '~> 1.3', require: false
-  gem 'capistrano-passenger', require: false
   gem 'capistrano-rails', '~> 1.5', require: false
   gem 'capistrano-rbenv', '~> 2.1', require: false
   gem 'capistrano-maintenance', '~> 1.2', require: false
@@ -80,7 +79,6 @@ group :development do
 end
 
 group :production, :staging do
-  gem 'passenger', '~> 5.0'
   gem 'slack-notifier'
 end
 

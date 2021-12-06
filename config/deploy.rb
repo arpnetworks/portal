@@ -83,6 +83,17 @@ namespace :deploy do
   end
 
   before 'deploy:assets:precompile', :copy_stragglers
+
+  namespace :puma do
+    desc 'Restart puma'
+    task :restart do
+      on roles(:app) do
+        within(release_path) do
+          execute :pumactl, 'phased-restart'
+        end
+      end
+    end
+  end
 end
 
 desc "Backup (mysqldump) production databases and rsync to local box"
