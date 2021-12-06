@@ -145,6 +145,10 @@ Rails.application.routes.draw do
         # Other
         get 'jobs/health', controller: 'utils', action: 'job_queue_health'
       end
+
+      namespace :stripe do
+        post 'webhook'
+      end
     end
   end
 
