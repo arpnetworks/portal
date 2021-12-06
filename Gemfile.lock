@@ -173,9 +173,6 @@ GEM
     parallel (1.21.0)
     parser (3.0.3.0)
       ast (~> 2.4.1)
-    passenger (5.3.7)
-      rack
-      rake (>= 0.8.1)
     public_suffix (4.0.6)
     puma (5.5.2)
       nio4r (~> 2.0)
@@ -368,7 +365,6 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   listen (~> 3.2)
   mysql2 (~> 0.4.0)
-  passenger (~> 5.0)
   puma (~> 5.0)
   rails (~> 6.0.3, >= 6.0.3.4)
   rails-controller-testing
