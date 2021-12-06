@@ -74,6 +74,33 @@ For a more verbose output::
 
   docker-compose run web rspec --format doc
 
+Stripe
+------
+
+It helps to have the Stripe CLI for developing and testing Stripe integration::
+
+  # Download latest tarball from https://github.com/stripe/stripe-cli/releases/latest
+  tar xzvf stripe_X.X.X_linux_x86_64.tar.gz
+  mv ./stripe ~/some-place-in-your-PATH
+
+Pair the CLI with your Stripe account::
+
+  stripe login
+
+Follow the instructions.
+
+To forward events to your local environment::
+
+  stripe listen --forward-to localhost:3000/api/v1/stripe/webhook
+
+To trigger an event (example)::
+
+  stripe trigger payment_intent.succeeded
+
+To see all supported events::
+
+  stripe trigger --help
+
 Copyright
 ---------
 
