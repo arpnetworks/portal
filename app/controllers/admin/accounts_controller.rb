@@ -129,7 +129,8 @@ class Admin::AccountsController < Admin::HeadQuartersController
       :city,
       :state,
       :zip,
-      :country
+      :country,
+      :stripe_customer_id
     )
   end
 end
