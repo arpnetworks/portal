@@ -50,4 +50,7 @@ if conf = @config[Rails.env]
   $EXPORT           = conf['export']
   $DNS              = conf['dns']
   $DNS_NOTIFY_CMD   = $DNS['notify_command']
+
+  $STRIPE_API_KEY   = conf['stripe']['api_key']
+  $STRIPE_ENDPOINT_SECRET = conf['stripe']['endpoint_secret']
 end
