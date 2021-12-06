@@ -91,3 +91,22 @@
   </tbody>
   <!-- /account fields -->
 <% end -%>
+<% if @enable_admin_view -%>
+<tbody>
+  <tr>
+    <td colspan="2">
+      <hr />
+      <h3></h3>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">In Stripe?</td>
+    <td><%= @account.in_stripe? ? 'Yes' : 'No' %></td>
+  </tr>
+  <tr>
+    <td class="label">Stripe Customer ID:</td>
+    <td><%= f.text_field :stripe_customer_id %></td>
+  </tr>
+  </tbody>
+  <!-- /account fields -->
+<% end -%>
