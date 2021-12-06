@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_07_063150) do
+ActiveRecord::Schema.define(version: 2021_12_06_053311) do
 
   create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "login"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_063150) do
     t.boolean "beta_features", default: false, null: false
     t.boolean "beta_billing_exempt", default: false, null: false
     t.string "dk_salt", limit: 32
+    t.string "stripe_customer_id"
   end
 
   create_table "backup_quotas", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
