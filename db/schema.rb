@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_06_053311) do
+ActiveRecord::Schema.define(version: 2021_12_07_051234) do
 
   create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "login"
@@ -318,6 +318,15 @@ ActiveRecord::Schema.define(version: 2021_12_06_053311) do
     t.datetime "updated_at"
     t.string "username"
     t.index ["account_id"], name: "index_ssh_keys_on_account_id"
+  end
+
+  create_table "stripe_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "event_id"
+    t.string "event_type", limit: 128
+    t.string "status", limit: 64
+    t.text "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "virtual_machines", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
