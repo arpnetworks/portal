@@ -83,6 +83,19 @@ namespace :deploy do
   end
 
   before 'deploy:assets:precompile', :copy_stragglers
+
+  namespace :puma do
+    desc 'Restart puma'
+    task :restart do
+      on roles(:app) do
+        within(release_path) do
+          execute :bundle, :exec, 'rails restart'
+        end
+      end
+    end
+  end
+
+  after 'deploy:symlink:release', 'puma:restart'
 end
 
 desc "Backup (mysqldump) production databases and rsync to local box"
