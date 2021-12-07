@@ -147,6 +147,14 @@ RSpec.describe StripeEvent, type: :model do
                                                      stripe_invoice_id: @invoice_id)
             @stripe_event.handle_invoice_finalized!
           end
+
+          context 'with invoice' do
+            before :each do
+              # TODO
+            end
+
+            it 'should create line items'
+          end
         end
 
         context 'without valid customer' do
