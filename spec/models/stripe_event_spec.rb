@@ -117,4 +117,49 @@ RSpec.describe StripeEvent, type: :model do
       end
     end
   end
+
+  describe 'Handlers' do
+    describe 'handle_invoice_finalized!' do
+      context 'with event' do
+        before :each do
+          @stripe_event = build(:stripe_event, :invoice_finalized)
+          @invoice_id = 'in_1K411S2LsKuf8PTn6WkcBmOf' # Taken from factories.rb
+        end
+
+        context 'with incorrect event type' do
+          before :each do
+            @stripe_event.event_type = 'foo'
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_finalized! }.to raise_error StandardError
+          end
+        end
+
+        context 'with valid customer' do
+          before :each do
+            @account = build(:account)
+            allow(Account).to receive(:find_by).and_return(@account)
+          end
+
+          it 'should create invoice for customer' do
+            expect(Invoice).to receive(:create).with(account: @account,
+                                                     stripe_invoice_id: @invoice_id)
+            @stripe_event.handle_invoice_finalized!
+          end
+        end
+
+        context 'without valid customer' do
+          before :each do
+            # No such account given this Stripe customer_id
+            allow(Account).to receive(:find_by).and_return(nil)
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_finalized! }.to raise_error StandardError
+          end
+        end
+      end
+    end
+  end
 end

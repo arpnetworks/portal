@@ -33,6 +33,18 @@ class StripeEvent < ApplicationRecord
   ##################
 
   def handle_invoice_finalized!
+    raise "Incorrect event type" if event_type != 'invoice.finalized'
 
+    event = JSON.parse(body)
+
+    invoice     = event['data']['object']
+    invoice_id  = invoice['id']
+    customer_id = invoice['customer']
+
+    account = Account.find_by(stripe_customer_id: customer_id)
+
+    raise "No account found given Stripe customer ID: #{customer_id}" if account.nil?
+
+    Invoice.create(account: account, stripe_invoice_id: invoice_id)
   end
 end

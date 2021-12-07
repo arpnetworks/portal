@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_07_051234) do
+ActiveRecord::Schema.define(version: 2021_12_07_104707) do
 
   create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "login"
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 2021_12_07_051234) do
     t.boolean "paid", default: false
     t.boolean "archived", default: false
     t.boolean "pending", default: false
+    t.string "stripe_invoice_id"
     t.index ["account_id"], name: "account_id"
   end
 
