@@ -13,12 +13,14 @@ class Api::V1::StripeController < ApiController
         payload, signature, @endpoint_secret
       )
     rescue Stripe::SignatureVerificationError => e
-      simple_email("⚠️  Webhook signature verification failed. #{e.message})", payload) rescue nil
-      render json: {}, status: 400
+      error = "⚠️  Webhook signature verification failed. #{e.message})"
+      simple_email(error, payload) rescue nil
+      render json: { error: error }, status: 400
       return
     rescue JSON::ParserError => e
-      simple_email("⚠️  Webhook error while parsing basic request. #{e.message})", payload) rescue nil
-      render json: {}, status: 400
+      error = "⚠️  Webhook error while parsing basic request. #{e.message})"
+      simple_email(error, payload) rescue nil
+      render json: { error: error }, status: 400
       return
     end
 
