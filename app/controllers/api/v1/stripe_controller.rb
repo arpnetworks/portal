@@ -13,11 +13,11 @@ class Api::V1::StripeController < ApiController
         payload, signature, @endpoint_secret
       )
     rescue Stripe::SignatureVerificationError => e
-      simple_email("⚠️  Webhook signature verification failed. #{e.message})") rescue nil
+      simple_email("⚠️  Webhook signature verification failed. #{e.message})", payload) rescue nil
       render json: {}, status: 400
       return
     rescue JSON::ParserError => e
-      simple_email("⚠️  Webhook error while parsing basic request. #{e.message})") rescue nil
+      simple_email("⚠️  Webhook error while parsing basic request. #{e.message})", payload) rescue nil
       render json: {}, status: 400
       return
     end
@@ -25,7 +25,9 @@ class Api::V1::StripeController < ApiController
     begin
       StripeEvent.process!(event, payload)
     rescue ArgumentError => e
-      simple_email("Received ArgumentError processing Stripe event: " + e.message) rescue nil
+      simple_email("Received ArgumentError processing Stripe event: " + e.message, payload) rescue nil
+    rescue StandardError => e
+      simple_email("Received StandardError processing Stripe event: " + e.message, payload) rescue nil
     end
 
     render json: {}, status: 200
