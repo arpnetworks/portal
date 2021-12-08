@@ -132,6 +132,12 @@ module ApplicationHelper
     end
   end
 
+  def stripe_events_table_onClick(stripe_event)
+    html = "onClick=\"location.href='".html_safe
+    html << admin_stripe_event_path(stripe_event.id)
+    html << "'\"".html_safe
+  end
+
   def admin_account_path_from_resource(resource)
     if resource && resource.service
       link_to(h(resource.service.account.display_account_name), admin_account_path(resource.service.account))

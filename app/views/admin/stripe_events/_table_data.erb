@@ -1,0 +1,49 @@
+<thead>
+  <% if action_name == 'index' %>
+  <tr>
+    <td colspan="6" class="pagination">
+      <span class="page-entries-info">
+        <%= page_entries_info @stripe_events %>
+      </span>
+      <span class="page-links">
+      <%= will_paginate @stripe_events %>
+      </span>
+
+      <span style='clear: both'>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <th class="action" style="width: 20px"></th>
+    <th class="id" style="width: 20px">ID</th>
+    <th class="created_at">Created At</th>
+    <th class="event_id">Event ID</th>
+    <th class="status">Status</th>
+    <th class="event_type">Event Type</th>
+  </tr>
+</thead>
+<tbody>
+  <% if @stripe_events.nil? || @stripe_events.size == 0 %>
+    <tr>
+      <td class="no_records" colspan="6">
+        No stripe_events found
+      </td>
+    </tr>
+  <% else %>
+  <% @stripe_events.each do |stripe_event| %>
+    <tr class="<%= cycle("odd", "even") -%><%= " #{stripe_event.status}" -%><%= @enable_admin_view ? " cursor" : "" %>" <%= stripe_events_table_onClick(stripe_event) %>>
+      <% if controller.action_name == 'index' %>
+      <td class="action">
+      <%= link_to(image_tag('/images/icons/magnifier.png', :alt => "Details"), admin_stripe_event_path(stripe_event.id)) %>
+      </td>
+      <td class="id"><%= stripe_event.id %></td>
+      <td class="created_at"><%= stripe_event.created_at.strftime("%m-%d %R") %></td>
+      <% end %>
+
+      <td class="event_id"><%= stripe_event.event_id %></td>
+      <td class="status"><%= stripe_event.status %></td>
+      <td class="event_type"><%= stripe_event.event_type %></td>
+    </tr>
+  <% end %>
+<% end %>
+</tbody>

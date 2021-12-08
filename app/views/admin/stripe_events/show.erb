@@ -1,0 +1,35 @@
+<table class="stripe_event_detail">
+  <caption>Stripe Event Detail</caption>
+  <thead></thead>
+  <tbody>
+    <tr>
+      <td>
+        <pre style='line-height: 1.3em'>
+ID: <%= @stripe_event.id %>
+Event ID: <%= @stripe_event.event_id %>
+Event Type: <%= @stripe_event.event_type %>
+Status: <%= @stripe_event.status %>
+Body: <%= @stripe_event.body && JSON.pretty_generate(JSON.parse(@stripe_event.body)) %>
+        </pre>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="1">
+
+        <%= link_to(image_tag('/images/icons/cross.png', :alt => "Delete"),
+                    admin_stripe_event_path(@stripe_event.id),
+                    :method  => :delete,
+                    :data    => { :confirm => 'Are you sure you want to delete this Stripe Event?  THIS CANNOT BE UNDONE.' },
+                    :style   => 'padding-top: 3px; float: left') %>
+
+        <%= link_to(image_tag('/images/icons/pencil_go.png', :alt => "Retry"),
+                    retry_admin_stripe_event_path(@stripe_event.id),
+                    :method  => :post,
+                    :data    => { :confirm => 'Are you sure you want to re-process this Stripe Event?  THIS CANNOT BE UNDONE.' },
+                    :style   => 'padding-top: 3px; padding-left: 3px; float: left') %>
+      </td>
+    </tr>
+  </tfoot>
+</table>

@@ -104,6 +104,11 @@ Rails.application.routes.draw do
         post 'retry'
       end
     end
+    resources :stripe_events do
+      member do
+        post 'retry'
+      end
+    end
   end
 
   get 'admin',         controller: 'admin/head_quarters', action: 'index'

@@ -846,6 +846,132 @@ table.legend td.icon {
   width: 1em;
 }
 
+/* Stripe Events table */
+
+/* Copied verbatim from Jobs table above; many parts not used or irrelevant
+ * Might clean up later */
+
+table.stripe_events tr.odd, table.stripe_events tr.even {
+}
+
+table.stripe_events tr.cursor {
+  cursor: pointer;
+}
+
+table.stripe_events th {
+}
+
+table.stripe_events .even td {
+}
+
+table.stripe_events tr.cursor:hover td {
+  background-color: #ffc;
+}
+
+table.stripe_events tr.no_highlight {
+  cursor: default;
+}
+
+table.stripe_events td.action, table.stripe_events th.action {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.stripe_events td.created_at, table.stripe_events th.created_at {
+  white-space: nowrap;
+  width: 1em; /* Minimum */
+}
+
+table.stripe_events td.jid, table.stripe_events th.jid {
+  width: 1em;
+}
+
+table.stripe_events td.state, table.stripe_events th.state {
+  width: 1em;
+}
+
+table.stripe_events td.code, table.stripe_events th.code {
+  width: 1em;
+}
+
+table.stripe_events tr.failed.even td {
+  background-color: #F2A4A4;
+}
+table.stripe_events tr.failed.odd td {
+  background-color: #fcc9c9;
+}
+
+table.stripe_events tr.cancelled.even td {
+  background-color: #EEEEEE;
+}
+table.stripe_events tr.cancelled.odd td {
+  background-color: #CDCDC9;
+}
+
+table.stripe_events tr.running td.state {
+  padding: 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/ellipsis.gif);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.stripe_events tr.done td.state {
+  padding: 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/done.png);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.stripe_events tr.ready td.state, table.stripe_events tr.waiting td.state {
+  padding: 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/clock-simple-green.png);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.stripe_events tr.failed td.state {
+  padding: 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/failed.png);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.stripe_events tr.cancelled td.state {
+  padding: 0px;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/cancelled-yellow.png);
+  background-position: center;
+  width: 16px;
+  height: 16px;
+}
+
+table.stripe_events td {
+  vertical-align: center;
+  line-height: 1.0em;
+}
+
+table.stripe_events div.additional-note {
+  font-size: 8pt;
+}
+
+table.stripe_events.legend {
+  padding-left: 11px;
+  width: 100%;
+  border: none;
+}
+
+table.legend td.icon {
+  width: 1em;
+}
+
 /* Invoices table */
 table.invoices th {
   background-color: #014C0B;
