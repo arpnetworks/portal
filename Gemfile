@@ -46,8 +46,8 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  gem 'webdrivers'
+  gem 'selenium-webdriver', '~> 3.142.7'
+  # gem 'webdrivers'
 end
 
 group :test do

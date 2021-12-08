@@ -38,6 +38,18 @@ services:
       - '4000:4000'
     depends_on:
       - db
+      - selenium_chrome
+
+  selenium_chrome:
+    image: selenium/standalone-chrome-debug:3.141.59-selenium
+    volumes:
+      - ./tmp/capybara/downloads:/home/seluser/Downloads
+    shm_size: 2G
+    logging:
+      driver: none
+    ports:
+      - "5900:5900"
+      - "4444:4444"
 
 volumes:
   mysql:
