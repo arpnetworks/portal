@@ -123,7 +123,7 @@ RSpec.describe StripeEvent, type: :model do
       context 'with event' do
         before :each do
           @stripe_event = build(:stripe_event, :invoice_finalized)
-          @invoice_id = 'in_1K411S2LsKuf8PTn6WkcBmOf' # Taken from factories.rb
+          @invoice = JSON.parse(@stripe_event.body)['data']['object']
         end
 
         context 'with incorrect event type' do
@@ -143,17 +143,8 @@ RSpec.describe StripeEvent, type: :model do
           end
 
           it 'should create invoice for customer' do
-            expect(Invoice).to receive(:create).with(account: @account,
-                                                     stripe_invoice_id: @invoice_id)
+            expect(StripeInvoice).to receive(:create_for_account).with(@account, @invoice)
             @stripe_event.handle_invoice_finalized!
-          end
-
-          context 'with invoice' do
-            before :each do
-              # TODO
-            end
-
-            it 'should create line items'
           end
         end
 
