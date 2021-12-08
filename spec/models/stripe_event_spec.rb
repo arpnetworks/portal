@@ -33,6 +33,12 @@ RSpec.describe StripeEvent, type: :model do
               expect(@stripe_event).to receive('handle_invoice_finalized!')
               @stripe_event.go!
             end
+
+            it 'should mark event as processed' do
+              allow(@stripe_event).to receive('handle_invoice_finalized!')
+              expect(@stripe_event).to receive(:handled!)
+              @stripe_event.go!
+            end
           end
 
           context 'with event_type bogus_event' do
@@ -75,6 +81,19 @@ RSpec.describe StripeEvent, type: :model do
         end
 
         it 'should return true' do
+          expect(@stripe_event.processed?).to eq true
+        end
+      end
+    end
+
+    describe 'handled!()' do
+      context 'with received event' do
+        before :each do
+          @stripe_event.status = 'received'
+        end
+
+        it 'should set status to processed' do
+          @stripe_event.handled!
           expect(@stripe_event.processed?).to eq true
         end
       end

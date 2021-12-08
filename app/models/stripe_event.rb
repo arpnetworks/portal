@@ -12,6 +12,7 @@ class StripeEvent < ApplicationRecord
     begin
       handler = "handle_" + event_type.gsub('.', '_') + "!"
       send(handler)
+      handled!
     rescue NoMethodError => e
       raise ArgumentError.new("No handler found for event '#{event_type}'")
     end
@@ -19,6 +20,11 @@ class StripeEvent < ApplicationRecord
 
   def processed?
     status == 'processed'
+  end
+
+  def handled!
+    self.status = 'processed'
+    save
   end
 
   def self.process!(event, payload)
