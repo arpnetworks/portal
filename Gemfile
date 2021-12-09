@@ -60,6 +60,8 @@ group :test do
   gem 'factory_bot_rails', '~> 4.0'
 
   gem 'rails-controller-testing'
+
+  gem 'simplecov', require: false
 end
 
 group :development do
