@@ -15,7 +15,7 @@ RSpec.describe 'Sign In/Out' do
     expect(page).to have_content("Incorrect username and/or password, please try again.")
 
     fill_in 'account[login]', with: 'chris'
-    fill_in 'account[password]', with: '123456'
+    fill_in 'account[password]', with: '12345678'
     click_button "Login"
 
     expect(page).to have_content("Welcome chris, it is nice to see you.")
