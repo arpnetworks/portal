@@ -36,7 +36,9 @@ RSpec.configure do |config|
 
   config.before :all do
     # From arp_spec_helper.rb
-    clear_db!
+    on_system_test = self.class.metadata[:type].to_s == "system"
+
+    clear_db! unless on_system_test
   end
 
   # rspec-mocks config goes here. You can use an alternate test double
