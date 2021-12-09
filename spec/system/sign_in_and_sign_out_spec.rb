@@ -1,11 +1,11 @@
 require 'rails_helper'
 require 'arp_spec_helper'
 
-RSpec.describe 'Sign In' do
+RSpec.describe 'Sign In/Out' do
 
   fixtures :all
 
-  it 'user can success sign in' do
+  it 'user can success sign in and sign out' do
     visit root_path
 
     expect(page).to have_selector("caption", text: "Login")
@@ -22,6 +22,12 @@ RSpec.describe 'Sign In' do
     expect(page).to have_content("chris's dashboard")
     expect(page).to have_content("Main Menu")
     expect(page.current_path).to eq(dashboard_path)
+    expect(page).to_not have_content("Login")
+
+    click_link "Logout"
+    expect(page).to have_content("You have been logged out.")
+    expect(page).to have_selector("caption", text: "Login")
+    expect(page.current_path).to eq(login_accounts_path)
   end
 
 end
