@@ -1,12 +1,19 @@
-chris:
+admin:
   id: 1
+  email: admin@example.com
+  login: admin
+  password: <%= Account.encrypt('12345678', PasswordEncryption::SALT) %>
+  dk_salt: <%= SecureRandom.alphanumeric(16) %>
+  created_at: <%= 10.days.ago.strftime("%Y-%m-%d %H:%M:%S") %>
+chris:
+  id: 2
   email: chris@pledie.com
   login: chris
   password: <%= Account.encrypt(123456, PasswordEncryption::SALT) %>
   dk_salt: <%= SecureRandom.alphanumeric(16) %>
   created_at: <%= 2.days.ago.strftime("%Y-%m-%d %H:%M:%S") %> 
 garry:
-  id: 2
+  id: 3
   login: garry
   first_name: Garry
   last_name: Dolley

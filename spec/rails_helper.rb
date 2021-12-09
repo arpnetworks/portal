@@ -9,6 +9,7 @@ require 'rspec/rails'
 
 require 'support/factory_bot'
 require 'support/capybara'
+require 'support/helpers/system/authentication_helper'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -61,6 +62,8 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
   end
+
+  config.include AuthenticationSystemHelper, type: :system
 end
 
 Shoulda::Matchers.configure do |config|
