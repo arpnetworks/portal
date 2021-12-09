@@ -908,6 +908,10 @@ table.stripe_events tr.cancelled.odd td {
   background-color: #CDCDC9;
 }
 
+table.stripe_events td.status, table.stripe_events th.status {
+  width: 1em;
+}
+
 table.stripe_events tr.running td.state {
   padding: 0px;
   background-repeat: no-repeat;
