@@ -6,12 +6,15 @@ x-app: &app
     - .:/myapp
     - gems:/usr/local/bundle
   environment:
-    - PORT
-    - RAILS_ENV
-    - RAILS_LOG_TO_STDOUT
-    - RAILS_SERVE_STATIC_FILES
-    - MARIADB_ROOT_PASSWORD
+    PORT:
+    RAILS_ENV:
+    RAILS_LOG_TO_STDOUT:
+    RAILS_SERVE_STATIC_FILES:
+    MARIADB_ROOT_PASSWORD:
+    EDITOR: vi
   image: portal_web
+  stdin_open: true
+  tty: true
 
 services:
 
@@ -32,7 +35,6 @@ services:
 
   runner:
     <<: *app
-    tty: true
     command: /bin/bash
     ports:
       - '4000:4000'

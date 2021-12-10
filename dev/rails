@@ -33,7 +33,7 @@ end
 option = ARGV[0]
 case option
 when "s", 'server'
-  system! "docker compose up web"
+  system! "docker compose run --service-ports web"
 else
   options = ARGV.join(" ")
   system! "docker compose exec runner bin/rails #{options}"
