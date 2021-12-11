@@ -13,11 +13,17 @@ describe Account do
     it { should     allow_value('123john').for(:login) }
     it { should     allow_value('john_123').for(:login) }
     it { should     allow_value('john-123').for(:login) }
+    it { should     allow_value('john ').for(:login) } # Devise auto stripe whitespace before validation
+    it { should     allow_value("john\n").for(:login) } # Devise auto stripe whitespace before validation
     it { should_not allow_value('john@').for(:login) }
     it { should_not allow_value('john?').for(:login) }
-    it { should_not allow_value('john ').for(:login) }
-    it { should_not allow_value("john\n").for(:login) }
     it { should_not allow_value("john*").for(:login) }
+
+    it "auto stripe whitespace for login before validation" do
+      account = Account.new(login: " john\n")
+      account.validate
+      expect(account.login).to eq("john")
+    end
   end
 
   describe "#email" do
@@ -29,38 +35,23 @@ describe Account do
     it { should     allow_value('john@test.co').for(:email) } # Allow the suffix with two characters
     it { should     allow_value('john@test-test.com').for(:email) } # Allow the host name with "-"
     it { should     allow_value('john@test123.com').for(:email) } # Allow the host name with number
-    it { should_not allow_value(' john@test.com').for(:email) } # Disallow space
-    it { should_not allow_value("\njohn@test.com").for(:email) } # Disallow "\n"
+    it { should     allow_value(" john@test.com").for(:email) } # Devise atuo stripe whitespace before validation
+    it { should     allow_value("\njohn@test.com").for(:email) } # Devise atuo stripe whitespace before validation
     it { should_not allow_value("john@test.c").for(:email) } # Disallow suffix with one character
     it { should_not allow_value("john@testcom").for(:email) } # Disallow host without "."
     it { should_not allow_value("j@hn@testcom").for(:email) } # Disallow name with "@"
+
+    it "auto stripe whitespace for email before validation" do
+      account = Account.new(email: " john@test.com\n")
+      account.validate
+      expect(account.email).to eq('john@test.com')
+    end
   end
 
   describe "#password" do
     it { should validate_length_of(:password).is_at_least(8) }
     it { should validate_presence_of(:password) }
-
-    context "when password encrypted" do
-      before { allow(subject).to receive(:password_encrypted).and_return(true) }
-      it { should_not validate_confirmation_of(:password) }
-    end
-
-    context "when password didn't encrypted" do
-      before { allow(subject).to receive(:password_encrypted).and_return(false) }
-      it { should validate_confirmation_of(:password) }
-    end
-  end
-
-  describe "#password_confirmation" do
-    context "when password changed" do
-      before { allow(subject).to receive(:password_changed?).and_return(true) }
-      it { should validate_presence_of(:password_confirmation) }
-    end
- 
-    context "when passwrod didn't change" do
-      before { allow(subject).to receive(:password_changed?).and_return(false) }
-      it { should_not validate_presence_of(:password_confirmation) }
-    end
+    it { should validate_confirmation_of(:password) }
   end
 
   ['email2', 'email_billing'].each do |field|
@@ -87,7 +78,7 @@ describe Account do
       a.first_name = 'Garry'
       a.last_name = 'Dolley'
       a.email = 'garry2@garry.com'
-      a.password = '76dfcef085f1664858228a075da17af9d0c3610b'
+      a.legacy_encrypted_password = '76dfcef085f1664858228a075da17af9d0c3610b'
     end
   end
 
