@@ -676,13 +676,6 @@ class Account < ApplicationRecord
       find_first_by_auth_conditions(tainted_conditions, active: true)
     end
 
-    # Authenticates a user by their login name and unencrypted password.
-    # Returns the user or nil.
-    def authenticate(login, password)
-      u = find_by(login: login, active: true)
-      u && u.authenticated?(password) ? u : nil
-    end
-
     def generate_derived_key(password, salt)
       # Only in OpenSSL 1.1.x, but it's better
       # OpenSSL::KDF.scrypt(password, salt: salt, N: 2**14, r: 8, p: 1, length: 32)
