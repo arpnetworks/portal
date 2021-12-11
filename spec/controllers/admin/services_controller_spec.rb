@@ -3,11 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::ServicesController do
   before(:context) do
-    create_admin!
+    @admin = create_admin!
   end
 
   before do
-    login_as_admin!
+    sign_in @admin
 
     @service = create :service
     @params  = { id: @service.id }
@@ -15,7 +15,6 @@ describe Admin::ServicesController do
     allow(controller).to receive(:is_arp_admin?)     { true }
     allow(controller).to receive(:is_arp_sub_admin?) { true }
     allow(controller).to receive(:set_admin_state)   { true }
-    allow(controller).to receive(:login_required)
 
     @last_location = '/foo'
     allow(controller).to receive(:last_location) { @last_location }

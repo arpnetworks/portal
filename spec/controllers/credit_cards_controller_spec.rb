@@ -8,7 +8,7 @@ describe CreditCardsController do
   end
 
   before do
-    @account = login_as_user!
+    sign_in @account
   end
 
   describe 'handling GET /account/1/credit_cards/new' do

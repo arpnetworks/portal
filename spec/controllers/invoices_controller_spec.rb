@@ -3,11 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 context InvoicesController do
   before(:context) do
-    create_user!
+    @account = create_user!
   end
 
   before do
-    @account = login_as_user!
+    sign_in @account
 
     # Let controller use this instance of @account object, not the one it
     # finds after logging in (so we can mock / stub a lot easier)
@@ -29,7 +29,7 @@ context InvoicesController do
     before do
       @cc_num = '4111111111111111'
       @credit_card = build :credit_card, number: @cc_num
-      allow(@account).to receive(:credit_card) { @credit_card }
+      allow_any_instance_of(Account).to receive(:credit_card) { @credit_card }
     end
 
     def do_get(opts = {})
@@ -127,21 +127,21 @@ context InvoicesController do
                          date: '01-01-1970',
                          line_items: [])
           @unpaid_invoices = [@inv1, @inv2]
-          allow(@account).to receive(:invoices_unpaid).and_return(@unpaid_invoices)
+          allow_any_instance_of(Account).to receive(:invoices_unpaid).and_return(@unpaid_invoices)
         end
 
         context 'when confirmed payment amount matches outstanding balance' do
           before do
             @confirmed_amount = 444.00
-            allow(@account).to receive(:invoices_outstanding_balance).and_return(@confirmed_amount)
-            allow(@account).to receive(:sales_receipt_line_items).with(@unpaid_invoices) { [] }
+            allow_any_instance_of(Account).to receive(:invoices_outstanding_balance).and_return(@confirmed_amount)
+            allow_any_instance_of(Account).to receive(:sales_receipt_line_items).with(@unpaid_invoices) { [] }
           end
 
           specify 'should build credit card' do
             @cc = double(:credit_card,
                          charge_with_sales_receipt: nil,
                          charges: [])
-            expect(@account).to receive(:credit_card).and_return(@cc)
+            expect_any_instance_of(Account).to receive(:credit_card).and_return(@cc)
             expect(@cc).to receive(:number=).with(@cc_num)
             do_post
           end
@@ -152,17 +152,17 @@ context InvoicesController do
                            :number= => @cc_num,
                            :charge_with_sales_receipt => nil,
                            :charges => [])
-              allow(@account).to receive(:credit_card).and_return(@cc)
+              allow_any_instance_of(Account).to receive(:credit_card).and_return(@cc)
             end
 
             specify 'should build line items for receipt' do
-              expect(@account).to receive(:sales_receipt_line_items).with(@unpaid_invoices)
+              expect_any_instance_of(Account).to receive(:sales_receipt_line_items).with(@unpaid_invoices)
               do_post
             end
 
             specify 'should charge outstanding balance' do
               @li = double(:line_items)
-              allow(@account).to receive(:sales_receipt_line_items).and_return(@li)
+              allow_any_instance_of(Account).to receive(:sales_receipt_line_items).and_return(@li)
               expect(@cc).to receive(:charge_with_sales_receipt).with(\
                 @confirmed_amount, @li,
                 email_decline_notice: false,
@@ -250,7 +250,7 @@ context InvoicesController do
         context 'when confirmed payment amount does not match outstanding balance' do
           before do
             @confirmed_amount = 444.00
-            allow(@account).to receive(:invoices_outstanding_balance).and_return(777.00)
+            allow_any_instance_of(Account).to receive(:invoices_outstanding_balance).and_return(777.00)
           end
 
           specify 'should return to pay action with notice' do
@@ -263,7 +263,7 @@ context InvoicesController do
 
       context 'without unpaid invoices' do
         before do
-          allow(@account).to receive(:invoices_unpaid).and_return([])
+          allow_any_instance_of(Account).to receive(:invoices_unpaid).and_return([])
         end
 
         specify 'should return to pay action' do

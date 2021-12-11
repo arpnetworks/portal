@@ -14,39 +14,6 @@ def create_user!(opts = {})
   @user
 end
 
-def login_as_admin!
-  login!
-  allow(@controller).to receive(:is_arp_admin?)     { true }
-  allow(@controller).to receive(:is_arp_sub_admin?) { true }
-end
-
-def login_as_user!
-  login!('user')
-end
-
-# Let's us "login" within a spec.
-def login!(user = 'admin', pass = 'mysecret')
-  authenticated_user = Account.authenticate(user, pass)
-  expect(authenticated_user).to_not be_nil
-
-  @controller.session[:account_id] = authenticated_user.id
-  allow(Account).to receive(:find).with(authenticated_user.id) { authenticated_user }
-  authenticated_user
-end
-
-def login_with_account!(account)
-  @controller.session[:account_id] = account.id
-  allow(Account).to receive(:find).with(account.id) { account }
-end
-
-def mock_login!
-  account = mock_model(Account)
-  allow(Account).to receive(:authenticate).and_return(account)
-  @controller.session[:account_id] = account.id
-  allow(Account).to receive(:find).with(account.id) { account }
-  account
-end
-
 def clear_db!
   CreditCard.delete_all
   BackupQuota.delete_all
@@ -75,7 +42,7 @@ RSpec.shared_examples 'Destructive Administrative Action' do
 
     it 'should redirect to dashboard' do
       do_post(@params)
-      expect(response).to redirect_to(login_accounts_path)
+      expect(response).to redirect_to(new_account_session_path)
     end
 
     it 'should set flash error' do
@@ -91,7 +58,7 @@ RSpec.shared_examples 'Destructive Administrative Action' do
 
     it 'should redirect to dashboard' do
       do_post(@params)
-      expect(response).to redirect_to(login_accounts_path)
+      expect(response).to redirect_to(new_account_session_path)
     end
 
     it 'should set flash error' do
@@ -107,7 +74,7 @@ RSpec.shared_examples 'Destructive Administrative Action' do
 
     it 'should redirect to dashboard' do
       do_post(@params)
-      expect(response).to redirect_to(login_accounts_path)
+      expect(response).to redirect_to(new_account_session_path)
     end
 
     it 'should set flash error' do

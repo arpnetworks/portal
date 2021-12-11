@@ -3,11 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::IpBlocksController do
   before(:context) do
-    create_admin!
+    @admin = create_admin!
   end
 
   before do
-    login_as_admin!
+    sign_in @admin
     @ip_block = mock_model(IpBlock)
     @params = { id: @ip_block.id }
   end

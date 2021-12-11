@@ -3,11 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::BandwidthQuotasController do
   before(:context) do
-    create_admin!
+    @admin = create_admin!
   end
 
   before do
-    login_as_admin!
+    sign_in @admin
     @p = { 'commit': '10000' }
   end
 

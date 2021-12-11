@@ -3,11 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 context ServicesController do
   before(:context) do
-    create_user!(login: 'user2', create_service: true)
+    @account = create_user!(login: 'user2', create_service: true)
   end
 
   before do
-    @account = login!('user2')
+    sign_in @account
   end
 
   specify 'should be a ServicesController' do
@@ -92,7 +92,7 @@ context ServicesController do
     before do
       session['form'] = {}
 
-      allow(@account).to receive(:beta_features?).and_return(true) # TODO: Remove after beta
+      allow_any_instance_of(Account).to receive(:beta_features?).and_return(true) # TODO: Remove after beta
       allow(controller).to receive(:check_cc_exists_and_current).and_return(true)
       allow(controller).to receive(:check_account_isnt_blank).and_return(true)
     end

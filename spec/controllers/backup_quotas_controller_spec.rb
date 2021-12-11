@@ -3,14 +3,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 context BackupQuotasController do
   before(:context) do
-    create_user!
+    @account = create_user!
   end
 
   before do
-    @account = login_as_user!
+    sign_in @account
 
     @bq = mock_model(BackupQuota, server: 'foo.example.com', username: 'foo', quota: 200_000)
-    allow(@account).to receive(:find_backup_quota_by_id) { @bq }
+    allow_any_instance_of(Account).to receive(:find_backup_quota_by_id) { @bq }
     @service = mock_model(Service)
     allow(Service).to receive(:find).with(@service.id.to_s) { @service }
   end

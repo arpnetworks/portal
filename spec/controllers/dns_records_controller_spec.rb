@@ -22,7 +22,7 @@ context DnsRecordsController do
   end
 
   before do
-    @account = login_as_user!
+    sign_in @account
   end
 
   specify 'should be a DnsRecordsController' do
@@ -45,7 +45,7 @@ context DnsRecordsController do
 
     specify 'should be a success even if account has no IP blocks' do
       account = create :account
-      login_with_account!(account)
+      sign_in account
       expect(account.ip_blocks).to eq []
       do_get(account_id: account.id)
       expect(response).to be_successful
@@ -274,7 +274,7 @@ context DnsRecordsController do
 
       it 'should redirect back if account has no reverse DNS zones' do
         account_without_zones = create(:account)
-        login_with_account!(account_without_zones)
+        sign_in account_without_zones
         do_get(account_id: account_without_zones.id)
         expect(response).to redirect_to(reverse_dns_account_dns_records_path(account_without_zones))
         expect(flash[:error]).to_not be_nil
@@ -287,7 +287,7 @@ context DnsRecordsController do
       end
 
       it 'should create new dns_record' do
-        allow(@account).to receive(:owns_dns_record?) { true }
+        allow_any_instance_of(Account).to receive(:owns_dns_record?) { true }
         num_records = DnsRecord.count
         new_dns_record = {
           name: '2',
@@ -303,7 +303,7 @@ context DnsRecordsController do
 
       it 'should create new IPv6 dns_record' do
         create :dns_domain, :the_ipv6_block
-        allow(@account).to receive(:owns_dns_record?) { true }
+        allow_any_instance_of(Account).to receive(:owns_dns_record?) { true }
         num_records = DnsRecord.count
         new_dns_record = {
           name: '2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0',

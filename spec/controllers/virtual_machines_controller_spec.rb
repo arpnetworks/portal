@@ -3,11 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 context VirtualMachinesController do
   before(:context) do
-    create_user!
+    @account = create_user!
   end
 
   before do
-    @account = login_as_user!
+    sign_in @account
     @vm = create :virtual_machine
     @service = @vm.resource.service
 
@@ -42,7 +42,7 @@ context VirtualMachinesController do
       end
 
       specify "should write request to 'start' VM" do
-        allow(@account).to receive('find_virtual_machine_by_id').with(@vm.id.to_s) { @vm }
+        allow_any_instance_of(Account).to receive('find_virtual_machine_by_id').with(@vm.id.to_s) { @vm }
         expect(@vm).to receive(:change_state!).with('start')
         do_get
       end
@@ -81,7 +81,7 @@ context VirtualMachinesController do
       end
 
       specify "should write request to 'shutdown' VM" do
-        allow(@account).to receive('find_virtual_machine_by_id').with(@vm.id.to_s) { @vm }
+        allow_any_instance_of(Account).to receive('find_virtual_machine_by_id').with(@vm.id.to_s) { @vm }
         expect(@vm).to receive(:change_state!).with('shutdown')
         do_get
       end
@@ -120,7 +120,7 @@ context VirtualMachinesController do
       end
 
       specify "should write request to 'destroy' VM" do
-        allow(@account).to receive('find_virtual_machine_by_id').with(@vm.id.to_s) { @vm }
+        allow_any_instance_of(Account).to receive('find_virtual_machine_by_id').with(@vm.id.to_s) { @vm }
         expect(@vm).to receive(:change_state!).with('destroy')
         do_get
       end
@@ -147,7 +147,7 @@ context VirtualMachinesController do
         'FreeBSD-9.2-RELEASE-i386-disc1.iso'
       ]
 
-      allow(@account).to receive(:find_virtual_machine_by_id).with(@vm.id.to_s).and_return(@vm)
+      allow_any_instance_of(Account).to receive(:find_virtual_machine_by_id).with(@vm.id.to_s).and_return(@vm)
       allow(controller).to receive(:iso_files).and_return(@iso_files)
       allow(@vm).to receive(:set_iso!)
     end
@@ -196,7 +196,7 @@ context VirtualMachinesController do
 
     context 'with invalid VM' do
       before do
-        allow(@account).to receive(:find_virtual_machine_by_id).with('999').and_return(nil)
+        allow_any_instance_of(Account).to receive(:find_virtual_machine_by_id).with('999').and_return(nil)
       end
 
       specify 'should not set flash notice' do

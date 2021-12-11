@@ -3,11 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
 
 describe Admin::AccountsController do
   before(:context) do
-    create_admin!
+    @admin = create_admin!
   end
 
   before do
-    login_as_admin!
+    sign_in @admin
 
     @account = stub_model(Account, login: 'login', email: 'foo@example.com')
     @account_params = { login: @account.login, email: @account.email }
@@ -16,7 +16,6 @@ describe Admin::AccountsController do
     allow(controller).to receive(:is_arp_admin?)     { true }
     allow(controller).to receive(:is_arp_sub_admin?) { true }
     allow(controller).to receive(:set_admin_state)   { true }
-    allow(controller).to receive(:login_required)
     allow(controller).to receive(:last_location) { '/foo' }
   end
 
@@ -117,7 +116,7 @@ describe Admin::AccountsController do
 
     it 'should go back to edit page if error updating' do
       allow(Account).to receive(:find) { @account }
-      allow(@account).to receive(:update).and_raise(ActiveRecord::StatementInvalid, 'foo')
+      allow_any_instance_of(Account).to receive(:update).and_raise(ActiveRecord::StatementInvalid, 'foo')
       do_put(@params.merge(id: @account.id))
       expect(response).to render_template('admin/accounts/edit')
     end

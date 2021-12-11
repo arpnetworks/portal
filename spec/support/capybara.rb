@@ -46,21 +46,24 @@ register_chrome_driver.call(:desktop_chrome, chrome_options: { args: %w[window-s
 register_headless_chrome_driver.call(:desktop_headless_chrome, chrome_options: { args: %w[window-size=1280,800] })
 
 RSpec.configure do |config|
-  config.before(:example, type: :system) do
-    driven_by :rack_test
-  end
+  config.before(:example, type: :system) do |example|
+    debug_with_chrome = example.metadata[:debug]
+    headless_chrome = example.metadata[:js]
 
-  config.before(:example, type: :system, js: true) do |example|
-    for_debug = example.metadata[:debug]
-
-    if for_debug
+    if debug_with_chrome
       driven_by :desktop_chrome
-    else
-      driven_by :desktop_headless_chrome
-    end
+      Capybara.server_host = '0.0.0.0'
+      Capybara.server_port = 4000
+      Capybara.app_host = 'http://runner:4000'
 
-    Capybara.server_host = '0.0.0.0'
-    Capybara.server_port = 4000
-    Capybara.app_host = 'http://runner:4000'
+    elsif headless_chrome
+      driven_by :desktop_headless_chrome
+      Capybara.server_host = '0.0.0.0'
+      Capybara.server_port = 4000
+      Capybara.app_host = 'http://runner:4000'
+
+    else
+      driven_by :rack_test
+    end
   end
 end
