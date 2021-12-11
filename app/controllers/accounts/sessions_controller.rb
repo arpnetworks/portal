@@ -10,6 +10,8 @@ class Accounts::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
+    Account.migrate_to_devise_password!(params[:account])
+
     super do |resource|
       flash[:notice] = "Welcome #{resource.display_name}, it is nice to see you."
     end

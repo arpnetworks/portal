@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-  include PasswordEncryption
+  include MigrateToDevisePassword
   include Tender
   include BillingSystemModels::CreditCards
   include BillingSystemModels::Invoices
@@ -670,6 +670,11 @@ class Account < ApplicationRecord
   end
 
   class <<self
+
+    # Override the Devise's `find_for_authentication` for "active: true" condition
+    def find_for_authentication(tainted_conditions)
+      find_first_by_auth_conditions(tainted_conditions, active: true)
+    end
 
     # Authenticates a user by their login name and unencrypted password.
     # Returns the user or nil.

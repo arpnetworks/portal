@@ -2,7 +2,7 @@ admin:
   id: 1
   email: admin@example.com
   login: admin
-  legacy_encrypted_password: <%= Account.encrypt('12345678', PasswordEncryption::SALT) %>
+  legacy_encrypted_password: <%= Account.encrypt('12345678', MigrateToDevisePassword::SALT) %>
   encrypted_password: <%= Devise::Encryptor.digest(Account, '12345678') %>
   dk_salt: <%= SecureRandom.alphanumeric(16) %>
   created_at: <%= 10.days.ago.strftime("%Y-%m-%d %H:%M:%S") %>
@@ -10,7 +10,7 @@ chris:
   id: 2
   email: chris@pledie.com
   login: chris
-  legacy_encrypted_password: <%= Account.encrypt(12345678, PasswordEncryption::SALT) %>
+  legacy_encrypted_password: <%= Account.encrypt(12345678, MigrateToDevisePassword::SALT) %>
   encrypted_password: <%= Devise::Encryptor.digest(Account, '12345678') %>
   dk_salt: <%= SecureRandom.alphanumeric(16) %>
   created_at: <%= 2.days.ago.strftime("%Y-%m-%d %H:%M:%S") %> 
@@ -20,7 +20,7 @@ garry:
   first_name: Garry
   last_name: Dolley
   email: garry@garry.com
-  legacy_encrypted_password: <%= Account.encrypt('12345678', PasswordEncryption::SALT) %>
-  encrypted_password: <%= Devise::Encryptor.digest(Account, '12345678') %>
+  legacy_encrypted_password: <%= Account.encrypt('12345678', MigrateToDevisePassword::SALT) %>
+  encrypted_password: ''
   dk_salt: <%= SecureRandom.alphanumeric(16) %>
-  created_at: <%= 2.days.ago.strftime("%Y-%m-%d %H:%M:%S") %> 
+  created_at: <%= 1.year.ago.strftime("%Y-%m-%d %H:%M:%S") %> 

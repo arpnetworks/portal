@@ -17,4 +17,17 @@ RSpec.describe Accounts::SessionsController do
     expect(response).to redirect_to(dashboard_path)
   end
 
+  it "The user who hasn't authenticated with Devise can successfully sign in and store password with Devise" do
+    garry = accounts(:garry)
+    expect(garry.encrypted_password).to be_blank
+    expect(garry.valid_password?("12345678")).to eq(false)
+
+    post account_session_path, params: { account: { login: 'garry', password: "12345678" } }
+
+    expect(response).to redirect_to(dashboard_path)
+    garry.reload
+    expect(garry.encrypted_password).not_to be_blank
+    expect(garry.valid_password?("12345678")).to eq(true)
+  end
+
 end

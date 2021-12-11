@@ -1,5 +1,5 @@
 require 'arp/format'
-require 'arp/password_encryption'
+require 'arp/migrate_to_devise_password'
 require 'arp/tender'
 require 'arp/utils'
 require 'arp/globals'
