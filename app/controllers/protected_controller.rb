@@ -17,11 +17,6 @@ class ProtectedController < ApplicationController
       (request.env["HTTP_REFERER"] || request.env["REQUEST_URI"])
   end
 
-  def redirect_back_or_default(default)
-    redirect_to(session[:return_to] || default)
-    session[:return_to] = nil
-  end
-
   def is_arp_admin?
     if @account && @account.arp_admin?
       return true

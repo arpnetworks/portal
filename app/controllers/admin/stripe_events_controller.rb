@@ -19,7 +19,7 @@ class Admin::StripeEventsController < Admin::HeadQuartersController
     end
 
     respond_to do |format|
-      format.html { redirect_back_or_default(admin_stripe_events_path) }
+      format.html { redirect_to admin_stripe_events_path }
       format.xml  { head :ok }
     end
   end
@@ -30,7 +30,7 @@ class Admin::StripeEventsController < Admin::HeadQuartersController
   #   flash[:notice] = "Sent retry message to Job #{@job.id} and Job #{@new_job.id} was created"
 
   #   respond_to do |format|
-  #     format.html { redirect_back_or_default(admin_jobs_path) }
+  #     format.html { redirect_to admin_jobs_path }
   #     format.xml  { head :ok }
   #   end
   # end

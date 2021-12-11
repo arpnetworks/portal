@@ -3,8 +3,6 @@ class Admin::JobsController < Admin::HeadQuartersController
   before_action :find_job, only: %i[show edit update destroy retry]
 
   def index
-    # store_location
-
     @jobs = Job.paginate(page: params[:page],
                          per_page: params[:per_page] || 20).order('created_at DESC')
   end
@@ -21,7 +19,7 @@ class Admin::JobsController < Admin::HeadQuartersController
     end
 
     respond_to do |format|
-      format.html { redirect_back_or_default(admin_jobs_path) }
+      format.html { redirect_to admin_jobs_path }
       format.xml  { head :ok }
     end
   end
@@ -32,7 +30,7 @@ class Admin::JobsController < Admin::HeadQuartersController
     flash[:notice] = "Sent retry message to Job #{@job.id} and Job #{@new_job.id} was created"
 
     respond_to do |format|
-      format.html { redirect_back_or_default(admin_jobs_path) }
+      format.html { redirect_to admin_jobs_path }
       format.xml  { head :ok }
     end
   end
