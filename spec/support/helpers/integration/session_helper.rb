@@ -7,4 +7,11 @@ module IntegrationSessionHelper
       expect(session[var]).to be_present
     end
   end
+
+  def get_session(key)
+    get test_session_path(id: key, format: :json)
+    expect(response).to have_http_status(:ok)
+
+    JSON.parse(response.body)["value"]
+  end
 end

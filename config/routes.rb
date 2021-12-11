@@ -164,7 +164,7 @@ Rails.application.routes.draw do
 
   if Rails.env.test?
     namespace :test do
-      resource :session, only: %i[create]
+      resource :session, only: %i[create show]
     end
   end
 
