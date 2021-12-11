@@ -1,6 +1,6 @@
 module AuthenticationSystemHelper
   def login(account, password: "12345678")
-    visit login_accounts_path
+    visit new_account_session_path
     expect(page).to have_content("Customer Control Panel")
 
     fill_in 'account[login]', with: account.login

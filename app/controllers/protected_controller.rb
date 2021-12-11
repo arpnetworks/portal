@@ -1,25 +1,15 @@
 class ProtectedController < ApplicationController
-  before_action :login_required
+  before_action :authenticate_account!
 
   protected
 
-  def login_required
-    if logged_in?
-      @account = Account.find(session[:account_id])
-      true
-    else
-      store_location
-      flash[:error] = "You must be logged in to the see this page."
-      redirect_to login_accounts_path and return false
-    end
+  def authenticate_account!(opts = {})
+    super
+    @account = current_account
   end
 
   def logged_in?
     session[:account_id] || false
-  end
-
-  def store_location
-    session[:return_to] = last_location
   end
 
   def last_location
@@ -37,7 +27,7 @@ class ProtectedController < ApplicationController
       return true
     else
       flash[:error] = "You took a wrong turn at Albuquerque"
-      redirect_to login_accounts_path
+      redirect_to new_account_session_path
       return false
     end
   end
@@ -48,7 +38,7 @@ class ProtectedController < ApplicationController
       return true
     else
       flash[:error] = "You took a wrong turn at Albuquerque"
-      redirect_to login_accounts_path
+      redirect_to new_account_session_path
       return false
     end
   end
@@ -77,7 +67,7 @@ class ProtectedController < ApplicationController
       raise ArgumentError
     rescue
       flash[:error] = "You took a wrong turn at Albuquerque"
-      redirect_to login_accounts_path
+      redirect_to new_account_session_path
       return false
     end
   end

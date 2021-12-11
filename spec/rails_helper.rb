@@ -65,7 +65,12 @@ RSpec.configure do |config|
   end
 
   config.include AuthenticationSystemHelper, type: :system
+  config.include Devise::Test::IntegrationHelpers, type: :system
   config.include IntegrationSessionHelper, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Warden::Test::Helpers
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
 end
 
 Shoulda::Matchers.configure do |config|

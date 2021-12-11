@@ -70,7 +70,7 @@ html {
                   Customer Control Panel
                 </div>
                 <div class="basic-nav-links">
-                  <%= link_to('Logout', logout_accounts_path, :class => "logout") %>
+                  <%= link_to('Logout', destroy_account_session_path, method: :delete, :class => "logout") %>
                 </div>
               </div>
             </div>

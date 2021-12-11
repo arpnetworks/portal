@@ -5,10 +5,6 @@ RSpec.describe 'Forgot Password' do
 
   fixtures :all
 
-  before do
-    allow_any_instance_of(AccountsController).to receive(:newpass).with(8).and_return('jMVDr5yQ')
-  end
-
   it 'user can success forgot and reset password' do
     visit root_path
     expect(page).to have_selector("caption", text: "Login")
@@ -18,42 +14,36 @@ RSpec.describe 'Forgot Password' do
     expect(page).to have_content("Recover Password")
 
     expect {
-      fill_in "email", with: "chris@pledie.com"
+      fill_in "account[email]", with: "chris@pledie.com"
       click_button "Submit"
-      expect(page).to have_content("Thank you, your account details have been sent to chris@pledie.com.")
+      expect(page).to have_content("You will receive an email with instructions on how to reset your password in a few minutes.")
     }.to change { ActionMailer::Base.deliveries.count }.by(1)
 
     mail = ActionMailer::Base.deliveries.last
-    expect(mail.subject).to eq("ARP Networks Account Information")
-    expect(mail.body.to_s).to eq(<<~BODY
-    Dear chris@pledie.com,
+    expect(mail.subject).to eq("Reset password instructions")
+    expect(mail.body.to_s).to include("Dear chris@pledie.com,")
+    expect(mail.body.to_s).to include("Someone has requested a link to change your password. You can do this through the link below.")
 
-    A new password has been assigned to you using the Forgot Password form.  Your
-    account details are as follows:
+    matches = mail.body.to_s.scan(/http:\/\/runner:4000(\/accounts\/password\/edit\?reset_password_token=[A-Za-z0-9\-_=]+)\"/)
+    chris_reset_password_path = matches.flatten.first
+    visit chris_reset_password_path
+    expect(page).to have_content("Change your password")
 
-    Username: chris
-    Password: jMVDr5yQ
+    fill_in 'account[password]', with: 'newpassword'
+    fill_in 'account[password_confirmation]', with: 'newpassword'
+    click_button "Change my password"
+    expect(page).to have_content("Your password has been changed successfully. You are now signed in.")
+    expect(page).to have_content("chris's dashboard")
+    expect(page.current_path).to eq(dashboard_path)
 
-    Click the link below to login:
-    https://portal.arpnetworks.com/accounts/login
-
-    ---
-    ARP Networks, Inc.
-    http://www.arpnetworks.com
-
-    BODY
-    )
-
-    click_link "Login"
-    expect(page).to have_selector("caption", text: "Login")
+    click_link "Logout"
+    expect(page).to have_content("You have been logged out.")
 
     fill_in 'account[login]', with: 'chris'
-    fill_in 'account[password]', with: 'jMVDr5yQ'
+    fill_in 'account[password]', with: 'newpassword'
     click_button "Login"
-
     expect(page).to have_content("Welcome chris, it is nice to see you.")
     expect(page).to have_content("chris's dashboard")
-    expect(page).to have_content("Main Menu")
     expect(page.current_path).to eq(dashboard_path)
   end
 

@@ -1,50 +1,13 @@
 class AccountsController < ProtectedController
-  protect_from_forgery except: %i[login_attempt login]
-
-  skip_before_action :login_required, only: %i[new
-                                               create
-                                               forgot_password
-                                               forgot_password_post
-                                               login
-                                               login_attempt]
-
-  def new
-    @account = Account.new
-  end
-
-  def create
-    params[:account][:password] = params[:account][:password]
-    params[:account][:password_confirmation] = \
-      params[:account][:password_confirmation]
-
-    @account = Account.new(params.require(:account).permit(
-                             :login,
-                             :email,
-                             :password,
-                             :password_confirmation
-                           ))
-
-    if @account.save
-      session[:account_id] = @account.id
-      flash[:notice] = 'Your account has been created!'
-
-      redirect_to controller: 'my_account', action: 'dashboard'
-    else
-      render action: 'new'
-    end
-  end
+  protect_from_forgery
 
   def edit
-    @account = Account.find(session[:account_id])
-
     # Don't show password on form
     @account.password              = ''
     @account.password_confirmation = ''
   end
 
   def update
-    @account = Account.find(session[:account_id])
-
     # This field is protected from mass assignment
     @account.login = params[:account][:login]
 
@@ -58,81 +21,48 @@ class AccountsController < ProtectedController
     if @account.update(account_params)
       flash[:notice] = 'Changes saved.'
 
-      # Return to edit page
-      redirect_to(action: 'edit') && return
+      redirect_to edit_account_path(@account)
+    else
+      # Don't show password on form
+      @account.password              = ''
+      @account.password_confirmation = ''
+
+      render action: 'edit'
     end
-
-    # Don't show password on form
-    @account.password              = ''
-    @account.password_confirmation = ''
-
-    render action: 'edit'
   end
 
   def show
     redirect_to action: 'edit'
   end
 
-  def forgot_password_post
-    @email = params[:email]
+  # def login_attempt
+  #   if params[:account] && (account = Account.authenticate(params[:account][:login],
+  #                                                          params[:account][:password]))
+  #     session[:account_id] = account.id
+  #     account.visited_at = Time.zone.now unless account.visited_at
+  #     account.update_attribute(:visited_at, Time.zone.now)
 
-    if @email.nil? || @email.blank?
-      flash[:notice] = 'Please enter your email address'
-    else
-      @account = Account.find_by(email: @email)
-      raise ActiveRecord::RecordNotFound unless @account
+  #     cookies[:login] = { value: account.login, expires: 1.year.from_now }
 
-      @new_password = newpass(8)
-      @account.password = @account.password_confirmation = @new_password
-      @account.save! # Raise an exception if this can't be saved
+  #     # A symmetric key used for encryption/decryption, derived from a
+  #     # secret that only the user knows (e.g. their password)
+  #     session[:dk] = account.generate_derived_key(params[:account][:password])
 
-      Mailer.forgot_password(self, @account, @new_password).deliver_now
+  #     flash[:notice] = "Welcome #{account.display_name}, it is nice to see you."
+  #     redirect_back_or_default(dashboard_path) && (return true)
+  #   else
+  #     flash[:error] = 'Incorrect username and/or password, please try again.'
+  #     redirect_to login_accounts_path
+  #   end
+  # end
 
-      flash[:notice] = "Thank you, your account details have been sent to #{@email}."
-    end
-
-    redirect_to forgot_password_accounts_path
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Sorry, we can't find an account with that email address."
-    redirect_to(forgot_password_accounts_path, email: params[:email])
-  end
-
-  def login
-    return unless session[:account_id]
-
-    # Already logged in?  Go to Dashboard
-    flash[:notice] = "You're already logged in, redirecting to your Dashboard"
-    redirect_to(dashboard_path)
-  end
-
-  def login_attempt
-    if params[:account] && (account = Account.authenticate(params[:account][:login],
-                                                           params[:account][:password]))
-      session[:account_id] = account.id
-      account.visited_at = Time.zone.now unless account.visited_at
-      account.update_attribute(:visited_at, Time.zone.now)
-
-      cookies[:login] = { value: account.login, expires: 1.year.from_now }
-
-      # A symmetric key used for encryption/decryption, derived from a
-      # secret that only the user knows (e.g. their password)
-      session[:dk] = account.generate_derived_key(params[:account][:password])
-
-      flash[:notice] = "Welcome #{account.display_name}, it is nice to see you."
-      redirect_back_or_default(dashboard_path) && (return true)
-    else
-      flash[:error] = 'Incorrect username and/or password, please try again.'
-      redirect_to login_accounts_path
-    end
-  end
-
-  def logout
-    session[:account_id] = nil
-    session[:human]      = nil
-    cookies.delete(:login)
-    flash[:notice] = 'You have been logged out.'
-    redirect_to login_accounts_path
-  end
+  # def logout
+  #   session[:account_id] = nil
+  #   session[:human]      = nil
+  #   cookies.delete(:login)
+  #   flash[:notice] = 'You have been logged out.'
+  #   redirect_to login_accounts_path
+  # end
 
   ####################################
   # For the New Service Configurator #
@@ -212,14 +142,6 @@ class AccountsController < ProtectedController
   end
 
   protected
-
-  # From http://www.bigbold.com/snippets/posts/show/491
-  def newpass(len)
-    chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
-    newpass = ''
-    1.upto(len) { |_i| newpass << chars[rand(chars.size - 1)] }
-    newpass
-  end
 
   private
 

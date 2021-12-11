@@ -5,7 +5,7 @@ RSpec.describe 'Admin - Create an account' do
 
   fixtures :all
 
-  before { login(accounts(:admin)) }
+  before { sign_in(accounts(:admin)) }
 
   it 'admin can success create an account' do
     visit root_path

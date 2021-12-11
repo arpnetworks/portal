@@ -27,7 +27,7 @@ RSpec.describe 'Sign In/Out' do
     click_link "Logout"
     expect(page).to have_content("You have been logged out.")
     expect(page).to have_selector("caption", text: "Login")
-    expect(page.current_path).to eq(login_accounts_path)
+    expect(page.current_path).to eq(new_account_session_path)
   end
 
 end
