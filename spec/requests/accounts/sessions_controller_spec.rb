@@ -29,4 +29,11 @@ RSpec.describe Accounts::SessionsController do
     expect(garry.valid_password?("12345678")).to eq(true)
   end
 
+  it "login will generate and set a derived key in session[:dk]", focus: true do
+    post account_session_path, params: { account: { login: 'chris', password: "12345678" } }
+    expect(response).to redirect_to(dashboard_path)
+    # Must match base64 encode
+    expect(get_session(:dk)).to match(/^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/)
+  end
+
 end

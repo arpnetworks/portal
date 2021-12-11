@@ -13,6 +13,10 @@ class Accounts::SessionsController < Devise::SessionsController
     Account.migrate_to_devise_password!(params[:account])
 
     super do |resource|
+      # A symmetric key used for encryption/decryption, derived from a
+      # secret that only the user knows (e.g. their password)
+      session[:dk] = resource.generate_derived_key(params[:account][:password])
+
       flash[:notice] = "Welcome #{resource.display_name}, it is nice to see you."
     end
   end
