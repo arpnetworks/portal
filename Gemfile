@@ -50,14 +50,15 @@ group :development, :test do
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver', '~> 3.142.7'
   # gem 'webdrivers'
+
+  gem 'rspec-rails'
 end
 
 group :test do
-  gem 'rspec'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-html-matchers'
-  gem 'rspec-rails'
   gem 'shoulda-matchers'
+  gem 'database_cleaner-active_record'
 
   gem 'factory_bot', '~> 4.0'
   gem 'factory_bot_rails', '~> 4.0'

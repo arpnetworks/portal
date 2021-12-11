@@ -3,11 +3,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
 
 context DnsRecordsController do
   before(:context) do
-    Account.delete_all
-    Service.delete_all
-    ServiceCode.delete_all
-    Resource.delete_all
-
     @account = create_user!
 
     @ip_blocks = [create(:ip_block, cidr: '10.0.0.0/30'),
