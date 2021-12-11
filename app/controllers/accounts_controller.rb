@@ -35,35 +35,6 @@ class AccountsController < ProtectedController
     redirect_to action: 'edit'
   end
 
-  # def login_attempt
-  #   if params[:account] && (account = Account.authenticate(params[:account][:login],
-  #                                                          params[:account][:password]))
-  #     session[:account_id] = account.id
-  #     account.visited_at = Time.zone.now unless account.visited_at
-  #     account.update_attribute(:visited_at, Time.zone.now)
-
-  #     cookies[:login] = { value: account.login, expires: 1.year.from_now }
-
-  #     # A symmetric key used for encryption/decryption, derived from a
-  #     # secret that only the user knows (e.g. their password)
-  #     session[:dk] = account.generate_derived_key(params[:account][:password])
-
-  #     flash[:notice] = "Welcome #{account.display_name}, it is nice to see you."
-  #     redirect_back_or_default(dashboard_path) && (return true)
-  #   else
-  #     flash[:error] = 'Incorrect username and/or password, please try again.'
-  #     redirect_to login_accounts_path
-  #   end
-  # end
-
-  # def logout
-  #   session[:account_id] = nil
-  #   session[:human]      = nil
-  #   cookies.delete(:login)
-  #   flash[:notice] = 'You have been logged out.'
-  #   redirect_to login_accounts_path
-  # end
-
   ####################################
   # For the New Service Configurator #
   ####################################
