@@ -1,5 +1,4 @@
-require File.dirname(__FILE__) + '/../rails_helper'
-require File.dirname(__FILE__) + '/../arp_spec_helper'
+require 'rails_helper'
 
 describe Service do
   describe 'give_me_totals()' do

@@ -1,5 +1,4 @@
-require File.dirname(__FILE__) + '/../rails_helper'
-require File.dirname(__FILE__) + '/../arp_spec_helper'
+require 'rails_helper'
 
 context SshHostKey do
   context 'with an SSH host key' do

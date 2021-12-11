@@ -12,6 +12,8 @@ require 'support/factory_bot'
 require 'support/capybara'
 require 'support/helpers/system/authentication_helper'
 require 'support/helpers/integration/session_helper'
+require 'support/helpers/user_creation_helper'
+require 'support/shared_examples/destructive_admin_action_examples'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -79,6 +81,7 @@ RSpec.configure do |config|
   config.include Warden::Test::Helpers
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::ControllerHelpers, type: :view
+  config.include UserCreationHelper
 end
 
 Shoulda::Matchers.configure do |config|

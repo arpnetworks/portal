@@ -1,7 +1,5 @@
 # frozen_string_literal: true
-
-require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
+require 'rails_helper'
 
 describe AccountsController do
   before(:context) do

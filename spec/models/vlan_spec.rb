@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../rails_helper'
+require 'rails_helper'
 
 context 'Vlan class with fixtures loaded' do
   before do

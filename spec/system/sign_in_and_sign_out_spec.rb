@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'arp_spec_helper'
 
 RSpec.describe 'Sign In/Out' do
 
