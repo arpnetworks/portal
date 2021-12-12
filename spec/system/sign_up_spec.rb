@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'Sign Up' do
 
-  fixtures :all
-
   it 'user can success sign up' do
     visit root_path
     expect(page).to have_content("Customer Control Panel")

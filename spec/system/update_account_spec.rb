@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'Update account' do
 
-  fixtures :all
-
   before { sign_in(accounts(:chris)) }
 
   it 'Account can success update its info' do

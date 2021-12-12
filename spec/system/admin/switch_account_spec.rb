@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe "Admin - Switch Account" do
 
-  fixtures :all
-
   before do
     super_admin = create(:account, login: 'john', email: 'john@example.com')
     sign_in(super_admin)

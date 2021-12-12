@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'Admin - Create an account' do
 
-  fixtures :all
-
   before { sign_in(accounts(:admin)) }
 
   it 'admin can success create an account' do

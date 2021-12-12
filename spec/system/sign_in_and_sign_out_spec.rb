@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'Sign In/Out' do
 
-  fixtures :all
-
   it 'user can success sign in and sign out' do
     visit root_path
     expect(page).to have_selector("caption", text: "Login")

@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'Forgot Password' do
 
-  fixtures :all
-
   it 'user can success forgot and reset password' do
     visit root_path
     expect(page).to have_selector("caption", text: "Login")

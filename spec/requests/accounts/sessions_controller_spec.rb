@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Accounts::SessionsController do
 
-  fixtures :all
-
   it 'should remember the requested location in a non-logged-in state and redirect.' do
     set_session(account_return_to: 'http://www.google.com')
     post account_session_path, params: { account: { login: "admin", password: "12345678" } }
@@ -29,7 +27,7 @@ RSpec.describe Accounts::SessionsController do
     expect(garry.valid_password?("12345678")).to eq(true)
   end
 
-  it "login will generate and set a derived key in session[:dk]", focus: true do
+  it "login will generate and set a derived key in session[:dk]" do
     post account_session_path, params: { account: { login: 'chris', password: "12345678" } }
     expect(response).to redirect_to(dashboard_path)
     # Must match base64 encode
