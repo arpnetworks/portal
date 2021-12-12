@@ -40,10 +40,10 @@
 
 <div class="su">
   <div>
-  <form action="/admin/su" method="POST" class="su">
-    <%= select(:user, :login, Account.all.map { |a| [truncate(a.display_account_name, :length => 25), a.login] }.sort, { :include_blank => true }) %>
-    <input type="submit" value="Switch User">
-  </form>
+  <%= form_with scope: :user, url: admin_su_path, local: true, class: 'su' do |f| %>
+    <%= f.select :login, Account.all.map { |a| [truncate(a.display_account_name, :length => 25), a.login] }.sort, { :include_blank => true } %>
+    <%= f.submit 'Switch User' %>
+  <% end %>
   </div>
 
   <div>
