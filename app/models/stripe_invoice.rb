@@ -28,7 +28,7 @@ class StripeInvoice < Invoice
         reference_number: '',
         date: Time.at(invoice['status_transitions']['paid_at']),
         method: 'Stripe',
-        amount: invoice['total']
+        amount: invoice['total'] / 100
       )
 
       if invoice['paid'] == true
