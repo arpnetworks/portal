@@ -2,6 +2,7 @@ class StripeEvent < ApplicationRecord
   def supported_events
     %w(
       invoice.finalized
+      invoice.paid
     )
   end
 
