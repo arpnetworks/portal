@@ -179,5 +179,47 @@ RSpec.describe StripeEvent, type: :model do
         end
       end
     end
+
+    describe 'handle_invoice_paid!' do
+      context 'with event' do
+        before :each do
+          @stripe_event = build(:stripe_event, :invoice_paid)
+          @invoice = JSON.parse(@stripe_event.body)['data']['object']
+        end
+
+        context 'with incorrect event type' do
+          before :each do
+            @stripe_event.event_type = 'foo'
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_finalized! }.to raise_error StandardError
+          end
+        end
+
+        context 'with valid customer' do
+          before :each do
+            @account = build(:account)
+            allow(Account).to receive(:find_by).and_return(@account)
+          end
+
+          it 'should create payment' do
+            expect(StripeInvoice).to receive(:create_payment).with(@account, @invoice)
+            @stripe_event.handle_invoice_paid!
+          end
+        end
+
+        context 'without valid customer' do
+          before :each do
+            # No such account given this Stripe customer_id
+            allow(Account).to receive(:find_by).and_return(nil)
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_paid! }.to raise_error StandardError
+          end
+        end
+      end
+    end
   end
 end
