@@ -52,6 +52,7 @@ group :development, :test do
   # gem 'webdrivers'
 
   gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 
 group :test do
@@ -59,9 +60,6 @@ group :test do
   gem 'rspec-html-matchers'
   gem 'shoulda-matchers'
   gem 'database_cleaner-active_record'
-
-  gem 'factory_bot', '~> 4.0'
-  gem 'factory_bot_rails', '~> 4.0'
 
   gem 'rails-controller-testing'
 
