@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe Admin::BackupQuotasController do
-  before(:context) do
-    @admin = create_admin!
-  end
 
   before do
+    @admin = create_admin!
     sign_in @admin
     @p = { server: 'backup.example.com' }
   end

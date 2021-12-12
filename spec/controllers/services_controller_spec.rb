@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 context ServicesController do
-  before(:context) do
-    @account = create_user!(login: 'user2', create_service: true)
-  end
 
   before do
+    @account = create_user!(login: 'user2', create_service: true)
     sign_in @account
   end
 

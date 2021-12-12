@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe Admin::VlansController do
-  before(:context) do
-    @admin = create_admin!
-  end
 
   before do
+    @admin = create_admin!
     sign_in @admin
     @p = { 'vlan': '999', 'label': 'ACME Inc' }
   end

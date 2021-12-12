@@ -1,12 +1,9 @@
 require 'rails_helper'
 
 describe CreditCardsController do
-  before(:context) do
-    Account.delete_all
-    @account = create :account_user, first_name: 'John', last_name: 'Doe'
-  end
-
   before do
+    @account = create :account_user, first_name: 'John', last_name: 'Doe'
+
     sign_in @account
   end
 

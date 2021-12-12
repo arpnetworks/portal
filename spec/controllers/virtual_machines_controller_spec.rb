@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 context VirtualMachinesController do
-  before(:context) do
-    @account = create_user!
-  end
 
   before do
+    @account = create_user!
     sign_in @account
     @vm = create :virtual_machine
     @service = @vm.resource.service

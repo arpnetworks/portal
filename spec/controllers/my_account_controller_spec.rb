@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe MyAccountController do
-  before(:context) do
+  before do
     @account = create_user!
   end
 

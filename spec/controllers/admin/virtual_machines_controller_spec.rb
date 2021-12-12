@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe Admin::VirtualMachinesController do
-  before(:context) do
-    @account = create_admin!
-  end
 
   before do
+    @account = create_admin!
     sign_in @account
 
     @virtual_machine = create :virtual_machine

@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe Admin::IpBlocksController do
-  before(:context) do
-    @admin = create_admin!
-  end
 
   before do
+    @admin = create_admin!
     sign_in @admin
     @ip_block = mock_model(IpBlock)
     @params = { id: @ip_block.id }

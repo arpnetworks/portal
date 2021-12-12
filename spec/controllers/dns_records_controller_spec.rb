@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 context DnsRecordsController do
-  before(:context) do
+
+  before do
     @account = create_user!
 
     @ip_blocks = [create(:ip_block, cidr: '10.0.0.0/30'),
@@ -13,9 +14,7 @@ context DnsRecordsController do
 
     service.ip_blocks << @ip_blocks
     create(:service, account: @account) # Some other service
-  end
 
-  before do
     sign_in @account
   end
 

@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe Admin::ServicesController do
-  before(:context) do
-    @admin = create_admin!
-  end
 
   before do
+    @admin = create_admin!
     sign_in @admin
 
     @service = create :service

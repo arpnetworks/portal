@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 context BackupQuotasController do
-  before(:context) do
-    @account = create_user!
-  end
 
   before do
+    @account = create_user!
     sign_in @account
 
     @bq = mock_model(BackupQuota, server: 'foo.example.com', username: 'foo', quota: 200_000)

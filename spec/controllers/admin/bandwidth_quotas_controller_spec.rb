@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe Admin::BandwidthQuotasController do
-  before(:context) do
-    @admin = create_admin!
-  end
 
   before do
+    @admin = create_admin!
     sign_in @admin
     @p = { 'commit': '10000' }
   end

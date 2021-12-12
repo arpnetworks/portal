@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Admin::AccountsController do
-  before(:context) do
+  before do
     @admin = create_admin!
   end
 

@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 context InvoicesController do
-  before(:context) do
-    @account = create_user!
-  end
 
   before do
+    @account = create_user!
     sign_in @account
 
     # Let controller use this instance of @account object, not the one it
