@@ -12,6 +12,8 @@ class InvoicesController < ProtectedController
   end
 
   def pay
+    redirect_to dashboard_path and return if @account.in_stripe?
+
     @invoices = @account.invoices_unpaid.order('date desc')
     @outstanding_balance = @account.invoices_outstanding_balance
     @credit_card = @account.credit_card
@@ -42,6 +44,8 @@ class InvoicesController < ProtectedController
   end
 
   def pay_confirm
+    redirect_to dashboard_path and return if @account.in_stripe?
+
     @credit_card_number  = params[:credit_card_number].to_s
     @confirmed_amount    = params[:confirmed_amount].to_f
 
