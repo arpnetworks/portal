@@ -53,6 +53,17 @@ context InvoicesController do
       end
     end
 
+    context 'when account is in Stripe' do
+      before :each do
+        allow(@account).to receive(:in_stripe?).and_return true
+      end
+
+      it 'should redirect to dashboard' do
+        do_get
+        expect(@response).to redirect_to(dashboard_path)
+      end
+    end
+
     context 'with cc_e and cc_ie cookies' do
       before do
         @cc_iv = 'hzghaqxusktkvghydsjavcialquzxvbexxjqbcrdtwlrqncnnt'
@@ -108,6 +119,17 @@ context InvoicesController do
         do_post
         expect(flash[:error]).to_not be_nil
         expect(@response).to redirect_to(account_invoices_path(@account.id))
+      end
+    end
+
+    context 'when account is in Stripe' do
+      before :each do
+        allow(@account).to receive(:in_stripe?).and_return true
+      end
+
+      it 'should redirect to dashboard' do
+        do_post
+        expect(@response).to redirect_to(dashboard_path)
       end
     end
 

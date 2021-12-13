@@ -1431,6 +1431,10 @@ div.main-menu li.reports {
   list-style-image: url(/images/icons/chart_bar.png);
 }
 
+div.main-menu li.stripe {
+  list-style-image: url(/images/icons/stripe.png);
+}
+
 /***************************************************
  * Subnet Wizard
  **************************************************/

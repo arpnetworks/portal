@@ -36,9 +36,15 @@
           All invoices must be paid before new services can be ordered
           </p>
 
+          <% if @account.in_stripe? %>
+            <div class='notice-transparent'>
+              <a href='<%= new_account_credit_card_path %>', class='btn btn-success'><i class="fas fa-credit-card"></i> Update Credit Card</a>
+            </div>
+          <% else %>
           <div class='notice-transparent'>
             <a href='<%= pay_account_invoices_path %>', class='btn btn-success'><i class="fas fa-money-bill-alt"></i> Pay Invoices</a>
           </div>
+          <% end %>
         <% end %>
 
       </td>
