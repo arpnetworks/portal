@@ -8,10 +8,6 @@ class ProtectedController < ApplicationController
     @account = current_account
   end
 
-  def logged_in?
-    session[:account_id] || false
-  end
-
   def last_location
     request.get? ? request.url :
       (request.env["HTTP_REFERER"] || request.env["REQUEST_URI"])
