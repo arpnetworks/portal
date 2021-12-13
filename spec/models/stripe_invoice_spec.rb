@@ -20,6 +20,47 @@ RSpec.describe StripeInvoice, type: :model do
     end
   end
 
+  describe 'self.create_payment()' do
+    context 'with account and invoice' do
+      before :each do
+        @account = build(:account)
+        @stripe_event = build(:stripe_event, :invoice_paid)
+        @stripe_invoice = JSON.parse(@stripe_event.body)['data']['object']
+        @inv = mock_model Invoice
+      end
+
+      it 'should create payment for invoice and mark it paid' do
+        payments = double :payments
+
+        allow(Invoice).to receive(:find_by).with(stripe_invoice_id: @stripe_invoice['id']).\
+          and_return(@inv)
+        allow(@inv).to receive(:payments).and_return payments
+
+        expect(payments).to receive(:create).with(
+          account: @account,
+          reference_number: "",
+          date: Time.at(@stripe_invoice['status_transitions']['paid_at']),
+          method: 'Stripe',
+          amount: @stripe_invoice['total'] / 100
+        )
+        expect(@inv).to receive('paid=').with(true)
+        expect(@inv).to receive('save')
+
+        StripeInvoice.create_payment(@account, @stripe_invoice)
+      end
+
+      context 'when Invoice not found' do
+        before :each do
+          allow(Invoice).to receive(:find).and_return nil
+        end
+
+        it 'should raise error' do
+          expect { StripeInvoice.create_payment(@account, @stripe_invoice) }.to raise_error StandardError, /not found/
+        end
+      end
+    end
+  end
+
   describe 'create_line_items()' do
     context 'with invoice' do
       before :each do
