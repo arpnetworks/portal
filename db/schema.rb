@@ -332,7 +332,7 @@ ActiveRecord::Schema.define(version: 2021_12_09_041028) do
     t.index ["account_id"], name: "index_ssh_keys_on_account_id"
   end
 
-  create_table "stripe_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "stripe_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "event_id"
     t.string "event_type", limit: 128
     t.string "status", limit: 64
