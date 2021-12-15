@@ -21,6 +21,8 @@ class AccountsController < ProtectedController
     if @account.update(account_params)
       flash[:notice] = 'Changes saved.'
 
+      bypass_sign_in @account, scope: :account if sign_in_after_change_password?
+
       redirect_to edit_account_path(@account)
     else
       # Don't show password on form
@@ -134,5 +136,11 @@ class AccountsController < ProtectedController
       :zip,
       :country
     )
+  end
+
+  def sign_in_after_change_password?
+    return false if params.dig(:account, :password).blank?
+
+    Devise.sign_in_after_change_password
   end
 end
