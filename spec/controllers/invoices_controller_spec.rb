@@ -52,6 +52,7 @@ context InvoicesController do
 
     context 'when account is in Stripe' do
       before :each do
+        allow(controller).to receive(:current_account).and_return @account
         allow(@account).to receive(:in_stripe?).and_return true
       end
 
@@ -121,6 +122,7 @@ context InvoicesController do
 
     context 'when account is in Stripe' do
       before :each do
+        allow(controller).to receive(:current_account).and_return @account
         allow(@account).to receive(:in_stripe?).and_return true
       end
 
