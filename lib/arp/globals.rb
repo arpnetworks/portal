@@ -53,4 +53,5 @@ if conf = @config[Rails.env]
 
   $STRIPE_API_KEY   = conf['stripe']['api_key']
   $STRIPE_ENDPOINT_SECRET = conf['stripe']['endpoint_secret']
+  $STRIPE_PUBLISHABLE_KEY = conf['stripe']['pk_key']
 end

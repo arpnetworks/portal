@@ -11,6 +11,11 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= csrf_meta_tags %>
 
+  <% if controller.controller_name == 'credit_cards' || controller.controller_name == 'services' -%>
+  <!-- Stripe -->
+  <script src="https://js.stripe.com/v3"></script>
+  <% end -%>
+
   <!-- Font Awesome 5.0 -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 

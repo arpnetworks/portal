@@ -30,6 +30,22 @@ describe CreditCardsController do
       do_get
       expect(assigns(:credit_card).first_name).to eq 'John Doe'
     end
+
+    context 'when account is in Stripe' do
+      before :each do
+        @stripe_customer_id = 'cust_123'
+        allow(@account).to receive(:in_stripe?).and_return true
+        allow(@account).to receive(:stripe_customer_id).and_return @stripe_customer_id
+      end
+
+      it 'should create a SetupIntent' do
+        expect(Stripe::SetupIntent).to receive(:create).with(
+          customer: @stripe_customer_id,
+          payment_method_types: ['card']
+        )
+        do_get
+      end
+    end
   end
 
   describe 'handling POST /account/1/credit_cards' do

@@ -1225,6 +1225,19 @@ div.credit-card-tips ul {
   line-height: 1.2em;
 }
 
+table.edit_credit_card div.message {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+form#payment-form button#submit {
+  margin-top: 1em;
+}
+form#payment-form div#error-message {
+  padding-top: 1em;
+}
+
 /* Other */
 
 table.small-note {
