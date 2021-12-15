@@ -44,7 +44,7 @@
 <tbody>
   <% if @bandwidth_quotas.size == 0 %>
     <tr>
-      <td class="no_records" colspan="<%= bandwidth_quotas_colspan(@enable_admin_view) %>">
+      <td class="no_records" colspan="<%= bandwidth_quotas_colspan(@enable_admin_view, action_name) %>">
         No bandwidth quotas found
       </td>
     </tr>

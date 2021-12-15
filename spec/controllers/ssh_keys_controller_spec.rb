@@ -1,10 +1,10 @@
-require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
+require 'rails_helper'
 
 describe SshKeysController do
   context 'handling GET /accounts/1/ssh_keys' do
     before do
-      @account = mock_login!
+      @account = create_user!
+      sign_in @account
     end
 
     def do_get(opts = {})
@@ -18,7 +18,8 @@ describe SshKeysController do
           @ssh_key_2 = build(:ssh_key, name: 'bar', id: 2)
           @ssh_keys = [@ssh_key_1, @ssh_key_2]
 
-          allow(@account).to receive(:ssh_keys).and_return(@ssh_keys)
+          # allow(@account).to receive(:ssh_keys).and_return(@ssh_keys)
+          allow_any_instance_of(Account).to receive(:ssh_keys).and_return(@ssh_keys)
         end
 
         it 'should be a success' do
@@ -57,7 +58,7 @@ describe SshKeysController do
 
       context 'without keys' do
         before do
-          allow(@account).to receive(:ssh_keys).and_return([])
+          allow_any_instance_of(Account).to receive(:ssh_keys).and_return([])
         end
 
         it 'should be a success' do
@@ -77,7 +78,8 @@ describe SshKeysController do
 
   context 'handling POST /accounts/1/ssh_keys' do
     before do
-      @account = mock_login!
+      @account = create_user!
+      sign_in @account
     end
 
     def do_post(opts = {})
@@ -101,7 +103,7 @@ describe SshKeysController do
           @key_id = 99
           ssh_key = double(SshKey, id: @key_id, name: @key_name, username: @username)
           mock_ssh_keys = mock_model(SshKey)
-          expect(@account).to receive(:ssh_keys).and_return(mock_ssh_keys)
+          expect_any_instance_of(Account).to receive(:ssh_keys).and_return(mock_ssh_keys)
           expect(mock_ssh_keys).to receive(:create).with(name: @key_name,
                                                          key: @key,
                                                          username: @username).and_return(ssh_key)
@@ -173,7 +175,8 @@ describe SshKeysController do
 
   context 'handling DELETE /accounts/1/ssh_keys/1' do
     before do
-      @account = mock_login!
+      @account = create_user!
+      sign_in @account
       @ssh_key_id = '1'
     end
 
@@ -185,7 +188,7 @@ describe SshKeysController do
       before do
         @ssh_key = double(SshKey)
         mock_ssh_keys = double('mock_ssh_keys')
-        allow(@account).to receive(:ssh_keys).and_return(mock_ssh_keys)
+        allow_any_instance_of(Account).to receive(:ssh_keys).and_return(mock_ssh_keys)
         allow(mock_ssh_keys).to receive(:find_by).with(id: @ssh_key_id).and_return(@ssh_key)
       end
 
@@ -204,7 +207,7 @@ describe SshKeysController do
     context 'without key' do
       before do
         mock_ssh_keys = double('mock_ssh_keys')
-        allow(@account).to receive(:ssh_keys).and_return(mock_ssh_keys)
+        allow_any_instance_of(Account).to receive(:ssh_keys).and_return(mock_ssh_keys)
         allow(mock_ssh_keys).to receive(:find_by).with(id: @ssh_key_id).and_return(nil)
       end
 

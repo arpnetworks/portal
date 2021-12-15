@@ -71,6 +71,9 @@ development:
         - 1000
   dns:
     notify_command: pdns_control notify
+  stripe:
+    api_key: pk_test_123public
+    endpoint_secret: sk_test_321private
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -143,3 +146,6 @@ test:
         - 1000
   dns:
     notify_command: pdns_control notify
+  stripe:
+    api_key: pk_test_123public
+    endpoint_secret: sk_test_321private

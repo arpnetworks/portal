@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_07_104707) do
+ActiveRecord::Schema.define(version: 2021_12_09_041028) do
 
   create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
-    t.string "login"
-    t.string "password"
+    t.string "login", default: "", null: false
+    t.string "legacy_encrypted_password"
     t.string "first_name"
     t.string "last_name"
     t.string "company"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2021_12_07_104707) do
     t.string "state"
     t.string "zip"
     t.string "country"
-    t.string "email"
+    t.string "email", default: "", null: false
     t.string "email2", limit: 256
     t.string "email_billing", limit: 256
     t.boolean "active", default: true, null: false
@@ -37,6 +37,17 @@ ActiveRecord::Schema.define(version: 2021_12_07_104707) do
     t.boolean "beta_billing_exempt", default: false, null: false
     t.string "dk_salt", limit: 32
     t.string "stripe_customer_id"
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.index ["email"], name: "index_accounts_on_email", unique: true
+    t.index ["login"], name: "index_accounts_on_login", unique: true
+    t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
   end
 
   create_table "backup_quotas", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|

@@ -1,13 +1,10 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
+require 'rails_helper'
 
 describe Admin::ServiceCodesController do
-  before(:context) do
-    create_admin!
-  end
 
   before do
-    login_as_admin!
+    @admin = create_admin!
+    sign_in @admin
   end
 
   def mock_service_code(stubs = {})

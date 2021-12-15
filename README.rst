@@ -64,7 +64,7 @@ Initialize::
 
   # Use the root password from your .env
   docker-compose exec db mysql -u root --password=<pass> -e 'create database powerdns_test'
-  docker-compose exec db mysql -u root --password=<pass> powerdns_test < powerdns_test.sql
+  docker-compose exec -T db mysql -u root --password=<pass> powerdns_test < powerdns_test.sql
 
 You can run the full test suite with::
 

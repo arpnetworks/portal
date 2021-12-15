@@ -1,24 +1,6 @@
 class Mailer < ApplicationMailer
   helper ActionView::Helpers::UrlHelper
 
-  def forgot_password(controller, account, new_password)
-    raise 'No new password provided' if new_password.nil? || new_password.blank?
-    raise 'Controller not specified' if controller.nil?
-
-    @subject = 'ARP Networks Account Information'
-
-    @controller   = controller
-    @account      = account
-    @new_password = new_password
-
-    @recipients = account.email
-    @from       = 'support@arpnetworks.com'
-    @sent_on    = Time.zone.now
-    @headers    = { 'Return-Path' => 'support@arpnetworks.com' }
-
-    mail(to: @recipients, subject: @subject, from: @from, cc: @cc, headers: @headers)
-  end
-
   def swip_reassign_simple(form, downstream_org, ip_block)
     @subject    = 'REASSIGN SIMPLE API-2E8C-0886-4817-96AD'
     @recipients = ['hostmaster@arin.net']

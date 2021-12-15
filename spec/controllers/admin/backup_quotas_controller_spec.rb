@@ -1,13 +1,10 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
+require 'rails_helper'
 
 describe Admin::BackupQuotasController do
-  before(:context) do
-    create_admin!
-  end
 
   before do
-    login_as_admin!
+    @admin = create_admin!
+    sign_in @admin
     @p = { server: 'backup.example.com' }
   end
 

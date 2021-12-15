@@ -20,7 +20,6 @@ class MyAccountController < ProtectedController
   protected
 
   def default_params
-    @account  = Account.find(session[:account_id])
     @per_page = (params[:per_page] ||= 10).to_i
   end
 end

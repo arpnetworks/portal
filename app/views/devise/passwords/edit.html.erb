@@ -1,0 +1,38 @@
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+  <%= f.hidden_field :reset_password_token %>
+
+  <table class="entry_form" align="center">
+    <caption>Change your password</caption>
+    <tfoot>
+      <tr>
+        <td></td>
+        <td><%= f.submit 'Change my password' %></td>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td class="label">New password:</td>
+        <td class="required"><%= f.password_field :password, autofocus: true, autocomplete: "new-password", size: 40 %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="1" class="note">
+          <span>
+            <% if @minimum_password_length %>
+              (<%= @minimum_password_length %> characters minimum)
+            <% end %>
+          </span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">Password confirmation:</td>
+        <td class="required"><%= f.password_field :password_confirmation, autocomplete: "new-password", size: 40 %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="1" class="note"><span></span></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

@@ -22,6 +22,8 @@ gem 'jbuilder', '~> 2.7'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'devise', '~> 4.8.0'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
@@ -46,20 +48,22 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  gem 'webdrivers'
+  gem 'selenium-webdriver', '~> 3.142.7'
+  # gem 'webdrivers'
+
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 
 group :test do
-  gem 'rspec'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-html-matchers'
-  gem 'rspec-rails'
-
-  gem 'factory_bot', '~> 4.0'
-  gem 'factory_bot_rails', '~> 4.0'
+  gem 'shoulda-matchers'
+  gem 'database_cleaner-active_record'
 
   gem 'rails-controller-testing'
+
+  gem 'simplecov', require: false
 end
 
 group :development do

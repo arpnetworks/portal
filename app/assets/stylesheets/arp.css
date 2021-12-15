@@ -146,6 +146,11 @@ div.title2 {
   text-align: center;
 }
 
+.flash_alert {
+  color: #eab308;
+  text-align: center;
+}
+
 .flash_notice {
   color: green;
   text-align: center;

@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../../rails_helper')
+require 'rails_helper'
 
 describe '/admin/service_codes/index.html.erb' do
   before(:each) do

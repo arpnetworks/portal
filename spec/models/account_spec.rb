@@ -1,14 +1,83 @@
-require File.dirname(__FILE__) + '/../rails_helper'
-require File.dirname(__FILE__) + '/../arp_spec_helper'
+require 'rails_helper'
 
 describe Account do
+
+  describe "#login" do
+    it { should validate_presence_of(:login) }
+    it { should validate_uniqueness_of(:login).case_insensitive }
+    it { should validate_length_of(:login).is_at_least(3).is_at_most(48) }
+
+    it { should     allow_value('john').for(:login) }
+    it { should     allow_value('john123').for(:login) }
+    it { should     allow_value('123john').for(:login) }
+    it { should     allow_value('john_123').for(:login) }
+    it { should     allow_value('john-123').for(:login) }
+    it { should     allow_value('john ').for(:login) } # Devise auto stripe whitespace before validation
+    it { should     allow_value("john\n").for(:login) } # Devise auto stripe whitespace before validation
+    it { should_not allow_value('john@').for(:login) }
+    it { should_not allow_value('john?').for(:login) }
+    it { should_not allow_value("john*").for(:login) }
+
+    it "auto stripe whitespace for login before validation" do
+      account = Account.new(login: " john\n")
+      account.validate
+      expect(account.login).to eq("john")
+    end
+  end
+
+  describe "#email" do
+    it { should validate_presence_of(:email) }
+    it { should validate_uniqueness_of(:email).case_insensitive }
+
+    it { should     allow_value('john@test.com').for(:email) }
+    it { should     allow_value('JOHN@TEST.COM').for(:email) } # Allow upper case
+    it { should     allow_value('john@test.co').for(:email) } # Allow the suffix with two characters
+    it { should     allow_value('john@test-test.com').for(:email) } # Allow the host name with "-"
+    it { should     allow_value('john@test123.com').for(:email) } # Allow the host name with number
+    it { should     allow_value(" john@test.com").for(:email) } # Devise atuo stripe whitespace before validation
+    it { should     allow_value("\njohn@test.com").for(:email) } # Devise atuo stripe whitespace before validation
+    it { should_not allow_value("john@test.c").for(:email) } # Disallow suffix with one character
+    it { should_not allow_value("john@testcom").for(:email) } # Disallow host without "."
+    it { should_not allow_value("j@hn@testcom").for(:email) } # Disallow name with "@"
+
+    it "auto stripe whitespace for email before validation" do
+      account = Account.new(email: " john@test.com\n")
+      account.validate
+      expect(account.email).to eq('john@test.com')
+    end
+  end
+
+  describe "#password" do
+    it { should validate_length_of(:password).is_at_least(8) }
+    it { should validate_presence_of(:password) }
+    it { should validate_confirmation_of(:password) }
+  end
+
+  ['email2', 'email_billing'].each do |field|
+    describe "##{field}" do
+      it { should     allow_value(nil).for(:email2) } # Allow blank
+      it { should     allow_value("").for(:email2) } # Allow blank
+      it { should     allow_value(" ").for(:email2) } # Allow blank
+      it { should     allow_value('john@test.com').for(:email2) }
+      it { should     allow_value('JOHN@TEST.COM').for(:email2) } # Allow upper case
+      it { should     allow_value('john@test.co').for(:email2) } # Allow the suffix with two characters
+      it { should     allow_value('john@test-test.com').for(:email2) } # Allow the host name with "-"
+      it { should     allow_value('john@test123.com').for(:email2) } # Allow the host name with number
+      it { should_not allow_value(' john@test.com').for(:email2) } # Disallow space
+      it { should_not allow_value("\njohn@test.com").for(:email2) } # Disallow "\n"
+      it { should_not allow_value("john@test.c").for(:email2) } # Disallow suffix with one character
+      it { should_not allow_value("john@testcom").for(:email2) } # Disallow host without "."
+      it { should_not allow_value("j@hn@testcom").for(:email2) } # Disallow name with "@"
+    end
+  end
+
   let(:account) do
     create :account do |a|
       a.login = 'garry2'
       a.first_name = 'Garry'
       a.last_name = 'Dolley'
       a.email = 'garry2@garry.com'
-      a.password = '76dfcef085f1664858228a075da17af9d0c3610b'
+      a.legacy_encrypted_password = '76dfcef085f1664858228a075da17af9d0c3610b'
     end
   end
 
@@ -185,9 +254,6 @@ describe Account do
 
   context 'IPs and DNS Records' do
     before do
-      Service.delete_all
-      ServiceCode.delete_all
-
       @ip_blocks = [create(:ip_block, cidr: '10.0.0.0/30'),
                     create(:ip_block, cidr: '2607:f2f8:d00d::/48'),
                     create(:ip_block, cidr: '192.168.0.0/29'),
@@ -242,10 +308,6 @@ describe Account do
     end
 
     describe 'owns_dns_record?()' do
-      before do
-        DnsDomain.delete_all
-        DnsRecord.delete_all
-      end
 
       specify 'should return true if dns_record is a PTR and belongs to account' do
         @dns_record_for_me = create :dns_record, :the_10_block, name: '2.0.0.10.in-addr.arpa',
@@ -349,7 +411,6 @@ describe Account do
 
   context 'Bandwidth Quota' do
     before do
-      Service.delete_all
       Account.where('id > 2').delete_all
 
       @garrys_bq = create :bandwidth_quota

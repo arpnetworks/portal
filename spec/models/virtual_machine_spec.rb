@@ -1,5 +1,4 @@
-require File.dirname(__FILE__) + '/../rails_helper'
-require File.dirname(__FILE__) + '/../arp_spec_helper'
+require 'rails_helper'
 
 context VirtualMachine do
   before do
@@ -10,10 +9,7 @@ context VirtualMachine do
   end
 
   context 'DNS records' do
-    before :context do
-      DnsRecord.delete_all
-      DnsDomain.delete_all
-
+    before do
       DnsDomain.create(name: 'arpnetworks.com', type: 'NATIVE')
 
       # Create a few accounts because we want an account ID > 1
@@ -23,10 +19,6 @@ context VirtualMachine do
 
       @ip_address   = '10.0.0.1'
       @ipv6_address = 'fe80::2'
-    end
-
-    after :context do
-      DnsDomain.find_by(name: 'arpnetworks.com').destroy
     end
 
     specify 'should be created upon VM creation with IPs assigned' do

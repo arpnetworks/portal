@@ -1,0 +1,21 @@
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+  <table class="entry_form" align="center">
+    <caption>Recover Password</caption>
+    <tfoot>
+      <tr>
+        <td></td>
+        <td><%= f.submit 'Submit' %></td>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td class="label">Email Address:</td>
+        <td><%= f.email_field :email, autofocus: true, autocomplete: "email", size: 40 %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="1" class="note"><span>Enter the email address you signed up with, and we'll send you reset password instructions.</span></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

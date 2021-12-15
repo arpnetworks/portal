@@ -1,47 +1,14 @@
 # frozen_string_literal: true
-
-require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../arp_spec_helper')
+require 'rails_helper'
 
 describe AccountsController do
-  before(:context) do
-    @user = create_user!
-  end
-
-  describe AccountsController, 'during account creation' do
-    it 'should not allow periods in login name' do
-      post :create, params: { account: { login: 'foobar.baz', password: 'barbarbar',
-                                         password_confirmation: 'barbarbar',
-                                         email: 'foo@example.com' } }
-
-      expect(assigns(:account)).to_not be_valid
-      expect(response).to render_template('new')
-    end
-  end
-
-  describe AccountsController, 'when logging in' do
-    it 'should remember the requested location in a non-logged-in state and redirect.' do
-      request.session[:return_to] = 'http://www.google.com'
-      post :login_attempt, params: { account: { login: @user.login, password: 'mysecret' } }
-      expect(response).to redirect_to('http://www.google.com')
-    end
-
-    it 'should redirect to dashboard if already logged in' do
-      login_as_user!
-      get :login
-      expect(response).to redirect_to(dashboard_path)
-    end
-  end
-end
-
-describe AccountsController do
-  before(:context) do
+  before do
     @user = create_user!
   end
 
   describe 'Edit account' do
     before do
-      login!(@user.login, 'mysecret')
+      sign_in @user
     end
 
     it 'should respond with success' do
@@ -63,23 +30,16 @@ describe AccountsController do
 
   describe 'Show account' do
     it 'should redirect to edit' do
-      @user = login_as_user!
+      sign_in @user
       get :show, params: { id: @user.id }
       expect(@response).to redirect_to(edit_account_path(@user))
     end
   end
 
-  describe 'Forgot password' do
-    it 'should not require login' do
-      get :forgot_password
-      expect(@response).to be_successful
-      expect(@response).to render_template('forgot_password')
-    end
-  end
-
   describe 'Provisioning Actions' do
     before do
-      @account = login_as_user!
+      @account = @user
+      sign_in @account
     end
 
     def do_get_ip_address_inventory
@@ -97,7 +57,7 @@ describe AccountsController do
       context 'with IPs in use' do
         before do
           @ips_in_use = ['10.0.0.2', '10.0.0.3']
-          allow(@account).to receive(:ips_in_use).and_return(@ips_in_use)
+          allow_any_instance_of(Account).to receive(:ips_in_use).and_return(@ips_in_use)
         end
 
         it 'should mark them in use' do
@@ -133,7 +93,7 @@ describe AccountsController do
       context 'with IPs available' do
         before do
           @ips_available = ['10.0.0.4', '10.0.0.5', '10.0.0.6']
-          allow(@account).to receive(:ips_available)\
+          allow_any_instance_of(Account).to receive(:ips_available)\
             .with(location: @location_obj).and_return(@ips_available)
         end
 

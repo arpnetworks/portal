@@ -1,5 +1,5 @@
 FROM ruby:2.6
-RUN apt-get update -qq && apt-get install -y nodejs mariadb-client yarnpkg
+RUN apt-get update -qq && apt-get install -y nodejs mariadb-client yarnpkg vim
 RUN ln -s /usr/bin/yarnpkg /usr/bin/yarn
 WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile

@@ -1,12 +1,17 @@
 Rails.application.routes.draw do
-  resources :accounts do
-    collection do
-      get  'forgot_password'
-      post 'forgot_password_post'
-      get  'login'
-      post 'login_attempt'
-      get  'logout'
-    end
+
+  devise_scope :account do
+    root to: 'accounts/sessions#new'
+
+    get '/accounts/login' => 'accounts/sessions#new' # Keep previous URL working
+    get '/accounts/new' => 'devise/registrations#new' # Keep previous URL working
+  end
+
+  devise_for :accounts, controllers: {
+    sessions: 'accounts/sessions'
+  }
+
+  resources :accounts, except: [:new, :create] do
 
     resources :services do
       collection do
@@ -157,7 +162,11 @@ Rails.application.routes.draw do
     end
   end
 
-  root controller: 'accounts', action: 'login'
+  if Rails.env.test?
+    namespace :test do
+      resource :session, only: %i[create show]
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

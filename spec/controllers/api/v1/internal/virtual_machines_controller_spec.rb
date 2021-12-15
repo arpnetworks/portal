@@ -1,5 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../../../rails_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../../../../arp_spec_helper')
+require 'rails_helper'
 
 describe Api::V1::Internal::VirtualMachinesController do
   context 'handling POST /api/v1/internal/virtual_machines/phone_home/:uuid' do

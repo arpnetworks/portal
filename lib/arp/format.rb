@@ -54,18 +54,3 @@ module Format
     end
   end
 end
-
-if defined?(describe) 
-  include Format
-
-  describe Format do
-    describe "money()" do
-      it "should return 'Free' for amount of 0.00" do
-        expect(money(0.00)).to eq('Free')
-      end
-      it "should return 'Free' for amount of nil" do
-        expect(money(nil)).to eq('Free')
-      end
-    end
-  end
-end

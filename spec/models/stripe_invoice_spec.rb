@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'arp_spec_helper'
 
 RSpec.describe StripeInvoice, type: :model do
   describe 'self.create_for_account()' do

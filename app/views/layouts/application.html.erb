@@ -50,15 +50,15 @@
       Customer Control Panel
     </div>
     <div class="basic-nav-links">
-    <% if session[:account_id] %>
-      <%= link_to('Logout', logout_accounts_path, :class => "logout") %>
+    <% if account_signed_in? %>
+      <%= link_to('Logout', destroy_account_session_path, method: :delete, :class => "logout") %>
       <span id="changelog"></span>
     <% else %>
-      <%= link_to('Register', new_account_path, :class => "register") %>
+      <%= link_to('Register', new_account_registration_path, :class => "register") %>
 
       &nbsp;
       &nbsp;
-      <%= link_to('Login', login_accounts_path, :class => "login") %>
+      <%= link_to('Login', new_account_session_path, :class => "login") %>
 
     <% end %>
     </div>

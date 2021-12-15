@@ -1,13 +1,10 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../rails_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../../arp_spec_helper')
+require 'rails_helper'
 
 describe Admin::VirtualMachinesController do
-  before(:context) do
-    create_admin!
-  end
 
   before do
-    @account = login_as_admin!
+    @account = create_admin!
+    sign_in @account
 
     @virtual_machine = create :virtual_machine
     @params = { id: @virtual_machine.id }
@@ -15,7 +12,6 @@ describe Admin::VirtualMachinesController do
     allow(controller).to receive(:is_arp_admin?)     { true }
     allow(controller).to receive(:is_arp_sub_admin?) { true }
     allow(controller).to receive(:set_admin_state)   { true }
-    allow(controller).to receive(:login_required)
 
     @last_location = '/foo'
     allow(controller).to receive(:last_location) { @last_location }

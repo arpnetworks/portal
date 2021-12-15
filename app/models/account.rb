@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-  include PasswordEncryption
+  include MigrateToDevisePassword
   include Tender
   include BillingSystemModels::CreditCards
   include BillingSystemModels::Invoices
@@ -8,15 +8,14 @@ class Account < ApplicationRecord
   has_many :ssh_keys
   has_many :jobs
 
+  devise :database_authenticatable, :registerable,
+         :recoverable, :validatable
+
   validates_presence_of      :login
-  validates_presence_of      :email
   validates_uniqueness_of    :login, case_sensitive: false
-  validates_uniqueness_of    :email, case_sensitive: false
-  validates_format_of        :email   , :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
-  validates_length_of        :password, :minimum => 8
   validates_length_of        :login   , :within => 3..48
-  validates_presence_of      :password_confirmation, :if => :password_changed?
   validates_format_of        :login   , :with => /\A[0-9a-z_-]+\z/i, :message => 'can contain only numbers and letters.'
+
   validates_format_of        :email_billing, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\s*\Z/i, :allow_blank => true
   validates_format_of        :email2       , :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\s*\Z/i, :allow_blank => true
 
@@ -27,9 +26,6 @@ class Account < ApplicationRecord
   end
 
   scope :suspended, -> { where("vlan_shutdown = 1") }
-
-  def validate
-  end
 
   def display_name
     if company && !company.empty?
@@ -675,11 +671,9 @@ class Account < ApplicationRecord
 
   class <<self
 
-    # Authenticates a user by their login name and unencrypted password.
-    # Returns the user or nil.
-    def authenticate(login, password)
-      u = find_by(login: login, active: true)
-      u && u.authenticated?(password) ? u : nil
+    # Override the Devise's `find_for_authentication` for "active: true" condition
+    def find_for_authentication(tainted_conditions)
+      find_first_by_auth_conditions(tainted_conditions, active: true)
     end
 
     def generate_derived_key(password, salt)

@@ -3,13 +3,12 @@ class Admin::HeadQuartersController < ProtectedController
   before_action :is_arp_sub_admin?, :only => [:search, :index]
   before_action :set_admin_state
 
-  protect_from_forgery :except => [:su]
-
   def su
     if request.post?
       if @is_super_admin
         @account = Account.find_by_login(params[:user][:login])
-        session[:account_id] = @account.id
+        bypass_sign_in(@account)
+        # session[:account_id] = @account.id
         redirect_to dashboard_path and return
       end
     end
