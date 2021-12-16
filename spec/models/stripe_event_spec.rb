@@ -220,5 +220,34 @@ RSpec.describe StripeEvent, type: :model do
         end
       end
     end
+
+    describe 'handle_payment_method_attached!' do
+      context 'with event' do
+        before :each do
+          @stripe_event = build(:stripe_event, :payment_method_attached)
+          @payment_method = JSON.parse(@stripe_event.body)['data']['object']
+        end
+
+        context 'with incorrect event type' do
+          before :each do
+            @stripe_event.event_type = 'foo'
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_finalized! }.to raise_error StandardError
+          end
+        end
+
+        it 'should update customer default payment method' do
+          customer_id = @payment_method['customer']
+          expect(Stripe::Customer).to receive(:update).with(customer_id, {
+            invoice_settings: {
+              default_payment_method: @payment_method['id']
+            }
+          })
+          @stripe_event.handle_payment_method_attached!
+        end
+      end
+    end
   end
 end

@@ -3,6 +3,7 @@ class StripeEvent < ApplicationRecord
     %w(
       invoice.finalized
       invoice.paid
+      payment_method.attached
     )
   end
 
@@ -53,6 +54,23 @@ class StripeEvent < ApplicationRecord
     account, invoice = get_account_and_invoice(body)
 
     StripeInvoice.create_payment(account, invoice)
+  end
+
+  def handle_payment_method_attached!
+    raise "Incorrect event type" if event_type != 'payment_method.attached'
+
+    event = JSON.parse(body)
+
+    payment_method = event['data']['object']
+    customer_id = payment_method['customer']
+
+    if customer_id
+      Stripe::Customer.update(customer_id, {
+        invoice_settings: {
+          default_payment_method: payment_method['id']
+        }
+      })
+    end
   end
 
   def get_account_and_invoice(body)
