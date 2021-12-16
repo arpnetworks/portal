@@ -7,12 +7,14 @@
       <div class="message">
       </div>
       <% unless params[:setup_intent] %>
-      <form id="payment-form" data-secret="<%= @stripe_setup_intent.client_secret %>">
-        <div id="payment-element">
+      <form id="payment-form" class="control is-loading" data-secret="<%= @stripe_setup_intent.client_secret %>">
+        <div class="box">
+          <div id="payment-element">
           <!-- Elements will create form elements here -->
+          </div>
         </div>
 
-        <button id="submit" class="btn">Submit</button>
+        <button id="submit" class="button is-loading">Submit</button>
         <div id="error-message">
           <!-- Display error message to your customers here -->
         </div>
@@ -384,29 +386,27 @@ $(document).ready(function() {
 
   if(clientSecret) {
     stripe.retrieveSetupIntent(clientSecret).then(({setupIntent}) => {
-    const message = document.querySelector('table.edit_credit_card div.message')
+      const message = document.querySelector('table.edit_credit_card div.message')
 
-    switch (setupIntent.status) {
-      case 'succeeded': {
-        message.innerText = 'Success! Your payment method has been saved.';
-        break;
+      switch (setupIntent.status) {
+        case 'succeeded': {
+          message.innerText = 'Success! Your payment method has been saved.';
+          break;
+        }
+
+        case 'processing': {
+          message.innerText = "Processing payment details. We'll update you when processing is complete.";
+          break;
+        }
+
+        case 'requires_payment_method': {
+          message.innerText = 'Failed to process payment details. Please try another payment method.';
+
+          break;
+        }
       }
-
-      case 'processing': {
-        message.innerText = "Processing payment details. We'll update you when processing is complete.";
-        break;
-      }
-
-      case 'requires_payment_method': {
-        message.innerText = 'Failed to process payment details. Please try another payment method.';
-
-        break;
-      }
-    }
-  });
-
+    });
   } else {
-
     const options = {
       clientSecret: '<%= @stripe_setup_intent.client_secret %>',
       // Fully customizable with appearance API.
@@ -421,10 +421,17 @@ $(document).ready(function() {
     const paymentElement = elements.create('payment');
     paymentElement.mount('#payment-element');
 
+    paymentElement.on('ready', function(event) {
+      $("#submit").removeClass("is-loading");
+      $("#payment-form").removeClass("is-loading");
+    });
+
     const form = document.getElementById('payment-form');
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+
+      $("#submit").addClass("disabled is-loading")
 
       const {error} = await stripe.confirmSetup({
         //`Elements` instance that was used to create the Payment Element
@@ -440,6 +447,8 @@ $(document).ready(function() {
         // details incomplete)
         const messageContainer = document.querySelector('#error-message');
         messageContainer.textContent = error.message;
+
+        $("#submit").removeClass("is-loading disabled");
       } else {
         // Your customer will be redirected to your `return_url`. For some payment
         // methods like iDEAL, your customer will be redirected to an intermediate
