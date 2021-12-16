@@ -11,7 +11,11 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= csrf_meta_tags %>
 
-  <% if controller.controller_name == 'credit_cards' || controller.controller_name == 'services' -%>
+  <% if (controller.controller_name == 'my_account' && controller.action_name == 'dashboard') -%>
+  <!-- Stripe -->
+  <script src="https://js.stripe.com/v3" async></script>
+  <% end %>
+  <% if controller.controller_name == 'credit_cards' || controller.controller_name == 'services' %>
   <!-- Stripe -->
   <script src="https://js.stripe.com/v3"></script>
   <% end -%>
