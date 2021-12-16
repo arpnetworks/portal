@@ -895,7 +895,7 @@ table.stripe_events td.status, table.stripe_events th.status {
   width: 1em;
 }
 
-table.stripe_events td.code, table.stripe_events th.code {
+table.stripe_events td.event_type, table.stripe_events th.event_type {
   width: 1em;
 }
 
