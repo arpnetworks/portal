@@ -40,14 +40,17 @@ RSpec.describe 'Update account' do
     fill_in "account[password]", with: "abc123456"
     fill_in "account[password_confirmation]", with: "abc123456"
     click_button "Save changes"
-    expect(page).to have_content("You need to sign in or sign up before continuing.")
-    expect(page.current_path).to eq(new_account_session_path)
+    expect(page).to have_content("Changes saved")
+    expect(page).to have_field("account[email2]", with: "chris2@test.com")
 
-    fill_in 'account[login]', with: 'chris'
+    click_link "Logout"
+    expect(page).to have_content("You have been logged out.")
+
+    fill_in'account[login]', with: 'chris'
     fill_in 'account[password]', with: 'abc123456'
     click_button "Login"
-    expect(page).to have_content("Welcome ARP-Test, it is nice to see you.")
-    expect(page.current_path).to eq(edit_account_path(accounts(:chris)))
+    expect(page).to have_content("ARP-Test's dashboard")
+    expect(page.current_path).to eq(dashboard_path)
   end
 
 end
