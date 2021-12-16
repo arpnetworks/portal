@@ -24,16 +24,20 @@ class Admin::StripeEventsController < Admin::HeadQuartersController
     end
   end
 
-  # def retry
-  #   @new_job = @job.retry!
+  def retry
+    begin
+      @stripe_event.go!
+    rescue StandardError => e
+      flash[:error] = e.message
+    else
+      flash[:notice] = "Retried processing Stripe Event #{@stripe_event.id}"
+    end
 
-  #   flash[:notice] = "Sent retry message to Job #{@job.id} and Job #{@new_job.id} was created"
-
-  #   respond_to do |format|
-  #     format.html { redirect_to admin_jobs_path }
-  #     format.xml  { head :ok }
-  #   end
-  # end
+    respond_to do |format|
+      format.html { redirect_to admin_stripe_events_path }
+      format.xml  { head :ok }
+    end
+  end
 
   protected
 
