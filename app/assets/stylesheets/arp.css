@@ -891,7 +891,7 @@ table.stripe_events td.jid, table.stripe_events th.jid {
   width: 1em;
 }
 
-table.stripe_events td.state, table.stripe_events th.state {
+table.stripe_events td.status, table.stripe_events th.status {
   width: 1em;
 }
 
@@ -913,11 +913,7 @@ table.stripe_events tr.cancelled.odd td {
   background-color: #CDCDC9;
 }
 
-table.stripe_events td.status, table.stripe_events th.status {
-  width: 1em;
-}
-
-table.stripe_events tr.running td.state {
+table.stripe_events tr.running td.status {
   padding: 0px;
   background-repeat: no-repeat;
   background-image: url(/images/icons/ellipsis.gif);
@@ -926,7 +922,7 @@ table.stripe_events tr.running td.state {
   height: 16px;
 }
 
-table.stripe_events tr.done td.state {
+table.stripe_events tr.processed td.status {
   padding: 0px;
   background-repeat: no-repeat;
   background-image: url(/images/icons/done.png);
@@ -935,16 +931,16 @@ table.stripe_events tr.done td.state {
   height: 16px;
 }
 
-table.stripe_events tr.ready td.state, table.stripe_events tr.waiting td.state {
+table.stripe_events tr.received td.status {
   padding: 0px;
   background-repeat: no-repeat;
-  background-image: url(/images/icons/clock-simple-green.png);
+  background-image: url(/images/icons/note.png);
   background-position: center;
   width: 16px;
   height: 16px;
 }
 
-table.stripe_events tr.failed td.state {
+table.stripe_events tr.failed td.status {
   padding: 0px;
   background-repeat: no-repeat;
   background-image: url(/images/icons/failed.png);
@@ -953,7 +949,7 @@ table.stripe_events tr.failed td.state {
   height: 16px;
 }
 
-table.stripe_events tr.cancelled td.state {
+table.stripe_events tr.cancelled td.status {
   padding: 0px;
   background-repeat: no-repeat;
   background-image: url(/images/icons/cancelled-yellow.png);

@@ -42,7 +42,7 @@
 
       <td class="event_id"><%= stripe_event.event_id %></td>
       <td class="event_type"><%= stripe_event.event_type %></td>
-      <td class="status"><%= stripe_event.status %></td>
+      <td class="status"><%= %w(processed received).include?(stripe_event.status) ? "" : stripe_event.status %></td>
     </tr>
   <% end %>
 <% end %>
