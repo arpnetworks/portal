@@ -1,18 +1,27 @@
 class CreditCardsController < ProtectedController
   def new
-    @credit_card = CreditCard.new
+    if @account.in_stripe?
+      Stripe.api_key = $STRIPE_API_KEY
 
-    @credit_card.first_name = @account.first_name.to_s + " " +
-                              @account.last_name.to_s
-    @credit_card.billing_address_1 = @account.address1
-    @credit_card.billing_address_2 = @account.address2
-    @credit_card.billing_city = @account.city
-    @credit_card.billing_state = @account.state
-    @credit_card.billing_postal_code = @account.zip
+      @stripe_setup_intent = Stripe::SetupIntent.create(
+        customer: @account.stripe_customer_id,
+        payment_method_types: ['card'],
+      )
+    else
+      @credit_card = CreditCard.new
 
-    country = @account.country
-    if country && country.length == 2
-      @credit_card.billing_country_iso_3166 = country
+      @credit_card.first_name = @account.first_name.to_s + " " +
+                                @account.last_name.to_s
+      @credit_card.billing_address_1 = @account.address1
+      @credit_card.billing_address_2 = @account.address2
+      @credit_card.billing_city = @account.city
+      @credit_card.billing_state = @account.state
+      @credit_card.billing_postal_code = @account.zip
+
+      country = @account.country
+      if country && country.length == 2
+        @credit_card.billing_country_iso_3166 = country
+      end
     end
   end
 
