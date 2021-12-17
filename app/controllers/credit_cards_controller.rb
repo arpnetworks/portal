@@ -7,6 +7,8 @@ class CreditCardsController < ProtectedController
         customer: @account.stripe_customer_id,
         payment_method_types: ['card'],
       )
+
+      render 'new', layout: 'responsive'
     else
       @credit_card = CreditCard.new
 
