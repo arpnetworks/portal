@@ -7,7 +7,7 @@ RSpec.describe 'Forgot Password' do
     expect(page).to have_selector("caption", text: "Login")
     expect(page).to have_content("Customer Control Panel")
 
-    click_link "Forgot your password?"
+    click_link "Forgot password?"
     expect(page).to have_content("Recover Password")
 
     expect {
