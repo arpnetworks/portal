@@ -33,8 +33,8 @@ end
 option = ARGV[0]
 case option
 when "s", 'server'
-  system! "docker compose run --service-ports web"
+  system! "docker compose -f docker-compose.local.yml run --service-ports web"
 else
   options = ARGV.join(" ")
-  system! "docker compose exec runner bin/rails #{options}"
+  system! "docker compose -f docker-compose.local.yml exec runner bin/rails #{options}"
 end

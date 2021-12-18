@@ -34,10 +34,10 @@ end
 
 case command
 when 'up', 'start'
-  system! 'docker compose up -d runner'
+  system! 'docker compose -f docker-compose.local.yml up -d runner'
 when 'down', 'stop'
-  system! 'docker compose down'
+  system! 'docker compose -f docker-compose.local.yml down'
 else
   options = ARGV.join(" ")
-  system! "docker compose #{options}"
+  system! "docker compose -f docker-compose.local.yml #{options}"
 end

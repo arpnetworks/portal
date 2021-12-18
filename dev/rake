@@ -31,4 +31,4 @@ end
 ###
 
 options = ARGV.join(" ")
-system! "docker compose exec runner bin/rake #{options}"
+system! "docker compose -f docker-compose.local.yml exec runner bin/rake #{options}"
