@@ -1,22 +1,22 @@
 class StripeEvent < ApplicationRecord
   def supported_events
-    %w(
+    %w[
       invoice.finalized
       invoice.paid
       payment_method.attached
-    )
+    ]
   end
 
   def go!
-    raise StandardError.new('Attempt to handle event already processed') if processed?
-    raise ArgumentError.new("Unsupported event '#{event_type}'") unless supported_events.include?(event_type)
+    raise StandardError, 'Attempt to handle event already processed' if processed?
+    raise ArgumentError, "Unsupported event '#{event_type}'" unless supported_events.include?(event_type)
 
     begin
-      handler = "handle_" + event_type.gsub('.', '_') + "!"
+      handler = 'handle_' + event_type.gsub('.', '_') + '!'
       send(handler)
       handled!
     rescue NoMethodError => e
-      raise ArgumentError.new("No handler found for event '#{event_type}'")
+      raise ArgumentError, "No handler found for event '#{event_type}'"
     end
   end
 
@@ -63,7 +63,7 @@ class StripeEvent < ApplicationRecord
   end
 
   def handle_payment_method_attached!
-    raise "Incorrect event type" if event_type != 'payment_method.attached'
+    raise 'Incorrect event type' if event_type != 'payment_method.attached'
 
     event = JSON.parse(body)
 
@@ -72,10 +72,10 @@ class StripeEvent < ApplicationRecord
 
     if customer_id
       Stripe::Customer.update(customer_id, {
-        invoice_settings: {
-          default_payment_method: payment_method['id']
-        }
-      })
+                                invoice_settings: {
+                                  default_payment_method: payment_method['id']
+                                }
+                              })
     end
   end
 
@@ -89,6 +89,6 @@ class StripeEvent < ApplicationRecord
 
     raise "No account found given Stripe customer ID: #{customer_id}" if account.nil?
 
-    return [account, invoice]
+    [account, invoice]
   end
 end

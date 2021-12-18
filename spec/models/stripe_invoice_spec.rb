@@ -70,13 +70,13 @@ RSpec.describe StripeInvoice, type: :model do
       it 'should create payment for invoice and mark it paid' do
         payments = double :payments
 
-        allow(Invoice).to receive(:find_by).with(stripe_invoice_id: @stripe_invoice['id']).\
-          and_return(@inv)
+        allow(Invoice).to receive(:find_by).with(stripe_invoice_id: @stripe_invoice['id'])\
+                                           .and_return(@inv)
         allow(@inv).to receive(:payments).and_return payments
 
         expect(payments).to receive(:create).with(
           account: @account,
-          reference_number: "",
+          reference_number: '',
           date: Time.at(@stripe_invoice['status_transitions']['paid_at']),
           method: 'Stripe',
           amount: @stripe_invoice['total'] / 100

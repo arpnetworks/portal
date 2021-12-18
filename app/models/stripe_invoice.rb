@@ -2,11 +2,11 @@ class StripeInvoice < Invoice
   def create_line_items(stripe_line_items)
     stripe_line_items.each do |li|
       @code = begin
-                product = Stripe::Product.retrieve(id: li['price']['product'])
-                product.metadata.product_code
-              rescue
-                'MISC'
-              end
+        product = Stripe::Product.retrieve(id: li['price']['product'])
+        product.metadata.product_code
+      rescue StandardError
+        'MISC'
+      end
 
       line_items.create(code: @code,
                         description: li['description'],

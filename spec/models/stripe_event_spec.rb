@@ -257,10 +257,10 @@ RSpec.describe StripeEvent, type: :model do
         it 'should update customer default payment method' do
           customer_id = @payment_method['customer']
           expect(Stripe::Customer).to receive(:update).with(customer_id, {
-            invoice_settings: {
-              default_payment_method: @payment_method['id']
-            }
-          })
+                                                              invoice_settings: {
+                                                                default_payment_method: @payment_method['id']
+                                                              }
+                                                            })
           @stripe_event.handle_payment_method_attached!
         end
       end
