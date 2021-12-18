@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_041028) do
+ActiveRecord::Schema.define(version: 2021_12_18_114742) do
 
   create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "login", default: "", null: false
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2021_12_09_041028) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.string "stripe_payment_method_id", default: "", null: false
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["login"], name: "index_accounts_on_login", unique: true
     t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true

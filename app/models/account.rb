@@ -416,6 +416,20 @@ class Account < ApplicationRecord
     !stripe_customer_id.empty?
   end
 
+  def offload_billing?
+    return false unless stripe_payment_method_id
+
+    !stripe_payment_method_id.empty?
+  end
+
+  def bootstrap_stripe!
+    return if in_stripe?
+
+    cust = Stripe::Customer.create(name: display_account_name)
+    self.stripe_customer_id = cust.id
+    save
+  end
+
   # An empty account is one that has never had any active services
   # associated with it
   def empty?

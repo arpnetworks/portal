@@ -77,6 +77,17 @@ class StripeEvent < ApplicationRecord
                                 }
                               })
     end
+
+    account = Account.find_by(stripe_customer_id: customer_id)
+    if account
+      if !account.offload_billing?
+        # Gotta do this manually for now
+        Mailer.simple_notification("CC: Migrate #{account.display_account_name} (#{account.id}) subscriptions to Stripe", "").deliver_now
+      end
+
+      account.stripe_payment_method_id = payment_method['id']
+      account.save
+    end
   end
 
   def get_account_and_invoice(body)

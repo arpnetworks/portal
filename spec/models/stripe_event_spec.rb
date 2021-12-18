@@ -238,8 +238,9 @@ RSpec.describe StripeEvent, type: :model do
     end
 
     describe 'handle_payment_method_attached!' do
-      context 'with event' do
+      context 'with event and account' do
         before :each do
+          @account = build(:account)
           @stripe_event = build(:stripe_event, :payment_method_attached)
           @payment_method = JSON.parse(@stripe_event.body)['data']['object']
         end
@@ -254,13 +255,20 @@ RSpec.describe StripeEvent, type: :model do
           end
         end
 
-        it 'should update customer default payment method' do
+        it 'should update customer default payment method in Stripe and locally' do
           customer_id = @payment_method['customer']
           expect(Stripe::Customer).to receive(:update).with(customer_id, {
                                                               invoice_settings: {
                                                                 default_payment_method: @payment_method['id']
                                                               }
                                                             })
+          expect(Account).to receive(:find_by).with(stripe_customer_id: customer_id).\
+            and_return @account
+          expect(@account).to receive(:stripe_payment_method_id=).with(@payment_method['id'])
+          expect(@account).to receive(:save)
+
+          allow(@account).to receive(:offload_billing?)
+
           @stripe_event.handle_payment_method_attached!
         end
       end

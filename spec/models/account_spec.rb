@@ -252,6 +252,57 @@ describe Account do
     end
   end
 
+  describe 'offload_billing?()' do
+    context 'when stripe_payment_method_id is nil' do
+      before :each do
+        account.stripe_payment_method_id = nil
+      end
+
+      it 'should return false' do
+        expect(account.offload_billing?).to eq false
+      end
+    end
+
+    context 'when stripe_payment_method_id is blank' do
+      before do
+        account.stripe_payment_method_id = ''
+      end
+
+      it 'should return false' do
+        expect(account.offload_billing?).to eq false
+      end
+    end
+
+    context 'when stripe_payment_method_id is not empty' do
+      before do
+        account.stripe_payment_method_id = 'pm_foo'
+      end
+
+      it 'should return true' do
+        expect(account.offload_billing?).to eq true
+      end
+    end
+  end
+
+  describe 'bootstrap_stripe!' do
+    context 'when account is not in Stripe' do
+      before :each do
+        allow(account).to receive(:in_stripe?).and_return false
+      end
+
+      it 'should create a Customer object in Stripe' do
+        @stripe = double Stripe::Customer, id: 'cus_foobar'
+
+        expect(Stripe::Customer).to receive(:create).with(name: account.display_account_name).\
+          and_return @stripe
+        expect(account).to receive(:stripe_customer_id=).with('cus_foobar')
+        expect(account).to receive(:save)
+
+        account.bootstrap_stripe!
+      end
+    end
+  end
+
   context 'IPs and DNS Records' do
     before do
       @ip_blocks = [create(:ip_block, cidr: '10.0.0.0/30'),

@@ -35,7 +35,7 @@ def invoice_accounts!(accounts)
   puts ""
 
   accounts.each do |a|
-    next if a.in_stripe? # Accounts in Stripe are invoiced automatically
+    next if a.offload_billing? # Billing handled by a third party (e.g. Stripe)
 
     begin
       account_string = "#{a.display_account_name} (#{a.id}):"

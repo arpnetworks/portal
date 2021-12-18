@@ -1,8 +1,10 @@
 class CreditCardsController < ProtectedController
   def new
-    if @account.in_stripe?
-      Stripe.api_key = $STRIPE_API_KEY
+    @account.bootstrap_stripe!
+    # This will effectively make it so the "else" below never gets executed;
+    # everyone will see the new form powered by Stripe
 
+    if @account.in_stripe?
       @stripe_setup_intent = Stripe::SetupIntent.create(
         customer: @account.stripe_customer_id,
         payment_method_types: ['card'],
