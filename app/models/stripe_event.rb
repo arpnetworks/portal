@@ -41,15 +41,21 @@ class StripeEvent < ApplicationRecord
   ##################
 
   def handle_invoice_finalized!
-    raise "Incorrect event type" if event_type != 'invoice.finalized'
+    raise 'Incorrect event type' if event_type != 'invoice.finalized'
 
     account, invoice = get_account_and_invoice(body)
+
+    @metadata_invoice_id = invoice['metadata']['link_to_invoice_id']
+    if @metadata_invoice_id
+      StripeInvoice.link_to_invoice(@metadata_invoice_id, invoice)
+      return
+    end
 
     inv = StripeInvoice.create_for_account(account, invoice)
   end
 
   def handle_invoice_paid!
-    raise "Incorrect event type" if event_type != 'invoice.paid'
+    raise 'Incorrect event type' if event_type != 'invoice.paid'
 
     account, invoice = get_account_and_invoice(body)
 

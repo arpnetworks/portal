@@ -19,6 +19,45 @@ RSpec.describe StripeInvoice, type: :model do
     end
   end
 
+  describe 'self.link_to_invoice()' do
+    context 'with Stripe invoice' do
+      before :each do
+        @stripe_event = build(:stripe_event, :invoice_finalized)
+        @stripe_invoice = JSON.parse(@stripe_event.body)['data']['object']
+        @stripe_invoice_id = @stripe_invoice['id']
+      end
+
+      context 'with invoice ID' do
+        before :each do
+          @invoice_id = 123
+        end
+
+        context 'and invoice exists' do
+          before :each do
+            @invoice = mock_model Invoice
+            allow(Invoice).to receive(:find).with(@invoice_id).and_return @invoice
+          end
+
+          it 'should link the Stripe invoice to our invoice' do
+            expect(@invoice).to receive(:stripe_invoice_id=).with @stripe_invoice_id
+            expect(@invoice).to receive(:save)
+            StripeInvoice.link_to_invoice(@invoice_id, @stripe_invoice)
+          end
+        end
+
+        context 'and invoice does not exist' do
+          before :each do
+            allow(Invoice).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
+          end
+
+          it 'should raise error' do
+            expect { StripeInvoice.link_to_invoice(999, @stripe_invoice) }.to raise_error ArgumentError
+          end
+        end
+      end
+    end
+  end
+
   describe 'self.create_payment()' do
     context 'with account and invoice' do
       before :each do

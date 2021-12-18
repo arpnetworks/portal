@@ -164,6 +164,22 @@ RSpec.describe StripeEvent, type: :model do
             expect(StripeInvoice).to receive(:create_for_account).with(@account, @invoice)
             @stripe_event.handle_invoice_finalized!
           end
+
+          context 'with link_to_invoice_id in metadata' do
+            before :each do
+              body = JSON.parse(@stripe_event.body)
+              body['data']['object']['metadata'] = {
+                link_to_invoice_id: 123
+              }
+              @stripe_event.body = body.to_json
+              @invoice = JSON.parse(@stripe_event.body)['data']['object']
+            end
+
+            it 'should link Stripe invoice to existing ARP invoice' do
+              expect(StripeInvoice).to receive(:link_to_invoice).with(123, @invoice)
+              @stripe_event.handle_invoice_finalized!
+            end
+          end
         end
 
         context 'without valid customer' do

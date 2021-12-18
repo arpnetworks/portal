@@ -19,6 +19,18 @@ class StripeInvoice < Invoice
     inv.create_line_items(invoice['lines']['data'])
   end
 
+  def self.link_to_invoice(arp_invoice_id, invoice)
+    raise "Invoice ID #{arp_invoice_id} missing" unless arp_invoice_id
+
+    begin
+      inv = Invoice.find(arp_invoice_id)
+      inv.stripe_invoice_id = invoice['id']
+      inv.save
+    rescue ActiveRecord::RecordNotFound => e
+      raise ArgumentError.new "Provided Invoice ID #{arp_invoice_id} does not exist, cannot link Stripe invoice"
+    end
+  end
+
   def self.create_payment(account, invoice)
     inv = Invoice.find_by(stripe_invoice_id: invoice['id'])
 
