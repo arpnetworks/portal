@@ -8,8 +8,7 @@ class Account < ApplicationRecord
   has_many :ssh_keys
   has_many :jobs
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :validatable
+  devise :database_authenticatable, :recoverable, :validatable
 
   validates_presence_of      :login
   validates_uniqueness_of    :login, case_sensitive: false
