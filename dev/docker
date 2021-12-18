@@ -34,7 +34,7 @@ end
 
 case command
 when 'up', 'start'
-  system! 'docker compose -f docker-compose.local.yml up -d runner'
+  system! 'docker compose -f docker-compose.local.yml up'
 when 'down', 'stop'
   system! 'docker compose -f docker-compose.local.yml down'
 else
