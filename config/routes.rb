@@ -4,12 +4,14 @@ Rails.application.routes.draw do
     root to: 'accounts/sessions#new'
 
     get '/accounts/login' => 'accounts/sessions#new' # Keep previous URL working
-    get '/accounts/new' => 'devise/registrations#new' # Keep previous URL working
   end
 
   devise_for :accounts, controllers: {
     sessions: 'accounts/sessions'
   }
+
+  get "/accounts/sign_up", to: redirect('https://arpnetworks.com') # Keep previous URL working but redirect to the main site
+  get "/accounts/new", to: redirect('https://arpnetworks.com') # Keep previous URL working but redirect to the main site
 
   resources :accounts, except: [:new, :create] do
 
