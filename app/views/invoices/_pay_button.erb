@@ -1,4 +1,4 @@
-<% unless @account.in_stripe? %>
+<% unless @account.offload_billing? %>
 <div class="notice-green">
   <%= link_to("Pay Invoices", pay_account_invoices_path(@account), class: 'btn btn-success') %>
 </div>

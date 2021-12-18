@@ -36,7 +36,7 @@
           All invoices must be paid before new services can be ordered
           </p>
 
-          <% if @account.in_stripe? %>
+          <% if @account.offload_billing? %>
             <div class='notice-transparent'>
               <a href='<%= new_account_credit_card_path %>', class='btn btn-success'><i class="fas fa-credit-card"></i> Update Credit Card</a>
             </div>
