@@ -8,7 +8,8 @@
           <td colspan="1">
             <input type='submit' value="Login" />
             &nbsp;&nbsp; 
-            <%= link_to 'Forgot your password?', new_password_path(resource_name) %>
+            <br/><br/>
+            <%= link_to 'Forgot password?', new_password_path(resource_name) %>
           </td>
         </tr>
       </tfoot>
@@ -26,10 +27,4 @@
       </tbody>
     </table>
   <% end %>
-</div>
-
-<div class="very_strong">OR</div>
-<div style="text-align: center">
-  Don't have an account?  Register one 
-  <%= link_to 'here', new_account_registration_path %>.
 </div>
