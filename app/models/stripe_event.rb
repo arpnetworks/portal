@@ -5,7 +5,6 @@ class StripeEvent < ApplicationRecord
       invoice.paid
       invoice.payment_action_required
       invoice.payment_failed
-      invoice.payment_succeeded
       payment_method.attached
     ]
   end
