@@ -47,6 +47,7 @@
   </tbody>
 </table>
 
+<% if @service == 'vps_with_os' %>
 <div class="columns">
   <div class="column has-text-centered">
     <button class='button is-small' id='go-back'>
@@ -59,6 +60,7 @@
     </button>
   </div>
 </div>
+<% end %>
 
 <script type='text/javascript'>
   $("form#authorize").submit(function() {
