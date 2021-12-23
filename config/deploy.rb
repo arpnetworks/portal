@@ -89,7 +89,7 @@ namespace :deploy do
     task :restart do
       on roles(:app) do
         within(release_path) do
-          execute :bundle, :exec, 'rails restart'
+          execute :bundle, :exec, 'pumactl', '-P', "#{release_path}/tmp/pids/server.pid", "restart"
         end
       end
     end
