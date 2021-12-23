@@ -9,6 +9,7 @@ ID: <%= @stripe_event.id %>
 Event ID: <%= @stripe_event.event_id %>
 Event Type: <%= @stripe_event.event_type %>
 Status: <%= @stripe_event.status %>
+Resource: <%= stripe_events_related(@stripe_event) %>
 Body: <%= @stripe_event.body && JSON.pretty_generate(JSON.parse(@stripe_event.body)) %>
         </pre>
       </td>
