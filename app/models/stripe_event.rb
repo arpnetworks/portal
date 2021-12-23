@@ -80,6 +80,15 @@ class StripeEvent < ApplicationRecord
     StripeInvoice.create_payment(account, invoice)
   end
 
+  def handle_invoice_payment_failed!
+    raise 'Incorrect event type' if event_type != 'invoice.payment_failed'
+
+    account, invoice = get_account_and_invoice(body)
+    hosted_invoice_url = invoice['hosted_invoice_url']
+
+    Mailers::Stripe.payment_failed(account, hosted_invoice_url).deliver_now
+  end
+
   def handle_payment_method_attached!
     raise 'Incorrect event type' if event_type != 'payment_method.attached'
 

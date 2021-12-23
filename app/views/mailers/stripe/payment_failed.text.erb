@@ -1,0 +1,35 @@
+Hi <%= @account.display_name %>,
+
+This is the Billing Department at ARP Networks, Inc.
+
+Recently, your payment method has declined or expired, and we require
+new or updated payment information in order to keep your account active.
+<% if @hosted_invoice_url %>
+
+To update your payment information, please simply click the following link:
+
+<%= @hosted_invoice_url %>
+
+It will take less than 30 seconds.  In addition, we now support Google
+Pay and Apple Pay, so it might take even less time. :)
+<% else %>
+
+To update your payment information, please login to the Portal:
+
+https://portal.arpnetworks.com
+
+and click the "Credit Card" link located on the left sidebar.  We now
+also support Google Pay and Apple Pay.
+
+The account in question has username "<%= @account.login %>"
+
+We will automatically re-try paying your invoice(s) shortly after your
+payment method has been updated.
+
+Your prompt cooperation is greatly appreciated.  Thank you.
+<% end %>
+
+-- 
+Billing Department
+ARP Networks, Inc. | https://arpnetworks.com | +1 855 444-3145
+

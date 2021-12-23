@@ -295,6 +295,50 @@ RSpec.describe StripeEvent, type: :model do
       end
     end
 
+    describe 'handle_invoice_payment_failed!' do
+      context 'with event' do
+        before :each do
+          @stripe_event = build(:stripe_event, :invoice_payment_failed)
+          @invoice = JSON.parse(@stripe_event.body)['data']['object']
+        end
+
+        context 'with incorrect event type' do
+          before :each do
+            @stripe_event.event_type = 'foo'
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_payment_failed! }.to raise_error StandardError
+          end
+        end
+
+        context 'with valid customer' do
+          before :each do
+            @account = build(:account)
+            allow(Account).to receive(:find_by).and_return(@account)
+          end
+
+          it 'should send a decline notice email' do
+            mailer = double(:mailer)
+            expect(mailer).to receive(:deliver_now)
+            expect(Mailers::Stripe).to receive(:payment_failed).with(@account, @invoice['hosted_invoice_url']).and_return mailer
+            @stripe_event.handle_invoice_payment_failed!
+          end
+        end
+
+        context 'without valid customer' do
+          before :each do
+            # No such account given this Stripe customer_id
+            allow(Account).to receive(:find_by).and_return(nil)
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_payment_failed! }.to raise_error StandardError
+          end
+        end
+      end
+    end
+
     describe 'handle_payment_method_attached!' do
       context 'with event and account' do
         before :each do
