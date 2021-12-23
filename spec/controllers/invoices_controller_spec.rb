@@ -50,10 +50,10 @@ context InvoicesController do
       end
     end
 
-    context 'when account is in Stripe' do
+    context 'when account billing is offloaded' do
       before :each do
         allow(controller).to receive(:current_account).and_return @account
-        allow(@account).to receive(:in_stripe?).and_return true
+        allow(@account).to receive(:offload_billing?).and_return true
       end
 
       it 'should redirect to dashboard' do
@@ -120,10 +120,10 @@ context InvoicesController do
       end
     end
 
-    context 'when account is in Stripe' do
+    context 'when account billing is offloaded' do
       before :each do
         allow(controller).to receive(:current_account).and_return @account
-        allow(@account).to receive(:in_stripe?).and_return true
+        allow(@account).to receive(:offload_billing?).and_return true
       end
 
       it 'should redirect to dashboard' do

@@ -5,6 +5,10 @@ describe CreditCardsController do
     @account = create :account_user, first_name: 'John', last_name: 'Doe'
 
     sign_in @account
+
+    # Don't actually run the bootstrap_stripe! part
+    allow(controller).to receive(:current_account).and_return @account
+    allow(@account).to receive(:bootstrap_stripe!).and_return nil
   end
 
   describe 'handling GET /account/1/credit_cards/new' do
@@ -30,7 +34,6 @@ describe CreditCardsController do
     context 'when account is in Stripe' do
       before :each do
         @stripe_customer_id = 'cust_123'
-        allow(controller).to receive(:current_account).and_return @account
         allow(@account).to receive(:in_stripe?).and_return true
         allow(@account).to receive(:stripe_customer_id).and_return @stripe_customer_id
       end
