@@ -86,7 +86,7 @@ class StripeEvent < ApplicationRecord
     account, invoice = get_account_and_invoice(body)
     hosted_invoice_url = invoice['hosted_invoice_url']
 
-    Mailers::Stripe.payment_failed(account, hosted_invoice_url).deliver_now
+    Mailers::Stripe.payment_failed(account, hosted_invoice_url: hosted_invoice_url).deliver_now
   end
 
   def handle_payment_method_attached!

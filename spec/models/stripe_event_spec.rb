@@ -321,7 +321,7 @@ RSpec.describe StripeEvent, type: :model do
           it 'should send a decline notice email' do
             mailer = double(:mailer)
             expect(mailer).to receive(:deliver_now)
-            expect(Mailers::Stripe).to receive(:payment_failed).with(@account, @invoice['hosted_invoice_url']).and_return mailer
+            expect(Mailers::Stripe).to receive(:payment_failed).with(@account, hosted_invoice_url: @invoice['hosted_invoice_url']).and_return mailer
             @stripe_event.handle_invoice_payment_failed!
           end
         end
