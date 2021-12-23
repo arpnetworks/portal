@@ -98,6 +98,64 @@ RSpec.describe StripeEvent, type: :model do
       end
     end
 
+    describe 'related()' do
+      context 'with event' do
+        before :each do
+          # We use invoice_finalized as an example, but could be any stripe_event
+          @stripe_event = build(:stripe_event, :invoice_finalized)
+          @invoice = JSON.parse(@stripe_event.body)['data']['object']
+        end
+
+        context 'with nothing' do
+          before :each do
+            @desired_model = nil
+          end
+
+          it 'should return nil' do
+            expect(@stripe_event.related(@desired_model)).to be_nil
+          end
+        end
+
+        context 'with :account' do
+          before :each do
+            @desired_model = :account
+            @account = mock_model(Account)
+          end
+
+          context 'and an account is associated with the Stripe event' do
+            it 'should return account model' do
+              allow(@stripe_event).to receive(:get_account_and_invoice).and_return @account
+              expect(@stripe_event.related(@desired_model)).to eq @account
+            end
+          end
+
+          context 'and an account is not associated with the Stripe event' do
+            before :each do
+              allow(@stripe_event).to receive(:get_account_and_invoice).and_raise StandardError
+            end
+
+            it 'should return nil' do
+              expect(@stripe_event.related(@desired_model)).to be_nil
+            end
+          end
+        end
+
+        context 'with :invoice' do
+          before :each do
+            @desired_model = :invoice
+            @invoice = mock_model(Invoice)
+          end
+
+          it 'should return invoice model' do
+            allow(@stripe_event).to receive(:get_account_and_invoice).and_return [nil, @invoice]
+            allow(Invoice).to receive(:find_by).with(stripe_invoice_id: @invoice['id'])\
+                                               .and_return @invoice
+            expect(@stripe_event.related(@desired_model)).to eq @invoice
+          end
+        end
+      end
+    end
+
     describe 'self.process!()' do
       context 'with event and payload' do
         before do
@@ -262,8 +320,8 @@ RSpec.describe StripeEvent, type: :model do
                                                                 default_payment_method: @payment_method['id']
                                                               }
                                                             })
-          expect(Account).to receive(:find_by).with(stripe_customer_id: customer_id).\
-            and_return @account
+          expect(Account).to receive(:find_by).with(stripe_customer_id: customer_id)\
+                                              .and_return @account
           expect(@account).to receive(:stripe_payment_method_id=).with(@payment_method['id'])
           expect(@account).to receive(:save)
 

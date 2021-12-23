@@ -18,6 +18,7 @@
     <th class="id" style="width: 20px">ID</th>
     <th class="created_at">Created At</th>
     <th class="event_id">Event ID</th>
+    <th class="resource">Resource</th>
     <th class="event_type">Event Type</th>
     <th class="status">Status</th>
   </tr>
@@ -41,6 +42,7 @@
       <% end %>
 
       <td class="event_id"><%= stripe_event.event_id %></td>
+      <td class="resource"><%= stripe_events_related(stripe_event) %></td>
       <td class="event_type"><%= stripe_event.event_type %></td>
       <td class="status"><%= %w(processed received).include?(stripe_event.status) ? "" : stripe_event.status %></td>
     </tr>

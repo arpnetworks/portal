@@ -29,6 +29,22 @@ class StripeEvent < ApplicationRecord
     save
   end
 
+  # Attempts to introspect the body of the event to pull out related data that ties
+  # back to our models
+  def related(model)
+    case model
+    when :account
+      account, _invoice = get_account_and_invoice(body) rescue nil
+      account
+    when :invoice
+      begin
+        _account, invoice = get_account_and_invoice(body)
+        Invoice.find_by(stripe_invoice_id: invoice['id'])
+      rescue
+      end
+    end
+  end
+
   def self.process!(event, payload)
     stripe_event = StripeEvent.create(
       event_id: event.id, event_type: event.type, status: 'received', body: payload
