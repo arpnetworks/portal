@@ -1,0 +1,17 @@
+Hi <%= @account.display_name %>,
+
+Please find below a link to your recent sales receipt and invoice, as well as the option to download them in PDF format for your records.
+
+<%= @hosted_invoice_url %>
+
+Meanwhile, in other news...
+
+<%= render partial: 'mailer/announcements' %>
+Thank you for your business.
+
+-- 
+Billing Department
+ARP Networks, Inc. | https://arpnetworks.com | +1 855 444-3145
+
+Stay in the Loop!
+http://arp.serve.sh/newsletter
