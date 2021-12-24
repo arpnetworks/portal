@@ -78,6 +78,13 @@ class StripeEvent < ApplicationRecord
     account, invoice = get_account_and_invoice(body)
 
     StripeInvoice.create_payment(account, invoice)
+
+    begin
+      hosted_invoice_url = invoice['hosted_invoice_url']
+      Mailers::Stripe.sales_receipt(account, hosted_invoice_url: hosted_invoice_url).deliver_now
+    rescue StandardError => e
+      Mailer.simple_notification("CC: Was unable to send sales receipt email to #{account.display_account_name}", e.message)
+    end
   end
 
   def handle_invoice_payment_failed!

@@ -280,6 +280,14 @@ RSpec.describe StripeEvent, type: :model do
             expect(StripeInvoice).to receive(:create_payment).with(@account, @invoice)
             @stripe_event.handle_invoice_paid!
           end
+
+          it 'should send a sales receipt email' do
+            allow(StripeInvoice).to receive(:create_payment).with(@account, @invoice)
+            mailer = double(:mailer)
+            expect(mailer).to receive(:deliver_now)
+            expect(Mailers::Stripe).to receive(:sales_receipt).with(@account, hosted_invoice_url: @invoice['hosted_invoice_url']).and_return mailer
+            @stripe_event.handle_invoice_paid!
+          end
         end
 
         context 'without valid customer' do
