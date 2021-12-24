@@ -44,41 +44,7 @@ Transaction ID: <%= transaction_id %>
 <% end -%>
 
 <% end -%>
-ANNOUNCEMENTS:
-
-* Automatic creation of new VMs is finally here!
-
-  No more manual OS installs required.
-
-  Our biggest milestone to-date, you can click 'Add New Service' and get
-  a new VPS, full loaded, in under 3 minutes.
-
-  The latest versions of all popular OS's are available:
-
-  - FreeBSD 13.0, 12.2 and 11.3
-  - OpenBSD 6.7
-
-  - Arch Linux
-  - CentOS 8.1
-  - Debian GNU/Linux 10.4
-  - Fedora 32
-  - Gentoo Linux
-  - openSUSE Leap JeOS 15.1
-  - Ubuntu Linux 18.04 and 20.04 LTS
-
-* Look 👀
-
-  A shiny, new, Quarterly Newsletter!
-
-  Sign up and stay in the loop: http://arp.serve.sh/newsletter
-
-  We'll share things in the newsletter that we won't post on social
-  media or anywhere else.
-
-* If you've enjoyed our service, we'd love you to rate us on
-  CrowdReviews:
-  https://www.crowdreviews.com/arp-networks
-
+<%= render partial: 'mailer/announcements' %>
 ----------------------------------------------------------------------
 | DESCRIPTION                                           |   AMOUNT   |
 ----------------------------------------------------------------------
