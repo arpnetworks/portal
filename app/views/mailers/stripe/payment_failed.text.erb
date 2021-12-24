@@ -2,10 +2,10 @@ Hi <%= @account.display_name %>,
 
 This is the Billing Department at ARP Networks, Inc.
 
-Recently, your payment method has declined or expired, and we require new or updated payment information in order to keep your account active.
+Recently, your payment method has declined or your bank requires an additional user action (e.g. 3DS / SCA).
 <% if @hosted_invoice_url %>
 
-To update your payment information, please simply click the following link:
+To resolve this, please simply click the following link:
 
 <%= @hosted_invoice_url %>
 

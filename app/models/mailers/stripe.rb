@@ -5,7 +5,7 @@ class Mailers::Stripe < ApplicationMailer
     @account = account
     @hosted_invoice_url = opts[:hosted_invoice_url]
 
-    @subject    = "Updated Credit Card Information Required"
+    @subject    = "[Action Required] Payment Method Declined"
     @from       = "ARP Networks <billing@arpnetworks.com>"
     @recipients = @account.email_for_sales_receipts
     @bcc        = 'gdolley@arpnetworks.com'

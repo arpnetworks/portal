@@ -13,7 +13,7 @@ RSpec.describe Mailers::Stripe, type: :mailer do
 
       describe 'payment_failed' do
         it 'should render the subject' do
-          expect(@mailer.subject).to eq 'Updated Credit Card Information Required'
+          expect(@mailer.subject).to eq '[Action Required] Payment Method Declined'
         end
 
         it 'should render the sender email' do
