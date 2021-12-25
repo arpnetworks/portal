@@ -19,7 +19,7 @@ class StripeInvoice < Invoice
 
   def create_discount_line_items(code, stripe_discount_amounts)
     stripe_discount_amounts.each do |discount|
-      line_items.create(code: code, amount: -1 * (discount['amount'] / 100), description: 'Discount')
+      line_items.create(code: code, amount: -1.0 * (discount['amount'] / 100), description: 'Discount')
     end
 
     # If we ever want to: invoice['discount']['coupon']['name'] + ['percent_off']
