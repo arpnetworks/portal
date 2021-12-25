@@ -10,7 +10,7 @@ class StripeInvoice < Invoice
 
       line_items.create(code: @code,
                         description: li['description'],
-                        amount: li['amount'] / 100)
+                        amount: li['amount'] / 100.0)
 
       discount_amounts = li['discount_amounts']
       create_discount_line_items(@code, discount_amounts) if discount_amounts
@@ -19,7 +19,7 @@ class StripeInvoice < Invoice
 
   def create_discount_line_items(code, stripe_discount_amounts)
     stripe_discount_amounts.each do |discount|
-      line_items.create(code: code, amount: -1.0 * (discount['amount'] / 100), description: 'Discount')
+      line_items.create(code: code, amount: -1.0 * (discount['amount'] / 100.0), description: 'Discount')
     end
 
     # If we ever want to: invoice['discount']['coupon']['name'] + ['percent_off']
@@ -51,7 +51,7 @@ class StripeInvoice < Invoice
         reference_number: '',
         date: Time.at(invoice['status_transitions']['paid_at']),
         method: 'Stripe',
-        amount: invoice['total'] / 100
+        amount: invoice['total'] / 100.0
       )
 
       if invoice['paid'] == true
