@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe Account do
 
+  it_behaves_like "two_factor_authenticatable"
+  it_behaves_like "two_factor_backupable"
+
   describe "#login" do
     it { should validate_presence_of(:login) }
     it { should validate_uniqueness_of(:login).case_insensitive }

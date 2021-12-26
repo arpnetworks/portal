@@ -8,7 +8,16 @@ class Account < ApplicationRecord
   has_many :ssh_keys
   has_many :jobs
 
-  devise :database_authenticatable, :recoverable, :validatable
+  devise :two_factor_authenticatable,
+         otp_secret_encryption_key: $DEVISE_OTP_SECRET_ENCRYPTION_KEY
+
+  devise :two_factor_backupable,
+         otp_backup_code_length: 8,
+         otp_number_of_backup_codes: 10
+
+  devise :recoverable, :validatable
+
+  serialize :otp_backup_codes, Array
 
   validates_presence_of      :login
   validates_uniqueness_of    :login, case_sensitive: false

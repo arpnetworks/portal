@@ -23,6 +23,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'devise', '~> 4.8.0'
+gem 'devise-two-factor', '~> 4.0.1'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
@@ -62,6 +63,8 @@ group :test do
   gem 'database_cleaner-active_record'
 
   gem 'rails-controller-testing'
+
+  gem 'faker' # devise-two-factor's test dependencies
 
   gem 'simplecov', require: false
 end

@@ -25,13 +25,13 @@ module MigrateToDevisePassword
       account = Account.find_by(login: params[:login], active: true)
       return if account.nil?
 
-      if account.legacy_encrypted_password == encrypt(params[:password], SALT)
+      if account.legacy_encrypted_password == legacy_encrypt(params[:password], SALT)
         yield account
       end
     end
 
     # Encrypts some data with the salt.
-    def encrypt(password, salt)
+    def legacy_encrypt(password, salt)
       Digest::SHA1.hexdigest("--#{salt}--#{password}--")
     end
   end
