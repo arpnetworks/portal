@@ -1,0 +1,14 @@
+<h1>Two-factor authentication setup</h1>
+<p>You will need a Google Authenticator(or another 2FA authentication app) to complete this process.</p>
+<label>Scan the QR code into your app.</label>
+
+<%= @qrcode.as_svg.html_safe %>
+
+<%= form_with url: account_two_factor_authentication_confirmation_path, local: true, method: :post do |f| %>
+  <%= f.text_field :otp_code %>
+
+  <div>
+    <%= link_to 'Cancel', account_security_path %>
+    <%= f.submit "Confirm and activate" %>
+  </div>
+<% end %>

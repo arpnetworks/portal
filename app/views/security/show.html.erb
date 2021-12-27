@@ -1,0 +1,40 @@
+<section>
+  <h2>Two-factor authentication</h2>
+  <p>Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in.</p>
+
+  <% if current_account.otp_required_for_login %>
+    <table>
+      <thead>
+        <tr>
+          <th colspan="2">Two-factor methods</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Authenticator app</td>
+          <td>Enabled</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr>
+          <th colspan="2">Recovery Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Recovery codes</td>
+          <td>
+            <%= button_to 'Regenerate', account_two_factor_authentication_recovery_codes_path(current_account) %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <% else %>
+    <%= link_to 'Set up two-factor authentication', account_two_factor_authentication_path(current_account), method: :post %>
+  <% end %>
+</section>
+
+<%= link_to 'Back to Dashboard', dashboard_path %>

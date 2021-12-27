@@ -61,6 +61,12 @@ Rails.application.routes.draw do
     end
     resources :jobs
     resources :ssh_keys
+    resource :security, controller: :security
+    resource :two_factor_authentication, only: %i[create destroy]
+    namespace :two_factor_authentication do
+      resources :recovery_codes, only: [:create]
+      resource :confirmation, only: [:new, :create]
+    end
   end
 
   get '/noVNC/console', controller: 'virtual_machines', action: 'console'
