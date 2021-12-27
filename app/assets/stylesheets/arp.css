@@ -1393,6 +1393,10 @@ div.main-menu li.jobs {
   list-style-image: url(/images/icons/bell.png);
 }
 
+div.main-menu li.security {
+  list-style-image: url(/images/icons/security.png);
+}
+
 div.main-menu li.help2 {
   list-style-image: url(/images/icons/help.png);
 }
