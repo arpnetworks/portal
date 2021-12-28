@@ -1,28 +1,37 @@
-<section>
-  <h2>Change password</h2>
+<div class="error">
+  <%= error_messages_for current_account %>
+</div>
 
-  <%= form_with url: account_password_change_path(current_account), model: current_account, method: :post, local: true do |f| %>
+<%= form_with url: account_password_change_path(current_account), model: current_account, method: :post, local: true do |f| %>
+  <table class="entry_form" align="center">
+    <caption>Change password</caption>
+    <tfoot>
+      <tr>
+        <td></td>
+        <td colspan="1">
+          <%= f.submit 'Update password' %>
+        </td>
+      </tr>
+    </tfoot>
 
-    <%= render "devise/shared/error_messages", resource: current_account %>
+    <tbody>
+      <tr>
+        <td class="label">Current password:</td>
+        <td class="required w-2/3"><%= f.password_field :current_password %></td>
+      </tr>
 
-    <div>
-      <%= f.label :current_password %>
-      <%= f.password_field :current_password %>
-    </div>
+      <tr>
+        <td class="label">New password:</td>
+        <td class="required w-2/3"><%= f.password_field :password %></td>
+      </tr>
 
-    <div>
-      <%= f.label :password, 'New password' %>
-      <%= f.password_field :password %>
-    </div>
-
-    <div>
-      <%= f.label :password_confirmation, 'Confirm new password' %>
-      <%= f.password_field :password_confirmation %>
-    </div>
-
-    <%= f.submit "Update password" %>
-  <% end %>
-</section>
+      <tr>
+        <td class="label">Confirm new password:</td>
+        <td class="required w-2/3"><%= f.password_field :password_confirmation %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
 
 <section>
   <h2>Two-factor authentication</h2>
