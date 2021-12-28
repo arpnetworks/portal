@@ -1,0 +1,14 @@
+<h1>Authenticate your account</h1>
+
+<%= form_with url: accounts_sign_in_otp_path, scope: :account, method: :post, local: true do |f| %>
+  <p>Enter 6-digit code from your two factor authenticator app.</p>
+
+  <%= f.text_field :otp_attempt %>
+
+  <div>
+    <label>Don't have your phone?</label>
+    <%= link_to "Use a recovery code to access your account.", accounts_sign_in_recovery_code_path %>
+  </div>
+
+  <%= f.submit 'Verify' %>
+<% end %>

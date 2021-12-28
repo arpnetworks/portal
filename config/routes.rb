@@ -4,6 +4,11 @@ Rails.application.routes.draw do
     root to: 'accounts/sessions#new'
 
     get '/accounts/login' => 'accounts/sessions#new' # Keep previous URL working
+
+    get '/accounts/sign_in/otp' => 'accounts/otp/sessions#new'
+    post '/accounts/sign_in/otp' => 'accounts/otp/sessions#create'
+    get '/accounts/sign_in/recovery_code' => 'accounts/recovery_code/sessions#new'
+    post '/accounts/sign_in/recovery_code' => 'accounts/recovery_code/sessions#create'
   end
 
   devise_for :accounts, controllers: {

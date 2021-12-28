@@ -1,0 +1,9 @@
+<h1>Authenticate your account with a recovery code</h1>
+
+<%= form_with url: accounts_sign_in_recovery_code_path, scope: :account, method: :post, local: true do |f| %>
+  <p>To access your account, enter one of the recovery codes you saved when you set up your two-factor authentication device.</p>
+
+  <%= f.text_field :recovery_code %>
+
+  <%= f.submit 'Verify' %>
+<% end %>

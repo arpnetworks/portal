@@ -6,7 +6,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
 
   before { sign_in(chris) }
 
-  it "can success setup 2FA" do
+  it "can success setup 2FA and login with it" do
     visit root_path
     expect(page).to have_content("chris's dashboard")
 
@@ -25,7 +25,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     click_link "Set up two-factor authentication"
     expect(page).to have_content("Two-factor authentication setup")
 
-    token = scan_the_qr_code_and_get_a_onetime_token(chris)
+    token = scan_the_qr_code_and_get_an_onetime_token(chris)
     fill_in "otp_code", with: token
     click_button "Confirm and activate"
     expect(page).to have_content("2FA Setup Success")
@@ -46,17 +46,74 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     expect(page).to have_content("Regenerate Recovery Codes Success")
     expect(page).to have_content("Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in. (The previous codes are all expired.)")
     expect(page).to have_selector("li", count: 10)
-    all("li").each do |li|
-      expect(li.text).to match(/\w{8}/)
-    end
+    save_recovery_codes
 
     click_on "Done"
     expect(page).to have_content("Two-factor authentication")
     expect(page.current_path).to eq(account_security_path(chris))
+
+
+    ####################
+    ## Login with 2FA ##
+    ####################
+
+    click_link "Logout"
+    expect(page).to have_content("You have been logged out.")
+
+    travel_to 30.seconds.after do
+      fill_in 'account[login]', with: 'chris'
+      fill_in 'account[password]', with: '12345678'
+      click_button "Login"
+      expect(page).to have_content("Authenticate your account")
+      expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
+
+      fill_in 'account[otp_attempt]', with: "111111"
+      click_button "Verify"
+      expect(page).to have_content("Failed to authenticate your code")
+
+      token = get_an_onetime_token_from_authenticator_app(chris)
+      fill_in 'account[otp_attempt]', with: token
+      click_button "Verify"
+      expect(page).to have_content("Welcome chris, it is nice to see you.")
+      expect(page.current_path).to eq(dashboard_path)
+    end
+
+    ##############################
+    ## Login with a backup code ##
+    ##############################
+    click_link "Logout"
+    expect(page).to have_content("You have been logged out.")
+
+    fill_in 'account[login]', with: 'chris'
+    fill_in 'account[password]', with: '12345678'
+    click_button "Login"
+    expect(page).to have_content("Authenticate your account")
+    expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
+
+    click_link "Use a recovery code to access your account."
+    expect(page).to have_content("Authenticate your account with a recovery code")
+    expect(page).to have_content("To access your account, enter one of the recovery codes you saved when you set up your two-factor authentication device.")
+
+    fill_in 'account[recovery_code]', with: '123abc'
+    click_button "Verify"
+    expect(page).to have_content("Failed to authenticate your code")
+
+    fill_in 'account[recovery_code]', with: @recovery_codes.pop
+    click_button "Verify"
+    expect(page).to have_content("Welcome chris, it is nice to see you.")
+    expect(page.current_path).to eq(dashboard_path)
   end
 
-  def scan_the_qr_code_and_get_a_onetime_token(user)
+  def scan_the_qr_code_and_get_an_onetime_token(user)
     user.reload.current_otp
+  end
+
+  def get_an_onetime_token_from_authenticator_app(user)
+    user.reload.current_otp
+  end
+
+  def save_recovery_codes
+    @recovery_codes = all("li").map(&:text)
   end
 
 end

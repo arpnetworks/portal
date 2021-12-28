@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require Rails.root.join("lib/devise-two-factor/strategies/otp_attempt_authenticatable.rb")
+require Rails.root.join("lib/devise-two-factor/strategies/recovery_code_authenticatable.rb")
+
 # Assuming you have not yet modified this file, each configuration option below
 # is set to its default value. Note that some are commented out while others
 # are not: uncommented lines are intended to protect your configuration from
@@ -9,10 +12,6 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
-  config.warden do |manager|
-    manager.default_strategies(:scope => :account).unshift(:two_factor_authenticatable, :two_factor_backupable)
-  end
-
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
