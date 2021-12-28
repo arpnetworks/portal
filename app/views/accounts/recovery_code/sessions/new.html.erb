@@ -1,9 +1,23 @@
-<h1>Authenticate your account with a recovery code</h1>
+<section class="otp-auth-section">
+  <div class="w-8/10 mx-auto">
+    <h2>Authenticate your account with a recovery code</h2>
+  </div>
 
-<%= form_with url: accounts_sign_in_recovery_code_path, scope: :account, method: :post, local: true do |f| %>
-  <p>To access your account, enter one of the recovery codes you saved when you set up your two-factor authentication device.</p>
+  <div class="text-center p-4">
+    <%= form_with(
+          url: accounts_sign_in_recovery_code_path,
+          scope: :account,
+          method: :post,
+          local: true,
+          class: 'two-factor-auth-box'
+    ) do |f| %>
+      <p class="text-center px-4">To access your account, enter one of the recovery codes you saved when you set up your two-factor authentication device.</p>
 
-  <%= f.text_field :recovery_code %>
+      <%= f.text_field :recovery_code, class: 'opt-code-field' %>
 
-  <%= f.submit 'Verify' %>
-<% end %>
+      <div class="text-right">
+        <%= f.submit 'Verify', class: 'btn btn-info' %>
+      </div>
+    <% end %>
+  </div>
+</section>
