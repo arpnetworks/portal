@@ -1,3 +1,15 @@
-// Place all the styles related to the Security controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: https://sass-lang.com/
+section.two-factor-authentication {
+  margin-top: 40px;
+  margin-bottom: 80px;
+
+  table {
+    margin-top: 30px;
+
+    th {
+      background-color: #a1a1a1;
+    }
+    td {
+      background-color: #eee;
+    }
+  }
+}
