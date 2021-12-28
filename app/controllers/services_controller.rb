@@ -71,9 +71,11 @@ class ServicesController < ProtectedController
         billing_amount: @billing_amount
       )
 
-      @pending_invoice = @account.create_pro_rated_invoice!(
-        @code, @service_title, @billing_amount_pro_rated, pending: true
-      )
+      unless @account.offload_billing?
+        @pending_invoice = @account.create_pro_rated_invoice!(
+          @code, @service_title, @billing_amount_pro_rated, pending: true
+        )
+      end
     when 'metal'
       raise
     when 'thunder'
@@ -94,9 +96,11 @@ class ServicesController < ProtectedController
         description: "Pending provisioning by ARP Networks staff.\n\nWe thank you for your patience!"
       )
 
-      @pending_invoice = @account.create_pro_rated_invoice!(
-        @code, @service_title, @billing_amount_pro_rated, pending: true
-      )
+      unless @account.offload_billing?
+        @pending_invoice = @account.create_pro_rated_invoice!(
+          @code, @service_title, @billing_amount_pro_rated, pending: true
+        )
+      end
     when 'backup'
       raise
     end
