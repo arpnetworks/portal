@@ -75,6 +75,11 @@ development:
     api_key: sk_test_123public
     endpoint_secret: whsec_foobar
     pk_key: pk_test_foobar
+    products:
+      vps:
+        small:
+        medium:
+        large:
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -151,3 +156,8 @@ test:
     api_key: pk_test_123public
     endpoint_secret: sk_test_321private
     pk_key: pk_test_foobar
+    products:
+      vps:
+        small: price_123
+        medium: price_foo
+        large: price_bar

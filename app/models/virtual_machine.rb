@@ -48,7 +48,7 @@ class VirtualMachine < ApplicationRecord
           'mrc'     => 15
 
         },
-        "all-purpose" => {
+        "allpurpose" => {
           'name'    => 'All-Purpose',
           'ram'     => 2048,
           'storage' => 40,
@@ -75,7 +75,7 @@ class VirtualMachine < ApplicationRecord
           'mrc'     => 40
 
         },
-        "the american" => {
+        "theamerican" => {
           'name'    => '"The American"',
           'ram'     => 8192,
           'storage' => 240,
