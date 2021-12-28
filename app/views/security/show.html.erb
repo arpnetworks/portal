@@ -1,4 +1,30 @@
 <section>
+  <h2>Change password</h2>
+
+  <%= form_with url: account_password_change_path(current_account), model: current_account, method: :post, local: true do |f| %>
+
+    <%= render "devise/shared/error_messages", resource: current_account %>
+
+    <div>
+      <%= f.label :current_password %>
+      <%= f.password_field :current_password %>
+    </div>
+
+    <div>
+      <%= f.label :password, 'New password' %>
+      <%= f.password_field :password %>
+    </div>
+
+    <div>
+      <%= f.label :password_confirmation, 'Confirm new password' %>
+      <%= f.password_field :password_confirmation %>
+    </div>
+
+    <%= f.submit "Update password" %>
+  <% end %>
+</section>
+
+<section>
   <h2>Two-factor authentication</h2>
   <p>Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in.</p>
 

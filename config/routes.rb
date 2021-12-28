@@ -66,7 +66,8 @@ Rails.application.routes.draw do
     end
     resources :jobs
     resources :ssh_keys
-    resource :security, controller: :security
+    resource :security, controller: :security, only: [:show]
+    resource :password_change, controller: :password_change, only: [:create]
     resource :two_factor_authentication, only: %i[create destroy]
     namespace :two_factor_authentication do
       resources :recovery_codes, only: [:create]

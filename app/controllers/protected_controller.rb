@@ -84,4 +84,10 @@ class ProtectedController < ApplicationController
       []
     end
   end
+
+  def sign_in_after_change_password?
+    return false if params.dig(:account, :password).blank?
+
+    Devise.sign_in_after_change_password
+  end
 end
