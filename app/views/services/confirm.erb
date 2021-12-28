@@ -4,77 +4,77 @@
     <tr>
       <td>
         <form id='authorize' method='POST' action='<%= confirm_done_account_services_path %>'>
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 
-        <table class="services service_detail center" style="width: 85%">
-          <caption>Pending New Services</caption>
+          <table class="services service_detail center" style="width: 85%">
+            <caption>Pending New Services</caption>
             <%= render :partial => 'services/table_data' %>
-        </table>
+          </table>
 
-        <% if @pending_invoice && !@account.offload_billing? %>
-        <table class="invoices center" style="width: 85%">
-          <caption>Pending New Invoice</caption>
-            <%= render :partial => 'invoices/table_data' %>
-        </table>
-        <% end %>
-
-        <br/>
-        <div class="notice-warm">
-          <div>
-            The above listed new services with associated recurring charges will be created, which can be canceled
-            at any time.
-          </div>
-          <br/>
-          <% unless @account.offload_billing? %>
-          <div>
-            A pro-rated invoice from now to the end of the current billing cycle will also be created, as shown above.
-          </div>
-          <div>
-            Pro-rated charges are not refundable.
-          </div>
-          <% else %>
-            <div>
-            A pro-rated invoice will be generated and automatically charged to your current payment method on file.
-            </div>
+          <% if @pending_invoice && !@account.offload_billing? %>
+            <table class="invoices center" style="width: 85%">
+              <caption>Pending New Invoice</caption>
+              <%= render :partial => 'invoices/table_data' %>
+            </table>
           <% end %>
-          <br/>
-          <div>
-            <strong>I authorize ARP Networks, Inc. to perform the above modifications to my account</strong>
-          </div>
 
-          <div style='margin-top: 5px'>
-            <button type='submit' class='btn btn-success' id='authorize'>
-              <i class="fas fa-check"></i> &nbsp;Authorize
-            </button>
+          <br/>
+          <div class="notice-warm">
+            <div>
+              The above listed new services with associated recurring charges will be created, which can be canceled
+              at any time.
+            </div>
+            <br/>
+            <% unless @account.offload_billing? %>
+              <div>
+                A pro-rated invoice from now to the end of the current billing cycle will also be created, as shown above.
+              </div>
+              <div>
+                Pro-rated charges are not refundable.
+              </div>
+            <% else %>
+              <div>
+                A pro-rated invoice will be generated and automatically charged to your current payment method on file.
+              </div>
+            <% end %>
+            <br/>
+            <div>
+              <strong>I authorize ARP Networks, Inc. to perform the above modifications to my account</strong>
+            </div>
+
+            <div style='margin-top: 5px'>
+              <button type='submit' class='btn btn-success' id='authorize'>
+                <i class="fas fa-check"></i> &nbsp;Authorize
+              </button>
+            </div>
           </div>
-        </div>
       </td>
     </tr>
   </tbody>
 </table>
 
 <% if @service == 'vps_with_os' %>
-<div class="columns">
-  <div class="column has-text-centered">
-    <button class='button is-small' id='go-back'>
-      <span class="icon is-small">
-        <i class="fas fa-chevron-left"></i>
-      </span>
-      <span>
-        No, Make Changes
-      </span>
-    </button>
+  <div class="columns">
+    <div class="column has-text-centered">
+      <button class='button is-small' id='go-back'>
+        <span class="icon is-small">
+          <i class="fas fa-chevron-left"></i>
+        </span>
+        <span>
+          No, Make Changes
+        </span>
+      </button>
+    </div>
   </div>
-</div>
 <% end %>
 
 <script type='text/javascript'>
   $("form#authorize").submit(function() {
-    $(this).find("button[type='submit']").attr("disabled", true);
-  });
+      $(this).find("button[type='submit']").attr("disabled", true);
+    });
 
   $("button#go-back").click(function(e) {
-    window.location.replace('<%= new_account_service_path %>?utf8=%E2%9C%93&service=vps_with_os');
-    e.preventDefault();
-  })
+      window.location.replace('<%= new_account_service_path %>?utf8=%E2%9C%93&service=vps_with_os');
+      e.preventDefault();
+    })
 </script>
