@@ -11,7 +11,7 @@
             <%= render :partial => 'services/table_data' %>
         </table>
 
-        <% if @pending_invoice %>
+        <% if @pending_invoice && !@account.offload_billing? %>
         <table class="invoices center" style="width: 85%">
           <caption>Pending New Invoice</caption>
             <%= render :partial => 'invoices/table_data' %>
@@ -25,12 +25,18 @@
             at any time.
           </div>
           <br/>
+          <% unless @account.offload_billing? %>
           <div>
             A pro-rated invoice from now to the end of the current billing cycle will also be created, as shown above.
           </div>
           <div>
             Pro-rated charges are not refundable.
           </div>
+          <% else %>
+            <div>
+            A pro-rated invoice will be generated and automatically charged to your current payment method on file.
+            </div>
+          <% end %>
           <br/>
           <div>
             <strong>I authorize ARP Networks, Inc. to perform the above modifications to my account</strong>
