@@ -46,6 +46,15 @@ class ServicesController < ProtectedController
   # They confirm the new service / MRC to-be-created and also the pro-rated
   # invoice to-be-create
   def confirm
+    if @account.offload_billing?
+      proration_date = Time.now.to_i
+      @current_subscriptions = Stripe::Subscription.list(customer: @account.stripe_customer_id)
+
+      if @current_subscriptions.count == 0
+        session[:requires_new_subscription] = true
+      end
+    end
+
     case @service
     when 'vps', 'vps_with_os'
       plan = params[:plan]

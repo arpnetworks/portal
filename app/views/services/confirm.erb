@@ -33,9 +33,11 @@
                 Pro-rated charges are not refundable.
               </div>
             <% else %>
-              <div>
-                A pro-rated invoice will be generated and automatically charged to your current payment method on file.
-              </div>
+              <% unless @current_subscriptions.count == 0 %>
+                <div>
+                  A pro-rated invoice will be generated and automatically charged to your current payment method on file.
+                </div>
+              <% end %>
             <% end %>
             <br/>
             <div>

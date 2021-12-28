@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 context ServicesController do
-
   before do
     @account = create_user!(login: 'user2', create_service: true)
     sign_in @account
+    allow(controller).to receive(:current_account).and_return @account
   end
 
   specify 'should be a ServicesController' do
@@ -122,6 +122,43 @@ context ServicesController do
 
           %i[plan os location ipv4 ssh_keys].each do |param|
             expect(session['form'][param.to_s]).to eq @params[param]
+          end
+        end
+
+        context 'with offloaded billing' do
+          before :each do
+            allow(@account).to receive(:offload_billing?).and_return true
+          end
+
+          it 'should retrieve Stripe subscription' do
+            @subs = double(:subscriptions, count: 1)
+            expect(Stripe::Subscription).to receive(:list).with(customer: @account.stripe_customer_id)\
+                                                          .and_return(@subs)
+            do_post(@opts)
+          end
+
+          context 'and one subscription' do
+            before :each do
+              @subs = double(:subscriptions, count: 1)
+              allow(Stripe::Subscription).to receive(:list).and_return @subs
+            end
+
+            it 'should not create a pro-rated invoice' do
+              do_post(@opts)
+              expect(@account).to_not receive(:create_pro_rated_invoice!)
+            end
+          end
+
+          context 'and no subscriptions' do
+            before :each do
+              @subs = double(:subscriptions, count: 0)
+              allow(Stripe::Subscription).to receive(:list).and_return @subs
+            end
+
+            it 'should set flag for brand new subscription requirement' do
+              do_post(@opts)
+              expect(session[:requires_new_subscription]).to eq true
+            end
           end
         end
       end
