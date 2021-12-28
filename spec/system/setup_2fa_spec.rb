@@ -44,7 +44,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
 
     click_button "Regenerate" # Regenerate recovery codes
     expect(page).to have_content("Regenerate Recovery Codes Success")
-    expect(page).to have_content("Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in. (The previous codes are all expired.)")
+    expect(page).to have_content("Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in. (All previous codes are expired.)")
     expect(page).to have_selector("li", count: 12)
     save_recovery_codes
 
