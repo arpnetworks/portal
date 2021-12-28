@@ -151,18 +151,18 @@ class ServicesController < ProtectedController
                                os,
                                plan_struct['bandwidth']).deliver_now
 
-        case os
-        when '', 'linux'
-          os_template = 'debian-8.0-amd64'
-        when 'freebsd'
-          os_template = 'freebsd-11.0-amd64'
-        when 'openbsd-6.0-amd64'
-          os_template = 'openbsd-6.0-amd64'
-        when 'ubuntu-14.04-amd64'
-          os_template = 'ubuntu-14.04-amd64'
-        else
-          os_template = 'debian-8.0-amd64'
-        end
+        os_template = case os
+                      when '', 'linux'
+                        'debian-8.0-amd64'
+                      when 'freebsd'
+                        'freebsd-11.0-amd64'
+                      when 'openbsd-6.0-amd64'
+                        'openbsd-6.0-amd64'
+                      when 'ubuntu-14.04-amd64'
+                        'ubuntu-14.04-amd64'
+                      else
+                        'debian-8.0-amd64'
+                      end
 
         VirtualMachine.provision!(service,
                                   host: @initial_vm_host,
@@ -229,14 +229,12 @@ class ServicesController < ProtectedController
   def verify_service
     @service = params[:service]
 
-    if @service
-      if %w[vps_with_os vps bgp].include?(@service)
-        case @service
-        when 'vps_with_os'
-          return true # was beta
-        else
-          return true
-        end
+    if @service && %w[vps_with_os vps bgp].include?(@service)
+      case @service
+      when 'vps_with_os'
+        return true # was beta
+      else
+        return true
       end
     end
 
@@ -321,7 +319,7 @@ class ServicesController < ProtectedController
     todays_date = Time.now.strftime('%d').to_f
     end_of_month_date = Time.now.end_of_month.strftime('%d').to_f
 
-    (1.0 - todays_date / end_of_month_date) * amount
+    (1.0 - (todays_date / end_of_month_date)) * amount
   rescue StandardError
     amount
   end
@@ -346,7 +344,7 @@ class ServicesController < ProtectedController
       ssh_keys_and_options << {
         id: id,
         opts: {
-          password_plaintext: %x[/usr/bin/pwgen -nc 12 1].strip,
+          password_plaintext: `/usr/bin/pwgen -nc 12 1`.strip,
           sudo_nopasswd: true
         }
       }
