@@ -1,13 +1,21 @@
-<h1>2FA Setup Success</h1>
+<section class="two-factor-auth-setup">
+  <div class="w-8/10 mx-auto text-center">
+    <h2>2FA Setup Success</h2>
+    <div class="flash_notice p-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      <label class="block p-1">Successfully enable</label>
+    </div>
 
-<label>Successfully enable</label>
+    <p class="w-2/3 mx-auto text-left">Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in.</p>
 
-<p>Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in.</p>
+    <ul class="recovery-codes-box">
+      <% @recovery_codes.each do |code| %>
+        <li><%= code %></li>
+      <% end %>
+    </ul>
 
-<ul>
-  <% @recovery_codes.each do |code| %>
-    <li><%= code %></li>
-  <% end %>
-</ul>
-
-<%= link_to "Done", account_security_path %>
+    <%= link_to "Done", account_security_path, class: 'text-right btn' %>
+  </div>
+</section>
