@@ -1,12 +1,116 @@
 <!-- required fields //-->
 <tbody>
   <tr>
+    <td class="label">Login Name:</td>
+    <td class="required"><%= f.text_field :login %></td>
+  </tr>
+  <tr>
+    <td class="label">Email:</td>
+    <td class="required"><%= f.text_field :email %></td>
+  </tr>
+  <% unless %w(login new create).include?(controller.action_name) -%>
+  <tr>
+    <td class="label">Alternative Email:</td>
+    <td class="required"><%= f.text_field :email2 %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td colspan="1" class="note"><span>Should we need to get a hold of you and your primary email is down, we will use this one.</span></td>
+  </tr>
+  <tr>
+    <td class="label">Billing Email:</td>
+    <td class="required"><%= f.text_field :email_billing %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td colspan="1" class="note"><span>If provided, sales receipts will be sent here, and <strong>not</strong> your primary email.</span></td>
+  <% end -%>
+  </tr>
+
+  <% if %w(login new create).include?(controller.action_name) -%>
+  <tr>
+    <td></td>
+    <td class="note"><span>A valid email is required to activate your account. Your email will never be shared with anyone.</span></td>
+  </tr>
+  <% end -%>
+  <tr>
+    <td class="label">Password:</td>
+    <td class="required"><%= f.password_field :password %></td>
+  </tr>
+  <tr>
+    <td class="label">Password confirmation:</td>
+    <td class="required"><%= f.password_field :password_confirmation %></td>
+  </tr>
+</tbody>
+<!-- /required fields -->
+<% unless %w(login new create).include?(controller.action_name) -%>
+<tbody>
+  <tr>
     <td colspan="2">
+      <hr />
+      <h3></h3>
+    </td>
+  </tr>
+  <!-- account fields -->
+  <tr>
+    <td class="label">Company Name:</td>
+    <td><%= f.text_field :company %></td>
+  </tr>
+  <tr>
+    <td class="label">First Name:</td>
+    <td><%= f.text_field :first_name %></td>
+  </tr>
+  <tr>
+    <td class="label">Last Name:</td>
+    <td><%= f.text_field :last_name %></td>
+  </tr>
+  <tr>
+    <td class="label">Address 1:</td>
+    <td><%= f.text_field :address1 %></td>
+  </tr>
+  <tr>
+    <td class="label">Address 2:</td>
+    <td><%= f.text_field :address2 %></td>
+  </tr>
+  <tr>
+    <td class="label">City:</td>
+    <td><%= f.text_field :city %></td>
+  </tr>
+  <tr>
+    <td class="label">State:</td>
+    <td><%= f.text_field :state, :size => 5 %></td>
+  </tr>
+  <tr>
+    <td class="label">Postal Code:</td>
+    <td><%= f.text_field :zip, :size => 5 %></td>
+  </tr>
+  <tr>
+    <td class="label">Country:</td>
+    <td><%= f.text_field :country %></td>
+  </tr>
+  </tbody>
+  <!-- /account fields -->
+<% end -%>
+<% if @enable_admin_view -%>
+<tbody>
+  <tr>
+    <td colspan="2">
+      <hr />
       <h3></h3>
     </td>
   </tr>
   <tr>
-    <td class="label">Account Login:</td>
-    <td class="required"><%= f.text_field :login %></td>
+    <td class="label">In Stripe?</td>
+    <td><%= @account.in_stripe? ? 'Yes' : 'No' %></td>
   </tr>
-</tbody>
+  <tr>
+    <td class="label">Stripe Customer ID:</td>
+    <td><%= f.text_field :stripe_customer_id %></td>
+  </tr>
+  <tr>
+    <td class="label">Offload Billing?</td>
+    <td><%= @account.offload_billing? ? 'Yes' : 'No' %></td>
+  </tr>
+  </tbody>
+  <!-- /account fields -->
+<% end -%>
