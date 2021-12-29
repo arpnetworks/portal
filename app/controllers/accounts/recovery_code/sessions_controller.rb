@@ -1,5 +1,9 @@
 class Accounts::RecoveryCode::SessionsController < DeviseController
+  include OtpSessionExpirable
+
   prepend_before_action :require_no_authentication, only: [:new, :create]
+
+  before_action :expire_otp_session!
 
   def new
     unless Account.exists?(session[:otp_account_id])

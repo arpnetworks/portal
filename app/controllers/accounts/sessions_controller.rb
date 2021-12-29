@@ -17,6 +17,7 @@ class Accounts::SessionsController < Devise::SessionsController
     if resource.otp_required_for_login?
       sign_out(resource)
       session[:otp_account_id] = resource.id
+      session[:otp_account_id_expires_at] = 30.seconds.after
       generate_derived_key
 
       redirect_to accounts_sign_in_otp_path

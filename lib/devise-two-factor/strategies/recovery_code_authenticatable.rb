@@ -7,6 +7,7 @@ module Devise
 
         if validate_recovery_code(resource)
           session[:otp_account_id] = nil
+          session[:otp_account_id_expires_at] = nil
           success!(resource)
         else
           fail!('Failed to authenticate your code')
