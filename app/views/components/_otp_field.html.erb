@@ -1,39 +1,47 @@
 <%= f.hidden_field field_name, id: 'otp-code-field' %>
 <div class="otp-digit-fields-container">
-  <input type="text" id="digit-1" maxLength="1" data-next="digit-2">
-  <input type="text" id="digit-2" maxLength="1" data-next="digit-3" data-previous="digit-1">
-  <input type="text" id="digit-3" maxLength="1" data-next="digit-4" data-previous="digit-2">
-  <input type="text" id="digit-4" maxLength="1" data-next="digit-5" data-previous="digit-3">
-  <input type="text" id="digit-5" maxLength="1" data-next="digit-6" data-previous="digit-4">
-  <input type="text" id="digit-6" maxLength="1"                     data-previous="digit-5">
+  <% (1..code_length).each do |index| %>
+    <% 
+      on_first = (index == 1)
+      on_last = (index == code_length)
+    %>
+
+    <input
+      type="text"
+      maxLength="1"
+      id="digit-<%= index %>"
+      <%= %Q{data-previous="digit-#{index - 1}"}.html_safe unless on_first %>
+      <%= %Q{data-next="digit-#{index + 1}"}.html_safe unless on_last %>
+      <%= "autofocus" if on_first %>
+    >
+  <% end %>
 </div>
 
 <script type='text/javascript'>
   $('.otp-digit-fields-container').find('input').each(function() {
-    $(this).attr('maxlength', 1);
-
     $(this).on('keydown', function(e) {
-      var otpFieldAllowedKeys = [
-        'Backspace', 'ArrowLeft', 'ArrowRight',
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-      ]
+      var isValidOtpField = function(key) {
+        return (key === 'Backspace') ||
+               (key === 'ArrowLeft') ||
+               (key === 'ArrowRight') ||
+               ('0' <= key && key <= '9') ||
+               ('a' <= key && key <= 'z');
+      }
 
-      if (!otpFieldAllowedKeys.includes(e.key)) {
+      if (!isValidOtpField(e.key)) {
         e.preventDefault();
       }
     });
 
     $(this).on('keyup', function(e) {
-      var otp6DigitsContainer = $($(this).parent());
-      
-      if(e.key === 'Backspace' || e.code === 'ArrowLeft') {
-        var prev = otp6DigitsContainer.find('input#' + $(this).data('previous'));
+      if(e.key === 'Backspace' || e.key === 'ArrowLeft') {
+        var prev = $('.otp-digit-fields-container').find('input#' + $(this).data('previous'));
         
         if(prev.length) {
           $(prev).trigger("select");
         }
-      } else if((e.key >= '0' && e.key <= '9') || e.key === 'ArrowRight') {
-        var next = otp6DigitsContainer.find('input#' + $(this).data('next'));
+      } else if(('0' <= e.key && e.key <= '9') || ('a' <= e.key && e.key <= 'z') || e.key === 'ArrowRight') {
+        var next = $('.otp-digit-fields-container').find('input#' + $(this).data('next'));
         
         if(next.length) {
           $(next).trigger("select");
@@ -41,12 +49,13 @@
       }
     });
 
-    var digit = function (index) {
-      return $('.otp-digit-fields-container').find(`input#digit-${index}`).val()
-    };
-
     $(this).on('change', function(e) {
-      $("#otp-code-field").val(`${digit(1)}${digit(2)}${digit(3)}${digit(4)}${digit(5)}${digit(6)}`)
+      var otpCode = ''
+      for (var i = 1; i < <%= code_length + 1 %>; i += 1) {
+        otpCode += $('.otp-digit-fields-container').find(`input#digit-${i}`).val()
+      }
+
+      $("#otp-code-field").val(otpCode)
     });
   });
 </script>

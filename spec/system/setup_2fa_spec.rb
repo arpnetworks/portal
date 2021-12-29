@@ -6,7 +6,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
 
   before { sign_in(chris) }
 
-  it "can success setup 2FA and login with it" do
+  it "can success setup 2FA and login with it", js: true do
     visit root_path
     expect(page).to have_content("chris's dashboard")
 
@@ -26,7 +26,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     expect(page).to have_content("Two-factor authentication setup")
 
     token = scan_the_qr_code_and_get_an_onetime_token(chris)
-    fill_in_6_digits_field_with token
+    fill_in_digit_fields_with token
     click_button "Confirm and activate"
     expect(page).to have_content("2FA Setup Success")
     expect(page).to have_content("Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in.")
@@ -67,12 +67,12 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
       expect(page).to have_content("Authenticate your account")
       expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
 
-      fill_in_6_digits_field_with '111111'
+      fill_in_digit_fields_with '111111'
       click_button "Verify"
       expect(page).to have_content("Failed to authenticate your code")
 
       token = get_an_onetime_token_from_authenticator_app(chris)
-      fill_in_6_digits_field_with token
+      fill_in_digit_fields_with token
       click_button "Verify"
       expect(page).to have_content("Welcome chris, it is nice to see you.")
       expect(page.current_path).to eq(dashboard_path)
@@ -94,11 +94,11 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     expect(page).to have_content("Authenticate your account with a recovery code")
     expect(page).to have_content("To access your account, enter one of the recovery codes you saved when you set up your two-factor authentication device.")
 
-    fill_in 'account[recovery_code]', with: '123abc'
+    fill_in_digit_fields_with '1234abcd'
     click_button "Verify"
     expect(page).to have_content("Failed to authenticate your code")
 
-    fill_in 'account[recovery_code]', with: @recovery_codes.pop
+    fill_in_digit_fields_with @recovery_codes.pop
     click_button "Verify"
     expect(page).to have_content("Welcome chris, it is nice to see you.")
     expect(page.current_path).to eq(dashboard_path)
@@ -116,15 +116,12 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     @recovery_codes = all("li").map(&:text)
   end
 
-  def fill_in_6_digits_field_with(number)
-    number_str = number.to_s
+  def fill_in_digit_fields_with(number)
+    chars = number.to_s.split('')
 
-    fill_in 'digit-1', with: number_str[0]
-    fill_in 'digit-2', with: number_str[1]
-    fill_in 'digit-3', with: number_str[2]
-    fill_in 'digit-4', with: number_str[3]
-    fill_in 'digit-5', with: number_str[4]
-    fill_in 'digit-6', with: number_str[5]
+    chars.each.with_index do |char, index|
+      fill_in "digit-#{index + 1}", with: char
+    end
   end
 
 end

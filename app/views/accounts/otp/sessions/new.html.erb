@@ -13,7 +13,7 @@
     ) do |f| %>
       <p class="text-center">Enter 6-digit code from your two factor authenticator app.</p>
 
-      <%= render 'components/otp_field', f: f, field_name: :otp_attempt %>
+      <%= render 'components/otp_field', f: f, field_name: :otp_attempt, code_length: 6 %>
 
       <div class="text-right">
         <%= f.submit 'Verify', class: 'btn btn-info' %>

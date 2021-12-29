@@ -13,7 +13,7 @@
     ) do |f| %>
       <p class="text-center px-4">To access your account, enter one of the recovery codes you saved when you set up your two-factor authentication device.</p>
 
-      <%= f.text_field :recovery_code, class: 'otp-code-field' %>
+      <%= render 'components/otp_field', f: f, field_name: :recovery_code, code_length: 8 %>
 
       <div class="text-right">
         <%= f.submit 'Verify', class: 'btn btn-info' %>
