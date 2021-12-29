@@ -26,7 +26,13 @@
 
         <div class="text-right">
           <%= link_to 'Cancel', account_security_path, class: 'btn' %>
-          <%= f.submit "Confirm and activate", class: 'btn btn-success' %>
+          <%= f.button(
+                "Confirm and activate",
+                type: :submit,
+                class: 'btn btn-success',
+                data: {
+                  disable_with: "<i class='fas fa-spinner fa-spin'></i>".html_safe
+                }) %>
         </div>
       <% end %>
     </div>

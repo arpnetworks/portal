@@ -49,7 +49,14 @@
           <tr>
             <td class="p-4">Authenticator app</td>
             <td class="text-right p-4">
-              <%= button_to "Disable", account_two_factor_authentication_path(current_account), method: :delete, class: 'btn btn-danger' %>
+              <%= link_to(
+                    "Disable",
+                    account_two_factor_authentication_path(current_account),
+                    method: :delete,
+                    class: 'btn btn-danger',
+                    data: {
+                      disable_with: "<i class='fas fa-spinner fa-spin'></i>".html_safe
+                    }) %>
             </td>
           </tr>
         </tbody>
@@ -65,7 +72,13 @@
           <tr>
             <td class="p-4">Recovery codes</td>
             <td class="text-right p-4">
-              <%= button_to 'Regenerate', account_two_factor_authentication_recovery_codes_path(current_account), class: 'btn' %>
+              <%= link_to('Regenerate',
+                    account_two_factor_authentication_recovery_codes_path(current_account),
+                    method: :post,
+                    class: 'btn',
+                    data: {
+                      disable_with: "<i class='fas fa-spinner fa-spin'></i>".html_safe
+                    }) %>
             </td>
           </tr>
         </tbody>

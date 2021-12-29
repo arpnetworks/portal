@@ -39,10 +39,10 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     expect(page).to have_content("Two-factor authentication")
     expect(page.current_path).to eq(account_security_path(chris))
     expect(page).to have_content("Authenticator app")
-    expect(page).to have_button("Disable")
+    expect(page).to have_selector("a[data-method='delete']", text: "Disable")
     expect(page).to have_content("Recovery codes")
 
-    click_button "Regenerate" # Regenerate recovery codes
+    click_on "Regenerate" # Regenerate recovery codes
     expect(page).to have_content("Regenerate Recovery Codes Success")
     expect(page).to have_content("Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in. (All previous codes are expired.)")
     expect(page).to have_selector("li", count: 12)
