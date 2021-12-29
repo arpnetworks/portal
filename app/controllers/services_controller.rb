@@ -72,12 +72,15 @@ class ServicesController < ProtectedController
 
       @billing_amount_pro_rated = pro_rated_total(@billing_amount)
 
+      @stripe_price_id = @account.offload_billing? ? $STRIPE_PRODUCTS['vps'][plan] : ""
+
       @pending_service = @account.services.create(
         pending: true,
         service_code: @code_obj,
         title: @service_title,
         billing_interval: 1,
-        billing_amount: @billing_amount
+        billing_amount: @billing_amount,
+        stripe_price_id: @stripe_price_id
       )
 
       unless @account.offload_billing?
@@ -96,12 +99,15 @@ class ServicesController < ProtectedController
       @service_title  = "BGP Session (ASN #{params[:asn]})"
       @billing_amount_pro_rated = pro_rated_total(@billing_amount)
 
+      @stripe_price_id = @account.offload_billing? ? $STRIPE_PRODUCTS['bgp'] : ""
+
       @pending_service = @account.services.create(
         pending: true,
         service_code: @code_obj,
         title: @service_title,
         billing_interval: 1,
         billing_amount: @billing_amount,
+        stripe_price_id: @stripe_price_id,
         description: "Pending provisioning by ARP Networks staff.\n\nWe thank you for your patience!"
       )
 

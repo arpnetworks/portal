@@ -80,6 +80,7 @@ development:
         small:
         medium:
         large:
+      bgp: price_xyz
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -161,3 +162,4 @@ test:
         small: price_123
         medium: price_foo
         large: price_bar
+      bgp: price_xyz
