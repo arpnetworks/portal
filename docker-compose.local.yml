@@ -12,6 +12,7 @@ x-app: &app
     RAILS_SERVE_STATIC_FILES:
     MARIADB_ROOT_PASSWORD:
     EDITOR: vi
+    REDIS_PASSWORD:
   image: portal_web
   stdin_open: true
   tty: true
@@ -32,6 +33,7 @@ services:
       - "${PORT}:3000"
     depends_on:
       - db
+      - redis
 
   runner:
     <<: *app
@@ -52,6 +54,11 @@ services:
     ports:
       - "5900:5900"
       - "4444:4444"
+
+  redis:
+    image: bitnami/redis:latest
+    environment:
+      REDIS_PASSWORD:
 
 volumes:
   mysql:
