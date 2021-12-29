@@ -22,7 +22,7 @@
       ) do |f| %>
         <p class="text-center">Enter 6-digit code from your two factor authenticator app.</p>
 
-        <%= f.text_field :otp_code, class: 'opt-code-field' %>
+        <%= render 'components/otp_field', f: f, field_name: :otp_code %>
 
         <div class="text-right">
           <%= link_to 'Cancel', account_security_path, class: 'btn' %>
@@ -32,4 +32,3 @@
     </div>
   </div>
 </section>
-

@@ -7,11 +7,6 @@
   }
 }
 
-.two-factor-auth-qr-code {
-  width: 50px;
-  height: 50px;
-}
-
 .two-factor-auth-box {
   text-align: center;
   border: 1px solid #999;
@@ -21,13 +16,6 @@
   margin-left: auto;
   margin-right: auto;
   line-height: 1rem;
-
-  input.opt-code-field {
-    width: 300px;
-    padding: 8px;
-    margin-top: 30px;
-    margin-bottom: 35px;
-  }
 }
 
 ul.recovery-codes-box {
@@ -52,4 +40,25 @@ ul.recovery-codes-box {
     width: 100px;
     padding: 8px;
   }
+}
+
+.otp-digit-fields-container {
+
+  padding: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+
+  input {
+    width: 35px;
+    height: 40px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 24px;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-weight: 200;
+    margin: 2px;
+  }
+
 }

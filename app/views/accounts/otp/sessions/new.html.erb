@@ -13,7 +13,7 @@
     ) do |f| %>
       <p class="text-center">Enter 6-digit code from your two factor authenticator app.</p>
 
-      <%= f.text_field :otp_attempt, class: 'opt-code-field' %>
+      <%= render 'components/otp_field', f: f, field_name: :otp_attempt %>
 
       <div class="text-right">
         <%= f.submit 'Verify', class: 'btn btn-info' %>
@@ -26,4 +26,3 @@
     <%= link_to "Use a recovery code to access your account.", accounts_sign_in_recovery_code_path %>
   </div>
 </section>
-
