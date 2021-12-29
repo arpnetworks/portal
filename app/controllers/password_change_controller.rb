@@ -1,5 +1,9 @@
 class PasswordChangeController < ProtectedController
 
+  def show
+    redirect_to account_security_path(current_account)
+  end
+
   def create
     password_params = params.require(:account).permit(
       :current_password, :password, :password_confirmation

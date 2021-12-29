@@ -67,11 +67,11 @@ Rails.application.routes.draw do
     resources :jobs
     resources :ssh_keys
     resource :security, controller: :security, only: [:show]
-    resource :password_change, controller: :password_change, only: [:create]
+    resource :password_change, controller: :password_change, only: [:create, :show]
     resource :two_factor_authentication, only: %i[create destroy]
     namespace :two_factor_authentication do
-      resources :recovery_codes, only: [:create]
-      resource :confirmation, only: [:new, :create]
+      resources :recovery_codes, only: [:create, :index]
+      resource :confirmation, only: [:new, :create, :show]
     end
   end
 

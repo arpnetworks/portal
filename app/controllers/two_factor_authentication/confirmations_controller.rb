@@ -1,6 +1,10 @@
 module TwoFactorAuthentication
   class ConfirmationsController < ProtectedController
 
+    def show
+      redirect_to account_security_path(current_account)
+    end
+
     def new
       prepare_2fa_form
     end
