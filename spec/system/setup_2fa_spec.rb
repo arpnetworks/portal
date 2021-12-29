@@ -39,7 +39,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     expect(page).to have_content("Two-factor authentication")
     expect(page.current_path).to eq(account_security_path(chris))
     expect(page).to have_content("Authenticator app")
-    expect(page).to have_content("Enabled")
+    expect(page).to have_button("Disable")
     expect(page).to have_content("Recovery codes")
 
     click_button "Regenerate" # Regenerate recovery codes
@@ -104,24 +104,8 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     expect(page.current_path).to eq(dashboard_path)
   end
 
-  def scan_the_qr_code_and_get_an_onetime_token(user)
-    user.reload.current_otp
-  end
-
-  def get_an_onetime_token_from_authenticator_app(user)
-    user.reload.current_otp
-  end
-
   def save_recovery_codes
     @recovery_codes = all("li").map(&:text)
-  end
-
-  def fill_in_digit_fields_with(number)
-    chars = number.to_s.split('')
-
-    chars.each.with_index do |char, index|
-      fill_in "digit-#{index + 1}", with: char
-    end
   end
 
 end

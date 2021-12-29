@@ -9,7 +9,7 @@
       <tr>
         <td></td>
         <td colspan="1">
-          <%= f.submit 'Update password' %>
+          <%= f.submit 'Update password', class: 'btn' %>
         </td>
       </tr>
     </tfoot>
@@ -48,7 +48,9 @@
         <tbody>
           <tr>
             <td class="p-4">Authenticator app</td>
-            <td class="text-right p-4">Enabled</td>
+            <td class="text-right p-4">
+              <%= button_to "Disable", account_two_factor_authentication_path(current_account), method: :delete, class: 'btn btn-danger' %>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -63,7 +65,7 @@
           <tr>
             <td class="p-4">Recovery codes</td>
             <td class="text-right p-4">
-              <%= button_to 'Regenerate', account_two_factor_authentication_recovery_codes_path(current_account) %>
+              <%= button_to 'Regenerate', account_two_factor_authentication_recovery_codes_path(current_account), class: 'btn' %>
             </td>
           </tr>
         </tbody>
