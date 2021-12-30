@@ -68,12 +68,12 @@ class Service < ApplicationRecord
       return
     end
 
-    unless deleted?
-      update_attribute(:deleted_at, Time.now.utc)
+    return if deleted?
 
-      resources.each do |resource|
-        resource.assignable.destroy
-      end
+    update_attribute(:deleted_at, Time.now.utc)
+
+    resources.each do |resource|
+      resource.assignable.destroy
     end
   end
 
