@@ -424,9 +424,7 @@ class Account < ApplicationRecord
   def bootstrap_stripe!
     return if in_stripe?
 
-    cust = Stripe::Customer.create(name: display_account_name)
-    self.stripe_customer_id = cust.id
-    save
+    stripe_subscription.bootstrap!
   end
 
   def stripe_subscription

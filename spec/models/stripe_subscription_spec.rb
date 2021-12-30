@@ -21,6 +21,24 @@ RSpec.describe StripeSubscription, type: :model do
       end
     end
 
+    describe 'bootstrap!()' do
+      before :each do
+        allow(@account).to receive(:offload_billing?).and_return true
+        @ss = StripeSubscription.new(@account)
+      end
+
+      it 'should create a Customer object in Stripe' do
+        @stripe = double Stripe::Customer, id: 'cus_foobar'
+
+        expect(Stripe::Customer).to receive(:create).with(name: @account.display_account_name).\
+          and_return @stripe
+        expect(@account).to receive(:stripe_customer_id=).with('cus_foobar')
+        expect(@account).to receive(:save)
+
+        @ss.bootstrap!
+      end
+    end
+
     describe 'add!()' do
       before :each do
         allow(@account).to receive(:offload_billing?).and_return true

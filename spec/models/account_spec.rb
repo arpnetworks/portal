@@ -290,14 +290,10 @@ describe Account do
         allow(account).to receive(:in_stripe?).and_return false
       end
 
-      it 'should create a Customer object in Stripe' do
-        @stripe = double Stripe::Customer, id: 'cus_foobar'
-
-        expect(Stripe::Customer).to receive(:create).with(name: account.display_account_name).\
-          and_return @stripe
-        expect(account).to receive(:stripe_customer_id=).with('cus_foobar')
-        expect(account).to receive(:save)
-
+      it 'should bootstrap our Stripe subscription' do
+        @stripe_subscription = double(StripeSubscription)
+        expect(account).to receive(:stripe_subscription).and_return @stripe_subscription
+        expect(@stripe_subscription).to receive(:bootstrap!)
         account.bootstrap_stripe!
       end
     end

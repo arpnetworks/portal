@@ -7,6 +7,12 @@ class StripeSubscription
     @account = account
   end
 
+  def bootstrap!
+    cust = Stripe::Customer.create(name: @account.display_account_name)
+    @account.stripe_customer_id = cust.id
+    @account.save
+  end
+
   # Adds this service to the customer's subscription in Stripe
   def add!(service)
     if current_subscription.nil?
