@@ -26,7 +26,37 @@ class StripeSubscription
 
       service.stripe_subscription_item_id = first_subscription_item(ss).id
       service.save
+    else
+      # TODO: A big one!
+      #
+      # subscription = current
+      #   for each line item
+      #   (sub['items']['data'].each do |si|
+      #     price = si.price.id
+      #     qty   = si.quantity
+      #
+      #     if service.stripe_price_id == price
+      #       # We have a hit!
+      #
+      #       # So just call
+      #       Stripe::SubscriptionItem.update(si.id, quantity: qty + 1)
+      #       service.stripe_subscription_item_id = si.id
+      #       service.save
+      #
+      #       return
+      #
+      # Otherwise, no hit, then we create a new item:
+      #
+      #   Stripe::Subscription.update(sub.id, items: [{ price: service.stripe_price_id, metadata: {...} }])
+      #
+      #   # Difficult to pull out the si.id here, so maybe we just wait for it in the callback?
     end
+  end
+
+  def remove!(service)
+    # Notes
+    #
+    # If a quantity goes down to zero, we should SubscriptionItem.delete() it
   end
 
   protected
