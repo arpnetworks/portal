@@ -429,6 +429,10 @@ class Account < ApplicationRecord
     save
   end
 
+  def stripe_subscription
+    StripeSubscription.new(self)
+  end
+
   # An empty account is one that has never had any active services
   # associated with it
   def empty?

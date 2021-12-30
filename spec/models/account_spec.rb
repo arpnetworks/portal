@@ -303,6 +303,14 @@ describe Account do
     end
   end
 
+  describe 'stripe_subscription()' do
+    it 'should return our StripeSubscription for this account' do
+      @stripe_sub = double(StripeSubscription)
+      expect(StripeSubscription).to receive(:new).with(account).and_return @stripe_sub
+      expect(account.stripe_subscription).to eq @stripe_sub
+    end
+  end
+
   context 'IPs and DNS Records' do
     before do
       @ip_blocks = [create(:ip_block, cidr: '10.0.0.0/30'),
