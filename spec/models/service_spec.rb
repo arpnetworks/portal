@@ -70,7 +70,7 @@ describe Service do
       time = 2.days.ago
       @service.deleted_at = time
       @service.destroy
-      expect(@service.deleted_at.strftime("%m/%d/%y %H:%M:%S")).to eql(time.strftime("%m/%d/%y %H:%M:%S"))
+      expect(@service.deleted_at.strftime('%m/%d/%y %H:%M:%S')).to eql(time.strftime('%m/%d/%y %H:%M:%S'))
     end
   end
 
@@ -92,6 +92,21 @@ describe Service do
 
       it 'should save record' do
         expect(@service).to receive(:save)
+        @service.activate_billing!
+      end
+    end
+
+    context 'when account billing is offloaded' do
+      before :each do
+        @account = mock_model(Account)
+        allow(@account).to receive(:offload_billing?).and_return true
+        allow(@service).to receive(:account).and_return @account
+      end
+
+      it 'should add to Stripe subscription' do
+        @sub = double(:stripe_subscription)
+        expect(@account).to receive(:stripe_subscription).and_return @sub
+        expect(@sub).to receive(:add!).with @service
         @service.activate_billing!
       end
     end

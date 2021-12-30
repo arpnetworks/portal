@@ -104,6 +104,11 @@ class Service < ApplicationRecord
   # ------------------------------------
 
   def activate_billing!
+    if account.offload_billing?
+      subscription = account.stripe_subscription
+      subscription.add!(self)
+    end
+
     self.pending = false
     save
   end
