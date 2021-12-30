@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_29_002759) do
+ActiveRecord::Schema.define(version: 2021_12_30_022111) do
 
   create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "login", default: "", null: false
@@ -307,6 +307,7 @@ ActiveRecord::Schema.define(version: 2021_12_29_002759) do
     t.string "coupon"
     t.boolean "pending", default: false
     t.string "stripe_price_id", default: "", null: false
+    t.string "stripe_subscription_item_id", default: "", null: false
     t.index ["account_id"], name: "account_id"
     t.index ["service_code_id"], name: "service_code_id"
   end
