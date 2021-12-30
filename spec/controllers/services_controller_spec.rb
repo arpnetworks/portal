@@ -128,19 +128,20 @@ context ServicesController do
         context 'with offloaded billing' do
           before :each do
             allow(@account).to receive(:offload_billing?).and_return true
+            @ss = double(StripeSubscription)
+            @stripe_subscription = double(Stripe::Subscription)
           end
 
           it 'should retrieve Stripe subscription' do
-            @subs = double(:subscriptions, count: 1)
-            expect(Stripe::Subscription).to receive(:list).with(customer: @account.stripe_customer_id)\
-                                                          .and_return(@subs)
+            expect(@account).to receive(:stripe_subscription).and_return @ss
+            expect(@ss).to receive(:current_subscription).and_return @stripe_subscription
             do_post(@opts)
           end
 
           context 'and one subscription' do
             before :each do
-              @subs = double(:subscriptions, count: 1)
-              allow(Stripe::Subscription).to receive(:list).and_return @subs
+              expect(@account).to receive(:stripe_subscription).and_return @ss
+              expect(@ss).to receive(:current_subscription).and_return @stripe_subscription
             end
 
             it 'should not create a pro-rated invoice' do
@@ -151,8 +152,8 @@ context ServicesController do
 
           context 'and no subscriptions' do
             before :each do
-              @subs = double(:subscriptions, count: 0)
-              allow(Stripe::Subscription).to receive(:list).and_return @subs
+              expect(@account).to receive(:stripe_subscription).and_return @ss
+              expect(@ss).to receive(:current_subscription).and_return nil
             end
 
             it 'should set flag for brand new subscription requirement' do

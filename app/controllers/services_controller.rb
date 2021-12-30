@@ -47,10 +47,9 @@ class ServicesController < ProtectedController
   # invoice to-be-create
   def confirm
     if @account.offload_billing?
-      proration_date = Time.now.to_i
-      @current_subscriptions = Stripe::Subscription.list(customer: @account.stripe_customer_id)
+      @current_subscription = @account.stripe_subscription.current_subscription
 
-      if @current_subscriptions.count == 0
+      if @current_subscription.nil?
         session[:requires_new_subscription] = true
       end
     end
