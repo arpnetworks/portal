@@ -48,10 +48,6 @@ class ServicesController < ProtectedController
   def confirm
     if @account.offload_billing?
       @current_subscription = @account.stripe_subscription.current_subscription
-
-      if @current_subscription.nil?
-        session[:requires_new_subscription] = true
-      end
     end
 
     case @service

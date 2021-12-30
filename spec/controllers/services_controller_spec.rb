@@ -155,11 +155,6 @@ context ServicesController do
               expect(@account).to receive(:stripe_subscription).and_return @ss
               expect(@ss).to receive(:current_subscription).and_return nil
             end
-
-            it 'should set flag for brand new subscription requirement' do
-              do_post(@opts)
-              expect(session[:requires_new_subscription]).to eq true
-            end
           end
         end
       end
