@@ -4,20 +4,20 @@ class Service < ApplicationRecord
   belongs_to :account
   belongs_to :service_code, optional: true
 
-  has_many :resources,        :dependent => :destroy
+  has_many :resources,        dependent: :destroy
 
-  has_many :virtual_machines, :through => :resources, :source => 'assignable', :source_type => 'VirtualMachine'
-  has_many :ip_blocks,        :through => :resources, :source => 'assignable', :source_type => 'IpBlock'
-  has_many :bandwidth_quotas, :through => :resources, :source => 'assignable', :source_type => 'BandwidthQuota'
-  has_many :backup_quotas,    :through => :resources, :source => 'assignable', :source_type => 'BackupQuota'
-  has_many :bgp_sessions,     :through => :resources, :source => 'assignable', :source_type => 'BgpSession'
+  has_many :virtual_machines, through: :resources, source: 'assignable', source_type: 'VirtualMachine'
+  has_many :ip_blocks,        through: :resources, source: 'assignable', source_type: 'IpBlock'
+  has_many :bandwidth_quotas, through: :resources, source: 'assignable', source_type: 'BandwidthQuota'
+  has_many :backup_quotas,    through: :resources, source: 'assignable', source_type: 'BackupQuota'
+  has_many :bgp_sessions,     through: :resources, source: 'assignable', source_type: 'BgpSession'
 
-  validates_presence_of :account_id
+  validates :account_id, presence: true
 
-  scope :active,   -> { where("deleted_at IS NULL and (pending IS NULL or pending = false)") }
-  scope :inactive, -> { where("deleted_at IS NOT NULL") }
-  scope :pending,  -> { where("pending = true and deleted_at IS NULL") }
-  scope :not_pending, -> { where("pending IS NULL or pending = false") }
+  scope :active,   -> { where('deleted_at IS NULL and (pending IS NULL or pending = false)') }
+  scope :inactive, -> { where.not(deleted_at: nil) }
+  scope :pending,  -> { where('pending = true and deleted_at IS NULL') }
+  scope :not_pending, -> { where('pending IS NULL or pending = false') }
 
   textilizable :description
 
@@ -49,7 +49,7 @@ class Service < ApplicationRecord
       next if service.billing_interval.nil?
       next if service.billing_interval < 1
 
-      if interval = service.billing_interval
+      if (interval = service.billing_interval)
         if hash[interval]
           hash[interval] += service.billing_amount
         else
@@ -68,8 +68,8 @@ class Service < ApplicationRecord
       return
     end
 
-    if !deleted?
-      self.update_attribute(:deleted_at, Time.now.utc)
+    unless deleted?
+      update_attribute(:deleted_at, Time.now.utc)
 
       resources.each do |resource|
         resource.assignable.destroy
@@ -102,5 +102,4 @@ class Service < ApplicationRecord
   # ------------------------------------
   # END:   BillingSystemModels::Sellable
   # ------------------------------------
-
 end
