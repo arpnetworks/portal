@@ -146,8 +146,7 @@ class ServicesController < ProtectedController
 
     session[:pending_service_ids].each do |service_id|
       service = Service.find(service_id)
-      service.pending = false
-      service.save
+      service.activate_billing!
 
       case session[:service_to_enable]
       when 'vps_with_os'

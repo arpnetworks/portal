@@ -102,4 +102,9 @@ class Service < ApplicationRecord
   # ------------------------------------
   # END:   BillingSystemModels::Sellable
   # ------------------------------------
+
+  def activate_billing!
+    self.pending = false
+    save
+  end
 end

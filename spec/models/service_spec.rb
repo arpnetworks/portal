@@ -73,4 +73,27 @@ describe Service do
       expect(@service.deleted_at.strftime("%m/%d/%y %H:%M:%S")).to eql(time.strftime("%m/%d/%y %H:%M:%S"))
     end
   end
+
+  context 'activate_billing!()' do
+    before :each do
+      @service = build :service
+    end
+
+    context 'when service is pending' do
+      before :each do
+        @service.pending = true
+      end
+
+      it 'should flip pending to false' do
+        expect(@service.pending).to eq true
+        @service.activate_billing!
+        expect(@service.pending).to eq false
+      end
+
+      it 'should save record' do
+        expect(@service).to receive(:save)
+        @service.activate_billing!
+      end
+    end
+  end
 end
