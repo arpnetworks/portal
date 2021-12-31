@@ -106,7 +106,7 @@ class Service < ApplicationRecord
   def activate_billing!
     if account.offload_billing?
       subscription = account.stripe_subscription
-      subscription.add!(self)
+      subscription.add!(self) unless pending == false
     end
 
     self.pending = false

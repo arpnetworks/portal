@@ -103,11 +103,30 @@ describe Service do
         allow(@service).to receive(:account).and_return @account
       end
 
-      it 'should add to Stripe subscription' do
-        @sub = double(:stripe_subscription)
-        expect(@account).to receive(:stripe_subscription).and_return @sub
-        expect(@sub).to receive(:add!).with @service
-        @service.activate_billing!
+      context 'when service is pending' do
+        before :each do
+          @service.pending = true
+        end
+
+        it 'should add to Stripe subscription' do
+          @sub = double(:stripe_subscription)
+          expect(@account).to receive(:stripe_subscription).and_return @sub
+          expect(@sub).to receive(:add!).with @service
+          @service.activate_billing!
+        end
+      end
+
+      context 'when service is no longer pending' do
+        before :each do
+          @service.pending = false
+        end
+
+        it 'should not add to Stripe subscription' do
+          @sub = double(:stripe_subscription)
+          expect(@account).to receive(:stripe_subscription).and_return @sub
+          expect(@sub).to_not receive(:add!).with @service
+          @service.activate_billing!
+        end
       end
     end
   end
