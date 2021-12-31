@@ -302,7 +302,7 @@ describe Account do
   describe 'stripe_subscription()' do
     it 'should return our StripeSubscription for this account' do
       @stripe_sub = double(StripeSubscription)
-      expect(StripeSubscription).to receive(:new).with(account).and_return @stripe_sub
+      expect(StripeSubscription).to receive(:new).with(account, {}).and_return @stripe_sub
       expect(account.stripe_subscription).to eq @stripe_sub
     end
   end
