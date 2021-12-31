@@ -32,6 +32,12 @@ class StripeSubscription
     # If a quantity goes down to zero, we should SubscriptionItem.delete() it
   end
 
+  # We assume only one subscription per customer, so, return the first one
+  def current_subscription
+    subscriptions = Stripe::Subscription.list(customer: @account.stripe_customer_id)
+    subscriptions.data.first
+  end
+
   protected
 
   def add_service_to_new_subscription!(service, opts)
@@ -91,12 +97,6 @@ class StripeSubscription
 
     service.stripe_subscription_item_id = si['id']
     service.save
-  end
-
-  # We assume only one subscription per customer, so, return the first one
-  def current_subscription
-    subscriptions = Stripe::Subscription.list(customer: @account.stripe_customer_id)
-    subscriptions.data.first
   end
 
   def first_subscription_item(subscription)
