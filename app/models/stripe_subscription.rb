@@ -50,6 +50,15 @@ class StripeSubscription
       #   Stripe::Subscription.update(sub.id, items: [{ price: service.stripe_price_id, metadata: {...} }])
       #
       #   # Difficult to pull out the si.id here, so maybe we just wait for it in the callback?
+      #
+      #   Or, wait... how about:
+      #   Stripe::SubscriptionItem.create({
+      #     subscription: sub.id,
+      #     price: service.stripe_price_id,
+      #     // quantity: 1
+      #   })
+      #
+      #   Then the return value has si.id directly
     end
   end
 
