@@ -1,8 +1,6 @@
 class StripeSubscription
-  def initialize(account, opts = {})
-    opts[:skip_validation] ||= false
-
-    if !opts[:skip_validation] && !account.offload_billing?
+  def initialize(account)
+    unless account.offload_billing?
       raise "Account ID #{account.id} (#{account.display_account_name}) not set up for offloaded billing"
     end
 

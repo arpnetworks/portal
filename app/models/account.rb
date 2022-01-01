@@ -424,11 +424,11 @@ class Account < ApplicationRecord
   def bootstrap_stripe!
     return if in_stripe?
 
-    stripe_subscription(skip_validation: true).bootstrap!
+    StripeSubscriptionWithoutValidation.new(self).bootstrap!
   end
 
   def stripe_subscription(opts = {})
-    StripeSubscription.new(self, opts)
+    StripeSubscription.new(self)
   end
 
   # An empty account is one that has never had any active services
