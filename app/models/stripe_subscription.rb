@@ -27,6 +27,13 @@ class StripeSubscription
   def remove!(service, opts = {})
     opts[:quantity] ||= 1
 
+    if service.stripe_subscription_item_id.empty? &&
+       service.stripe_price_id.empty?
+      # Nothing we can do if these are both empty, so save us the Stripe API
+      # call by quitting right now...
+      return
+    end
+
     if service.stripe_subscription_item_id.present?
       remove_by_subscription_item!(service, opts[:quantity])
     else
