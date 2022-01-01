@@ -127,7 +127,8 @@ class Admin::ServicesController < Admin::HeadQuartersController
       :coupon,
       :pending,
       :stripe_price_id,
-      :stripe_subscription_item_id
+      :stripe_subscription_item_id,
+      :stripe_quantity
     )
   end
 end
