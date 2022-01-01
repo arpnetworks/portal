@@ -125,7 +125,9 @@ class Admin::ServicesController < Admin::HeadQuartersController
       :date_end,
       :label,
       :coupon,
-      :pending
+      :pending,
+      :stripe_price_id,
+      :stripe_subscription_item_id
     )
   end
 end
