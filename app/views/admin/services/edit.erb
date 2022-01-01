@@ -17,4 +17,34 @@
 </table>
 <% end %>
 
+<form method='POST' action='<%= push_to_stripe_admin_service_path(@service) %>'>
+<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+<table class="entry_form edit_service" align="center">
+  <caption>Advanced Action</caption>
+  <tbody>
+    <tr>
+      <td colspan="2">
+        <div class="notice-warning">
+          Dangerous
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="2">
+        <div class="checklist">
+          <ul>
+            <li>Make sure Stripe <strong>Price ID</strong> is set and saved on this model before pushing to Stripe.</li>
+            <li>This will <strong>not</strong> check for duplicates.</li>
+          </ul>
+        </div>
+        <button type='submit' class='btn btn-danger' onclick="return confirm('Are you sure?')">
+          Push to Stripe
+        </button>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+
 &laquo; <%= link_to('Back to All Services', admin_services_path) %>

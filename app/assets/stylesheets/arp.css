@@ -1322,6 +1322,10 @@ tr.pending_row {
   color: #c713f8;
 }
 
+div.checklist ul {
+  line-height: 1.2em;
+}
+
 /* Changelog */
 
 #HW_badge_cont {

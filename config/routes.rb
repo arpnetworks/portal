@@ -78,7 +78,11 @@ Rails.application.routes.draw do
     end
 
     resources :invoices
-    resources :services
+    resources :services do
+      member do
+        post 'push_to_stripe'
+      end
+    end
     resources :service_codes
     resources :virtual_machines do
       member do
