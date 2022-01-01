@@ -48,29 +48,48 @@ describe Service do
     #     raise_error(ActiveRecord::RecordNotFound)
     # end
 
-    specify 'should set deleted_at' do
-      expect(@service.deleted_at).to be_nil
-      @service.destroy
-      expect(@service.deleted_at).to_not be_nil
+    context 'and offload_billing is false' do
+      before :each do
+        allow(@service.account).to receive(:offload_billing?).and_return false
+      end
+
+      specify 'should set deleted_at' do
+        expect(@service.deleted_at).to be_nil
+        @service.destroy
+        expect(@service.deleted_at).to_not be_nil
+      end
+
+      specify 'should not remove record from database' do
+        id = @service.id
+        @service.destroy
+        expect(Service.find(id)).to_not be_nil
+      end
+
+      specify 'deleted?() should be true' do
+        expect(@service.deleted?).to be false
+        @service.destroy
+        expect(@service.deleted?).to be true
+      end
+
+      specify 'should not delete record twice' do
+        time = 2.days.ago
+        @service.deleted_at = time
+        @service.destroy
+        expect(@service.deleted_at.strftime('%m/%d/%y %H:%M:%S')).to eql(time.strftime('%m/%d/%y %H:%M:%S'))
+      end
     end
 
-    specify 'should not remove record from database' do
-      id = @service.id
-      @service.destroy
-      expect(Service.find(id)).to_not be_nil
-    end
+    context 'and offload_billing is true' do
+      before :each do
+        allow(@service.account).to receive(:offload_billing?).and_return true
+      end
 
-    specify 'deleted?() should be true' do
-      expect(@service.deleted?).to be false
-      @service.destroy
-      expect(@service.deleted?).to be true
-    end
-
-    specify 'should not delete record twice' do
-      time = 2.days.ago
-      @service.deleted_at = time
-      @service.destroy
-      expect(@service.deleted_at.strftime('%m/%d/%y %H:%M:%S')).to eql(time.strftime('%m/%d/%y %H:%M:%S'))
+      it 'should remove itself from the current subscription' do
+        @ss =  double(StripeSubscription)
+        expect(@service.account).to receive(:stripe_subscription).and_return @ss
+        expect(@ss).to receive(:remove!).with(@service)
+        @service.destroy
+      end
     end
   end
 
