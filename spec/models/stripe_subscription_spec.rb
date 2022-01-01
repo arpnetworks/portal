@@ -148,6 +148,91 @@ RSpec.describe StripeSubscription, type: :model do
       end
     end
 
+    describe 'remove!()' do
+      before :each do
+        allow(@account).to receive(:offload_billing?).and_return true
+        @ss = StripeSubscription.new(@account)
+        @service = build :service
+      end
+
+      context 'with a prior subscription' do
+        before :each do
+          # The JSON dance is to stringify the keys, which is how Stripe delivers them
+          @current_subscription = JSON.parse(StripeFixtures.subscription.to_json)
+          allow(@ss).to receive(:current_subscription).and_return @current_subscription
+        end
+
+        context 'when a service has a SubscriptionItem ID' do
+          before :each do
+            @si_id = 'si_Ks8gTNKLLZ0AGY'
+            @service.stripe_subscription_item_id = @si_id
+            @prior_quantity = 5 # Inferred from fixtures
+
+            allow(Stripe::SubscriptionItem).to \
+              receive(:retrieve).with(@si_id).and_return(@current_subscription['items']['data'][1])
+          end
+
+          it 'should update the SubscriptionItem with decreased quantity' do
+            expect(Stripe::SubscriptionItem).to \
+              receive(:update).with(@si_id, quantity: @prior_quantity - 1)
+
+            @ss.remove!(@service)
+          end
+
+          context 'and we provide a quantity' do
+            before :each do
+              @quantity_to_remove = 3
+            end
+
+            it 'should decrease the quantity by specified amount' do
+              expect(Stripe::SubscriptionItem).to \
+                receive(:update).with(@si_id, quantity: 2)\
+                                .and_return @existing_stripe_sub_item
+
+              @ss.remove!(@service, { quantity: @quantity_to_remove })
+            end
+          end
+
+          context 'and the quantity becomes zero' do
+            before :each do
+              @quantity_to_remove = 5
+            end
+
+            it 'should delete the SubscriptionItem' do
+              expect(Stripe::SubscriptionItem).to receive(:delete)\
+                .with(@service.stripe_subscription_item_id)
+
+              @ss.remove!(@service, { quantity: @quantity_to_remove })
+            end
+          end
+        end
+
+        context 'when a service does not have a SubscriptionItem ID' do
+          before :each do
+            @si_id = 'si_Ks8gTNKLLZ0AGY'
+            @service.stripe_subscription_item_id = nil
+            @prior_quantity = 5 # Inferred from fixtures
+
+            allow(Stripe::SubscriptionItem).to \
+              receive(:retrieve).with(@si_id).and_return(@current_subscription['items']['data'][1])
+          end
+
+          context 'but it has a Price ID' do
+            before :each do
+              @service.stripe_price_id = 'price_1KC3EB2LsKuf8PTnh6fKuOrr'
+            end
+
+            it 'should search for SubscriptionItem and update it with decreased quantity' do
+              expect(Stripe::SubscriptionItem).to \
+                receive(:update).with(@si_id, quantity: @prior_quantity - 1)
+
+              @ss.remove!(@service)
+            end
+          end
+        end
+      end
+    end
+
     describe 'current_subscription()' do
       before :each do
         allow(@account).to receive(:offload_billing?).and_return true

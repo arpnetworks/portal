@@ -27,9 +27,20 @@ class StripeSubscription
   def remove!(service, opts = {})
     opts[:quantity] ||= 1
 
-    # Notes
-    #
-    # If a quantity goes down to zero, we should SubscriptionItem.delete() it
+    if service.stripe_subscription_item_id.present?
+      remove_by_subscription_item!(service, opts[:quantity])
+    else
+      # If we don't know the SubscriptionItem ID, then iterate through the whole
+      # subscription, looking for a matching Price ID.  If we have a hit, then
+      # steal the SubscriptionItem ID from that record and proceed normally.
+      subscription_line_items(current_subscription).each do |si|
+        price_id = si['price']['id']
+        next unless service.stripe_price_id == price_id
+
+        service.stripe_subscription_item_id = si['id']
+        remove_by_subscription_item!(service, opts[:quantity])
+      end
+    end
   end
 
   # We assume only one subscription per customer, so, return the first one
@@ -97,6 +108,21 @@ class StripeSubscription
 
     service.stripe_subscription_item_id = si['id']
     service.save
+  end
+
+  def remove_by_subscription_item!(service, quantity)
+    si_id = service.stripe_subscription_item_id
+
+    ss = Stripe::SubscriptionItem.retrieve(si_id)
+
+    old_quantity = ss['quantity']
+    new_quantity = old_quantity - quantity
+
+    if new_quantity > 0
+      Stripe::SubscriptionItem.update(si_id, quantity: new_quantity)
+    else
+      Stripe::SubscriptionItem.delete(si_id)
+    end
   end
 
   def first_subscription_item(subscription)

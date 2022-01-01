@@ -118,7 +118,7 @@ class StripeFixtures
                                  type: 'recurring',
                                  unit_amount: 4000,
                                  unit_amount_decimal: '4000' },
-                        quantity: 2,
+                        quantity: 5,
                         subscription: 'sub_2KC1LV2LsKuf8PTnvJLzsyyW',
                         tax_rates: [] }],
                has_more: false,
