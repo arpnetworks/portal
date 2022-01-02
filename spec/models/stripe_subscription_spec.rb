@@ -31,7 +31,8 @@ RSpec.describe StripeSubscription, type: :model do
       it 'should create a Customer object in Stripe' do
         @stripe = double Stripe::Customer, id: 'cus_foobar'
 
-        expect(Stripe::Customer).to receive(:create).with(name: @account.display_account_name)\
+        expect(Stripe::Customer).to receive(:create).with(name: @account.display_account_name,
+                                                          description: @account.display_account_name)\
                                                     .and_return @stripe
         expect(@account).to receive(:stripe_customer_id=).with('cus_foobar')
         expect(@account).to receive(:save)
@@ -210,7 +211,7 @@ RSpec.describe StripeSubscription, type: :model do
         context 'when a service does not have a SubscriptionItem ID' do
           before :each do
             @si_id = 'si_Ks8gTNKLLZ0AGY'
-            @service.stripe_subscription_item_id = nil
+            @service.stripe_subscription_item_id = ""
             @prior_quantity = 5 # Inferred from fixtures
 
             allow(Stripe::SubscriptionItem).to \

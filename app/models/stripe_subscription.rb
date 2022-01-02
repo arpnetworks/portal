@@ -16,7 +16,7 @@ class StripeSubscription
 
   # Adds this service to the customer's subscription in Stripe
   def add!(service, opts = {})
-    opts[:quantity] ||= 1
+    opts[:quantity] ||= service.stripe_quantity
 
     if current_subscription.nil?
       add_service_to_new_subscription!(service, opts)
@@ -26,7 +26,7 @@ class StripeSubscription
   end
 
   def remove!(service, opts = {})
-    opts[:quantity] ||= 1
+    opts[:quantity] ||= service.stripe_quantity
 
     if service.stripe_subscription_item_id.empty? &&
        service.stripe_price_id.empty?

@@ -75,6 +75,11 @@ class Service < ApplicationRecord
     resources.each do |resource|
       resource.assignable.destroy
     end
+
+    if account.offload_billing?
+      subscription = account.stripe_subscription
+      subscription.remove!(self)
+    end
   end
 
   def deleted?
