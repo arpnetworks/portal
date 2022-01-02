@@ -214,13 +214,29 @@ RSpec.describe StripeSubscription, type: :model do
               allow(Stripe::SubscriptionItem).to \
                 receive(:delete)\
                 .with(@service.stripe_subscription_item_id)\
-                .and_raise(Stripe::InvalidRequestError.new('A subscription must have at least one active plan', 'some-param'))
+                .and_raise(Stripe::InvalidRequestError.new('A subscription must have at least one active plan',
+                                                           'some-param'))
             end
 
             it 'should cancel the subscription' do
               expect(Stripe::Subscription).to receive(:delete)\
                 .with(@current_subscription['items']['data'][1]['subscription'])
               @ss.remove!(@service, { quantity: @quantity_to_remove })
+            end
+
+            context 'and something else went wrong' do
+              before :each do
+                allow(Stripe::SubscriptionItem).to \
+                  receive(:delete)\
+                  .with(@service.stripe_subscription_item_id)\
+                  .and_raise(Stripe::InvalidRequestError.new('oh shit', 'some-param'))
+              end
+
+              it 'should re-raise original Stripe error' do
+                expect do
+                  @ss.remove!(@service, { quantity: @quantity_to_remove })
+                end.to raise_error Stripe::InvalidRequestError, /oh shit/
+              end
             end
           end
         end
