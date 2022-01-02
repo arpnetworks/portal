@@ -206,12 +206,29 @@ RSpec.describe StripeSubscription, type: :model do
               @ss.remove!(@service, { quantity: @quantity_to_remove })
             end
           end
+
+          context 'and we remove the last SubscriptionItem in a subscription' do
+            before :each do
+              @quantity_to_remove = 5
+
+              allow(Stripe::SubscriptionItem).to \
+                receive(:delete)\
+                .with(@service.stripe_subscription_item_id)\
+                .and_raise(Stripe::InvalidRequestError.new('A subscription must have at least one active plan', 'some-param'))
+            end
+
+            it 'should cancel the subscription' do
+              expect(Stripe::Subscription).to receive(:delete)\
+                .with(@current_subscription['items']['data'][1]['subscription'])
+              @ss.remove!(@service, { quantity: @quantity_to_remove })
+            end
+          end
         end
 
         context 'when a service does not have a SubscriptionItem ID' do
           before :each do
             @si_id = 'si_Ks8gTNKLLZ0AGY'
-            @service.stripe_subscription_item_id = ""
+            @service.stripe_subscription_item_id = ''
             @prior_quantity = 5 # Inferred from fixtures
 
             allow(Stripe::SubscriptionItem).to \

@@ -129,7 +129,15 @@ class StripeSubscription
     if new_quantity > 0
       Stripe::SubscriptionItem.update(si_id, quantity: new_quantity)
     else
-      Stripe::SubscriptionItem.delete(si_id)
+      begin
+        Stripe::SubscriptionItem.delete(si_id)
+      rescue Stripe::InvalidRequestError => e
+        if e.message =~ /A subscription must have at least one active plan/
+          Stripe::Subscription.delete(ss['subscription'])
+        else
+          raise
+        end
+      end
     end
   end
 
