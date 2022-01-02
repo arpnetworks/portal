@@ -40,7 +40,10 @@ describe CreditCardsController do
 
       it 'should create a SetupIntent' do
         @our_stripe_subscription = double(StripeSubscription)
-        allow(@account).to receive(:stripe_subscription).and_return @our_stripe_subscription
+        allow(StripeSubscriptionWithoutValidation).to receive(:new)\
+          .with(@account)\
+          .and_return(@our_stripe_subscription)
+
         expect(@our_stripe_subscription).to receive(:create_setup_intent!)
         do_get
       end
