@@ -12,6 +12,15 @@ class StripeSubscription
                                    description: @account.display_account_name)
     @account.stripe_customer_id = cust.id
     @account.save
+
+    self
+  end
+
+  def create_setup_intent!(opts = {})
+    Stripe::SetupIntent.create(
+      customer: @account.stripe_customer_id,
+      payment_method_types: ['card']
+    )
   end
 
   # Adds this service to the customer's subscription in Stripe

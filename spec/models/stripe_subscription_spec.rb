@@ -41,6 +41,21 @@ RSpec.describe StripeSubscription, type: :model do
       end
     end
 
+    describe 'setup_intent!()' do
+      before :each do
+        allow(@account).to receive(:offload_billing?).and_return true
+        @ss = StripeSubscription.new(@account)
+      end
+
+      it 'should create a SetupIntent' do
+        expect(Stripe::SetupIntent).to receive(:create).with(
+          customer: @account.stripe_customer_id,
+          payment_method_types: ['card']
+        )
+        @ss.create_setup_intent!
+      end
+    end
+
     describe 'add!()' do
       before :each do
         allow(@account).to receive(:offload_billing?).and_return true

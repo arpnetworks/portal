@@ -39,10 +39,9 @@ describe CreditCardsController do
       end
 
       it 'should create a SetupIntent' do
-        expect(Stripe::SetupIntent).to receive(:create).with(
-          customer: @stripe_customer_id,
-          payment_method_types: ['card']
-        )
+        @our_stripe_subscription = double(StripeSubscription)
+        allow(@account).to receive(:bootstrap_stripe!).and_return @our_stripe_subscription
+        expect(@our_stripe_subscription).to receive(:create_setup_intent!)
         do_get
       end
     end

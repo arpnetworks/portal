@@ -1,14 +1,11 @@
 class CreditCardsController < ProtectedController
   def new
-    @account.bootstrap_stripe!
+    @our_stripe_subscription = @account.bootstrap_stripe!
     # This will effectively make it so the "else" below never gets executed;
     # everyone will see the new form powered by Stripe
 
     if @account.in_stripe?
-      @stripe_setup_intent = Stripe::SetupIntent.create(
-        customer: @account.stripe_customer_id,
-        payment_method_types: ['card'],
-      )
+      @stripe_setup_intent = @our_stripe_subscription.create_setup_intent!
 
       render 'new', layout: 'responsive'
     else
