@@ -8,7 +8,8 @@ class StripeSubscription
   end
 
   def bootstrap!
-    cust = Stripe::Customer.create(name: @account.display_account_name)
+    cust = Stripe::Customer.create(name: @account.display_account_name,
+                                   description: @account.display_account_name)
     @account.stripe_customer_id = cust.id
     @account.save
   end
