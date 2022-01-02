@@ -82,6 +82,8 @@ def charge_invoices!
       end
     end
 
+    next if invoice.account.offload_billing? # Billing handled by a third party (e.g. Stripe)
+
     accounts_with_unpaid_invoices << invoice.account
   end
 
