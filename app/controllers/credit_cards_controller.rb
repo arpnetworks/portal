@@ -1,10 +1,11 @@
 class CreditCardsController < ProtectedController
   def new
-    @our_stripe_subscription = @account.bootstrap_stripe!
+    @account.bootstrap_stripe!
     # This will effectively make it so the "else" below never gets executed;
     # everyone will see the new form powered by Stripe
 
     if @account.in_stripe?
+      @our_stripe_subscription = StripeSubscriptionWithoutValidation.new(@account)
       @stripe_setup_intent = @our_stripe_subscription.create_setup_intent!
 
       render 'new', layout: 'responsive'
