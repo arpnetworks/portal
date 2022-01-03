@@ -11,6 +11,13 @@ class Admin::ServicesController < Admin::HeadQuartersController
     @service_totals = Service.give_me_totals(@services_active).sort
   end
 
+  def dangling
+    @services = StripeService.dangling.paginate(page: params[:page],
+                                                per_page: params[:per_page]).order('created_at DESC')
+
+    render 'index'
+  end
+
   def new
     @service = Service.new
     @include_blank = true

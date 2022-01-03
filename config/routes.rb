@@ -82,6 +82,9 @@ Rails.application.routes.draw do
       member do
         post 'push_to_stripe'
       end
+      collection do
+        get 'dangling'
+      end
     end
     resources :service_codes
     resources :virtual_machines do
