@@ -109,18 +109,18 @@ class Admin::ServicesController < Admin::HeadQuartersController
   end
 
   def push_to_stripe
-    if !@service.account.offload_billing?
+    unless @service.account.offload_billing?
       flash[:error] = "This account hasn't been set up completely in Stripe, aborting..."
       redirect_to(last_location) && return
     end
 
     if @service.stripe_price_id.blank?
-      flash[:error] = "No Price ID provided, aborting..."
+      flash[:error] = 'No Price ID provided, aborting...'
       redirect_to(last_location) && return
     end
 
     if @service.stripe_subscription_item_id.present?
-      flash[:error] = "SubscriptionItem ID is already set, refusing to push again, aborting..."
+      flash[:error] = 'SubscriptionItem ID is already set, refusing to push again, aborting...'
       redirect_to(last_location) && return
     end
 
