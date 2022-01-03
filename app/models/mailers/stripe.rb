@@ -30,4 +30,17 @@ class Mailers::Stripe < ApplicationMailer
 
     mail(to: @recipients, from: @from, subject: @subject, bcc: @bcc)
   end
+
+  def refund(account, amount, opts = {})
+    @account = account
+    @receipt_url = opts[:receipt_url]
+    @refund_amount = sprintf('$%01.2f USD', amount)
+
+    @subject    = "Refund Receipt"
+    @from       = "ARP Networks <billing@arpnetworks.com>"
+    @recipients = @account.email_for_sales_receipts
+    @bcc        = 'billing@arpnetworks.com'
+
+    mail(to: @recipients, from: @from, subject: @subject, bcc: @bcc)
+  end
 end

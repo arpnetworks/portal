@@ -1,0 +1,11 @@
+Hi <%= @account.display_name %>,
+
+Please find below a link to your receipt for a refund we recently issued back to you.
+
+<%= @receipt_url %>
+
+The total amount of the refund is: <%= @refund_amount %>
+
+Thank you for your business.
+
+<%= render partial: 'mailer/signatures/billing' %>

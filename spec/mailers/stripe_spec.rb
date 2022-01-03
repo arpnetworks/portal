@@ -90,5 +90,40 @@ RSpec.describe Mailers::Stripe, type: :mailer do
         end
       end
     end
+
+    context 'with refund mailer' do
+      before do
+        @opts = {
+          receipt_url: 'https://pay.stripe.com/receipts/something-something-something'
+        }
+        @mailer = Mailers::Stripe.refund(@account, 10, @opts)
+      end
+
+      describe 'refund' do
+        it 'should render the subject' do
+          expect(@mailer.subject).to match 'Refund Receipt'
+        end
+
+        it 'should render the sender email' do
+          expect(@mailer.from).to eql(['billing@arpnetworks.com'])
+        end
+
+        it 'should render the receiver email' do
+          expect(@mailer.to).to eql([@account.email_for_sales_receipts])
+        end
+
+        it 'should render nice greeting' do
+          expect(@mailer.body.encoded).to match("Hi #{@account.display_name}")
+        end
+
+        it 'should render refunded amount with currency' do
+          expect(@mailer.body.encoded).to match('\$10.00 USD')
+        end
+
+        it 'should render Stripe receipt link' do
+          expect(@mailer.body.encoded).to match('https://pay.stripe.com/receipts')
+        end
+      end
+    end
   end
 end
