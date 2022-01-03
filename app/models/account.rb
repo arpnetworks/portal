@@ -76,6 +76,11 @@ class Account < ApplicationRecord
     false # Not used right now
   end
 
+  def otp_qrcode
+    provision_uri = otp_provisioning_uri(email, issuer: 'ARPNetworks')
+    RQRCode::QRCode.new(provision_uri)
+  end
+
   # An account that has its VLAN in 'shutdown' state is suspended
   def suspended?
     vlan_shutdown
