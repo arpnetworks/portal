@@ -37,13 +37,17 @@ class StripeEvent < ApplicationRecord
   def related(model)
     case model
     when :account
-      account, _invoice = get_account_and_invoice(body) rescue nil
+      begin
+        account, _invoice = get_account_and_invoice(body)
+      rescue StandardError
+        nil
+      end
       account
     when :invoice
       begin
         _account, invoice = get_account_and_invoice(body)
         Invoice.find_by(stripe_invoice_id: invoice['id'])
-      rescue
+      rescue StandardError
       end
     end
   end
@@ -75,7 +79,8 @@ class StripeEvent < ApplicationRecord
     begin
       Mailers::Stripe.refund(account, refunded_amount, receipt_url: receipt_url).deliver_now
     rescue StandardError => e
-      Mailer.simple_notification("CC: Was unable to send refund receipt email to #{account.display_account_name}", e.message)
+      Mailer.simple_notification("CC: Was unable to send refund receipt email to #{account.display_account_name}",
+                                 e.message)
     end
   end
 
@@ -104,7 +109,8 @@ class StripeEvent < ApplicationRecord
       hosted_invoice_url = invoice['hosted_invoice_url']
       Mailers::Stripe.sales_receipt(account, hosted_invoice_url: hosted_invoice_url).deliver_now
     rescue StandardError => e
-      Mailer.simple_notification("CC: Was unable to send sales receipt email to #{account.display_account_name}", e.message)
+      Mailer.simple_notification("CC: Was unable to send sales receipt email to #{account.display_account_name}",
+                                 e.message)
     end
   end
 
@@ -135,9 +141,11 @@ class StripeEvent < ApplicationRecord
 
     account = Account.find_by(stripe_customer_id: customer_id)
     if account
-      if !account.offload_billing?
+      unless account.offload_billing?
         # Gotta do this manually for now
-        Mailer.simple_notification("CC: Migrate #{account.display_account_name} (#{account.id}) subscriptions to Stripe", "").deliver_now
+        Mailer.simple_notification(
+          "CC: Migrate #{account.display_account_name} (#{account.id}) subscriptions to Stripe", ''
+        ).deliver_now
       end
 
       account.stripe_payment_method_id = payment_method['id']
