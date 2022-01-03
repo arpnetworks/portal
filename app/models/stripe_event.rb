@@ -1,6 +1,7 @@
 class StripeEvent < ApplicationRecord
   def supported_events
     %w[
+      charge.refunded
       invoice.finalized
       invoice.paid
       invoice.payment_action_required
@@ -57,6 +58,11 @@ class StripeEvent < ApplicationRecord
   ##################
   # EVENT HANDLERS #
   ##################
+
+  def handle_charge_refunded!
+    raise 'Incorrect event type' if event_type != 'charge.refunded'
+
+  end
 
   def handle_invoice_finalized!
     raise 'Incorrect event type' if event_type != 'invoice.finalized'
