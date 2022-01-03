@@ -130,7 +130,8 @@ class Admin::AccountsController < Admin::HeadQuartersController
       :state,
       :zip,
       :country,
-      :stripe_customer_id
+      :stripe_customer_id,
+      :stripe_payment_method_id
     )
   end
 end

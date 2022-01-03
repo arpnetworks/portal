@@ -108,6 +108,10 @@
     <td><%= f.text_field :stripe_customer_id %></td>
   </tr>
   <tr>
+    <td class="label">Stripe Payment Method ID:</td>
+    <td><%= f.text_field :stripe_payment_method_id %></td>
+  </tr>
+  <tr>
     <td class="label">Offload Billing?</td>
     <td><%= @account.offload_billing? ? 'Yes' : 'No' %></td>
   </tr>
