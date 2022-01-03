@@ -38,7 +38,7 @@ class StripeInvoice < Invoice
       inv.stripe_invoice_id = invoice['id']
       inv.save
     rescue ActiveRecord::RecordNotFound => e
-      raise ArgumentError.new "Provided Invoice ID #{arp_invoice_id} does not exist, cannot link Stripe invoice"
+      raise ArgumentError, "Provided Invoice ID #{arp_invoice_id} does not exist, cannot link Stripe invoice"
     end
   end
 
@@ -67,7 +67,7 @@ class StripeInvoice < Invoice
     inv = Invoice.find_by(stripe_invoice_id: charge['invoice'])
 
     raise "Invoice not found by Stripe invoice ID: #{charge['invoice']['id']}" unless inv
-    raise "Invoice paid amount does not equal refunded amount" if inv.paid != charge_refunded_amount(charge)
+    raise 'Invoice paid amount does not equal refunded amount' if inv.paid != charge_refunded_amount(charge)
 
     inv.paid = false
     inv.save
@@ -80,7 +80,9 @@ class StripeInvoice < Invoice
   end
 
   def self.charge_refunded_on(charge)
-    Time.at(charge['refunds']['data'].first['created']).to_s rescue ""
+    Time.at(charge['refunds']['data'].first['created']).to_s
+  rescue StandardError
+    ''
   end
 
   def self.charge_refunded_amount(charge)
