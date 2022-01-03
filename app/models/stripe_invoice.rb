@@ -66,8 +66,10 @@ class StripeInvoice < Invoice
   def self.process_refund(charge)
     inv = Invoice.find_by(stripe_invoice_id: charge['invoice'])
 
+    refunded_amount = charge_refunded_amount(charge)
+
     raise "Invoice not found by Stripe invoice ID: #{charge['invoice']['id']}" unless inv
-    raise 'Invoice paid amount does not equal refunded amount' if inv.paid != charge_refunded_amount(charge)
+    raise 'Invoice paid amount does not equal refunded amount' if inv.paid != refunded_amount
 
     inv.paid = false
     inv.save
@@ -77,6 +79,8 @@ class StripeInvoice < Invoice
       payment.notes = 'Refunded on ' + charge_refunded_on(charge)
       payment.save
     end
+
+    refunded_amount
   end
 
   def self.charge_refunded_on(charge)

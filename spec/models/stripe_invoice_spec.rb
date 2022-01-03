@@ -172,7 +172,7 @@ RSpec.describe StripeInvoice, type: :model do
         @inv = mock_model Invoice
       end
 
-      it 'should set payment to zero and mark invoice unpaid' do
+      it 'should set payment to zero, mark invoice unpaid, and return refunded amount' do
         payment = double :payment
 
         allow(Invoice).to receive(:find_by).with(stripe_invoice_id: @stripe_charge['invoice'])\
@@ -187,7 +187,8 @@ RSpec.describe StripeInvoice, type: :model do
         expect(payment).to receive(:notes=)
         expect(payment).to receive(:save)
 
-        StripeInvoice.process_refund(@stripe_charge)
+        refunded_amount = StripeInvoice.process_refund(@stripe_charge)
+        expect(refunded_amount).to eq 10.0
       end
 
       context 'when Stripe refund amount is not equal to invoice payments' do
