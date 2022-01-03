@@ -62,6 +62,21 @@ class StripeEvent < ApplicationRecord
   def handle_charge_refunded!
     raise 'Incorrect event type' if event_type != 'charge.refunded'
 
+    event = JSON.parse(body)
+
+    charge = event['data']['object']
+    customer_id = charge['customer']
+    receipt_url = charge['receipt_url']
+
+    account = Account.find_by(stripe_customer_id: customer_id)
+
+    refunded_amount = StripeInvoice.process_refund(charge)
+
+    begin
+      Mailers::Stripe.refund(account, refunded_amount, receipt_url: receipt_url).deliver_now
+    rescue StandardError => e
+      Mailer.simple_notification("CC: Was unable to send refund receipt email to #{account.display_account_name}", e.message)
+    end
   end
 
   def handle_invoice_finalized!

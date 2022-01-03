@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'stripe_helper'
 
 RSpec.describe StripeEvent, type: :model do
   context 'with event' do
@@ -384,6 +385,62 @@ RSpec.describe StripeEvent, type: :model do
           allow(@account).to receive(:offload_billing?)
 
           @stripe_event.handle_payment_method_attached!
+        end
+      end
+    end
+
+    describe 'handle_charge_refunded!' do
+      context 'with event and account' do
+        before :each do
+          @account = build(:account)
+          @stripe_event = build(:stripe_event, :charge_refunded)
+          allow(@stripe_event).to receive(:body) {
+            StripeFixtures.event_charge_refunded.to_json
+          }
+          @charge = JSON.parse(@stripe_event.body)['data']['object']
+        end
+
+        context 'with incorrect event type' do
+          before :each do
+            @stripe_event.event_type = 'foo'
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_finalized! }.to raise_error StandardError
+          end
+        end
+
+        context 'with valid customer' do
+          before :each do
+            @account = build(:account)
+            allow(Account).to receive(:find_by).and_return(@account)
+          end
+
+          it 'should process refund' do
+            expect(StripeInvoice).to receive(:process_refund).with(@charge)
+            @stripe_event.handle_charge_refunded!
+          end
+
+          it 'should send a refund receipt email' do
+            allow(StripeInvoice).to receive(:process_refund).with(@charge) { 10 }
+            mailer = double(:mailer)
+            expect(mailer).to receive(:deliver_now)
+            expect(Mailers::Stripe).to receive(:refund)\
+              .with(@account, 10, receipt_url: @charge['receipt_url'])\
+              .and_return mailer
+            @stripe_event.handle_charge_refunded!
+          end
+        end
+
+        context 'without valid customer' do
+          before :each do
+            # No such account given this Stripe customer_id
+            allow(Account).to receive(:find_by).and_return(nil)
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_paid! }.to raise_error StandardError
+          end
         end
       end
     end
