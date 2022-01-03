@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'stripe_helper'
 
 RSpec.describe StripeInvoice, type: :model do
   describe 'self.create_for_account()' do
@@ -94,6 +95,121 @@ RSpec.describe StripeInvoice, type: :model do
 
         it 'should raise error' do
           expect { StripeInvoice.create_payment(@account, @stripe_invoice) }.to raise_error StandardError, /not found/
+        end
+      end
+    end
+  end
+
+  describe 'self.charge_refunded_on' do
+    context 'with charge' do
+      before :each do
+        # The JSON dance is to stringify the keys, which is how Stripe delivers them
+        @stripe_event = JSON.parse(StripeFixtures.event_charge_refunded.to_json)
+        @stripe_charge = @stripe_event['data']['object']
+      end
+
+      context 'when refunded' do
+        it 'should return timestamp as string' do
+          expect(StripeInvoice.charge_refunded_on(@stripe_charge)).to eq '2022-01-03 08:31:19 +0000'
+        end
+      end
+
+      context 'when not refunded' do
+        before :each do
+          @stripe_charge['refunds']['data'] = []
+        end
+
+        it 'should return empty string' do
+          expect(StripeInvoice.charge_refunded_on(@stripe_charge)).to eq ''
+        end
+      end
+
+      context 'when anything else goes wrong' do
+        before :each do
+          allow(Time).to receive(:at).and_raise StandardError
+        end
+
+        it 'should return empty string' do
+          expect(StripeInvoice.charge_refunded_on(@stripe_charge)).to eq ''
+        end
+      end
+    end
+  end
+
+  describe 'self.charge_refunded_amount' do
+    context 'with charge' do
+      before :each do
+        # The JSON dance is to stringify the keys, which is how Stripe delivers them
+        @stripe_event = JSON.parse(StripeFixtures.event_charge_refunded.to_json)
+        @stripe_charge = @stripe_event['data']['object']
+      end
+
+      context 'when refunded' do
+        it 'should add up all the refund amounts and return the total' do
+          expect(StripeInvoice.charge_refunded_amount(@stripe_charge)).to eq 10.00
+        end
+      end
+
+      context 'when not refunded' do
+        before :each do
+          @stripe_charge['refunds']['data'] = []
+        end
+
+        it 'should return 0' do
+          expect(StripeInvoice.charge_refunded_amount(@stripe_charge)).to eq 0.00
+        end
+      end
+    end
+  end
+
+  describe 'self.process_refund()' do
+    context 'with account and charge' do
+      before :each do
+        # The JSON dance is to stringify the keys, which is how Stripe delivers them
+        @stripe_event = JSON.parse(StripeFixtures.event_charge_refunded.to_json)
+        @stripe_charge = @stripe_event['data']['object']
+
+        @inv = mock_model Invoice
+      end
+
+      it 'should set payment to zero and mark invoice unpaid' do
+        payment = double :payment
+
+        allow(Invoice).to receive(:find_by).with(stripe_invoice_id: @stripe_charge['invoice'])\
+                                           .and_return(@inv)
+        allow(@inv).to receive(:paid) { 10.0 }
+        allow(@inv).to receive(:payments).and_return [payment]
+
+        expect(@inv).to receive(:paid=).with(false)
+        expect(@inv).to receive(:save)
+
+        expect(payment).to receive(:amount=).with(0)
+        expect(payment).to receive(:notes=)
+        expect(payment).to receive(:save)
+
+        StripeInvoice.process_refund(@stripe_charge)
+      end
+
+      context 'when Stripe refund amount is not equal to invoice payments' do
+        before :each do
+          allow(Invoice).to receive(:find_by).with(stripe_invoice_id: @stripe_charge['invoice'])\
+                                             .and_return(@inv)
+          allow(@inv).to receive(:paid) { 10.0 }
+          @stripe_charge['refunds']['data'].first['amount'] = 5.0
+        end
+
+        it 'should raise error' do
+          expect { StripeInvoice.process_refund(@stripe_charge) }.to raise_error StandardError
+        end
+      end
+
+      context 'when Invoice not found' do
+        before :each do
+          allow(Invoice).to receive(:find).and_return nil
+        end
+
+        it 'should raise error' do
+          expect { StripeInvoice.process_refund(@stripe_charge) }.to raise_error StandardError, /not found/
         end
       end
     end

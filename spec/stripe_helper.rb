@@ -143,4 +143,144 @@ class StripeFixtures
       trial_start: nil
     }
   end
+
+  def self.event_charge_refunded
+    {
+      id: 'evt_3KCjGm2LsKuf8PTn1WSGLARW',
+      object: 'event',
+      api_version: '2020-08-27',
+      created: 1_641_198_679,
+      data: {
+        object: {
+          id: 'ch_3KCjGm2LsKuf8STn1r9mySu1',
+          object: 'charge',
+          amount: 1000,
+          amount_captured: 1000,
+          amount_refunded: 1000,
+          amount_updates: [],
+          application: nil,
+          application_fee: nil,
+          application_fee_amount: nil,
+          balance_transaction: 'txn_3KCjGm2LsKuf8PTn1wHBbUnv',
+          billing_details: {
+            address: {
+              city: nil,
+              country: 'US',
+              line1: nil,
+              line2: nil,
+              postal_code: '90046',
+              state: nil
+            },
+            email: nil,
+            name: nil,
+            phone: nil
+          },
+          calculated_statement_descriptor: 'ARP NETWORKS',
+          captured: true,
+          created: 1_640_950_057,
+          currency: 'usd',
+          customer: 'cus_Ks9OPBxRy92erm',
+          description: 'Subscription creation',
+          destination: nil,
+          dispute: nil,
+          disputed: false,
+          failure_code: nil,
+          failure_message: nil,
+          fraud_details: {
+          },
+          invoice: 'in_1KCjGm2LsKuf8PTnux96o02a',
+          livemode: false,
+          metadata: {
+          },
+          on_behalf_of: nil,
+          order: nil,
+          outcome: {
+            network_status: 'approved_by_network',
+            reason: nil,
+            risk_level: 'normal',
+            risk_score: 10,
+            seller_message: 'Payment complete.',
+            type: 'authorized'
+          },
+          paid: true,
+          payment_intent: 'pi_3KCjGm2LsKuf8PTn1k0YbAKy',
+          payment_method: 'pm_1KCP6L2LsKuf8PTnPCVDI64U',
+          payment_method_details: {
+            card: {
+              brand: 'visa',
+              checks: {
+                address_line1_check: nil,
+                address_postal_code_check: 'pass',
+                cvc_check: nil
+              },
+              country: 'US',
+              exp_month: 11,
+              exp_year: 2023,
+              fingerprint: 'ojXtw1yzCn0N0mB8',
+              funding: 'credit',
+              installments: nil,
+              last4: '1111',
+              network: 'visa',
+              three_d_secure: nil,
+              wallet: nil
+            },
+            type: 'card'
+          },
+          receipt_email: nil,
+          receipt_number: '2831-2477',
+          receipt_url: 'https://pay.stripe.com/receipts/foo',
+          refunded: true,
+          refunds: {
+            object: 'list',
+            data: [
+              {
+                id: 're_3KCjGm2LsKuf8PTn1001BPip',
+                object: 'refund',
+                amount: 1000,
+                balance_transaction: 'txn_3KCjGm2LsKuf8PTn1OyVEgZZ',
+                charge: 'ch_3KCjGm2LsKuf8STn1r9mySu1',
+                created: 1_641_198_679,
+                currency: 'usd',
+                metadata: {
+                },
+                payment_intent: 'pi_3KCjGm2LsKuf8PTn1k0YbAKy',
+                reason: 'requested_by_customer',
+                receipt_number: nil,
+                source_transfer_reversal: nil,
+                status: 'succeeded',
+                transfer_reversal: nil
+              }
+            ],
+            has_more: false,
+            total_count: 1,
+            url: '/v1/charges/ch_3KCjGm2LsKuf8STn1r9mySu1/refunds'
+          },
+          review: nil,
+          shipping: nil,
+          source: nil,
+          source_transfer: nil,
+          statement_descriptor: nil,
+          statement_descriptor_suffix: nil,
+          status: 'succeeded',
+          transfer_data: nil,
+          transfer_group: nil
+        },
+        previous_attributes: {
+          amount_refunded: 0,
+          refunded: false,
+          refunds: {
+            data: [],
+            total_count: 0
+          }
+        }
+      },
+      livemode: false,
+      pending_webhooks: 3,
+      request: {
+        id: 'req_GRnQ8M0sqz9UL6',
+        idempotency_key: '93162240-6b4d-41a3-a862-834fe4325f87'
+      },
+      type: 'charge.refunded'
+    }
+  end
 end

@@ -62,4 +62,32 @@ class StripeInvoice < Invoice
       raise "Invoice not found by Stripe invoice ID: #{invoice['id']}"
     end
   end
+
+  def self.process_refund(charge)
+    inv = Invoice.find_by(stripe_invoice_id: charge['invoice'])
+
+    raise "Invoice not found by Stripe invoice ID: #{charge['invoice']['id']}" unless inv
+    raise "Invoice paid amount does not equal refunded amount" if inv.paid != charge_refunded_amount(charge)
+
+    inv.paid = false
+    inv.save
+
+    inv.payments.each do |payment|
+      payment.amount = 0
+      payment.notes = 'Refunded on ' + charge_refunded_on(charge)
+      payment.save
+    end
+  end
+
+  def self.charge_refunded_on(charge)
+    Time.at(charge['refunds']['data'].first['created']).to_s rescue ""
+  end
+
+  def self.charge_refunded_amount(charge)
+    total = charge['refunds']['data'].inject(0) do |x, refund|
+      x + (refund['status'] == 'succeeded' ? refund['amount'] : 0)
+    end
+
+    total / 100.00
+  end
 end
