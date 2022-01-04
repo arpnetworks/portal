@@ -13,6 +13,11 @@
 
     <hr class="m-4">
 
+    <% if @otp_flash %>
+    <%= render_flash(@otp_flash) %>
+    <br/>
+    <% end %>
+
     <div class="text-center">
       <%= form_with(
             url: account_two_factor_authentication_confirmation_path,

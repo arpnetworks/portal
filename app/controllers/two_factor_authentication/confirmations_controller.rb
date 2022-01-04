@@ -13,7 +13,9 @@ module TwoFactorAuthentication
 
         render 'two_factor_authentication/confirmations/success'
       else
-        flash.now[:alert] = "Failed to confirm the 2FA code"
+        @otp_flash = {
+          'error' => 'Failed to confirm the 2FA code, please try again.'
+        }
 
         @qrcode = current_account.otp_qrcode
         render :new
