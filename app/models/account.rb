@@ -77,7 +77,7 @@ class Account < ApplicationRecord
   end
 
   def otp_qrcode
-    provision_uri = otp_provisioning_uri(email, issuer: 'ARPNetworks')
+    provision_uri = otp_provisioning_uri(login, issuer: 'ARP Networks')
     RQRCode::QRCode.new(provision_uri)
   end
 

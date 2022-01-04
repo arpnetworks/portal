@@ -493,8 +493,8 @@ describe Account do
   end
 
   describe '#otp_qrcode' do
-    it 'success generate a RQRCode::QRCode object' do
-      account = Account.new(email: 'garry@garry.com')
+    it 'successfully generates a RQRCode::QRCode object' do
+      account = Account.new(login: 'john')
       account.otp_secret = Account.generate_otp_secret
       qrcode = account.otp_qrcode
 
