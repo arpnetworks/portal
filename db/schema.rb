@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2022_01_01_052124) do
     t.string "encrypted_otp_secret_iv"
     t.string "encrypted_otp_secret_salt"
     t.integer "consumed_timestep"
-    t.boolean "otp_required_for_login"
+    t.boolean "otp_required_for_login", default: false, null: false
     t.text "otp_backup_codes"
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["login"], name: "index_accounts_on_login", unique: true
