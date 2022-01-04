@@ -81,6 +81,8 @@ development:
         medium:
         large:
       bgp: price_xyz
+  devise:
+    otp_secret_encryption_key: opt_encryption_key_must_be_32_bytes_or_longer
 test:
   iso_base: foo/bar
   payment_system_disabled_lockfile: lock-it.tmp
@@ -163,3 +165,5 @@ test:
         medium: price_foo
         large: price_bar
       bgp: price_xyz
+  devise:
+    otp_secret_encryption_key: opt_encryption_key_must_be_32_bytes_or_longer
