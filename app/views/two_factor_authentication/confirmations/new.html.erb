@@ -1,0 +1,40 @@
+<section class="two-factor-auth-setup">
+  <div class="w-8/10 mx-auto">
+    <h2>Two-factor authentication setup</h2>
+    <p>You will need a Google Authenticator(or another 2FA authentication app) to complete this process.</p>
+
+    <div>
+      <label class="block text-center p-4">Scan the QR code into your app.</label>
+
+      <div class="text-center">
+        <%= @qrcode.as_svg(module_size: 3).html_safe %>
+      </div>
+    </div>
+
+    <hr class="m-4">
+
+    <div class="text-center">
+      <%= form_with(
+            url: account_two_factor_authentication_confirmation_path,
+            local: true,
+            method: :post,
+            class: 'two-factor-auth-box'
+      ) do |f| %>
+        <p class="text-center">Enter 6-digit code from your two factor authenticator app.</p>
+
+        <%= render 'components/otp_field', f: f, field_name: :otp_code, code_length: 6 %>
+
+        <div class="text-right">
+          <%= link_to 'Cancel', account_security_path, class: 'btn' %>
+          <%= f.button(
+                "Confirm and activate",
+                type: :submit,
+                class: 'btn btn-success',
+                data: {
+                  disable_with: "<i class='fas fa-spinner fa-spin'></i>".html_safe
+                }) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

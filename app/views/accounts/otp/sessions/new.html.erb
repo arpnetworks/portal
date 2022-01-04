@@ -1,0 +1,28 @@
+<section class="otp-auth-section">
+  <div class="w-8/10 mx-auto">
+    <h2>Authenticate your account</h2>
+  </div>
+
+  <div class="text-center p-4">
+    <%= form_with(
+          url: accounts_sign_in_otp_path,
+          scope: :account,
+          method: :post,
+          local: true,
+          class: 'two-factor-auth-box'
+    ) do |f| %>
+      <p class="text-center">Enter 6-digit code from your two factor authenticator app.</p>
+
+      <%= render 'components/otp_field', f: f, field_name: :otp_attempt, code_length: 6 %>
+
+      <div class="text-right">
+        <%= f.submit 'Verify', class: 'btn btn-info' %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="text-center p-2">
+    <label class="block p-2">Don't have your phone?</label>
+    <%= link_to "Use a recovery code to access your account.", accounts_sign_in_recovery_code_path %>
+  </div>
+</section>

@@ -27,6 +27,14 @@ RSpec.describe 'Admin - Create an account' do
 
     expect(page).to have_selector("td", text: "john")
     expect(page).to have_selector("td", text: "john@example.com")
+
+    click_link "Logout"
+    expect(page).to have_content("You have been logged out.")
+
+    fill_in 'account[login]', with: 'john'
+    fill_in 'account[password]', with: '12345678'
+    click_button "Login"
+    expect(page).to have_content("Welcome john, it is nice to see you.")
   end
 
 end

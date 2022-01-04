@@ -1,0 +1,92 @@
+<div class="error">
+  <%= error_messages_for current_account %>
+</div>
+
+<%= form_with url: account_password_change_path(current_account), model: current_account, method: :post, local: true do |f| %>
+  <table class="entry_form" align="center">
+    <caption>Change password</caption>
+    <tfoot>
+      <tr>
+        <td></td>
+        <td colspan="1">
+          <%= f.submit 'Update password', class: 'btn' %>
+        </td>
+      </tr>
+    </tfoot>
+
+    <tbody>
+      <tr>
+        <td class="label">Current password:</td>
+        <td class="required w-2/3"><%= f.password_field :current_password %></td>
+      </tr>
+
+      <tr>
+        <td class="label">New password:</td>
+        <td class="required w-2/3"><%= f.password_field :password %></td>
+      </tr>
+
+      <tr>
+        <td class="label">Confirm new password:</td>
+        <td class="required w-2/3"><%= f.password_field :password_confirmation %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<section class="two-factor-authentication">
+  <div class="w-8/10 mx-auto">
+    <h2>Two-factor authentication</h2>
+    <p>Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in.</p>
+
+    <% if current_account.otp_required_for_login %>
+      <table class="border-collapse">
+        <thead>
+          <tr>
+            <th colspan="2" class="p-3">Two-factor methods</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="p-4">Authenticator app</td>
+            <td class="text-right p-4">
+              <%= link_to(
+                    "Disable",
+                    account_two_factor_authentication_path(current_account),
+                    method: :delete,
+                    class: 'btn btn-danger',
+                    data: {
+                      disable_with: "<i class='fas fa-spinner fa-spin'></i>".html_safe
+                    }) %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="border-collapse">
+        <thead>
+          <tr>
+            <th colspan="2" class="p-3">Recovery Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="p-4">Recovery codes</td>
+            <td class="text-right p-4">
+              <%= link_to('Regenerate',
+                    account_two_factor_authentication_recovery_codes_path(current_account),
+                    method: :post,
+                    class: 'btn',
+                    data: {
+                      disable_with: "<i class='fas fa-spinner fa-spin'></i>".html_safe
+                    }) %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <% else %>
+      <%= link_to 'Set up two-factor authentication', account_two_factor_authentication_path(current_account), method: :post %>
+    <% end %>
+  </div>
+</section>
+
+&laquo; <%= link_to 'Back to Dashboard', dashboard_path %>

@@ -4,6 +4,11 @@ Rails.application.routes.draw do
     root to: 'accounts/sessions#new'
 
     get '/accounts/login' => 'accounts/sessions#new' # Keep previous URL working
+
+    get '/accounts/sign_in/otp' => 'accounts/otp/sessions#new'
+    post '/accounts/sign_in/otp' => 'accounts/otp/sessions#create'
+    get '/accounts/sign_in/recovery_code' => 'accounts/recovery_code/sessions#new'
+    post '/accounts/sign_in/recovery_code' => 'accounts/recovery_code/sessions#create'
   end
 
   devise_for :accounts, controllers: {
@@ -61,6 +66,14 @@ Rails.application.routes.draw do
     end
     resources :jobs
     resources :ssh_keys
+    resource :security, controller: :security, only: [:show]
+    resource :password_change, controller: :password_change, only: [:create, :show]
+    resource :two_factor_authentication, only: %i[create destroy show] do
+      scope module: :two_factor_authentication do
+        resources :recovery_codes, only: [:create, :index]
+        resource :confirmation, only: [:create, :show]
+      end
+    end
   end
 
   get '/noVNC/console', controller: 'virtual_machines', action: 'console'

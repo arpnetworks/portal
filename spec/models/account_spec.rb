@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe Account do
 
+  it_behaves_like "two_factor_authenticatable"
+  it_behaves_like "two_factor_backupable"
+
   describe "#login" do
     it { should validate_presence_of(:login) }
     it { should validate_uniqueness_of(:login).case_insensitive }
@@ -486,6 +489,17 @@ describe Account do
         service.destroy
         expect(account.bandwidth_quotas).to eq([@garrys_bq])
       end
+    end
+  end
+
+  describe '#otp_qrcode' do
+    it 'success generate a RQRCode::QRCode object' do
+      account = Account.new(email: 'garry@garry.com')
+      account.otp_secret = Account.generate_otp_secret
+      qrcode = account.otp_qrcode
+
+      assert qrcode.is_a?(RQRCode::QRCode)
+      assert_match /svg version="1\.1"/, qrcode.as_svg
     end
   end
 end

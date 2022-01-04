@@ -8,7 +8,16 @@ class Account < ApplicationRecord
   has_many :ssh_keys
   has_many :jobs
 
-  devise :database_authenticatable, :recoverable, :validatable
+  devise :two_factor_authenticatable,
+         otp_secret_encryption_key: $DEVISE_OTP_SECRET_ENCRYPTION_KEY
+
+  devise :two_factor_backupable,
+         otp_backup_code_length: 8,
+         otp_number_of_backup_codes: 12
+
+  devise :recoverable, :validatable
+
+  serialize :otp_backup_codes, Array
 
   validates_presence_of      :login
   validates_uniqueness_of    :login, case_sensitive: false
@@ -65,6 +74,11 @@ class Account < ApplicationRecord
 
   def arp_sub_admin?
     false # Not used right now
+  end
+
+  def otp_qrcode
+    provision_uri = otp_provisioning_uri(email, issuer: 'ARPNetworks')
+    RQRCode::QRCode.new(provision_uri)
   end
 
   # An account that has its VLAN in 'shutdown' state is suspended

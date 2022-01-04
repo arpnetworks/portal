@@ -57,4 +57,6 @@ if conf = @config[Rails.env]
   $STRIPE_PRODUCTS  = conf['stripe']['products']
 
   Stripe.api_key = $STRIPE_API_KEY
+
+  $DEVISE_OTP_SECRET_ENCRYPTION_KEY = conf['devise']['otp_secret_encryption_key']
 end

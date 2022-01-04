@@ -36,21 +36,6 @@ RSpec.describe 'Update account' do
     expect(page).to have_field("account[state]", with: "OR")
     expect(page).to have_field("account[zip]", with: "97205")
     expect(page).to have_field("account[country]", with: "US")
-
-    fill_in "account[password]", with: "abc123456"
-    fill_in "account[password_confirmation]", with: "abc123456"
-    click_button "Save changes"
-    expect(page).to have_content("Changes saved")
-    expect(page).to have_field("account[email2]", with: "chris2@test.com")
-
-    click_link "Logout"
-    expect(page).to have_content("You have been logged out.")
-
-    fill_in'account[login]', with: 'chris'
-    fill_in 'account[password]', with: 'abc123456'
-    click_button "Login"
-    expect(page).to have_content("ARP-Test's dashboard")
-    expect(page.current_path).to eq(dashboard_path)
   end
 
 end

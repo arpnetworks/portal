@@ -1,0 +1,15 @@
+<section class="recovery-codes-index-section">
+  <div class="w-8/10 mx-auto text-center">
+    <h2>Regenerate Recovery Codes Success</h2>
+
+    <p class="w-2/3 mx-auto text-left leading-4">Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in. (All previous codes are expired.)</p>
+
+    <ul class="recovery-codes-box">
+      <% @recovery_codes.each do |code| %>
+        <li><%= code %></li>
+      <% end %>
+    </ul>
+
+    <%= link_to "Done", account_security_path, class: 'text-right btn' %>
+  </div>
+</section>
