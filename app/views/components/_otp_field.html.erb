@@ -44,6 +44,13 @@
           $(next).trigger("select");
         }
       }
+
+      // Update otp-code-field
+      var otpCode = ''
+      for (var i = 1; i < <%= code_length + 1 %>; i += 1) {
+        otpCode += $('.otp-digit-fields-container').find(`input#digit-${i}`).val()
+      }
+      $("#otp-code-field").val(otpCode)
     })
 
     $(this).on('keyup', function(e) {
@@ -59,16 +66,9 @@
         if(next.length) {
           $(next).trigger("select");
         }
+      } else if (e.key === 'Enter' && $("#otp-code-field").val().length === <%= code_length %>) {
+        $(this.form).trigger("submit")
       }
-    });
-
-    $(this).on('change', function(e) {
-      var otpCode = ''
-      for (var i = 1; i < <%= code_length + 1 %>; i += 1) {
-        otpCode += $('.otp-digit-fields-container').find(`input#digit-${i}`).val()
-      }
-
-      $("#otp-code-field").val(otpCode)
     });
   });
 </script>
