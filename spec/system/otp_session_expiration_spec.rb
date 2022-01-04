@@ -37,7 +37,7 @@ RSpec.describe 'OTP session expiration (expire after 30 seconds)' do
     click_button "Login"
     expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
 
-    click_link "Use a recovery code to access your account."
+    click_link "Use a recovery code to access your account"
     expect(page).to have_content("Authenticate your account with a recovery code")
     expect(page).to have_content("To access your account, enter one of the recovery codes you saved when you set up your two-factor authentication device.")
 
