@@ -29,7 +29,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     fill_in_digit_fields_with token
     click_button "Confirm and activate"
     expect(page).to have_content("2FA Setup Success")
-    expect(page).to have_content("Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in.")
+    expect(page).to have_content("Save these emergency backup codes and store them somewhere safe. If you lose your phone, you can use backup codes to sign in.")
     expect(page).to have_selector("li", count: 12)
     all("li").each do |li|
       expect(li.text).to match(/\w{8}/)
@@ -44,7 +44,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
 
     click_on "Regenerate" # Regenerate recovery codes
     expect(page).to have_content("Regenerate Recovery Codes Success")
-    expect(page).to have_content("Save this emergency backup code and store it somewhere safe. If you lose your phone, you can use backup codes to sign in. (All previous codes are expired.)")
+    expect(page).to have_content("Save these emergency backup codes and store them somewhere safe. If you lose your phone, you can use backup codes to sign in. All previous codes are now expired.")
     expect(page).to have_selector("li", count: 12)
     save_recovery_codes
 
