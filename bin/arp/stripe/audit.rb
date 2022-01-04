@@ -10,6 +10,8 @@ puts 'ARP Networks vs Stripe Audit Report'
 puts '==========' * 8
 
 Account.where("stripe_customer_id != ''").each do |account|
+  next unless account.offload_billing?
+
   customer_id = account.stripe_customer_id
   puts account.display_account_name.to_s
 
@@ -26,14 +28,28 @@ Account.where("stripe_customer_id != ''").each do |account|
         str_mrc += (subscription_item['plan']['amount'] * subscription_item['quantity'])
       end
     end
+
+    if (discount = subscription['discount'])
+      coupon = discount['coupon']
+
+      if coupon
+        puts "    Discount Coupon: #{coupon['name']}"
+        if (percent_off = coupon['percent_off'])
+          str_mrc = str_mrc - (str_mrc * (percent_off / 100))
+        end
+      end
+    end
   end
 
   str_mrc /= 100.0
 
-  puts '    Total MRC in Stripe: ' + format('$%01.2f', str_mrc)
-  puts '  Our MRC: ' + format('$%01.2f', account.mrc)
+  formatted_str_mrc = format('$%01.2f', str_mrc)
+  formatted_our_mrc = format('$%01.2f', our_mrc)
 
-  if our_mrc != str_mrc
+  puts '    Total MRC in Stripe: ' + formatted_str_mrc
+  puts '  Our MRC: ' + formatted_our_mrc
+
+  if formatted_our_mrc != formatted_str_mrc
     puts ''
     puts ' *** MRC Discrepancy Detected *** '
     puts ''
