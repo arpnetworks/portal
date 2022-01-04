@@ -33,6 +33,19 @@
       }
     });
 
+    $(this).on('input', function(e) {
+      var digitValue = e.originalEvent.data
+      if (digitValue == null) { return; }
+
+      if(('0' <= digitValue && digitValue <= '9') || ('a' <= digitValue && digitValue <= 'z')) {
+        var next = $('.otp-digit-fields-container').find('input#' + $(this).data('next'));
+        
+        if(next.length) {
+          $(next).trigger("select");
+        }
+      }
+    })
+
     $(this).on('keyup', function(e) {
       if(e.key === 'Backspace' || e.key === 'ArrowLeft') {
         var prev = $('.otp-digit-fields-container').find('input#' + $(this).data('previous'));
@@ -40,7 +53,7 @@
         if(prev.length) {
           $(prev).trigger("select");
         }
-      } else if(('0' <= e.key && e.key <= '9') || ('a' <= e.key && e.key <= 'z') || e.key === 'ArrowRight') {
+      } else if(e.key === 'ArrowRight') {
         var next = $('.otp-digit-fields-container').find('input#' + $(this).data('next'));
         
         if(next.length) {
