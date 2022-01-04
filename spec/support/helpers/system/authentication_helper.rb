@@ -8,7 +8,7 @@ module AuthenticationSystemHelper
       fill_in 'account[login]', with: account.login
       fill_in 'account[password]', with: password
       click_button "Login"
-      expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
+      expect(page).to have_content("Enter the 6-digit code from your two factor authenticator app.")
 
       token = get_an_onetime_token_from_authenticator_app(chris)
       fill_in_digit_fields_with token

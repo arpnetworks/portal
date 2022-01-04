@@ -15,7 +15,8 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
 
     click_link "Set up two-factor authentication"
     expect(page).to have_content("Two-factor authentication setup")
-    expect(page).to have_content("You will need a Google Authenticator(or another 2FA authentication app) to complete this process.")
+    expect(page).to have_content("You will need an authenticator app")
+    expect(page).to have_content("to complete this process")
     expect(page).to have_content("Scan the QR code into your app.")
 
     click_on "Cancel"
@@ -65,7 +66,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
       fill_in 'account[password]', with: '12345678'
       click_button "Login"
       expect(page).to have_content("Authenticate your account")
-      expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
+      expect(page).to have_content("Enter the 6-digit code from your two factor authenticator app.")
 
       fill_in_digit_fields_with '111111'
       click_button "Verify"
@@ -88,7 +89,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
     fill_in 'account[password]', with: '12345678'
     click_button "Login"
     expect(page).to have_content("Authenticate your account")
-    expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
+    expect(page).to have_content("Enter the 6-digit code from your two factor authenticator app.")
 
     click_link "Use a recovery code to access your account"
     expect(page).to have_content("Authenticate your account with a recovery code")

@@ -35,7 +35,8 @@ RSpec.describe "Disable 2FA on the 'Security' Page" do
 
     click_link "Set up two-factor authentication"
     expect(page).to have_content("Two-factor authentication setup")
-    expect(page).to have_content("You will need a Google Authenticator(or another 2FA authentication app) to complete this process.")
+    expect(page).to have_content("You will need an authenticator app")
+    expect(page).to have_content("to complete this process")
     expect(page).to have_content("Scan the QR code into your app.")
 
     token = scan_the_qr_code_and_get_an_onetime_token(chris)
@@ -62,7 +63,7 @@ RSpec.describe "Disable 2FA on the 'Security' Page" do
       fill_in 'account[login]', with: 'chris'
       fill_in 'account[password]', with: '12345678'
       click_button "Login"
-      expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
+      expect(page).to have_content("Enter the 6-digit code from your two factor authenticator app.")
 
       token = get_an_onetime_token_from_authenticator_app(chris)
       fill_in_digit_fields_with token

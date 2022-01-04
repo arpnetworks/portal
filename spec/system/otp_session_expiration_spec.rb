@@ -15,10 +15,10 @@ RSpec.describe 'OTP session expiration (expire after 30 seconds)' do
     fill_in 'account[password]', with: '12345678'
     click_button "Login"
     expect(page).to have_content("Authenticate your account")
-    expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
+    expect(page).to have_content("Enter the 6-digit code from your two factor authenticator app.")
 
     refresh
-    expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
+    expect(page).to have_content("Enter the 6-digit code from your two factor authenticator app.")
     expect(page.current_path).to eq("/accounts/sign_in/otp")
 
     travel_to 31.seconds.after do
@@ -35,7 +35,7 @@ RSpec.describe 'OTP session expiration (expire after 30 seconds)' do
     fill_in 'account[login]', with: 'chris'
     fill_in 'account[password]', with: '12345678'
     click_button "Login"
-    expect(page).to have_content("Enter 6-digit code from your two factor authenticator app.")
+    expect(page).to have_content("Enter the 6-digit code from your two factor authenticator app.")
 
     click_link "Use a recovery code to access your account"
     expect(page).to have_content("Authenticate your account with a recovery code")
