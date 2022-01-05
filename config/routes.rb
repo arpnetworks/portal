@@ -77,7 +77,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :invoices
+    resources :invoices do
+      member do
+        get  'pay'
+        post 'pay_confirm'
+      end
+    end
     resources :services do
       member do
         post 'push_to_stripe'

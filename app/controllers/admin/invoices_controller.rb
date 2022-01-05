@@ -1,7 +1,7 @@
 class Admin::InvoicesController < Admin::HeadQuartersController
   before_action :is_arp_admin?,     except: [:show]
   before_action :is_arp_sub_admin?, only:   [:show]
-  before_action :find_invoice,      only: %i[show destroy push_to_stripe]
+  before_action :find_invoice,      only: %i[show destroy pay push_to_stripe]
 
   def index
     @invoices = Invoice.paginate(page: params[:page],
@@ -32,6 +32,10 @@ class Admin::InvoicesController < Admin::HeadQuartersController
       format.html { redirect_to(last_location) }
       format.xml  { head :ok }
     end
+  end
+
+  def pay
+    @payment = @invoice.payments.new
   end
 
   protected
