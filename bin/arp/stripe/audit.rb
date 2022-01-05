@@ -53,6 +53,20 @@ Account.where("stripe_customer_id != ''").each do |account|
     puts ''
     puts ' *** MRC Discrepancy Detected *** '
     puts ''
+
+    ss = Stripe::SubscriptionSchedule.list(customer: customer_id)['data']
+    if ss.size > 0
+      puts ' However, subscription schedule(s) have been found:'
+      ss.each do |sch|
+        puts "    A subscription is scheduled (status=#{sch['status']})"
+        puts "      ID: #{sch['id']}"
+        sch['phases'].each do |phase|
+          if (sd = phase['start_date'])
+            puts '      Start date: ' + Time.at(sd).to_s
+          end
+        end
+      end
+    end
   end
 
   puts '----------' * 8
