@@ -29,15 +29,12 @@ Account.where("stripe_customer_id != ''").each do |account|
       end
     end
 
-    if (discount = subscription['discount'])
-      coupon = discount['coupon']
+    next unless (discount = subscription['discount'])
+    next unless (coupon   = discount['coupon'])
 
-      if coupon
-        puts "    Discount Coupon: #{coupon['name']}"
-        if (percent_off = coupon['percent_off'])
-          str_mrc = str_mrc - (str_mrc * (percent_off / 100))
-        end
-      end
+    puts "    Discount Coupon: #{coupon['name']}"
+    if (percent_off = coupon['percent_off'])
+      str_mrc -= (str_mrc * (percent_off / 100))
     end
   end
 
@@ -46,8 +43,8 @@ Account.where("stripe_customer_id != ''").each do |account|
   formatted_str_mrc = format('$%01.2f', str_mrc)
   formatted_our_mrc = format('$%01.2f', our_mrc)
 
-  puts '    Total MRC in Stripe: ' + formatted_str_mrc
-  puts '  Our MRC: ' + formatted_our_mrc
+  puts "    Total MRC in Stripe: #{formatted_str_mrc}"
+  puts "  Our MRC: #{formatted_our_mrc}"
 
   if formatted_our_mrc != formatted_str_mrc
     puts ''
@@ -62,7 +59,7 @@ Account.where("stripe_customer_id != ''").each do |account|
         puts "      ID: #{sch['id']}"
         sch['phases'].each do |phase|
           if (sd = phase['start_date'])
-            puts '      Start date: ' + Time.at(sd).to_s
+            puts "      Start date: #{Time.at(sd)}"
           end
         end
       end
