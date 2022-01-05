@@ -68,3 +68,15 @@ Account.where("stripe_customer_id != ''").each do |account|
 
   puts '----------' * 8
 end
+
+@accounts = Account.where("stripe_customer_id != '' and stripe_payment_method_id = ''")
+
+if @accounts.size > 0
+  puts ''
+  puts "The following #{@accounts.size} #{'accounts'.pluralize(@accounts.size)} do not have a Stripe Payment Method ID:"
+  puts ''
+end
+
+@accounts.each do |account|
+  puts account.display_account_name
+end
