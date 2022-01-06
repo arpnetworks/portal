@@ -4,7 +4,7 @@ RSpec.describe 'Admin - Create an account' do
 
   before { sign_in(accounts(:admin)) }
 
-  it 'admin can success create an account' do
+  it 'admin can successfully create an account' do
     visit root_path
     expect(page).to have_content("admin's dashboard")
     expect(page.current_path).to eq(dashboard_path)
