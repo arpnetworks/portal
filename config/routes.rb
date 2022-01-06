@@ -78,9 +78,7 @@ Rails.application.routes.draw do
     end
 
     resources :invoices do
-      member do
-        get  'pay'
-        post 'pay_confirm'
+      resources :payments do
       end
     end
     resources :services do

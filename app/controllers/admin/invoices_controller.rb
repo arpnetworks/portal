@@ -36,6 +36,9 @@ class Admin::InvoicesController < Admin::HeadQuartersController
 
   def pay
     @payment = @invoice.payments.new
+    @payment.date = Date.today
+
+    render layout: 'responsive'
   end
 
   protected
