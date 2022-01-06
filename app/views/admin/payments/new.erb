@@ -2,16 +2,12 @@
   <%= error_messages_for :payment %>
 </div>
 
-<div class="columns">
-  <div class="column">
-  </div>
-  <div class="column is-two-thirds">
-
-
-    <h1 class="title">Invoice Payment</h1>
-
+<div class="columns is-centered">
+  <div class="column is-three-fifths">
+    <h2 class="title arp-header">Invoice Payment</h1>
     <div class="box">
       <div class="container">
+
         <%= form_for [:admin, @invoice, @payment] do |f| %>
           <div class="field">
             <label class="label">Account</label>
@@ -75,7 +71,7 @@
             <label class="label">Method</label>
             <div class="control">
               <div class="select">
-                <%= f.select :method, ['Check', PayPal', 'Stripe'], include_blank: true  %>
+                <%= f.select :method, ['Check', 'PayPal', 'Stripe'], include_blank: true  %>
               </div>
             </div>
           </div>
@@ -107,15 +103,20 @@
               <input type='submit' value="Save" class='button is-link' />
             </div>
             <div class="control">
-              <button class='button is-link is-light'>Cancel</button>
+              <button class='button is-link is-light' id='cancel-button'
+                      onClick="location.href='<%= admin_invoice_path(@invoice) %>'">
+                      Cancel
+              </button>
             </div>
           </div>
         <% end %>
       </div>
     </div>
-
   </div>
-  <div class="column">
-  </div>
-
 </div>
+
+<% content_for :js do %>
+  $("#cancel-button").click(function(e) {
+  e.preventDefault();
+  })
+<% end %>
