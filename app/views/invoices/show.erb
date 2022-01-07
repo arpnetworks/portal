@@ -85,33 +85,33 @@ Beverly Hills, CA 90211
 </table>
 
 <% if @enable_admin_view && !@invoice.payments.empty? %>
-  <% @invoice.payments.each do |payment| %>
-    <table class="table">
-      <caption>Payments</caption>
-      <thead>
+  <table class="table is-striped">
+    <caption>Payments</caption>
+    <thead>
+      <tr>
+        <th class="id">ID</th>
+        <th class="date">Date</th>
+        <th class="money">Amount</th>
+        <th><abbr title="Reference Number">Ref. No.</abbr></th>
+        <th><abbr title="Check Number">Check No.</abbr></th>
+        <th>Method</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invoice.payments.each do |payment| %>
         <tr>
-          <th>ID</th>
-          <th>Date</th>
-          <th><abbr title="Reference Number">Ref. No.</abbr></th>
-          <th><abbr title="Check Number">Check No.</abbr></th>
-          <th>Method</th>
-          <th>Amount</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><%= link_to(payment.id, [:admin, @invoice, payment], title: "Invoice ##{payment.id}") %></td>
-          <td><%= payment.date %></td>
+          <td><%= link_to(payment.id, edit_admin_invoice_payment_path(@invoice, payment), title: "Invoice ##{payment.id}") %></td>
+          <td class="date"><%= date_in_words(payment.date) %></td>
+          <td class="money"><%= money(payment.amount) %></td>
           <td><%= payment.reference_number %></td>
           <td><%= payment.check_number %></td>
           <td><%= payment.method %></td>
-          <td><%= money(payment.amount) %></td>
           <td><%= (n = payment.notes) && n[0..40] %></td>
         </tr>
-      </tbody>
-    </table>
-  <% end %>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>
 
 <% if @enable_admin_view && !@invoice.paid? %>

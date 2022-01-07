@@ -86,7 +86,7 @@ describe Admin::PaymentsController do
 
         it 'should render back to edit screen' do
           do_post(invoice_id: @invoice.id, payment: { date: '2022-01-01' })
-          expect(response).to render_template('admin/payments/new')
+          expect(response).to render_template('admin/payments/form')
         end
       end
     end

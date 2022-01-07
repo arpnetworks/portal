@@ -71,7 +71,7 @@
             <label class="label">Method</label>
             <div class="control">
               <div class="select">
-                <%= f.select :method, ['Check', 'PayPal', 'Stripe'], include_blank: true  %>
+                <%= f.select :method, ['Check', 'Credit Card', 'PayPal', 'Stripe'], include_blank: true  %>
               </div>
             </div>
           </div>
@@ -98,17 +98,34 @@
             </div>
           </div>
 
-          <div class="field is-grouped">
-            <div class="control">
-              <input type='submit' value="Save" class='button is-link' />
+          <nav class="level">
+            <div class="left-level">
+              <div class="level-item">
+                <div class="field is-grouped">
+                  <div class="control">
+                    <input type='submit' value="Save" class='button is-link' />
+                  </div>
+                  <div class="control">
+                    <button class='button is-link is-light' id='cancel-button'
+                            onClick="location.href='<%= admin_invoice_path(@invoice) %>'">
+                            Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="control">
-              <button class='button is-link is-light' id='cancel-button'
-                      onClick="location.href='<%= admin_invoice_path(@invoice) %>'">
-                      Cancel
-              </button>
-            </div>
-          </div>
+            <% if @payment.id %>
+              <div class="right-level">
+                <div class="level-item">
+                  <div class="field">
+                    <div class="control">
+                      <%= link_to('Delete Payment', admin_invoice_payment_path(@invoice, @payment), method: :delete, data: { confirm: "Are you sure you want to delete this payment?" }, class: 'button is-danger') %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </nav>
         <% end %>
       </div>
     </div>
@@ -117,6 +134,9 @@
 
 <% content_for :js do %>
   $("#cancel-button").click(function(e) {
+  e.preventDefault();
+  })
+  $("#delete-button").click(function(e) {
   e.preventDefault();
   })
 <% end %>

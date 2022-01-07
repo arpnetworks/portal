@@ -1,0 +1,13 @@
+$narrower-items-width: 3rem;
+$narrow-items-width: 6rem;
+
+table.table {
+  // Fix
+  th {
+    background-color: #fff;
+  }
+
+  th.id, td.id { width: $narrower-items-width; }
+  th.date, td.date { width: $narrow-items-width; }
+  th.money, td.money { width: $narrow-items-width; }
+}

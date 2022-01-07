@@ -43,8 +43,10 @@ $fullhd-enabled: true;
 // Notifications
 @import "../../../node_modules/bulma/sass/elements/notification.sass";
 
-// Helpers
+// Nice tables
+@import "../../../node_modules/bulma/sass/elements/table.sass";
 
+// Helpers
 @import "../../../node_modules/bulma/sass/base/helpers.sass";
 
 // Good for completely free-form content
@@ -58,4 +60,11 @@ $fullhd-enabled: true;
 
 .box .input {
   max-width: 96%;
+}
+
+// Fix too much padding and text underlines on links that are buttons
+a.button {
+  text-decoration: none;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }

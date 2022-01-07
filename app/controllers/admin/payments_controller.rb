@@ -4,19 +4,30 @@ class Admin::PaymentsController < Admin::HeadQuartersController
   before_action :find_invoice,      only: %i[create new show edit update destroy]
   before_action :find_payment,      only: %i[show edit update destroy]
 
+  layout 'responsive'
+
   def index
-    # @payments = Payment.paginate(page: params[:page],
-                                 # per_page: params[:per_page] || 20).order('created_at DESC')
     redirect_to admin_invoice_path(params[:invoice_id])
   end
 
-  def show; end
+  def edit
+    render 'form'
+  end
+
+  def update
+    if @payment.update(payment_params)
+      flash[:notice] = 'Payment was successfully updated.'
+      redirect_to(admin_invoice_path(@invoice))
+    else
+      render 'form'
+    end
+  end
 
   def new
     @payment = @invoice.payments.new
     @payment.date = Date.today
 
-    render layout: 'responsive'
+    render 'form'
   end
 
   def create
@@ -36,7 +47,7 @@ class Admin::PaymentsController < Admin::HeadQuartersController
       redirect_to(admin_invoice_path(@invoice)) and return
     end
   rescue ActiveRecord::RecordInvalid => e
-    render action: 'new', layout: 'responsive'
+    render 'form'
   end
 
   protected
