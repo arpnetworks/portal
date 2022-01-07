@@ -84,6 +84,36 @@ Beverly Hills, CA 90211
   </tfoot>
 </table>
 
+<% if @enable_admin_view && !@invoice.payments.empty? %>
+  <% @invoice.payments.each do |payment| %>
+    <table class="table">
+      <caption>Payments</caption>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th><abbr title="Reference Number">Ref. No.</abbr></th>
+          <th><abbr title="Check Number">Check No.</abbr></th>
+          <th>Method</th>
+          <th>Amount</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= link_to(payment.id, [:admin, @invoice, payment], title: "Invoice ##{payment.id}") %></td>
+          <td><%= payment.date %></td>
+          <td><%= payment.reference_number %></td>
+          <td><%= payment.check_number %></td>
+          <td><%= payment.method %></td>
+          <td><%= money(payment.amount) %></td>
+          <td><%= (n = payment.notes) && n[0..40] %></td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
+
 <% if @enable_admin_view && !@invoice.paid? %>
   <br/>
   <div class="block">

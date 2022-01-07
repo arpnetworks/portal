@@ -9,7 +9,7 @@ class Admin::InvoicesController < Admin::HeadQuartersController
   end
 
   def show
-    render template: 'invoices/show'
+    render template: 'invoices/show', layout: 'responsive'
   end
 
   def destroy
