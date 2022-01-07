@@ -136,12 +136,15 @@ Beverly Hills, CA 90211
     <div class="right-level">
       <div class="level-item">
         <div class="field is-grouped">
-          <div class="control">
-            <%= link_to('Mark Paid', mark_paid_admin_invoice_path(@invoice), method: :put, data: { confirm: "Are you sure you want to mark this invoice paid?" }, class: 'button is-danger is-outlined') %>
-          </div>
-          <div class="control">
-            <%= link_to('Mark Unpaid', mark_unpaid_admin_invoice_path(@invoice), method: :put, data: { confirm: "Are you sure you want to mark this invoice unpaid?" }, class: 'button is-danger is-outlined ') %>
-          </div>
+          <% if !@invoice.paid? %>
+            <div class="control">
+              <%= link_to('Mark Paid', mark_paid_admin_invoice_path(@invoice), method: :put, data: { confirm: "Are you sure you want to mark this invoice paid?" }, class: 'button is-danger is-outlined') %>
+            </div>
+          <% else %>
+            <div class="control">
+              <%= link_to('Mark Unpaid', mark_unpaid_admin_invoice_path(@invoice), method: :put, data: { confirm: "Are you sure you want to mark this invoice unpaid?" }, class: 'button is-danger is-outlined ') %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
