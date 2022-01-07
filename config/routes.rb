@@ -78,6 +78,10 @@ Rails.application.routes.draw do
     end
 
     resources :invoices do
+      member do
+        put 'mark_paid'
+        put 'mark_unpaid'
+      end
       resources :payments do
       end
     end

@@ -23,6 +23,20 @@ class Admin::PaymentsController < Admin::HeadQuartersController
     end
   end
 
+  def destroy
+    begin
+      join = InvoicesPayment.find_by(invoice_id: @invoice.id, payment_id: @payment.id)
+      join.destroy
+      @payment.destroy
+    rescue ActiveRecord::StatementInvalid => e
+      flash[:error] = 'There was an error deleting this record'
+      flash[:error] += '<br/>'
+      flash[:error] += e.message
+    end
+
+    redirect_to admin_invoice_path(@invoice)
+  end
+
   def new
     @payment = @invoice.payments.new
     @payment.date = Date.today
