@@ -23,6 +23,7 @@ class Mailers::Stripe < ApplicationMailer
 
     @invoice = invoice
     @account = invoice.account
+    @payment = invoice.payments.first # We assume the first one holds the info we need
     @hosted_invoice_url = opts[:hosted_invoice_url]
 
     @subject    = "Sales Receipt (#{Time.new.strftime("%b. %Y")})" + subject_addition

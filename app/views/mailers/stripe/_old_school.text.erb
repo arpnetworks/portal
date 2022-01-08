@@ -1,0 +1,41 @@
+<%
+  @line_items = ''
+  total = 0
+  @invoice.line_items.each do |line_item|
+    total += line_item.amount
+    amount = sprintf("$%01.2f", line_item.amount)
+    description = line_item.description.to_s
+    @line_items += sprintf("| %-73s | %10s |\n", description, amount)
+  end
+
+  total = sprintf("$%01.2f", total)
+  @total = sprintf("| TOTAL %80s |", total)
+-%>
+==========================================================================================
+
+ARP Networks, Inc.                                                           SALES RECEIPT
+8383 Wilshire Blvd
+Suite 800                                                                 Date: <%= @payment.date.strftime("%m/%d/%Y") %>
+Beverly Hills, CA 90211
++1 855 444-3145
+
+SOLD TO:
+<%= @account.sold_to %>
+
+<% if @payment -%>
+Payment Method: Credit Card
+Transaction ID: <%= @payment.reference_number %>
+<% end -%>
+
+------------------------------------------------------------------------------------------
+| DESCRIPTION                                                               |   AMOUNT   |
+------------------------------------------------------------------------------------------
+<%= @line_items -%>
+------------------------------------------------------------------------------------------
+<%= @total %>
+------------------------------------------------------------------------------------------
+
+Thank you for your business.  If you have any questions about this receipt, please email
+billing@arpnetworks.com or call +1 855 444-3145.
+
+==========================================================================================

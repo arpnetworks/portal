@@ -4,9 +4,8 @@ Please find below a link to your recent sales receipt and invoice, as well as th
 
 <%= @hosted_invoice_url %>
 
-Meanwhile, in other news...
+A duplicate plain text copy is included after our announcements and is best viewed with a monospace font.
 
 <%= render partial: 'mailer/announcements' %>
-Thank you for your business.
-
+<%= render partial: 'mailers/stripe/old_school' %>
 <%= render partial: 'mailer/signatures/billing' %>
