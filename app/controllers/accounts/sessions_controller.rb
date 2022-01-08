@@ -14,7 +14,7 @@ class Accounts::SessionsController < Devise::SessionsController
 
     self.resource = warden.authenticate!(:database_authenticatable, auth_options)
 
-    if resource.otp_required_for_login?
+    if otp_required_for_login?(resource)
       sign_out(resource)
       session[:otp_account_id] = resource.id
       session[:otp_account_id_expires_at] = 30.seconds.after
@@ -47,4 +47,16 @@ class Accounts::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+
+  def otp_required_for_login?(resource)
+    resource.otp_required_for_login? && otp_remember_me_is_inactive?(resource)
+  end
+
+  def otp_remember_me_is_inactive?(resource)
+    resource_id, expires_at_epoch_seconds = cookies.signed[:_arp_remember_me]
+    return true if expires_at_epoch_seconds.nil?
+    expires_at = Time.at(expires_at_epoch_seconds.to_f)
+
+    resource_id != resource.id || expires_at < Time.current
+  end
 end

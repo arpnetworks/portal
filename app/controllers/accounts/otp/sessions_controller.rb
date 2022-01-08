@@ -20,11 +20,28 @@ class Accounts::Otp::SessionsController < DeviseController
         recall: "#{controller_path}#new"
       }
     )
+    otp_remember_me(account)
 
     flash[:notice] = "Welcome #{account.display_name}, it is nice to see you."
     sign_in(:account, account)
 
     respond_with account, location: after_sign_in_path_for(account)
+  end
+
+  private
+
+  def otp_remember_me(account)
+    return unless params[:otp_remember_me] == 'yes'
+
+    default_session_options = Rails.configuration.session_options
+    cookies.signed[:_arp_remember_me] = {
+      value: [account.id, 30.days.after.utc.to_f.to_s],
+      expires: 30.days.from_now,
+      path: default_session_options[:path],
+      domain: default_session_options[:domain],
+      secure: default_session_options[:secure],
+      httponly: true
+    }
   end
 
 end
