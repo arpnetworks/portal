@@ -103,7 +103,7 @@ Beverly Hills, CA 90211
         <tr>
           <td><%= link_to(payment.id, edit_admin_invoice_payment_path(@invoice, payment), title: "Invoice ##{payment.id}") %></td>
           <td class="date"><%= date_in_words(payment.date) %></td>
-          <td class="money"><%= money(payment.amount) %></td>
+          <td class="money"><%= money2(payment.amount) %></td>
           <td><%= payment.reference_number %></td>
           <td><%= payment.check_number %></td>
           <td><%= payment.method %></td>

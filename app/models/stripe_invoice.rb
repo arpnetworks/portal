@@ -48,7 +48,7 @@ class StripeInvoice < Invoice
     if inv
       inv.payments.create(
         account: account,
-        reference_number: '',
+        reference_number: invoice['id'],
         date: Time.at(invoice['status_transitions']['paid_at']),
         method: 'Stripe',
         amount: invoice['total'] / 100.0

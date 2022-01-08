@@ -77,7 +77,7 @@ RSpec.describe StripeInvoice, type: :model do
 
         expect(payments).to receive(:create).with(
           account: @account,
-          reference_number: '',
+          reference_number: @stripe_invoice['id'],
           date: Time.at(@stripe_invoice['status_transitions']['paid_at']),
           method: 'Stripe',
           amount: @stripe_invoice['total'] / 100
