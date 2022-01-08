@@ -56,7 +56,21 @@ RSpec.describe Mailers::Stripe, type: :mailer do
 
     context 'with sales_receipt mailer' do
       before do
-        @mailer = Mailers::Stripe.sales_receipt(@account)
+        @account = mock_model(Account,
+                              display_name: 'ACME Inc.',
+                              sold_to: 'ACME Inc.',
+                              email_for_sales_receipts: 'billing@example.com')
+        @payment = mock_model(Payment,
+                              date: Date.today,
+                              amount: 10.00)
+        @invoice_line_items = double(InvoicesLineItem,
+                                     amount: 10.00,
+                                     description: 'VPS')
+        @invoice = double(StripeInvoice,
+                          account: @account,
+                          line_items: [@invoice_line_items],
+                          payments: [@payment])
+        @mailer = Mailers::Stripe.sales_receipt(@invoice)
       end
 
       describe 'sales_receipt' do
@@ -81,7 +95,7 @@ RSpec.describe Mailers::Stripe, type: :mailer do
             @opts = {
               hosted_invoice_url: 'https://invoice.stripe.com/i/something-something-something'
             }
-            @mailer = Mailers::Stripe.sales_receipt(@account, @opts)
+            @mailer = Mailers::Stripe.sales_receipt(@invoice, @opts)
           end
 
           it 'should render Stripe invoice link' do

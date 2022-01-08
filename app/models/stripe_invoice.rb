@@ -61,6 +61,8 @@ class StripeInvoice < Invoice
     else
       raise "Invoice not found by Stripe invoice ID: #{invoice['id']}"
     end
+
+    inv
   end
 
   def self.process_refund(charge)
