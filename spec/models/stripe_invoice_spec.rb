@@ -14,7 +14,8 @@ RSpec.describe StripeInvoice, type: :model do
       it 'should create invoice for customer' do
         expect(StripeInvoice).to receive(:create).with(account: @account,
                                                        stripe_invoice_id: @stripe_invoice['id']).and_return(@inv)
-        expect(@inv).to receive(:create_line_items).with(@stripe_invoice['lines']['data'])
+        expect(@inv).to receive(:create_line_items).with(@stripe_invoice['lines']['data'],
+                                                         billing_reason: @stripe_invoice['billing_reason'])
         StripeInvoice.create_for_account(@account, @stripe_invoice)
       end
     end
@@ -265,6 +266,26 @@ RSpec.describe StripeInvoice, type: :model do
             )
 
             @inv.create_line_items(@stripe_line_items)
+          end
+        end
+
+        context 'with billing_reason of manual' do
+          before :each do
+            @opts = {
+              billing_reason: 'manual'
+            }
+          end
+
+          it 'should write description with quantity' do
+            @first_stripe_line_item['quantity'] = 3
+
+            expect(@inv_line_item).to receive(:create).with(
+              code: 'MISC',
+              description: "3 × #{@first_stripe_line_item['description']}",
+              amount: @first_stripe_line_item['amount'] / 100.0
+            )
+
+            @inv.create_line_items(@stripe_line_items, @opts)
           end
         end
       end

@@ -1,11 +1,17 @@
 class StripeInvoice < Invoice
-  def create_line_items(stripe_line_items)
+  def create_line_items(stripe_line_items, opts = {})
     stripe_line_items.each do |li|
       @code = begin
         product = Stripe::Product.retrieve(id: li['price']['product'])
         product.metadata.product_code
       rescue StandardError
         'MISC'
+      end
+
+      # When we create an invoice manually, Stripe doesn't append the quantity
+      # to the description
+      if opts[:billing_reason] == 'manual'
+        li['description'] = "#{li['quantity']} × #{li['description']}"
       end
 
       line_items.create(code: @code,
@@ -27,7 +33,7 @@ class StripeInvoice < Invoice
 
   def self.create_for_account(account, invoice)
     inv = create(account: account, stripe_invoice_id: invoice['id'])
-    inv.create_line_items(invoice['lines']['data'])
+    inv.create_line_items(invoice['lines']['data'], billing_reason: invoice['billing_reason'])
   end
 
   def self.link_to_invoice(arp_invoice_id, invoice)
