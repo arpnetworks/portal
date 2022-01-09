@@ -50,6 +50,8 @@ Account.where("stripe_customer_id != ''").each do |account|
       interval_label = '(Annual)'
     end
 
+    next unless our_mrc > 0
+
     subs.each do |subscription|
       subscription['items']['data'].each do |subscription_item|
         if subscription_item['plan']['interval'] == interval &&
@@ -83,7 +85,7 @@ Account.where("stripe_customer_id != ''").each do |account|
 
     ss = Stripe::SubscriptionSchedule.list(customer: customer_id)['data']
     ss = ss.reject do |sch|
-      sch['status'] == 'cancelled'
+      sch['status'] == 'canceled'
     end
     next unless ss.size > 0
 
