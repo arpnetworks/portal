@@ -6,7 +6,7 @@ require_relative '../../../config/boot'
 require APP_PATH
 Rails.application.require_environment!
 
-puts 'ARP Networks vs Stripe Audit Report'
+puts 'ARP Networks vs Stripe Audit Report                  ' + DateTime.now.strftime("%b %d, %Y %H:%M:%S %z")
 puts '==========' * 8
 
 monthly = {
@@ -31,8 +31,6 @@ Account.where("stripe_customer_id != ''").each do |account|
   puts '  Stripe:'
   puts "    Customer ID: #{customer_id}"
 
-  subs = Stripe::Subscription.list(customer: customer_id, status: 'active')
-
   [monthly, semiannual, annual].each do |period|
     interval = period[:interval]
     count = period[:interval_count]
@@ -51,6 +49,8 @@ Account.where("stripe_customer_id != ''").each do |account|
     end
 
     next unless our_mrc > 0
+
+    subs = Stripe::Subscription.list(customer: customer_id, status: 'active')
 
     subs.each do |subscription|
       subscription['items']['data'].each do |subscription_item|
