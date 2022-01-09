@@ -22,6 +22,7 @@ annual = {
   interval_count: 1
 }
 
+Account.where("stripe_customer_id != ''").each do |account|
   next unless account.offload_billing?
 
   customer_id = account.stripe_customer_id
