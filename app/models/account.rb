@@ -372,7 +372,9 @@ class Account < ApplicationRecord
   alias :bill_to :sold_to
 
   def mrc(opts = {})
-    conditions = 'billing_interval = 1 and billing_amount > 0'
+    interval = opts[:interval] || 1
+
+    conditions = "billing_interval = #{interval} and billing_amount > 0"
 
     monthly_active_services = services.active.where(conditions)
 
@@ -387,6 +389,19 @@ class Account < ApplicationRecord
     else
       mrc
     end
+  end
+
+  # Arbitary Recurring Charges?  Not sure what to call it...
+  # Like MRC but for any arbitrary interval
+  def arc(interval)
+    return mrc if interval == 1
+
+    mrc(interval: interval)
+  end
+
+  # Yearly Recurring Charges
+  def yrc
+    arc(12)
   end
 
   def current?

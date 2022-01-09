@@ -308,6 +308,37 @@ describe Account do
     end
   end
 
+  describe 'arc()' do
+    context 'with interval = 1' do
+      before :each do
+        @interval = 1
+      end
+
+      it 'should simply call mrc()' do
+        expect(account).to receive(:mrc)
+        account.arc @interval
+      end
+    end
+
+    context 'with interval = 6' do
+      before :each do
+        @interval = 6
+      end
+
+      it 'should call mrc() with the stated interval' do
+        expect(account).to receive(:mrc).with(interval: @interval)
+        account.arc @interval
+      end
+    end
+  end
+
+  describe 'yrc()' do
+    it 'should call arc() with 12' do
+      expect(account).to receive(:arc).with(12)
+      account.yrc
+    end
+  end
+
   context 'IPs and DNS Records' do
     before do
       @ip_blocks = [create(:ip_block, cidr: '10.0.0.0/30'),

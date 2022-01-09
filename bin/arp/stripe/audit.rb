@@ -9,7 +9,19 @@ Rails.application.require_environment!
 puts 'ARP Networks vs Stripe Audit Report'
 puts '==========' * 8
 
-Account.where("stripe_customer_id != ''").each do |account|
+monthly = {
+  interval: 'month',
+  interval_count: 1
+}
+semiannual = {
+  interval: 'month',
+  interval_count: 6
+}
+annual = {
+  interval: 'year',
+  interval_count: 1
+}
+
   next unless account.offload_billing?
 
   customer_id = account.stripe_customer_id
@@ -20,47 +32,64 @@ Account.where("stripe_customer_id != ''").each do |account|
 
   subs = Stripe::Subscription.list(customer: customer_id, status: 'active')
 
-  our_mrc = account.mrc
-  str_mrc = 0
-  subs.each do |subscription|
-    subscription['items']['data'].each do |subscription_item|
-      if subscription_item['plan']['interval'] == 'month'
-        str_mrc += (subscription_item['plan']['amount'] * subscription_item['quantity'])
+  [monthly, semiannual, annual].each do |period|
+    interval = period[:interval]
+    count = period[:interval_count]
+
+    case interval
+    when 'month'
+      our_mrc = account.arc(count)
+      str_mrc = 0
+
+      interval_label = count == 6 ? '(Every 6 months)' : ''
+    when 'year'
+      our_mrc = account.yrc
+      str_mrc = 0
+
+      interval_label = '(Annual)'
+    end
+
+    subs.each do |subscription|
+      subscription['items']['data'].each do |subscription_item|
+        if subscription_item['plan']['interval'] == interval &&
+           subscription_item['plan']['interval_count'] == count
+          str_mrc += (subscription_item['plan']['amount'] * subscription_item['quantity'])
+        end
+      end
+
+      next unless (discount = subscription['discount'])
+      next unless (coupon   = discount['coupon'])
+
+      puts "    Discount Coupon: #{coupon['name']}"
+      if (percent_off = coupon['percent_off'])
+        str_mrc -= (str_mrc * (percent_off / 100))
       end
     end
 
-    next unless (discount = subscription['discount'])
-    next unless (coupon   = discount['coupon'])
+    str_mrc /= 100.0
 
-    puts "    Discount Coupon: #{coupon['name']}"
-    if (percent_off = coupon['percent_off'])
-      str_mrc -= (str_mrc * (percent_off / 100))
-    end
-  end
+    formatted_str_mrc = format('$%01.2f', str_mrc)
+    formatted_our_mrc = format('$%01.2f', our_mrc)
 
-  str_mrc /= 100.0
+    puts "    Total MRC in Stripe: #{formatted_str_mrc} #{interval_label}"
+    puts "  Our MRC: #{formatted_our_mrc}"
 
-  formatted_str_mrc = format('$%01.2f', str_mrc)
-  formatted_our_mrc = format('$%01.2f', our_mrc)
+    next unless formatted_our_mrc != formatted_str_mrc
 
-  puts "    Total MRC in Stripe: #{formatted_str_mrc}"
-  puts "  Our MRC: #{formatted_our_mrc}"
-
-  if formatted_our_mrc != formatted_str_mrc
     puts ''
     puts ' *** MRC Discrepancy Detected *** '
     puts ''
 
     ss = Stripe::SubscriptionSchedule.list(customer: customer_id)['data']
-    if ss.size > 0
-      puts ' However, subscription schedule(s) have been found:'
-      ss.each do |sch|
-        puts "    A subscription is scheduled (status=#{sch['status']})"
-        puts "      ID: #{sch['id']}"
-        sch['phases'].each do |phase|
-          if (sd = phase['start_date'])
-            puts "      Start date: #{Time.at(sd)}"
-          end
+    next unless ss.size > 0
+
+    puts ' However, subscription schedule(s) have been found:'
+    ss.each do |sch|
+      puts "    A subscription is scheduled (status=#{sch['status']})"
+      puts "      ID: #{sch['id']}"
+      sch['phases'].each do |phase|
+        if (sd = phase['start_date'])
+          puts "      Start date: #{Time.at(sd)}"
         end
       end
     end
