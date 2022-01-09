@@ -81,6 +81,9 @@ annual = {
     puts ''
 
     ss = Stripe::SubscriptionSchedule.list(customer: customer_id)['data']
+    ss = ss.reject do |sch|
+      sch['status'] == 'cancelled'
+    end
     next unless ss.size > 0
 
     puts ' However, subscription schedule(s) have been found:'
