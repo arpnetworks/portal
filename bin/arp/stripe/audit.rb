@@ -75,6 +75,7 @@ Account.where("stripe_customer_id != ''").each do |account|
         end
       end
 
+      next if str_mrc == 0
       next unless (discount = subscription['discount'])
       next unless (coupon   = discount['coupon'])
 
@@ -85,6 +86,8 @@ Account.where("stripe_customer_id != ''").each do |account|
     end
 
     str_mrc /= 100.0
+
+    next if our_mrc == 0 && str_mrc == 0
 
     formatted_str_mrc = format('$%01.2f', str_mrc)
     formatted_our_mrc = format('$%01.2f', our_mrc)
