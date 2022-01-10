@@ -6,7 +6,7 @@ require_relative '../../../config/boot'
 require APP_PATH
 Rails.application.require_environment!
 
-puts 'ARP Networks vs Stripe Audit Report                  ' + DateTime.now.strftime("%b %d, %Y %H:%M:%S %z")
+puts 'ARP Networks vs Stripe Audit Report                  ' + DateTime.now.strftime('%b %d, %Y %H:%M:%S %z')
 puts '==========' * 8
 
 monthly = {
@@ -20,6 +20,17 @@ semiannual = {
 annual = {
   interval: 'year',
   interval_count: 1
+}
+
+our_recurring_totals = {
+  '1' => 0,
+  '6' => 0,
+  '12' => 0
+}
+str_recurring_totals = {
+  '1' => 0,
+  '6' => 0,
+  '12' => 0
 }
 
 Account.where("stripe_customer_id != ''").each do |account|
@@ -41,14 +52,18 @@ Account.where("stripe_customer_id != ''").each do |account|
       str_mrc = 0
 
       interval_label = count == 6 ? '(Every 6 months)' : ''
+      totals_key = count.to_s
     when 'year'
       our_mrc = account.yrc
       str_mrc = 0
 
       interval_label = '(Annual)'
+      totals_key = '12'
     end
 
-    next unless our_mrc > 0
+    # On second thought, don't skip this, since there might be a dangling subscription in Stripe
+    # that we don't know about.  This is an audit script, after all...
+    # next unless our_mrc > 0
 
     subs = Stripe::Subscription.list(customer: customer_id, status: 'active')
 
@@ -73,6 +88,9 @@ Account.where("stripe_customer_id != ''").each do |account|
 
     formatted_str_mrc = format('$%01.2f', str_mrc)
     formatted_our_mrc = format('$%01.2f', our_mrc)
+
+    our_recurring_totals[totals_key] += our_mrc
+    str_recurring_totals[totals_key] += str_mrc
 
     puts "    Total MRC in Stripe: #{formatted_str_mrc} #{interval_label}"
     puts "  Our MRC: #{formatted_our_mrc}"
@@ -103,6 +121,22 @@ Account.where("stripe_customer_id != ''").each do |account|
 
   puts '----------' * 8
 end
+
+puts <<~HERE
+
+  Grand Totals
+  ~~~~~~~~~~~~
+
+  Our Recurring Monthly Total: #{money2(our_recurring_totals['1'])}
+  Our Recurring Semiannual Total: #{money2(our_recurring_totals['6'])}
+  Our Recurring Annual Total: #{money2(our_recurring_totals['12'])}
+
+  Stripe Recurring Monthly Total: #{money2(str_recurring_totals['1'])}
+  Stripe Recurring Semiannual Total: #{money2(str_recurring_totals['6'])}
+  Stripe Recurring Annual Total: #{money2(str_recurring_totals['12'])}
+
+  NOTE: We should reconcile our bank statement against these totals.
+HERE
 
 @accounts = Account.where("stripe_customer_id != '' and stripe_payment_method_id = ''")
 
