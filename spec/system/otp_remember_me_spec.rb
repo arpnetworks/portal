@@ -10,7 +10,7 @@ RSpec.describe 'OTP remember me' do
     setup_2fa(@garry)
   end
 
-  it "can success remember me and skip OTP auth next 30 days", js: true do
+  it "can successfully remember me and skip OTP auth for the next 30 days", js: true do
     visit root_path
     expect(page).to have_selector("caption", text: "Login")
 
@@ -61,7 +61,7 @@ RSpec.describe 'OTP remember me' do
     end
   end
 
-  it 'need to reauth OTP if does not select the OTP remember me checkbox', js: true do
+  it 'needs to reauth OTP if they do not select the OTP remember me checkbox', js: true do
     visit root_path
     expect(page).to have_selector("caption", text: "Login")
 
