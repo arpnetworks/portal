@@ -20,9 +20,32 @@ services:
       - RAILS_LOG_TO_STDOUT
       - RAILS_SERVE_STATIC_FILES
       - MARIADB_ROOT_PASSWORD
+      - REDIS_PASSWORD
     depends_on:
       - db
+      - redis
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/myapp
+      - gems:/usr/local/bundle
+    environment:
+      - RAILS_ENV
+      - MARIADB_ROOT_PASSWORD
+      - REDIS_URL_SIDEKIQ
+      - REDIS_PASSWORD
+    depends_on:
+      - redis
+      - db
+  redis:
+    image: bitnami/redis:latest
+    volumes:
+      - redis:/bitnami/redis
+    environment:
+      - REDIS_PASSWORD
 
 volumes:
   mysql:
+  redis:
   gems:

@@ -35,6 +35,18 @@ services:
       - db
       - redis
 
+  sidekiq:
+    <<: *app
+    command: bundle exec sidekiq
+    environment:
+      - RAILS_ENV
+      - MARIADB_ROOT_PASSWORD
+      - REDIS_URL_SIDEKIQ
+      - REDIS_PASSWORD
+    depends_on:
+      - redis
+      - db
+
   runner:
     <<: *app
     command: /bin/bash
@@ -57,9 +69,12 @@ services:
 
   redis:
     image: bitnami/redis:latest
+    volumes:
+      - redis:/bitnami/redis
     environment:
       REDIS_PASSWORD:
 
 volumes:
   mysql:
+  redis:
   gems:
