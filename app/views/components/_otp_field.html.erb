@@ -1,0 +1,74 @@
+<%= f.hidden_field field_name, id: 'otp-code-field' %>
+<div class="otp-digit-fields-container">
+  <% (1..code_length).each do |index| %>
+    <% 
+      on_first = (index == 1)
+      on_last = (index == code_length)
+    %>
+
+    <input
+      type="text"
+      maxLength="1"
+      id="digit-<%= index %>"
+      <%= %Q{data-previous="digit-#{index - 1}"}.html_safe unless on_first %>
+      <%= %Q{data-next="digit-#{index + 1}"}.html_safe unless on_last %>
+      <%= "autofocus" if on_first %>
+    >
+  <% end %>
+</div>
+
+<script type='text/javascript'>
+  $('.otp-digit-fields-container').find('input').each(function() {
+    $(this).on('keydown', function(e) {
+      var isValidOtpField = function(key) {
+        return (key === 'Backspace') ||
+               (key === 'ArrowLeft') ||
+               (key === 'ArrowRight') ||
+               ('0' <= key && key <= '9') ||
+               ('a' <= key && key <= 'z');
+      }
+
+      if (!isValidOtpField(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    $(this).on('input', function(e) {
+      var digitValue = e.originalEvent.data
+      if (digitValue == null) { return; }
+
+      if(('0' <= digitValue && digitValue <= '9') || ('a' <= digitValue && digitValue <= 'z')) {
+        var next = $('.otp-digit-fields-container').find('input#' + $(this).data('next'));
+        
+        if(next.length) {
+          $(next).trigger("select");
+        }
+      }
+
+      // Update otp-code-field
+      var otpCode = ''
+      for (var i = 1; i < <%= code_length + 1 %>; i += 1) {
+        otpCode += $('.otp-digit-fields-container').find(`input#digit-${i}`).val()
+      }
+      $("#otp-code-field").val(otpCode)
+    })
+
+    $(this).on('keyup', function(e) {
+      if(e.key === 'Backspace' || e.key === 'ArrowLeft') {
+        var prev = $('.otp-digit-fields-container').find('input#' + $(this).data('previous'));
+        
+        if(prev.length) {
+          $(prev).trigger("select");
+        }
+      } else if(e.key === 'ArrowRight') {
+        var next = $('.otp-digit-fields-container').find('input#' + $(this).data('next'));
+        
+        if(next.length) {
+          $(next).trigger("select");
+        }
+      } else if (e.key === 'Enter' && $("#otp-code-field").val().length === <%= code_length %>) {
+        $(this.form).trigger("submit")
+      }
+    });
+  });
+</script>

@@ -1393,6 +1393,10 @@ div.main-menu li.jobs {
   list-style-image: url(/images/icons/bell.png);
 }
 
+div.main-menu li.security {
+  list-style-image: url(/images/icons/security.png);
+}
+
 div.main-menu li.help2 {
   list-style-image: url(/images/icons/help.png);
 }
@@ -1617,4 +1621,25 @@ div.simple-error, span.simple-error {
   cursor: pointer;
   padding-left: 18px;
   background-position: 0px 3px;
+}
+
+/***************************************************
+ * Section
+ **************************************************/
+
+section {
+  margin: 0px;
+  line-height: 0.85;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+section h2 {
+  text-align: left;
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 1.33333333333333;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+  border-bottom: 2px solid #669; 
 }

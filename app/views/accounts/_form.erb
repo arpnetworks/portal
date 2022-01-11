@@ -33,22 +33,12 @@
     <td class="note"><span>A valid email is required to activate your account. Your email will never be shared with anyone.</span></td>
   </tr>
   <% end -%>
-  <tr>
-    <td class="label">Password:</td>
-    <td class="required"><%= f.password_field :password %></td>
-  </tr>
-  <tr>
-    <td class="label">Password confirmation:</td>
-    <td class="required"><%= f.password_field :password_confirmation %></td>
-  </tr>
 </tbody>
 <!-- /required fields -->
 <% unless %w(login new create).include?(controller.action_name) -%>
 <tbody>
   <tr>
     <td colspan="2">
-      <hr />
-      <h3></h3>
     </td>
   </tr>
   <!-- account fields -->

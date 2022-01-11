@@ -2,22 +2,9 @@ class AccountsController < ProtectedController
   protect_from_forgery
 
   def edit
-    # Don't show password on form
-    @account.password              = ''
-    @account.password_confirmation = ''
   end
 
   def update
-    # This field is protected from mass assignment
-    @account.login = params[:account][:login]
-
-    # If no new password was provided, remove it from params so we don't save
-    # a blank password.
-    if params[:account][:password] == ''
-      params[:account].delete(:password)
-      params[:account].delete(:password_confirmation)
-    end
-
     if @account.update(account_params)
       flash[:notice] = 'Changes saved.'
 
@@ -25,10 +12,6 @@ class AccountsController < ProtectedController
 
       redirect_to edit_account_path(@account)
     else
-      # Don't show password on form
-      @account.password              = ''
-      @account.password_confirmation = ''
-
       render action: 'edit'
     end
   end
@@ -124,8 +107,6 @@ class AccountsController < ProtectedController
       :email,
       :email2,
       :email_billing,
-      :password,
-      :password_confirmation,
       :company,
       :first_name,
       :last_name,
@@ -138,9 +119,4 @@ class AccountsController < ProtectedController
     )
   end
 
-  def sign_in_after_change_password?
-    return false if params.dig(:account, :password).blank?
-
-    Devise.sign_in_after_change_password
-  end
 end

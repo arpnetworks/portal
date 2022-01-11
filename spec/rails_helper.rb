@@ -15,6 +15,7 @@ require 'support/helpers/integration/session_helper'
 require 'support/helpers/user_creation_helper'
 require 'support/shared_examples/destructive_admin_action_examples'
 require 'support/autoload_all_fixtures'
+require 'devise_two_factor/spec_helpers'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
