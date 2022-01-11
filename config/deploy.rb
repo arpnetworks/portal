@@ -95,7 +95,19 @@ namespace :deploy do
     end
   end
 
+  namespace :sidekiq do
+    desc 'Restart Sidekiq'
+    task :restart do
+      on roles(:app) do
+        within(release_path) do
+          execute :sudo, :restart, 'portal-staging-sidekiq'
+        end
+      end
+    end
+  end
+
   after 'deploy:symlink:release', 'puma:restart'
+  after 'puma:restart', 'sidekiq:restart'
 end
 
 desc "Backup (mysqldump) production databases and rsync to local box"
