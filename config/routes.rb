@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
 
   devise_scope :account do
@@ -190,6 +192,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  mount Sidekiq::Web => '/sidekiq'
 
   if Rails.env.test?
     namespace :test do
