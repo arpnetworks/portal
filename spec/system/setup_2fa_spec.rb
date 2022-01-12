@@ -74,6 +74,7 @@ RSpec.describe "Setup 2FA on the 'Security' Page" do
 
       token = get_an_onetime_token_from_authenticator_app(chris)
       fill_in_digit_fields_with token
+      uncheck "Don't ask again for 30 days (on this device)"
       click_button "Verify"
       expect(page).to have_content("Welcome chris, it is nice to see you.")
       expect(page.current_path).to eq(dashboard_path)
