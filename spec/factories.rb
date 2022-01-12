@@ -27,6 +27,18 @@ FactoryBot.define do
     end
   end
 
+  factory :stripe_account do
+    login
+    email
+    password { 'password' }
+    password_confirmation { 'password' }
+
+    first_name { 'John' }
+    last_name { 'Doe' }
+
+    stripe_customer_id { 'cus_foobar' }
+  end
+
   factory :service do
     account
     service_code

@@ -29,8 +29,14 @@ class Account < ApplicationRecord
 
   before_create :generate_dk_salt
 
+  after_save :sync
+
   def generate_dk_salt
     self.dk_salt = SecureRandom.alphanumeric(16)
+  end
+
+  def sync
+    Stripe::AccountSyncJob.perform_later(stripe_customer_id)
   end
 
   scope :suspended, -> { where("vlan_shutdown = 1") }
