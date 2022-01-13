@@ -35,7 +35,8 @@ append :linked_files, "config/database.yml",
                       "config/arp/iso-files.txt",
                       @deploy['configs']['billing']['gateway'],
                       @deploy['configs']['billing']['gpg'],
-                      @deploy['configs']['billing']['paypal_key']
+                      @deploy['configs']['billing']['paypal_key'],
+                      "config/sidekiq.yml"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"

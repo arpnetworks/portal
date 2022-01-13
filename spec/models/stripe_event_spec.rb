@@ -188,7 +188,7 @@ RSpec.describe StripeEvent, type: :model do
 
         it 'should handle event' do
           allow(StripeEvent).to receive(:create).and_return(@stripe_event)
-          expect(@stripe_event).to receive(:go!)
+          expect(Stripe::EventProcessorJob).to receive(:perform_later).with(@stripe_event.id)
           StripeEvent.process!(@event, @payload)
         end
       end

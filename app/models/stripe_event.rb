@@ -56,7 +56,7 @@ class StripeEvent < ApplicationRecord
     stripe_event = StripeEvent.create(
       event_id: event.id, event_type: event.type, status: 'received', body: payload
     )
-    stripe_event.go!
+    Stripe::EventProcessorJob.perform_later(stripe_event.id)
   end
 
   ##################
