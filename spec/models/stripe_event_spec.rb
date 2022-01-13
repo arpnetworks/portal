@@ -286,7 +286,7 @@ RSpec.describe StripeEvent, type: :model do
             @stripe_invoice = double(StripeInvoice)
             allow(StripeInvoice).to receive(:create_payment).with(@account, @invoice) { @stripe_invoice }
             mailer = double(:mailer)
-            expect(mailer).to receive(:deliver_now)
+            expect(mailer).to receive(:deliver_later)
             expect(Mailers::Stripe).to receive(:sales_receipt)\
               .with(@stripe_invoice, hosted_invoice_url: @invoice['hosted_invoice_url'])\
               .and_return mailer
@@ -332,7 +332,7 @@ RSpec.describe StripeEvent, type: :model do
 
           it 'should send a decline notice email' do
             mailer = double(:mailer)
-            expect(mailer).to receive(:deliver_now)
+            expect(mailer).to receive(:deliver_later)
             expect(Mailers::Stripe).to receive(:payment_failed)\
               .with(@account, hosted_invoice_url: @invoice['hosted_invoice_url'])\
               .and_return mailer
@@ -425,7 +425,7 @@ RSpec.describe StripeEvent, type: :model do
           it 'should send a refund receipt email' do
             allow(StripeInvoice).to receive(:process_refund).with(@charge) { 10 }
             mailer = double(:mailer)
-            expect(mailer).to receive(:deliver_now)
+            expect(mailer).to receive(:deliver_later)
             expect(Mailers::Stripe).to receive(:refund)\
               .with(@account, 10, receipt_url: @charge['receipt_url'])\
               .and_return mailer
