@@ -100,7 +100,11 @@ namespace :deploy do
     task :restart do
       on roles(:app) do
         within(release_path) do
-          execute :sudo, :restart, 'portal-staging-sidekiq'
+          if release_path.to_s =~ /staging/
+            execute :sudo, :restart, 'portal-staging-sidekiq'
+          else
+            execute :sudo, :restart, 'portal-sidekiq'
+          end
         end
       end
     end
