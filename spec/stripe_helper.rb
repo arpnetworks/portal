@@ -283,4 +283,23 @@ class StripeFixtures
       type: 'charge.refunded'
     }
   end
+
+  def self.event_customer_subscription_created
+    {
+      id: 'evt_3KCjGm2LsKuf8PTn1WSGLARW',
+      object: 'event',
+      api_version: '2020-08-27',
+      created: 1_641_198_679,
+      data: {
+        object: {}.merge(subscription)
+      },
+      livemode: false,
+      pending_webhooks: 3,
+      request: {
+        id: 'req_F7ElzSMOjQH3Vg',
+        idempotency_key: 'fbc0e7f7-7fb6-48d2-a2ac-8dcb027ff92c'
+      },
+      type: 'customer.subscription.created'
+    }
+  end
 end

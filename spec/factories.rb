@@ -190,6 +190,14 @@ FactoryBot.define do
         # See StripeFixtures for a much easier way of dealing with this
       }
     end
+
+    trait :customer_subscription_created do
+      event_id { 'evt_1KHSy12LsKuf8PTnb94cmyUf' }
+      event_type { 'customer.subscription.created' }
+      body {
+        # See StripeFixtures for a much easier way of dealing with this
+      }
+    end
   end
 
   factory :dns_record do

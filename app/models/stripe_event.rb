@@ -2,6 +2,7 @@ class StripeEvent < ApplicationRecord
   def supported_events
     %w[
       charge.refunded
+      customer.subscription.created
       invoice.finalized
       invoice.paid
       invoice.payment_action_required
@@ -81,6 +82,24 @@ class StripeEvent < ApplicationRecord
     rescue StandardError => e
       Mailer.simple_notification("CC: Was unable to send refund receipt email to #{account.display_account_name}",
                                  e.message).deliver_later
+    end
+  end
+
+  def handle_customer_subscription_created!
+    raise 'Incorrect event type' if event_type != 'customer.subscription.created'
+
+    event = JSON.parse(body)
+
+    subscription = event['data']['object']
+    subscription['items']['data'].each do |si|
+      next unless (service_id = si['metadata']['link_to_service_id'])
+
+      begin
+        service = Service.find(service_id.to_i)
+        service.stripe_subscription_item_id = si['id']
+        service.save
+      rescue ActiveRecord::RecordNotFound
+      end
     end
   end
 

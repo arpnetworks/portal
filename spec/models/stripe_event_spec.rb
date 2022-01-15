@@ -445,5 +445,45 @@ RSpec.describe StripeEvent, type: :model do
         end
       end
     end
+
+    describe 'handle_customer_subscription_created!' do
+      context 'with event and subscription' do
+        before :each do
+          @account = build(:account)
+          @stripe_event = build(:stripe_event, :customer_subscription_created)
+          allow(@stripe_event).to receive(:body) {
+            StripeFixtures.event_customer_subscription_created.to_json
+          }
+          @subscription = JSON.parse(@stripe_event.body)['data']['object']
+        end
+
+        context 'with incorrect event type' do
+          before :each do
+            @stripe_event.event_type = 'foo'
+          end
+
+          it 'should raise error' do
+            expect { @stripe_event.handle_invoice_finalized! }.to raise_error StandardError
+          end
+        end
+
+        it 'should iterate through subscription line items and link to service' do
+          @service    = []
+          @service[0] = mock_model(Service)
+          @service[1] = mock_model(Service)
+
+          expect(Service).to receive(:find).with(123).and_return(@service[0])
+          expect(@service[0]).to receive(:stripe_subscription_item_id=)\
+            .with(@subscription['items']['data'][0]['id'])
+          expect(@service[0]).to receive(:save)
+          expect(Service).to receive(:find).with(456).and_return(@service[1])
+          expect(@service[1]).to receive(:stripe_subscription_item_id=)\
+            .with(@subscription['items']['data'][1]['id'])
+          expect(@service[1]).to receive(:save)
+
+          @stripe_event.handle_customer_subscription_created!
+        end
+      end
+    end
   end
 end
