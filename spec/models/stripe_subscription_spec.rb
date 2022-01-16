@@ -164,37 +164,6 @@ RSpec.describe StripeSubscription, type: :model do
       end
     end
 
-    describe 'set_subscription_item_id!()' do
-      before :each do
-        allow(@account).to receive(:offload_billing?).and_return true
-        @ss = StripeSubscription.new(@account)
-        @service = build :service
-      end
-
-      context 'with a prior subscription' do
-        before :each do
-          # The JSON dance is to stringify the keys, which is how Stripe delivers them
-          @current_subscription = JSON.parse(StripeFixtures.subscription.to_json)
-          allow(@ss).to receive(:current_subscription).and_return @current_subscription
-        end
-
-        context 'when a service has a Price ID' do
-          before :each do
-            @price_id = 'price_1KC3EB2LsKuf8PTnh6fKuOrr'
-            @si_id = 'si_Ks8gTNKLLZ0AGY'
-            @service.stripe_price_id = @price_id
-          end
-
-          it 'should set Service SubscriptionItem ID' do
-            expect(@service).to receive(:stripe_subscription_item_id=).with(@si_id)
-            expect(@service).to receive(:save)
-
-            @ss.set_subscription_item_id!(@service)
-          end
-        end
-      end
-    end
-
     describe 'remove!()' do
       before :each do
         allow(@account).to receive(:offload_billing?).and_return true
@@ -336,6 +305,37 @@ RSpec.describe StripeSubscription, type: :model do
 
         it 'should return nil' do
           expect(@ss.send(:current_subscription)).to be_nil
+        end
+      end
+    end
+
+    describe 'set_subscription_item_id!()' do
+      before :each do
+        allow(@account).to receive(:offload_billing?).and_return true
+        @ss = StripeSubscription.new(@account)
+        @service = build :service
+      end
+
+      context 'with a prior subscription' do
+        before :each do
+          # The JSON dance is to stringify the keys, which is how Stripe delivers them
+          @current_subscription = JSON.parse(StripeFixtures.subscription.to_json)
+          allow(@ss).to receive(:current_subscription).and_return @current_subscription
+        end
+
+        context 'when a service has a Price ID' do
+          before :each do
+            @price_id = 'price_1KC3EB2LsKuf8PTnh6fKuOrr'
+            @si_id = 'si_Ks8gTNKLLZ0AGY'
+            @service.stripe_price_id = @price_id
+          end
+
+          it 'should set Service SubscriptionItem ID' do
+            expect(@service).to receive(:stripe_subscription_item_id=).with(@si_id)
+            expect(@service).to receive(:save)
+
+            @ss.set_subscription_item_id!(@service)
+          end
         end
       end
     end
