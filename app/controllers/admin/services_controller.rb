@@ -123,7 +123,14 @@ class Admin::ServicesController < Admin::HeadQuartersController
   end
 
   def pull_from_stripe
-    flash[:notice] = 'Something might be happening...'
+    stripe_subscription = @service.account.stripe_subscription
+    stripe_subscription.set_subscription_item_id!(@service)
+
+    if @service.stripe_subscription_item_id.blank?
+      flash[:error] = 'Couldn\'t find Subscription Item ID from Stripe.'
+    else
+      flash[:notice] = 'Subscription Item ID pulled from Stripe.'
+    end
 
     respond_to do |format|
       format.html { redirect_to(last_location) }
