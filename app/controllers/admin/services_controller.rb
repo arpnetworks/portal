@@ -1,7 +1,8 @@
 class Admin::ServicesController < Admin::HeadQuartersController
   before_action :is_arp_admin?,     except: [:show]
   before_action :is_arp_sub_admin?, only: [:show]
-  before_action :find_service,      only: %i[show edit update destroy push_to_stripe]
+  before_action :find_service,      only: %i[show edit update destroy push_to_stripe pull_from_stripe]
+  before_action :push_pull_stripe_gate, only: %i[push_to_stripe pull_from_stripe]
 
   def index
     @services = Service.paginate(page: params[:page],
@@ -109,26 +110,20 @@ class Admin::ServicesController < Admin::HeadQuartersController
   end
 
   def push_to_stripe
-    unless @service.account.offload_billing?
-      flash[:error] = "This account hasn't been set up completely in Stripe, aborting..."
-      redirect_to(last_location) && return
-    end
-
-    if @service.stripe_price_id.blank?
-      flash[:error] = 'No Price ID provided, aborting...'
-      redirect_to(last_location) && return
-    end
-
-    if @service.stripe_subscription_item_id.present?
-      flash[:error] = 'SubscriptionItem ID is already set, refusing to push again, aborting...'
-      redirect_to(last_location) && return
-    end
-
     # Set pending back to true in order to force activation again
     @service.pending = true
     @service.activate_billing!
 
     flash[:notice] = 'Service pushed to Stripe.'
+
+    respond_to do |format|
+      format.html { redirect_to(last_location) }
+      format.xml  { head :ok }
+    end
+  end
+
+  def pull_from_stripe
+    flash[:notice] = 'Something might be happening...'
 
     respond_to do |format|
       format.html { redirect_to(last_location) }
@@ -143,6 +138,23 @@ class Admin::ServicesController < Admin::HeadQuartersController
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Could not find service with ID #{params[:id]}"
     redirect_to(admin_services_path)
+  end
+
+  def push_pull_stripe_gate
+    unless @service.account.offload_billing?
+      flash[:error] = "This account hasn't been set up completely in Stripe, aborting..."
+      redirect_to(last_location) && return
+    end
+
+    if @service.stripe_price_id.blank?
+      flash[:error] = 'No Price ID provided, aborting...'
+      redirect_to(last_location) && return
+    end
+
+    if @service.stripe_subscription_item_id.present?
+      flash[:error] = 'SubscriptionItem ID is already set, refusing to push/pull again, aborting...'
+      redirect_to(last_location) && return
+    end
   end
 
   private

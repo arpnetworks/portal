@@ -52,9 +52,12 @@
             <li>Make sure Stripe <strong>Price ID</strong> is set and saved on this model before pulling from Stripe.</li>
           </ul>
         </div>
-        <button type='submit' class='btn btn-warning' onclick="return confirm('Are you sure?')">
-          Pull from Stripe
-        </button>
+        <form method='POST' action='<%= pull_from_stripe_admin_service_path(@service) %>'>
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <button type='submit' class='btn btn-warning' onclick="return confirm('Are you sure?')">
+            Pull from Stripe
+          </button>
+        </form>
       </td>
     </tr>
   </tfoot>

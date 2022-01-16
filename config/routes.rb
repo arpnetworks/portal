@@ -103,6 +103,7 @@ Rails.application.routes.draw do
     resources :services do
       member do
         post 'push_to_stripe'
+        post 'pull_from_stripe'
       end
       collection do
         get 'dangling'
