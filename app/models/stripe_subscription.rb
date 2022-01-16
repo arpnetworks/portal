@@ -66,6 +66,24 @@ class StripeSubscription
     subscriptions.data.first
   end
 
+  # If our service has a Stripe Price ID set, but not the corresponding Subscription Item ID,
+  # then iterate through the subscription to find a matching Price ID, and then set the
+  # Subscription Item ID accordingly.
+  #
+  # Mainly to help during the migration to Stripe.
+  def set_subscription_item_id!(service)
+    return unless (subscription = current_subscription)
+
+    subscription_line_items(subscription).each do |si|
+      price_id = si['price']['id']
+      next unless service.stripe_price_id == price_id
+
+      service.stripe_subscription_item_id = si['id']
+      service.save
+      break
+    end
+  end
+
   protected
 
   def add_service_to_new_subscription!(service, opts)
