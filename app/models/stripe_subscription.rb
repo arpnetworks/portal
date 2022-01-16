@@ -16,7 +16,7 @@ class StripeSubscription
     self
   end
 
-  def create_setup_intent!(opts = {})
+  def create_setup_intent!
     Stripe::SetupIntent.create(
       customer: @account.stripe_customer_id,
       payment_method_types: ['card']
