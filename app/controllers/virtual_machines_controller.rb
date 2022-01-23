@@ -71,10 +71,10 @@ class VirtualMachinesController < ProtectedController
 
         flash[:notice_for_vm_iso] = "Request to change CD-ROM ISO has been sent, please allow 5 - 10 seconds for this request to be processed."
 
-        Mailer.simple_notification("ISO: #{@account.display_account_name} changed ISO to #{@iso_file}", nil).deliver_now
+        Mailer.simple_notification("ISO: #{@account.display_account_name} changed ISO to #{@iso_file}", nil).deliver_later
       else
         Mailer.simple_notification("ISO: ** --> Possible attempt to manipulate ISO filename <-- **",
-                                   @account.display_account_name).deliver_now
+                                   @account.display_account_name).deliver_later
       end
     end
 
@@ -96,7 +96,7 @@ class VirtualMachinesController < ProtectedController
       @vm.set_advanced_parameter!(@param, @value)
 
       flash[:notice] = "Request to change advanced parameter has been sent, please allow 5 - 10 seconds for this request to be processed."
-      Mailer.simple_notification("ADV Param: #{@account.display_account_name} changed #{@param} to #{@value}", nil).deliver_now
+      Mailer.simple_notification("ADV Param: #{@account.display_account_name} changed #{@param} to #{@value}", nil).deliver_later
     end
 
     respond_to do |format|
@@ -155,6 +155,6 @@ class VirtualMachinesController < ProtectedController
     Kernel.system("/usr/bin/ssh", "-o", "ConnectTimeout=5", "#{$KEYER}@#{$HOST_CONSOLE}", "add",
                   append ? '1' : '0', login, key)
 
-    Mailer.simple_notification('SSH Key Submission', "add " + (append ? 1 : 0).to_s + " #{login} #{key}").deliver_now
+    Mailer.simple_notification('SSH Key Submission', "add " + (append ? 1 : 0).to_s + " #{login} #{key}").deliver_later
   end
 end
