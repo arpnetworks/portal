@@ -104,4 +104,4 @@ To see all supported events::
 Copyright
 ---------
 
-Copyright (c) 2008 - 2021 `ARP Networks, Inc. <https://arpnetworks.com>`_
+Copyright (c) 2008 - 2022 `ARP Networks, Inc. <https://arpnetworks.com>`_
