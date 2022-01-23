@@ -1,5 +1,11 @@
 version: "3.7"
 services:
+  db:
+    restart: always
+  web:
+    restart: always
+  sidekiq:
+    restart: always
   redis:
     restart: always
     ports:
