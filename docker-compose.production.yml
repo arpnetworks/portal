@@ -1,12 +1,5 @@
 version: "3.7"
 services:
-  # Need newer docker-compose
-  # db:
-  #   profiles: ["disabled"]
-  # web:
-  #   profiles: ["disabled"]
-  # sidekiq:
-  #   profiles: ["disabled"]
   redis:
     restart: always
     ports:
