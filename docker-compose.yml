@@ -21,6 +21,11 @@ services:
       - RAILS_SERVE_STATIC_FILES
       - MARIADB_ROOT_PASSWORD
       - REDIS_PASSWORD
+      - SMTP_SERVER
+      - SMTP_PORT
+      - SMTP_DOMAIN
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
     depends_on:
       - db
       - redis
@@ -35,6 +40,11 @@ services:
       - MARIADB_ROOT_PASSWORD
       - REDIS_URL_SIDEKIQ
       - REDIS_PASSWORD
+      - SMTP_SERVER
+      - SMTP_PORT
+      - SMTP_DOMAIN
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
     depends_on:
       - redis
       - db
