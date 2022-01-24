@@ -75,7 +75,7 @@ class Admin::VirtualMachinesController < Admin::HeadQuartersController
               new_ram *= 1024
               write_request(@virtual_machine, 'set-param', "ram #{new_ram}")
 
-              Mailer.simple_notification("VM: #{@virtual_machine.UUID} RAM changed from #{old_ram} to #{new_ram}", '').deliver_now
+              Mailer.simple_notification("VM: #{@virtual_machine.UUID} RAM changed from #{old_ram} to #{new_ram}", '').deliver_later
             end
           else
             return
