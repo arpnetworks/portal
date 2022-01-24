@@ -50,6 +50,7 @@ yarn-debug.log*
 .env
 .env-cap
 
-.cloginrc
+containers/sidekiq/rancid/.cloginrc
+containers/sidekiq/rancid/.ssh-config
 
 tags
