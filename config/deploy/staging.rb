@@ -7,7 +7,7 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server 'snow.arpnetworks.com', roles: %w(app db)
+server ENV['CAP_APP_SERVER'], roles: %w(app db)
 
 # role-based syntax
 # ==================
