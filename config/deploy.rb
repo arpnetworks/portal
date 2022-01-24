@@ -107,9 +107,9 @@ namespace :deploy do
           end
         end
       else
-        on roles(:sidekiq) do
-          execute "cd portal ; docker-compose restart sidekiq"
-        end
+        # on roles(:sidekiq) do
+        #   execute "cd portal ; docker-compose restart sidekiq"
+        # end
       end
     end
   end
