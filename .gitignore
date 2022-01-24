@@ -48,5 +48,6 @@ yarn-debug.log*
 .yarn-integrity
 
 .env
+.env-cap
 
 tags
