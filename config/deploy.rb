@@ -64,6 +64,7 @@ set :ssh_options, verify_host_key: :always
 # rbenv
 set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
+set :rbenv_roles, %w(app db)
 
 # Defaults to [:web]
 set :assets_roles, [:app]
@@ -99,13 +100,15 @@ namespace :deploy do
   namespace :sidekiq do
     desc 'Restart Sidekiq'
     task :restart do
-      on roles(:app) do
-        within(release_path) do
-          if release_path.to_s =~ /staging/
+      if release_path.to_s =~ /staging/
+        on roles(:app) do
+          within(release_path) do
             execute :sudo, :restart, 'portal-staging-sidekiq'
-          else
-            execute :sudo, :restart, 'portal-sidekiq'
           end
+        end
+      else
+        on roles(:sidekiq) do
+          execute "cd portal ; docker-compose restart sidekiq"
         end
       end
     end
