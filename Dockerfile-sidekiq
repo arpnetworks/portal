@@ -1,0 +1,48 @@
+FROM ruby:2.6
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update -qq && \
+    apt-get install -y \
+      nodejs \
+      yarnpkg \
+      mariadb-client \
+      pwgen \
+      vim \
+      bash \
+      expect \
+      git \
+      man \
+      openssh-client \
+      perl \
+      rancid
+
+RUN ln -s /usr/bin/yarnpkg /usr/bin/yarn
+
+WORKDIR /myapp
+COPY Gemfile /myapp/Gemfile
+COPY Gemfile.lock /myapp/Gemfile.lock
+RUN gem install bundler:2.1.4
+RUN bundle install
+COPY . /myapp
+
+RUN    groupadd -g 5000 arpnetworks \
+    && useradd --create-home \
+               --uid 5000 \
+               --gid 5000 \
+               --shell /bin/bash \
+               --home-dir /home/arpnetworks \
+               --comment 'ARP Networks' \
+               arpnetworks \
+    && chown -R arpnetworks:arpnetworks /myapp
+
+COPY .cloginrc /home/arpnetworks/.cloginrc
+RUN chown arpnetworks:arpnetworks /home/arpnetworks/.cloginrc \
+ && chmod 400 /home/arpnetworks/.cloginrc
+
+# Add a script to be executed every time the container starts.
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+USER arpnetworks
+EXPOSE 3000

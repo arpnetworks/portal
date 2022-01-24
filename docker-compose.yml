@@ -30,10 +30,11 @@ services:
       - db
       - redis
   sidekiq:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-sidekiq
     command: bundle exec sidekiq
     volumes:
-      - .:/myapp
       - gems:/usr/local/bundle
     environment:
       - RAILS_ENV
