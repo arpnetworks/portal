@@ -219,6 +219,7 @@ class ServicesController < ProtectedController
 
   def check_cc_exists_and_current
     return if @account.beta_features? && @account.beta_billing_exempt?
+    return if @account.offload_billing?
 
     if @account.credit_card.nil? || !@account.current?
       render 'new_gate'
