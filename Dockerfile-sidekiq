@@ -36,9 +36,12 @@ RUN    groupadd -g 5000 arpnetworks \
                arpnetworks \
     && chown -R arpnetworks:arpnetworks /myapp
 
-COPY .cloginrc /home/arpnetworks/.cloginrc
+COPY containers/sidekiq/rancid/.cloginrc /home/arpnetworks/.cloginrc
 RUN chown arpnetworks:arpnetworks /home/arpnetworks/.cloginrc \
  && chmod 400 /home/arpnetworks/.cloginrc
+RUN mkdir /home/arpnetworks/.ssh
+COPY containers/sidekiq/rancid/.ssh-config /home/arpnetworks/.ssh/config
+RUN chown -R arpnetworks.arpnetworks /home/arpnetworks/.ssh
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
