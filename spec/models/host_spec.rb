@@ -14,4 +14,26 @@ context Host do
       expect(Host.hosts_for_console_passwd_file.sort).to eq @hostnames.sort
     end
   end
+
+  context 'normalize_host()' do
+    context 'without suffix' do
+      before :each do
+        @host = 'foo'
+      end
+
+      it 'should add suffix' do
+        expect(Host.normalize_host(@host)).to eq 'foo.arpnetworks.com'
+      end
+    end
+
+    context 'with suffix' do
+      before :each do
+        @host = 'foo.arpnetworks.com'
+      end
+
+      it 'should leave host unchanged' do
+        expect(Host.normalize_host(@host)).to eq 'foo.arpnetworks.com'
+      end
+    end
+  end
 end

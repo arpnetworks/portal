@@ -8,4 +8,14 @@ class Host < ApplicationRecord
   def self.hosts_for_console_passwd_file
     Host.all.map { |host| host.hostname }.sort
   end
+
+  def self.normalize_host(host)
+    @host = host
+
+    unless @host =~ /\.arpnetworks\.com$/
+      @host += '.arpnetworks.com'
+    end
+
+    @host
+  end
 end
