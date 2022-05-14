@@ -20,7 +20,7 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
 
     uuids = {}
     data.split(';').each do |vm_and_status|
-      uuid, status = vm_and_status.split(',')
+      uuid, status, @host = vm_and_status.split(',')
       uuids[uuid] = status
     end
 
@@ -39,6 +39,7 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
         if status_in_db != new_status
           vm = VirtualMachine.find_by(uuid: vm_and_status_in_db['uuid'])
           vm.update_column(:status, new_status)
+          vm.update_column(:host, Host.normalize_host(@host)) if @host
         end
       end
     rescue Exception => e
