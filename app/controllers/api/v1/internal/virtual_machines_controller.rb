@@ -32,16 +32,22 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
     end
     sql_partial = sql_partial[0..-3]
 
-    all_vms_raw = VirtualMachine.connection.select_all('SELECT uuid,status FROM virtual_machines WHERE uuid IN (' + sql_partial + ')')
+    all_vms_raw = VirtualMachine.connection.select_all('SELECT uuid,status,host FROM virtual_machines WHERE uuid IN (' + sql_partial + ')')
 
     begin
       all_vms_raw.each do |vm_and_status_in_db|
         status_in_db = vm_and_status_in_db['status']
+        host_in_db = vm_and_status_in_db['host']
         new_status = uuids[vm_and_status_in_db['uuid']]
         new_host = hosts[vm_and_status_in_db['uuid']]
         if status_in_db != new_status
           vm = VirtualMachine.find_by(uuid: vm_and_status_in_db['uuid'])
           vm.update_column(:status, new_status)
+        end
+
+        new_host = Host.normalize_host(new_host)
+        if host_in_db != new_host
+          vm = VirtualMachine.find_by(uuid: vm_and_status_in_db['uuid'])
           vm.update_column(:host, Host.normalize_host(new_host)) if new_host
         end
       end
