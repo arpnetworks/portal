@@ -18,10 +18,12 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
   def statuses
     data = request.raw_post.to_s
 
+    hosts = {}
     uuids = {}
     data.split(';').each do |vm_and_status|
-      uuid, status, @host = vm_and_status.split(',')
+      uuid, status, host = vm_and_status.split(',')
       uuids[uuid] = status
+      hosts[uuid] = host
     end
 
     sql_partial = ''
@@ -36,10 +38,11 @@ class Api::V1::Internal::VirtualMachinesController < ApiController
       all_vms_raw.each do |vm_and_status_in_db|
         status_in_db = vm_and_status_in_db['status']
         new_status = uuids[vm_and_status_in_db['uuid']]
+        new_host = hosts[vm_and_status_in_db['uuid']]
         if status_in_db != new_status
           vm = VirtualMachine.find_by(uuid: vm_and_status_in_db['uuid'])
           vm.update_column(:status, new_status)
-          vm.update_column(:host, Host.normalize_host(@host)) if @host
+          vm.update_column(:host, Host.normalize_host(new_host)) if new_host
         end
       end
     rescue Exception => e
