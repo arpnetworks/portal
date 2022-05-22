@@ -341,6 +341,10 @@ class VirtualMachine < ApplicationRecord
     cluster
   end
 
+  def generation
+    Host.find_by(hostname: host).generation
+  end
+
   # Do we consider this VM to be an ARP Thunder™ branded machine?
   def thunder?
     service = resource.service

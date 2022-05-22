@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_01_052124) do
+ActiveRecord::Schema.define(version: 2022_05_22_010211) do
 
   create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "login", default: "", null: false
@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(version: 2022_01_01_052124) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "hostname"
+    t.string "generation", default: "3", null: false
     t.index ["location_id"], name: "location_id"
   end
 
