@@ -79,6 +79,7 @@ Rails.application.routes.draw do
   end
 
   get '/noVNC/console', controller: 'virtual_machines', action: 'console'
+  get '/noVNC-2022/console', controller: 'virtual_machines', action: 'console'
 
   get '/dashboard', controller: 'my_account', action: 'dashboard', as: 'dashboard'
 

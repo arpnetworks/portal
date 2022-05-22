@@ -111,7 +111,11 @@ class VirtualMachinesController < ProtectedController
     @vm = @account.find_virtual_machine_by_id(params[:id])
 
     if @vm
-      render '/virtual_machines/console', :layout => false
+      if @vm.generation == '4'
+        render '/virtual_machines/console-2022', :layout => false
+      else
+        render '/virtual_machines/console', :layout => false
+      end
     else
       redirect_to :dashboard
     end
