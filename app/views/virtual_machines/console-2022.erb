@@ -135,12 +135,27 @@
         document.getElementById('sendCtrlAltDelButton')
             .onclick = sendCtrlAltDel;
 
-        // Read parameters specified in the URL query string
-        // By default, use the host and port of server that served this file
-        const host = readQueryVariable('host', window.location.hostname);
-        let port = readQueryVariable('port', window.location.port);
-        const password = readQueryVariable('password');
-        const path = readQueryVariable('path', 'websockify');
+        // // Read parameters specified in the URL query string
+        // // By default, use the host and port of server that served this file
+        // const host = readQueryVariable('host', window.location.hostname);
+        // let port = readQueryVariable('port', window.location.port);
+        // const password = readQueryVariable('password');
+        // const path = readQueryVariable('path', 'websockify');
+
+        // --------------------------
+        // ARP Networks' changes 2022
+        // --------------------------
+
+        // Note: we commented out the 4 lines above too
+
+        const host = "<%= @vm.host %>";
+        let port = 443;
+        const password = "<%= @vm.vnc_password %>";
+        const path = "ws-<%= @vm.uuid %>";
+
+        // --------------------------
+        // End changes
+        // --------------------------
 
         // | | |         | | |
         // | | | Connect | | |
