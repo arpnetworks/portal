@@ -85,7 +85,8 @@
       <tr>
         <td></td>
         <td colspan="<%= virtual_machines_colspan(@enable_admin_view) - 1%>" class="info">
-          <a class="btn btn-primary" href='/noVNC/console?id=<%= @virtual_machine.id %>' target="_blank">View Console</a>
+          <% @novnc = (@virtual_machine.generation == '4' ? 'noVNC-2022' : 'noVNC') %>
+          <a class="btn btn-primary" href='/<%= @novnc %>/console?id=<%= @virtual_machine.id %>' target="_blank">View Console</a>
           <br />&#x000A;
           <br />&#x000A;
           The easiest way to view your server's console is to simply click "View Console" above.
