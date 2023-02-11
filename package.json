@@ -2,7 +2,7 @@
   "name": "portal",
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "jest spec/"
   },
   "jest": {
     "collectCoverage": true
