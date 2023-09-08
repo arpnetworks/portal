@@ -74,6 +74,14 @@ For a more verbose output::
 
   docker-compose run web rspec --format doc
 
+To run our JavaScript specs::
+
+  docker-compose run web yarn run jest spec/
+
+But the following shortcut _may_ work if you have ``yarn`` installed locally::
+
+  yarn run test
+
 Stripe
 ------
 
