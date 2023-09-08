@@ -56,19 +56,15 @@ function populateSSHKeys(account_id, checked) {
     dataType: "json",
     url: "/accounts/" + account_id + "/ssh_keys",
     success: function (data) {
-      var checkboxes = "";
-
       $.each(data, function (k, v) {
-        checkboxes += buildSSHKeyInputCheckbox(
+        $("#ssh_key_selector").append(buildSSHKeyInputCheckbox(
           v["id"],
           v["name"],
           v["username"],
           v["selected"]
-        );
+        ));
       });
 
-      var element = $("#ssh_key_selector");
-      element.html(checkboxes);
       $("#add_ssh_key").removeClass("is-loading");
       insertSSHKeyCallbacks();
     },
