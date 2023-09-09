@@ -15,8 +15,9 @@
     "bulma": "0.8.2",
     "jquery": "^3.5.1",
     "jquery-ujs": "^1.2.2",
-    "turbolinks": "^5.2.0",
-    "node-forge": "^0.10.0"
+    "json5": "^1.0.2",
+    "node-forge": "^0.10.0",
+    "turbolinks": "^5.2.0"
   },
   "devDependencies": {
     "jest": "^26.1.0",
