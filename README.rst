@@ -82,6 +82,15 @@ But the following shortcut _may_ work if you have ``yarn`` installed locally::
 
   yarn run test
 
+Selenium-based tests will fail, however.  To run the tests with Selenium /
+Chrome visiting a local running copy of this app, do the following::
+
+  # Starts a slightly modified docker container of the Portal, with Selenium Server / Chrome
+  ./dev/docker start
+
+  # Run rspec within this modified container
+  ./dev/rspec
+
 Stripe
 ------
 
