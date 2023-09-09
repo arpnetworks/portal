@@ -61,6 +61,11 @@ services:
     volumes:
       - ./tmp/capybara/downloads:/home/seluser/Downloads
     shm_size: 2G
+    ulimits:
+      memlock: -1
+      nofile:
+        soft: 4096
+        hard: 8192
     logging:
       driver: none
     ports:
