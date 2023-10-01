@@ -119,6 +119,7 @@ describe Service do
       before :each do
         @account = mock_model(Account)
         allow(@account).to receive(:offload_billing?).and_return true
+        allow(@account).to receive(:beta_billing_exempt?).and_return false
         allow(@service).to receive(:account).and_return @account
       end
 
