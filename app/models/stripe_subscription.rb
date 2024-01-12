@@ -19,7 +19,9 @@ class StripeSubscription
   def create_setup_intent!
     Stripe::SetupIntent.create(
       customer: @account.stripe_customer_id,
-      payment_method_types: ['card']
+      automatic_payment_methods: {
+        enabled: true
+      },
     )
   end
 

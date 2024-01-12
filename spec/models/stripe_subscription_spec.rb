@@ -50,7 +50,7 @@ RSpec.describe StripeSubscription, type: :model do
       it 'should create a SetupIntent' do
         expect(Stripe::SetupIntent).to receive(:create).with(
           customer: @account.stripe_customer_id,
-          payment_method_types: ['card']
+          automatic_payment_methods: { enabled: true }
         )
         @ss.create_setup_intent!
       end

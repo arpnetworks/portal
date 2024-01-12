@@ -56,19 +56,15 @@ function populateSSHKeys(account_id, checked) {
     dataType: "json",
     url: "/accounts/" + account_id + "/ssh_keys",
     success: function (data) {
-      var checkboxes = "";
-
       $.each(data, function (k, v) {
-        checkboxes += buildSSHKeyInputCheckbox(
+        $("#ssh_key_selector").append(buildSSHKeyInputCheckbox(
           v["id"],
           v["name"],
           v["username"],
           v["selected"]
-        );
+        ));
       });
 
-      var element = $("#ssh_key_selector");
-      element.html(checkboxes);
       $("#add_ssh_key").removeClass("is-loading");
       insertSSHKeyCallbacks();
     },
@@ -93,24 +89,33 @@ function resetAddSSHKeyButton() {
 }
 
 function buildSSHKeyInputCheckbox(id, name, username, selected) {
-  var checkbox =
-    "<label>" +
-    "<input type='checkbox' name='ssh_keys[]' id='ssh_key_" +
-    id +
-    "' value='" +
-    id +
-    "'" +
-    (selected ? "checked" : "") +
-    ">Username: " +
-    username +
-    ", Key Label: " +
-    name +
-    "<span class='icon is-small is-danger ssh-key-delete' data-ssh-key-id='" +
-    id +
-    "'><i class='fas fa-times'></i></span>" +
-    "</label>";
+  var $label = $('<label></label>');
+  var $input = $('<input>', {
+    type: 'checkbox',
+    name: 'ssh_keys[]',
+    id: 'ssh_key_' + id,
+    value: id
+  });
+  if (selected) {
+    $input.prop('checked', true);
+  }
+  var $span = $('<span>', {
+    class: 'icon is-small is-danger ssh-key-delete',
+    'data-ssh-key-id': id
+  });
+  var $icon = $('<i>', {
+    class: 'fas fa-times'
+  });
 
-  return checkbox;
+  $span.append($icon);
+  $label.append($input)
+        .append("Username: ")
+        .append(document.createTextNode(username))
+        .append(", Key Label: ")
+        .append(document.createTextNode(name))
+        .append($span);
+
+  return $label;
 }
 
 function insertSSHKeyDeleteCallbacks() {
