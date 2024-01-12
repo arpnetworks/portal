@@ -229,7 +229,7 @@ class ServicesController < ProtectedController
   end
 
   def check_account_isnt_blank
-    if @account.services.empty?
+    if @account.services.active.empty?
       render 'new_gate'
 
       false
