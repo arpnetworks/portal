@@ -51,6 +51,8 @@ class Jobs::DefineVm < Job
       case os_version
       when /^6\.7/
         iso = 'OpenBSD-6.7-amd64-install67.iso'
+      when /^7\.4/
+        iso = 'OpenBSD-7.4-amd64-install74.iso'
       else
         iso = 'OpenBSD-6.8-amd64-install68.iso'
       end
@@ -125,7 +127,7 @@ class Jobs::DefineVm < Job
       opt_params[:attach_config_disk] = true
     when 'openbsd'
       case os_version
-      when '6.7','6.8'
+      when '6.7','6.8','7.4'
         opt_params[:attach_config_disk] = true
       end
     end
