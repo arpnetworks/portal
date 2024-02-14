@@ -114,7 +114,7 @@ class Jobs::DefineVm < Job
       end
     when 'debian'
       case os_version
-      when '9.12','10.4'
+      when '9.12','10.4','12.5'
         opt_params[:attach_config_disk] = true
       end
     when 'fedora'
