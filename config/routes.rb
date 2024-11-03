@@ -191,6 +191,7 @@ Rails.application.routes.draw do
 
       namespace :stripe do
         post 'webhook'
+        post 'create_setup_intent'
       end
     end
   end
