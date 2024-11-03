@@ -5,8 +5,12 @@ Source: Stripe
 Setup Intent ID: <%= @setup_intent_id.to_s %>
 
 New Service: <%= @product[:description] %>
-Location: <%= @location %>
-OS: <%= @product[:os] %>
+Location: <%= @location %> (<%= @location_code %>)
+OS: <%= @product[:os] %> (<%= @product[:os_code] %>)
+IPs: <%= @product[:ip_block] %>
 
+Customer Name: <%= @customer[:name] %>
+Customer Email: <%= @customer[:email] %>
+Customer Company: <%= @customer[:company] %>
 
 

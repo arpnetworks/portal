@@ -181,6 +181,7 @@ class StripeEvent < ApplicationRecord
     setup_intent = event['data']['object']
     metadata = setup_intent['metadata']
 
+    # At the moment, we don't do anything with this event besides logging it
   end
 
   def handle_setup_intent_succeeded!
@@ -190,14 +191,27 @@ class StripeEvent < ApplicationRecord
     setup_intent = event['data']['object']
     metadata = setup_intent['metadata']
 
-    product = {
-      code: metadata['product_code'],
-      description: metadata['product_description'],
-      os: metadata['product_os'],
-      location: metadata['product_location'],
-    }
+    # This SetupIntent originated from the new order wizard, so send us a notification
+    if metadata['source'] == 'new_order_wizard'
+      os = VirtualMachine.os_display_name_from_code($CLOUD_OS, metadata['product_operating_system_code'], version: true) rescue ''
 
-    Mailer.new_order_from_stripe(setup_intent['id'], product).deliver_later
+      product = {
+        code: metadata['product_code'],
+        description: metadata['product_description'],
+        os: os,
+        os_code: metadata['product_operating_system_code'],
+        location: metadata['product_location'],
+        ip_block: metadata['product_ip_block']
+      }
+
+      customer = {
+        name: metadata['customer_first_name'] + ' ' + metadata['customer_last_name'],
+        email: metadata['customer_email'],
+        company: metadata['customer_company'] || ''
+      }
+
+      Mailer.new_order_from_stripe(setup_intent['id'], product, customer).deliver_later
+    end
   end
 
   def get_account_and_invoice(body)

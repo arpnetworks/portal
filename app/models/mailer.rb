@@ -107,7 +107,7 @@ class Mailer < ApplicationMailer
     mail(to: @recipients, subject: @subject, from: @from)
   end
 
-  def new_order_from_stripe(setup_intent_id, product)
+  def new_order_from_stripe(setup_intent_id, product, customer)
     @subject    = 'Order from web site (Stripe)'
     @recipients = ['gdolley+tickets@arpnetworks.com', 'ben@arpnetworks.com']
     @from       = 'support@arpnetworks.com'
@@ -125,6 +125,8 @@ class Mailer < ApplicationMailer
                 else
                   @product[:location]
                 end
+
+    @customer = customer
 
     mail(to: @recipients, subject: @subject, from: @from)
   end
