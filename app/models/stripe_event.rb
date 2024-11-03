@@ -8,6 +8,8 @@ class StripeEvent < ApplicationRecord
       invoice.payment_action_required
       invoice.payment_failed
       payment_method.attached
+      setup_intent.succeeded
+      setup_intent.created
     ]
   end
 

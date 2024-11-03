@@ -1,5 +1,5 @@
 class Api::V1::StripeController < ApiController
-  skip_before_action :verify_authenticity_token, only: [:webhook]
+  skip_before_action :verify_authenticity_token, only: [:webhook, :create_setup_intent]
   before_action :setup
 
   def webhook
@@ -33,6 +33,14 @@ class Api::V1::StripeController < ApiController
     end
 
     render json: {}, status: 200
+  end
+
+  def create_setup_intent
+    intent = Stripe::SetupIntent.create({
+      automatic_payment_methods: { enabled: true },
+    })
+
+    render json: { client_secret: intent.client_secret }
   end
 
   protected

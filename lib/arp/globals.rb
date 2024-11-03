@@ -56,6 +56,8 @@ if conf = @config[Rails.env]
   $STRIPE_PUBLISHABLE_KEY = conf['stripe']['pk_key']
   $STRIPE_PRODUCTS  = conf['stripe']['products']
 
+  $STRIPE_API_KEY_TEST = conf['stripe']['api_key_test']
+
   Stripe.api_key = $STRIPE_API_KEY
 
   $DEVISE_OTP_SECRET_ENCRYPTION_KEY = conf['devise']['otp_secret_encryption_key']
