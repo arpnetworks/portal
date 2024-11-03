@@ -174,6 +174,32 @@ class StripeEvent < ApplicationRecord
     end
   end
 
+  def handle_setup_intent_created!
+    raise 'Incorrect event type' if event_type != 'setup_intent.created'
+
+    event = JSON.parse(body)
+    setup_intent = event['data']['object']
+    metadata = setup_intent['metadata']
+
+  end
+
+  def handle_setup_intent_succeeded!
+    raise 'Incorrect event type' if event_type != 'setup_intent.succeeded'
+
+    event = JSON.parse(body)
+    setup_intent = event['data']['object']
+    metadata = setup_intent['metadata']
+
+    product = {
+      code: metadata['product_code'],
+      description: metadata['product_description'],
+      os: metadata['product_os'],
+      location: metadata['product_location'],
+    }
+
+    Mailer.new_order_from_stripe(setup_intent['id'], product).deliver_later
+  end
+
   def get_account_and_invoice(body)
     event = JSON.parse(body)
 

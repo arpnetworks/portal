@@ -107,6 +107,28 @@ class Mailer < ApplicationMailer
     mail(to: @recipients, subject: @subject, from: @from)
   end
 
+  def new_order_from_stripe(setup_intent_id, product)
+    @subject    = 'Order from web site (Stripe)'
+    @recipients = ['gdolley+tickets@arpnetworks.com', 'ben@arpnetworks.com']
+    @from       = 'support@arpnetworks.com'
+
+    @setup_intent_id = setup_intent_id
+    @product = product
+
+    @location_code = @product[:location]
+    
+    @location = case @location_code
+                when 'lax'
+                  'Los Angeles'
+                when 'fra'
+                  'Frankfurt'
+                else
+                  @product[:location]
+                end
+
+    mail(to: @recipients, subject: @subject, from: @from)
+  end
+
   def simple_notification(subject, body)
     @subject    = subject
     @recipients = ['gdolley@arpnetworks.com']

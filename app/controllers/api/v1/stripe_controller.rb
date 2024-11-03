@@ -38,9 +38,16 @@ class Api::V1::StripeController < ApiController
   def create_setup_intent
     intent = Stripe::SetupIntent.create({
       automatic_payment_methods: { enabled: true },
+      metadata: setup_intent_params[:metadata].to_h
     })
-
+    
     render json: { client_secret: intent.client_secret }
+  end
+
+  private
+
+  def setup_intent_params
+    params.permit(metadata: {})
   end
 
   protected
