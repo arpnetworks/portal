@@ -50,6 +50,8 @@ default: &default
 development:
   <<: *default
   compile: true
+  # If we need to run the console just for one command, this yarn check can be a pain
+  # check_yarn_integrity: false
 
   # Reference: https://webpack.js.org/configuration/dev-server/
   dev_server:
