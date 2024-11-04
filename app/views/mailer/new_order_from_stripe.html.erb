@@ -139,6 +139,10 @@
                 <div class="detail-label">Country:</div>
                 <div class="detail-value"><%= @customer[:country] %></div>
             </div>
+            <tr>
+                <td><strong>Existing or Returning Customer?</strong></td>
+                <td><%= @customer[:existing_account] ? 'Yes' : 'No' %></td>
+            </tr>
         </div>
 
         <div class="section">

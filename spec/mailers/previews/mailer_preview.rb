@@ -5,7 +5,7 @@ class MailerPreview < ActionMailer::Preview
 
     customer = { first_name: 'John', last_name: 'Doe', fullname: 'John Doe', email: 'john.doe@example.com',
                  company: 'Test Company', address1: '123 Main St', address2: '', city: 'Anytown', state: 'CA',
-                 postal_code: '12345', country: 'USA' }
+                 postal_code: '12345', country: 'USA', existing_account: true }
 
     Mailer.new_order_from_stripe('si_Qifoz0', product, customer)
   end
