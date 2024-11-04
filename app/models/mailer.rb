@@ -4,7 +4,7 @@ class Mailer < ApplicationMailer
   def swip_reassign_simple(form, downstream_org, ip_block)
     @subject    = 'REASSIGN SIMPLE API-2E8C-0886-4817-96AD'
     @recipients = ['hostmaster@arin.net']
-    @from       = 'gdolley@arpnetworks.com'
+    @from       = $NOTIFICATION_EMAILS.first
 
     @form           = form
     @ip_block       = ip_block
@@ -18,9 +18,8 @@ class Mailer < ApplicationMailer
 
     @subject    = 'VPS Status'
     @recipients = [account.email]
-    # @recipients = "gdolley@arpnetworks.com"
-    @cc         = 'gdolley@arpnetworks.com'
-    @from       = 'support@arpnetworks.com'
+    @cc         = $NOTIFICATION_EMAILS.first
+    @from       = $SUPPORT_EMAIL
 
     @account = account
     @vm = vm
@@ -32,9 +31,8 @@ class Mailer < ApplicationMailer
     raise 'action must be ADD or REMOVE' if action != 'ADD' && action != 'REMOVE'
 
     @subject    = "#{prefix.prefix} #{action} OBJECT"
-    # @recipients = "gdolley@arpnetworks.com"
     @recipients = 'auto-dbm@altdb.net'
-    @from       = 'ip-admin@arpnetworks.com'
+    @from       = $IP_ADMIN_EMAIL
 
     additional = ''
 
@@ -51,9 +49,8 @@ class Mailer < ApplicationMailer
 
   def irr_as_set(as_sets)
     @subject    = 'MODIFY OBJECT'
-    # @recipients = "gdolley@arpnetworks.com"
     @recipients = 'auto-dbm@altdb.net'
-    @from       = 'ip-admin@arpnetworks.com'
+    @from       = $IP_ADMIN_EMAIL
 
     @members = as_sets.join(', ')
 
@@ -66,7 +63,7 @@ class Mailer < ApplicationMailer
 
   def new_service_bgp(account, asn, full_routes, prefixes, location, family)
     @subject    = 'ORDER: BGP Session'
-    @recipients = ['gdolley+tickets@arpnetworks.com', 'ben@arpnetworks.com']
+    @recipients = $TICKET_EMAILS
     @from       = account.email
 
     @account  = account
@@ -81,7 +78,7 @@ class Mailer < ApplicationMailer
 
   def new_service_vps(account, plan, location, os, bandwidth)
     @subject    = 'ORDER: VPS without OS'
-    @recipients = ['gdolley+tickets@arpnetworks.com', 'ben@arpnetworks.com']
+    @recipients = $TICKET_EMAILS
     @from       = account.email
 
     @account   = account
@@ -95,7 +92,7 @@ class Mailer < ApplicationMailer
 
   def new_service_vps_with_os(account, plan, location, os, bandwidth)
     @subject    = 'ORDER: Rapid VPS'
-    @recipients = ['gdolley+tickets@arpnetworks.com', 'ben@arpnetworks.com']
+    @recipients = $TICKET_EMAILS
     @from       = account.email
 
     @account   = account
@@ -109,8 +106,8 @@ class Mailer < ApplicationMailer
 
   def new_order_from_stripe(setup_intent_id, product, customer)
     @subject    = 'Order from web site (Stripe)'
-    @recipients = ['gdolley+tickets@arpnetworks.com', 'ben@arpnetworks.com']
-    @from       = 'support@arpnetworks.com'
+    @recipients = $TICKET_EMAILS
+    @from       = $SUPPORT_EMAIL
 
     @setup_intent_id = setup_intent_id
     @product = product
@@ -133,8 +130,8 @@ class Mailer < ApplicationMailer
 
   def simple_notification(subject, body)
     @subject    = subject
-    @recipients = ['gdolley@arpnetworks.com']
-    @from       = 'support@arpnetworks.com'
+    @recipients = $NOTIFICATION_EMAILS
+    @from       = $SUPPORT_EMAIL
 
     @body = body
 
@@ -144,7 +141,7 @@ class Mailer < ApplicationMailer
   def welcome_new_customer(account, login, password)
     @subject    = 'Welcome to ARP Networks'
     @recipients = account.email
-    @from       = 'support@arpnetworks.com'
+    @from       = $SUPPORT_EMAIL
     
     @account  = account
     @login    = login
