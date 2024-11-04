@@ -205,10 +205,53 @@ class StripeEvent < ApplicationRecord
       }
 
       customer = {
-        name: metadata['customer_first_name'] + ' ' + metadata['customer_last_name'],
+        first_name: metadata['customer_first_name'],
+        last_name: metadata['customer_last_name'],
+        fullname: metadata['customer_first_name'] + ' ' + metadata['customer_last_name'],
         email: metadata['customer_email'],
         company: metadata['customer_company'] || ''
       }
+
+      @payment_method = setup_intent['payment_method']
+
+      # Create the account
+      begin
+        @account = Account.create_from_new_order!(customer)
+
+        @new_customer_in_stripe = Stripe::Customer.create
+        
+        # Update account with Stripe customer ID
+        @account.update!(
+          stripe_customer_id: @new_customer_in_stripe.id,
+          stripe_payment_method_id: @payment_method
+        )
+      rescue => e
+        @body = "Setup Intent ID: #{setup_intent['id']}\n\nError: #{e.message}"
+
+        if @account.nil?
+          @body += "\n\nAccount was not created"
+        else
+          @body += "\n\nAccount was created with ID: #{@account.id}"
+        end
+
+        # Log error and notify admins but don't stop the process
+        Mailer.simple_notification(
+          "Failed to create or update account from Stripe order",
+          @body
+        ).deliver_later
+      end
+
+      if @new_customer_in_stripe
+        # Attach payment method to customer
+        begin
+          Stripe::PaymentMethod.attach(@payment_method, customer: @new_customer_in_stripe.id)
+        rescue => e
+          Mailer.simple_notification(
+            "Failed to attach payment method to Stripe customer",
+              e.message
+          ).deliver_later
+        end
+      end
 
       Mailer.new_order_from_stripe(setup_intent['id'], product, customer).deliver_later
     end

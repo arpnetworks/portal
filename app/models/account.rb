@@ -736,5 +736,39 @@ class Account < ApplicationRecord
 
       Base64.encode64(key)
     end
+
+    def create_from_new_order!(customer)
+      # Generate a secure random password since this is required but will be changed by user
+      temp_password = SecureRandom.hex(12)
+      
+      # Generate login by concatenating first and last name
+      login = "#{customer[:first_name]}#{customer[:last_name]}".downcase.gsub(/[^0-9a-z]/i, '')
+      
+      # Ensure login is unique by appending numbers if needed
+      base_login = login
+      counter = 1
+      while Account.exists?(login: login)
+        login = "#{base_login}#{counter}"
+        counter += 1
+      end
+
+      account = Account.new(
+        login: login,
+        email: customer[:email],
+        password: temp_password,
+        password_confirmation: temp_password,
+        first_name: customer[:first_name],
+        last_name: customer[:last_name],
+        company: customer[:company]
+      )
+
+      if account.save
+        # Send welcome email with login credentials
+        Mailer.welcome_new_customer(account, login, temp_password).deliver_later
+        account
+      else
+        raise ActiveRecord::RecordInvalid.new(account)
+      end
+    end
   end
 end

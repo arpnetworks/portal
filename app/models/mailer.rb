@@ -140,4 +140,16 @@ class Mailer < ApplicationMailer
 
     mail(to: @recipients, subject: @subject, from: @from)
   end
+
+  def welcome_new_customer(account, login, password)
+    @subject    = 'Welcome to ARP Networks'
+    @recipients = account.email
+    @from       = 'support@arpnetworks.com'
+    
+    @account  = account
+    @login    = login
+    @password = password
+    
+    mail(to: @recipients, subject: @subject, from: @from)
+  end
 end
