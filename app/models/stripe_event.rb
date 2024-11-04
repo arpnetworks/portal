@@ -41,7 +41,14 @@ class StripeEvent < ApplicationRecord
     case model
     when :account
       begin
-        account, _invoice = get_account_and_invoice(body)
+        if event_type == 'setup_intent.succeeded'
+          event = JSON.parse(body)
+          setup_intent = event['data']['object']
+          payment_method = setup_intent['payment_method']
+          account = Account.find_by(stripe_payment_method_id: payment_method)
+        else
+          account, _invoice = get_account_and_invoice(body)
+        end
       rescue StandardError
         nil
       end
