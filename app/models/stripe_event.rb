@@ -16,7 +16,7 @@ class StripeEvent < ApplicationRecord
   def go!
     raise StandardError, 'Attempt to handle event already processed' if processed?
 
-    if !supported_events.include?(event_type)
+    unless supported_events.include?(event_type)
       puts "Unsupported event '#{event_type}'"
       return
     end
@@ -236,7 +236,7 @@ class StripeEvent < ApplicationRecord
 
       additional = {
         additional_instructions: metadata['additional_instructions']
-    }
+      }
 
       @payment_method = setup_intent['payment_method']
 
