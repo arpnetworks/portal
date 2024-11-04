@@ -15,15 +15,15 @@ class StripeEvent < ApplicationRecord
 
   def go!
     raise StandardError, 'Attempt to handle event already processed' if processed?
-    raise ArgumentError, "Unsupported event '#{event_type}'" unless supported_events.include?(event_type)
 
-    begin
-      handler = 'handle_' + event_type.gsub('.', '_') + '!'
-      send(handler)
-      handled!
-    rescue NoMethodError => e
-      raise ArgumentError, "No handler found for event '#{event_type}'"
+    if !supported_events.include?(event_type)
+      puts "Unsupported event '#{event_type}'"
+      return
     end
+
+    handler = 'handle_' + event_type.gsub('.', '_') + '!'
+    send(handler)
+    handled!
   end
 
   def processed?
