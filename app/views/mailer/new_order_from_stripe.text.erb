@@ -8,13 +8,19 @@ Setup Intent ID: <%= @setup_intent_id.to_s %>
 Product Details
 ---------------
 
-New Service: <%= @product[:description] %>
+New Service: <%= @product[:description] == 'Thunder' ? 'ARP Thunder™' : @product[:description] %>
 Location: <%= @location %> (<%= @location_code %>)
 OS: <%= @plan_details[:os_label] %> (<%= @product[:os_code] %>)
 IPs: <%= @product[:ip_block] %> (<%= money(@ip_block_price) %>)
 
 Plan: <%= @product[:plan] %> (<%= money(@plan_details[:mrc]) %>)
 
+<% if @product[:code] == 'thunder' -%>
+Thunder Extra RAM: <%= @product[:thunder_extra_ram] %>
+Thunder Extra HD: <%= @product[:thunder_extra_hd] %>
+Thunder Extra HD2: <%= @product[:thunder_extra_hd2] %>
+
+<% end -%>
 Customer Details
 ----------------
 

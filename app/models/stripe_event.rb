@@ -214,7 +214,10 @@ class StripeEvent < ApplicationRecord
         os_code: metadata['product_operating_system_code'],
         location: metadata['product_location'],
         ip_block: metadata['product_ip_block'],
-        plan: metadata['product_plan']
+        plan: metadata['product_plan'],
+        thunder_extra_ram: metadata['product_thunder_extra_ram'],
+        thunder_extra_hd: metadata['product_thunder_extra_hd'],
+        thunder_extra_hd2: metadata['product_thunder_extra_hd2']
       }
 
       customer = {
@@ -281,7 +284,7 @@ class StripeEvent < ApplicationRecord
       end
 
       # puts "The product that we are sending to Mailer is: #{product}"
-      
+
       Mailer.new_order_from_stripe(setup_intent['id'], product, customer).deliver_later
     end
   end

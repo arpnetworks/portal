@@ -129,6 +129,8 @@ class Mailer < ApplicationMailer
                         5
                       when '/28'
                         13
+                      when '/27'
+                        48
                       else # includes '/30'
                         0
                       end
@@ -143,7 +145,7 @@ class Mailer < ApplicationMailer
     # puts "The entire product object is: #{@product}"
 
     # Stop bombing out all the time if we don't have plan details
-    @plan_details = get_plan_details(@product[:plan]) || {}
+    @plan_details = get_plan_details(@product[:plan], @product[:code]) || {}
 
     mail(to: @recipients, subject: @subject, from: @from)
   end
@@ -170,9 +172,9 @@ class Mailer < ApplicationMailer
     mail(to: @recipients, subject: @subject, from: @from)
   end
 
-  def get_plan_details(plan_name)
-    plan = VirtualMachine.plans['vps'][plan_name]
-    return nil unless plan
+  def get_plan_details(plan_name, product_code = 'vps')
+    plan = VirtualMachine.plans[product_code][plan_name]
+    return {} unless plan
 
     {
       os_label: VirtualMachine.os_display_name_from_code($CLOUD_OS, @product[:os_code]),
