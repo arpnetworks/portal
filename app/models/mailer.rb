@@ -135,7 +135,12 @@ class Mailer < ApplicationMailer
 
     @customer = customer
 
-    @plan_details = get_plan_details(@product[:plan])
+    # Extra guards
+    @product[:plan] ||= @product[:vps_plan]
+    @product[:plan] ||= @product[:thunder_plan]
+
+    # Stop bombing out all the time if we don't have plan details
+    @plan_details = get_plan_details(@product[:plan]) || {}
 
     mail(to: @recipients, subject: @subject, from: @from)
   end
