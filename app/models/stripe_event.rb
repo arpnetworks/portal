@@ -253,6 +253,8 @@ class StripeEvent < ApplicationRecord
         end
       end
 
+      customer[:login] = @account.login
+
       Mailer.new_order_from_stripe(setup_intent['id'], product, customer).deliver_later
     end
   end

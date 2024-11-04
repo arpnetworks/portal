@@ -54,3 +54,5 @@ containers/sidekiq/rancid/.cloginrc
 containers/sidekiq/rancid/.ssh-config
 
 tags
+
+.vscode

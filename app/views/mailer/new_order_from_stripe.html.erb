@@ -72,8 +72,8 @@
         <div class="header">
             <h1>Service Order</h1>
             <div class="source-id">
-                Source: Stripe<br>
-                Setup Intent ID: <%= @setup_intent_id.to_s %>
+                <strong>Source:</strong> Stripe<br>
+                <strong>Setup Intent ID:</strong> <%= @setup_intent_id.to_s %>
             </div>
         </div>
 
@@ -89,11 +89,15 @@
             </div>
             <div class="detail-row">
                 <div class="detail-label">OS:</div>
-                <div class="detail-value"><%= @product[:os] %> <span class="tech-detail">(<%= @product[:os_code] %>)</span></div>
+                <div class="detail-value"><%= @plan_details[:os_label] %> <span class="tech-detail">(<%= @product[:os_code] %>)</span></div>
             </div>
             <div class="detail-row">
                 <div class="detail-label">IPs:</div>
-                <div class="detail-value tech-detail"><%= @product[:ip_block] %></div>
+                <div class="detail-value "><%= @product[:ip_block] %> (<%= money(@ip_block_price) %>)</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Plan:</div>
+                <div class="detail-value"><%= @product[:plan] %> (<%= money(@plan_details[:mrc]) %>)</div>
             </div>
         </div>
 
@@ -111,6 +115,13 @@
                 <div class="detail-label">Company:</div>
                 <div class="detail-value"><%= @customer[:company] %></div>
             </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Provisioning Helper</div>
+            <pre style="background-color: #f5f5f5; padding: 10px; font-family: monospace;">
+<%= @customer[:login] %> $(pwgen -c -n) '' '' '' '' '' '' '' '' '' '' '<%= @plan_details[:os_label] %>' <%= @plan_details[:os_version] %> <%= @plan_details[:bandwidth] %> <%= @plan_details[:ram] %> <%= @plan_details[:storage] %> <%= @plan_details[:mrc] %> <%= @ip_block_price %> __VM_HOST__ auto <%= "'#{@product[:os_code]}' '#{@location_code}'" %>
+</pre>
         </div>
     </div>
 </body>

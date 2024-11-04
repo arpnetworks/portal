@@ -123,7 +123,19 @@ class Mailer < ApplicationMailer
                   @product[:location]
                 end
 
+    # Calculate IP block price
+    @ip_block_price = case @product[:ip_block]
+                      when '/29'
+                        5
+                      when '/28'
+                        13
+                      else # includes '/30'
+                        0
+                      end
+
     @customer = customer
+
+    @plan_details = get_plan_details(@product[:plan])
 
     mail(to: @recipients, subject: @subject, from: @from)
   end
@@ -148,5 +160,19 @@ class Mailer < ApplicationMailer
     @password = password
     
     mail(to: @recipients, subject: @subject, from: @from)
+  end
+
+  def get_plan_details(plan_name)
+    plan = VirtualMachine.plans['vps'][plan_name]
+    return nil unless plan
+
+    {
+      os_label: VirtualMachine.os_display_name_from_code($CLOUD_OS, @product[:os_code]),
+      os_version: @product[:os_code].split('-')[1], # Extracts version from something like 'freebsd-12.1-amd64'
+      bandwidth: plan['bandwidth'],
+      ram: plan['ram'],
+      storage: plan['storage'],
+      mrc: plan['mrc']
+    }
   end
 end

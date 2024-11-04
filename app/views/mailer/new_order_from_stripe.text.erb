@@ -10,8 +10,10 @@ Product Details
 
 New Service: <%= @product[:description] %>
 Location: <%= @location %> (<%= @location_code %>)
-OS: <%= @product[:os] %> (<%= @product[:os_code] %>)
-IPs: <%= @product[:ip_block] %>
+OS: <%= @plan_details[:os_label] %> (<%= @product[:os_code] %>)
+IPs: <%= @product[:ip_block] %> (<%= money(@ip_block_price) %>)
+
+Plan: <%= @product[:plan] %> (<%= money(@plan_details[:mrc]) %>)
 
 Customer Details
 ----------------
@@ -20,4 +22,8 @@ Name: <%= @customer[:fullname] %>
 Email: <%= @customer[:email] %>
 Company: <%= @customer[:company] %>
 
+Provisioning Helper
+-------------------
+
+<%= @customer[:login] %> $(pwgen -c -n) '' '' '' '' '' '' '' '' '' '' '<%= @plan_details[:os_label] %>' <%= @plan_details[:os_version] %> <%= @plan_details[:bandwidth] %> <%= @plan_details[:ram] %> <%= @plan_details[:storage] %> <%= @plan_details[:mrc] %> <%= @ip_block_price %> __VM_HOST__ auto <%= "'#{@product[:os_code]}' '#{@location_code}'" %>
 
