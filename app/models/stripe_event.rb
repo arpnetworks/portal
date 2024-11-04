@@ -234,6 +234,10 @@ class StripeEvent < ApplicationRecord
         country: metadata['customer_country'] || ''
       }
 
+      additional = {
+        additional_instructions: metadata['additional_instructions']
+    }
+
       @payment_method = setup_intent['payment_method']
 
       if Account.exists?(email: customer[:email])
@@ -285,7 +289,7 @@ class StripeEvent < ApplicationRecord
 
       # puts "The product that we are sending to Mailer is: #{product}"
 
-      Mailer.new_order_from_stripe(setup_intent['id'], product, customer).deliver_later
+      Mailer.new_order_from_stripe(setup_intent['id'], product, customer, additional).deliver_later
     end
   end
 

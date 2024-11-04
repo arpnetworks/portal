@@ -104,7 +104,7 @@ class Mailer < ApplicationMailer
     mail(to: @recipients, subject: @subject, from: @from)
   end
 
-  def new_order_from_stripe(setup_intent_id, product, customer)
+  def new_order_from_stripe(setup_intent_id, product, customer, additional = {})
     @subject    = 'Order from web site (Stripe)'
     @recipients = $TICKET_EMAILS
     @from       = $SUPPORT_EMAIL
@@ -146,6 +146,8 @@ class Mailer < ApplicationMailer
 
     # Stop bombing out all the time if we don't have plan details
     @plan_details = get_plan_details(@product[:plan], @product[:code]) || {}
+
+    @additional = additional
 
     mail(to: @recipients, subject: @subject, from: @from)
   end

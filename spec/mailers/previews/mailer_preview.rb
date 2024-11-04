@@ -7,7 +7,12 @@ class MailerPreview < ActionMailer::Preview
                  company: 'Test Company', address1: '123 Main St', address2: '', city: 'Anytown', state: 'CA',
                  postal_code: '12345', country: 'USA', existing_account: true }
 
-    Mailer.new_order_from_stripe('si_Qifoz0', product, customer)
+    additional = { additional_instructions: 'My special instructions' }
+
+    # Or no additional instructions
+    # additional = {}
+
+    Mailer.new_order_from_stripe('si_Qifoz0', product, customer, additional)
   end
 
   def welcome_new_customer
@@ -17,7 +22,7 @@ class MailerPreview < ActionMailer::Preview
       last_name: 'Doe',
       company: 'Test Company'
     )
-    
+
     login = 'testuser'
     password = 'password123'
 
