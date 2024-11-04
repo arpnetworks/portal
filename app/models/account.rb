@@ -759,7 +759,13 @@ class Account < ApplicationRecord
         password_confirmation: temp_password,
         first_name: customer[:first_name],
         last_name: customer[:last_name],
-        company: customer[:company]
+        company: customer[:company],
+        address1: customer[:address1],
+        address2: customer[:address2],
+        city: customer[:city],
+        state: customer[:state],
+        zip: customer[:postal_code],
+        country: customer[:country]
       )
 
       if account.save

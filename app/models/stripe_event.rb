@@ -209,7 +209,13 @@ class StripeEvent < ApplicationRecord
         last_name: metadata['customer_last_name'],
         fullname: metadata['customer_first_name'] + ' ' + metadata['customer_last_name'],
         email: metadata['customer_email'],
-        company: metadata['customer_company'] || ''
+        company: metadata['customer_company'] || '',
+        address1: metadata['customer_address_1'] || '',
+        address2: metadata['customer_address_2'] || '',
+        city: metadata['customer_city'] || '',
+        state: metadata['customer_state'] || '',
+        postal_code: metadata['customer_postal_code'] || '',
+        country: metadata['customer_country'] || ''
       }
 
       @payment_method = setup_intent['payment_method']

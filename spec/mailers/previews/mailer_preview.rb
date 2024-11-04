@@ -3,7 +3,11 @@ class MailerPreview < ActionMailer::Preview
     product = { plan: 'allpurpose', code: 'vps', description: 'VPS', os_code: 'freebsd-12.1-amd64', location: 'lax',
                 ip_block: '/29' }
 
-    Mailer.new_order_from_stripe('si_Qifoz0', product, { first_name: 'John', last_name: 'Doe', fullname: 'John Doe', email: 'john.doe@example.com', login: 'jdoe' })
+    customer = { first_name: 'John', last_name: 'Doe', fullname: 'John Doe', email: 'john.doe@example.com',
+                 company: 'Test Company', address1: '123 Main St', address2: '', city: 'Anytown', state: 'CA',
+                 postal_code: '12345', country: 'USA' }
+
+    Mailer.new_order_from_stripe('si_Qifoz0', product, customer)
   end
 
   def welcome_new_customer
