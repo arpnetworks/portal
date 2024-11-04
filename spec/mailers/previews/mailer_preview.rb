@@ -12,6 +12,9 @@ class MailerPreview < ActionMailer::Preview
     # Or no additional instructions
     # additional = {}
 
+    # Or multiline
+    additional = { additional_instructions: "Line 1\nLine 2\nLine 3" }
+    
     Mailer.new_order_from_stripe('si_Qifoz0', product, customer, additional)
   end
 
