@@ -139,6 +139,9 @@ class Mailer < ApplicationMailer
     @product[:plan] ||= @product[:vps_plan]
     @product[:plan] ||= @product[:thunder_plan]
 
+    # puts "The plan that we are sending to get_plan_details is: #{@product[:plan]}"
+    # puts "The entire product object is: #{@product}"
+
     # Stop bombing out all the time if we don't have plan details
     @plan_details = get_plan_details(@product[:plan]) || {}
 

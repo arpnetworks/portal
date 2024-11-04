@@ -213,7 +213,8 @@ class StripeEvent < ApplicationRecord
         os: os,
         os_code: metadata['product_operating_system_code'],
         location: metadata['product_location'],
-        ip_block: metadata['product_ip_block']
+        ip_block: metadata['product_ip_block'],
+        plan: metadata['product_plan']
       }
 
       customer = {
@@ -279,6 +280,8 @@ class StripeEvent < ApplicationRecord
         customer[:login] = @account.login
       end
 
+      # puts "The product that we are sending to Mailer is: #{product}"
+      
       Mailer.new_order_from_stripe(setup_intent['id'], product, customer).deliver_later
     end
   end
