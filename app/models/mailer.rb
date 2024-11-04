@@ -109,47 +109,45 @@ class Mailer < ApplicationMailer
     @recipients = $TICKET_EMAILS
     @from       = $SUPPORT_EMAIL
 
+    set_order_attributes(setup_intent_id, product, customer, additional)
+    mail(to: @recipients, subject: @subject, from: @from)
+  end
+
+  private
+
+  def set_order_attributes(setup_intent_id, product, customer, additional)
     @setup_intent_id = setup_intent_id
     @product = product
-
-    @location_code = @product[:location]
-    
-    @location = case @location_code
-                when 'lax'
-                  'Los Angeles'
-                when 'fra'
-                  'Frankfurt'
-                else
-                  @product[:location]
-                end
-
-    # Calculate IP block price
-    @ip_block_price = case @product[:ip_block]
-                      when '/29'
-                        5
-                      when '/28'
-                        13
-                      when '/27'
-                        48
-                      else # includes '/30'
-                        0
-                      end
-
     @customer = customer
-
-    # Extra guards
-    @product[:plan] ||= @product[:vps_plan]
-    @product[:plan] ||= @product[:thunder_plan]
-
-    # puts "The plan that we are sending to get_plan_details is: #{@product[:plan]}"
-    # puts "The entire product object is: #{@product}"
-
-    # Stop bombing out all the time if we don't have plan details
-    @plan_details = get_plan_details(@product[:plan], @product[:code]) || {}
-
     @additional = additional
 
-    mail(to: @recipients, subject: @subject, from: @from)
+    @location = translate_location(@product[:location])
+    @ip_block_price = calculate_ip_block_price(@product[:ip_block])
+
+    normalize_product_plan
+    @plan_details = get_plan_details(@product[:plan], @product[:code]) || {}
+  end
+
+  def translate_location(code)
+    case code
+    when 'lax' then 'Los Angeles'
+    when 'fra' then 'Frankfurt'
+    else code
+    end
+  end
+
+  def calculate_ip_block_price(block)
+    case block
+    when '/29' then 5
+    when '/28' then 13
+    when '/27' then 48
+    else 0
+    end
+  end
+
+  def normalize_product_plan
+    @product[:plan] ||= @product[:vps_plan]
+    @product[:plan] ||= @product[:thunder_plan]
   end
 
   def simple_notification(subject, body)
@@ -166,11 +164,11 @@ class Mailer < ApplicationMailer
     @subject    = 'Welcome to ARP Networks'
     @recipients = account.email
     @from       = $SUPPORT_EMAIL
-    
+
     @account  = account
     @login    = login
     @password = password
-    
+
     mail(to: @recipients, subject: @subject, from: @from)
   end
 
