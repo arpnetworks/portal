@@ -1,18 +1,33 @@
 Hi <%= @account.display_name %>,
 
-Welcome to ARP Networks! Your account has been created successfully.
+Welcome to ARP Networks!
 
-Your login credentials are:
+Your order has been placed successfully and we are working on provisioning your
+services.
+
+If you ordered a VPS, expect to receive your VPS welcome packet within 24 hours
+or less.
+
+If you ordered an ARP Thunder(tm) Cloud Dedicated Server, expect to receive an
+email from us with an ETA on your server setup within 8 hours.
+
+Please note your credit card has not been charged and we will only do so
+immediately prior to setting up your order. You will receive an email receipt
+when this happens.
+
+Your login credentials to our Portal are:
 
 Username: <%= @login %>
 Temporary Password: <%= @password %>
 
-Please login to our Portal to change your password:
+Portal URL: <%= root_url %>
 
-<%= root_url %>
+Important: For security reasons, please change your password immediately after
+logging in.
 
-Important: For security reasons, please change your password immediately after logging in.
+Should you have any questions or want to make any changes to your order, simply
+reply to this email.
 
-If you have any questions or need assistance, you can reply directly to this email.
+Thank you for choosing ARP Networks!
 
-<%= render partial: 'mailer/signatures/support' %> 
+<%= render partial: 'mailer/signatures/support' %>
