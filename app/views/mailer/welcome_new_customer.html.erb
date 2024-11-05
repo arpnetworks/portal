@@ -8,7 +8,7 @@
         /* Modern, clean email styles */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif;
-            line-height: 1.7;
+            line-height: 1.2;
             color: #1a1a1a;
             margin: 0;
             padding: 0;
@@ -23,6 +23,19 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo-container {
+            padding: 24px;
+            padding-bottom: 0;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .logo {
+            max-width: 350px;
+            width: 100%;
+            height: auto;
         }
 
         .header {
@@ -41,6 +54,7 @@
 
         .content {
             padding: 32px;
+            padding-top: 0;
         }
 
         .credentials-box {
@@ -98,15 +112,21 @@
             background-color: #f8fafc;
             padding: 20px;
             border-radius: 8px;
-            margin: 16px 0;
         }
     </style>
 </head>
 <body>
     <div class="email-wrapper">
-        <div class="header">
-            <h1>Welcome to ARP Networks!</h1>
+        <div class="logo-container">
+            <img src="https://portal.arpnetworks.com/images/logo-small-new.jpg" 
+                 alt="ARP Networks" 
+                 class="logo"
+                 width="700"
+                 height="78">
         </div>
+        <%# <div class="header"> %>
+        <%# <h1>Welcome!</h1> %>
+        <%# </div> %>
 
         <div class="content">
             <p>Hi <%= @account.display_name %>,</p>
