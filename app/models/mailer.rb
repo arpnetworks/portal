@@ -113,6 +113,18 @@ class Mailer < ApplicationMailer
     mail(to: @recipients, subject: @subject, from: @from)
   end
 
+  def welcome_new_customer(account, login, password)
+    @subject    = 'Welcome to ARP Networks'
+    @recipients = account.email
+    @from       = $SUPPORT_EMAIL
+
+    @account  = account
+    @login    = login
+    @password = password
+
+    mail(to: @recipients, subject: @subject, from: @from)
+  end
+
   private
 
   def set_order_attributes(setup_intent_id, product, customer, additional)
@@ -156,18 +168,6 @@ class Mailer < ApplicationMailer
     @from       = $SUPPORT_EMAIL
 
     @body = body
-
-    mail(to: @recipients, subject: @subject, from: @from)
-  end
-
-  def welcome_new_customer(account, login, password)
-    @subject    = 'Welcome to ARP Networks'
-    @recipients = account.email
-    @from       = $SUPPORT_EMAIL
-
-    @account  = account
-    @login    = login
-    @password = password
 
     mail(to: @recipients, subject: @subject, from: @from)
   end
