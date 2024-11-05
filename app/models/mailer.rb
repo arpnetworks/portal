@@ -114,9 +114,9 @@ class Mailer < ApplicationMailer
   end
 
   def welcome_new_customer(account, login, password)
-    @subject    = 'Welcome to ARP Networks'
+    @subject    = 'Thank you for your order!'
     @recipients = account.email
-    @from       = $SUPPORT_EMAIL
+    @from       = "ARP Networks <#{$SUPPORT_EMAIL}>"
 
     @account  = account
     @login    = login
@@ -133,7 +133,8 @@ class Mailer < ApplicationMailer
     @customer = customer
     @additional = additional
 
-    @location = translate_location(@product[:location])
+    @location_code = @product[:location]
+    @location = translate_location(@location_code)
     @ip_block_price = calculate_ip_block_price(@product[:ip_block])
 
     normalize_product_plan
