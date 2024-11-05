@@ -118,6 +118,13 @@ To see all supported events::
 
   stripe trigger --help
 
+Tips
+----
+
+To preview some templates in ActionMailer, visit::
+
+  http://localhost:3000/rails/mailers
+
 Copyright
 ---------
 

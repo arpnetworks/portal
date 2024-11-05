@@ -86,6 +86,38 @@ class VirtualMachine < ApplicationRecord
         }
       },
       "thunder" => {
+        "starter" => {
+          'name'    => 'Starter',
+          'ram'     => 4096,
+          'storage' => 80,
+          'bandwidth' => 5000,
+
+          'mrc'     => 40
+        },
+        "medium" => {
+          'name'    => 'Medium',
+          'ram'     => 6144,
+          'storage' => 120,
+          'bandwidth' => 10000,
+
+          'mrc'     => 60
+        },
+        "allpurpose" => {
+          'name'    => 'All-Purpose',
+          'ram'     => 8192,
+          'storage' => 160,
+          'bandwidth' => 10000,
+
+          'mrc'     => 80
+        },
+        "large" => {
+          'name'    => 'Large',
+          'ram'     => 16384,
+          'storage' => 200,
+          'bandwidth' => 12000,
+
+          'mrc'     => 120
+        }
       }
     }
   end

@@ -37,7 +37,7 @@ services:
 
   sidekiq:
     <<: *app
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -q default -q mailers
     environment:
       - RAILS_ENV
       - MARIADB_ROOT_PASSWORD
@@ -78,6 +78,13 @@ services:
       - redis:/bitnami/redis
     environment:
       REDIS_PASSWORD:
+
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:1080"  # Web interface
+      - "1025:1025"  # SMTP server
+    restart: unless-stopped
 
 volumes:
   mysql:

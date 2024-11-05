@@ -1,0 +1,18 @@
+Hi <%= @account.display_name %>,
+
+Welcome to ARP Networks! Your account has been created successfully.
+
+Your login credentials are:
+
+Username: <%= @login %>
+Temporary Password: <%= @password %>
+
+Please login to our Portal to change your password:
+
+<%= root_url %>
+
+Important: For security reasons, please change your password immediately after logging in.
+
+If you have any questions or need assistance, you can reply directly to this email.
+
+<%= render partial: 'mailer/signatures/support' %> 

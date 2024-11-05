@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Order</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        h1 {
+            color: #2d3748;
+            font-size: 24px;
+            margin: 0;
+            font-weight: 600;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        .section-title {
+            font-size: 18px;
+            color: #4a5568;
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        .detail-label {
+            width: 120px;
+            color: #718096;
+            font-weight: 500;
+        }
+        .detail-value {
+            color: #2d3748;
+            flex: 1;
+        }
+        .source-id {
+            font-family: 'Courier New', monospace;
+            color: #718096;
+            font-size: 14px;
+        }
+        .tech-detail {
+            font-family: 'Courier New', monospace;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Service Order</h1>
+            <div class="source-id">
+                <strong>Source:</strong> Stripe<br>
+                <strong>Setup Intent ID:</strong> <%= @setup_intent_id.to_s %>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Product Details</div>
+            <div class="detail-row">
+                <div class="detail-label">New Service:</div>
+                <div class="detail-value"><%= @product[:description] == 'Thunder' ? 'ARP Thunder™' : @product[:description] %></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Location:</div>
+                <div class="detail-value"><%= @location %> <span class="tech-detail">(<%= @location_code %>)</span></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">OS:</div>
+                <div class="detail-value"><%= @plan_details[:os_label] %> <span class="tech-detail">(<%= @product[:os_code] %>)</span></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">IPs:</div>
+                <div class="detail-value "><%= @product[:ip_block] %> (<%= money(@ip_block_price) %>)</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Plan:</div>
+                <div class="detail-value"><%= @product[:plan] %> (<%= money(@plan_details[:mrc]) %>)</div>
+            </div>
+            <% if @product[:code] == 'thunder' %>
+              <div class="detail-row">
+                <div class="detail-label">Thunder Extra RAM:</div>
+                <div class="detail-value"><%= @product[:thunder_extra_ram] %></div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Thunder Extra HD:</div>
+                <div class="detail-value"><%= @product[:thunder_extra_hd] %></div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Thunder Extra HD2:</div>
+                <div class="detail-value"><%= @product[:thunder_extra_hd2] %></div>
+              </div>
+            <% end %>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Customer Details</div>
+            <div class="detail-row">
+                <div class="detail-label">Name:</div>
+                <div class="detail-value"><%= @customer[:fullname] %></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Email:</div>
+                <div class="detail-value"><%= @customer[:email] %></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Company:</div>
+                <div class="detail-value"><%= @customer[:company] %></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Address:</div>
+                <div class="detail-value"><%= @customer[:address1] %></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Address 2:</div>
+                <div class="detail-value"><%= @customer[:address2] %></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">City:</div>
+                <div class="detail-value"><%= @customer[:city] %></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">State:</div>
+                <div class="detail-value"><%= @customer[:state] %></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Postal Code:</div>
+                <div class="detail-value"><%= @customer[:postal_code] %></div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Country:</div>
+                <div class="detail-value"><%= @customer[:country] %></div>
+            </div>
+            <tr>
+                <td><strong>Existing or Returning Customer?</strong></td>
+                <td><%= @customer[:existing_account] ? 'Yes' : 'No' %></td>
+            </tr>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Additional Instructions</div>
+            <div class="detail-row">
+                <div class="detail-value"><%= simple_format(@additional[:additional_instructions]) %></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Provisioning Helper</div>
+            <pre style="background-color: #f5f5f5; padding: 10px; font-family: monospace;">
+<%= @customer[:login] %> $(pwgen -c -n) '' '' '' '' '' '' '' '' '' '' '<%= @plan_details[:os_label] %>' <%= @plan_details[:os_version] %> <%= @plan_details[:bandwidth] %> <%= @plan_details[:ram] %> <%= @plan_details[:storage] %> <%= @plan_details[:mrc] %> <%= @ip_block_price %> __VM_HOST__ auto <%= "'#{@product[:os_code]}' '#{@location_code}'" %>
+</pre>
+        </div>
+    </div>
+</body>
+</html>

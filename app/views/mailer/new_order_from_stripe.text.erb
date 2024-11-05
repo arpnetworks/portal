@@ -1,0 +1,48 @@
+=============
+Service Order
+=============
+
+Source: Stripe
+Setup Intent ID: <%= @setup_intent_id.to_s %>
+
+Product Details
+---------------
+
+New Service: <%= @product[:description] == 'Thunder' ? 'ARP Thunder™' : @product[:description] %>
+Location: <%= @location %> (<%= @location_code %>)
+OS: <%= @plan_details[:os_label] %> (<%= @product[:os_code] %>)
+IPs: <%= @product[:ip_block] %> (<%= money(@ip_block_price) %>)
+
+Plan: <%= @product[:plan] %> (<%= money(@plan_details[:mrc]) %>)
+
+<% if @product[:code] == 'thunder' -%>
+Thunder Extra RAM: <%= @product[:thunder_extra_ram] %>
+Thunder Extra HD: <%= @product[:thunder_extra_hd] %>
+Thunder Extra HD2: <%= @product[:thunder_extra_hd2] %>
+
+<% end -%>
+Customer Details
+----------------
+
+Name: <%= @customer[:fullname] %>
+Email: <%= @customer[:email] %>
+Company: <%= @customer[:company] %>
+Address: <%= @customer[:address1] %>
+Address 2: <%= @customer[:address2] %>
+City: <%= @customer[:city] %>
+State: <%= @customer[:state] %>
+Postal Code: <%= @customer[:postal_code] %>
+Country: <%= @customer[:country] %>
+
+Existing or Returning Customer? <%= @customer[:existing_account] ? 'Yes' : 'No' %>
+
+Additional
+----------
+
+<%= @additional[:additional_instructions] %>
+
+Provisioning Helper
+-------------------
+
+<%= @customer[:login] %> $(pwgen -c -n) '' '' '' '' '' '' '' '' '' '' '<%= @plan_details[:os_label] %>' <%= @plan_details[:os_version] %> <%= @plan_details[:bandwidth] %> <%= @plan_details[:ram] %> <%= @plan_details[:storage] %> <%= @plan_details[:mrc] %> <%= @ip_block_price %> __VM_HOST__ auto <%= "'#{@product[:os_code]}' '#{@location_code}'" %>
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ARP Networks</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        h1 {
+            color: #2d3748;
+            font-size: 24px;
+            margin: 0;
+            font-weight: 600;
+        }
+        .credentials {
+            background-color: #f8f9fa;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .credential-row {
+            margin-bottom: 10px;
+        }
+        .label {
+            font-weight: 500;
+            color: #718096;
+        }
+        .value {
+            font-family: 'Courier New', monospace;
+            color: #2d3748;
+        }
+        .important {
+            color: #e53e3e;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to ARP Networks!</h1>
+        </div>
+
+        <p>Hi <%= @account.display_name %>,</p>
+
+        <p>Your account has been created successfully.</p>
+
+        <div class="credentials">
+            <div class="credential-row">
+                <span class="label">Username:</span>
+                <span class="value"><%= @login %></span>
+            </div>
+            <div class="credential-row">
+                <span class="label">Temporary Password:</span>
+                <span class="value"><%= @password %></span>
+            </div>
+        </div>
+
+        <p>Please login to our Portal to change your password:</p>
+        
+        <p><%= link_to root_url, root_url %></p>
+
+        <p class="important">Important: For security reasons, please change your password immediately after logging in.</p>
+
+        <p>If you have any questions or need assistance, you can reply directly to this email.</p>
+
+        <%= render partial: 'mailer/signatures/support' %>
+    </div>
+</body>
+</html> 
