@@ -1,11 +1,11 @@
 version: "3.7"
 services:
-  db:
-    restart: unless-stopped
-  web:
-    restart: unless-stopped
-  sidekiq:
-    restart: unless-stopped
+  #db:
+  #  restart: unless-stopped
+  #web:
+  #  restart: unless-stopped
+  #sidekiq:
+  #  restart: unless-stopped
   redis:
     restart: always
     ports:
