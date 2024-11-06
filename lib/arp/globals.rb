@@ -63,8 +63,10 @@ if conf = @config[Rails.env]
   $DEVISE_OTP_SECRET_ENCRYPTION_KEY = conf['devise']['otp_secret_encryption_key']
 
   # Email configurations
-  $NOTIFICATION_EMAILS = conf['emails']['notifications']
-  $TICKET_EMAILS = conf['emails']['tickets']
-  $SUPPORT_EMAIL = conf['emails']['support']
-  $IP_ADMIN_EMAIL = conf['emails']['ip_admin']
+  if conf['emails']
+    $NOTIFICATION_EMAILS = conf['emails']['notifications']
+    $TICKET_EMAILS = conf['emails']['tickets']
+    $SUPPORT_EMAIL = conf['emails']['support']
+    $IP_ADMIN_EMAIL = conf['emails']['ip_admin']
+  end
 end
