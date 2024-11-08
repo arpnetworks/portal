@@ -125,6 +125,16 @@ class Mailer < ApplicationMailer
     mail(to: @recipients, subject: @subject, from: @from)
   end
 
+  def simple_notification(subject, body)
+    @subject    = subject
+    @recipients = $NOTIFICATION_EMAILS
+    @from       = $SUPPORT_EMAIL
+
+    @body = body
+
+    mail(to: @recipients, subject: @subject, from: @from)
+  end
+
   private
 
   def set_order_attributes(setup_intent_id, product, customer, additional)
@@ -161,16 +171,6 @@ class Mailer < ApplicationMailer
   def normalize_product_plan
     @product[:plan] ||= @product[:vps_plan]
     @product[:plan] ||= @product[:thunder_plan]
-  end
-
-  def simple_notification(subject, body)
-    @subject    = subject
-    @recipients = $NOTIFICATION_EMAILS
-    @from       = $SUPPORT_EMAIL
-
-    @body = body
-
-    mail(to: @recipients, subject: @subject, from: @from)
   end
 
   def get_plan_details(plan_name, product_code = 'vps')
