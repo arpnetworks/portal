@@ -742,8 +742,8 @@ class Account < ApplicationRecord
       temp_password = SecureRandom.hex(12)
       
       # Generate login by concatenating first and last name
-      login = "#{customer[:first_name]}#{customer[:last_name]}".downcase.gsub(/[^0-9a-z]/i, '')
-      
+      login = I18n.transliterate("#{customer[:first_name]}#{customer[:last_name]}").downcase.gsub(/[^0-9a-z]/i, '')
+
       # Ensure login is unique by appending numbers if needed
       base_login = login
       counter = 1

@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe Account do
+  it_behaves_like 'two_factor_authenticatable'
+  it_behaves_like 'two_factor_backupable'
 
-  it_behaves_like "two_factor_authenticatable"
-  it_behaves_like "two_factor_backupable"
-
-  describe "#login" do
+  describe '#login' do
     it { should validate_presence_of(:login) }
     it { should validate_uniqueness_of(:login).case_insensitive }
     it { should validate_length_of(:login).is_at_least(3).is_at_most(48) }
@@ -19,16 +18,16 @@ describe Account do
     it { should     allow_value("john\n").for(:login) } # Devise auto stripe whitespace before validation
     it { should_not allow_value('john@').for(:login) }
     it { should_not allow_value('john?').for(:login) }
-    it { should_not allow_value("john*").for(:login) }
+    it { should_not allow_value('john*').for(:login) }
 
-    it "auto stripe whitespace for login before validation" do
+    it 'auto stripe whitespace for login before validation' do
       account = Account.new(login: " john\n")
       account.validate
-      expect(account.login).to eq("john")
+      expect(account.login).to eq('john')
     end
   end
 
-  describe "#email" do
+  describe '#email' do
     it { should validate_presence_of(:email) }
     it { should validate_uniqueness_of(:email).case_insensitive }
 
@@ -37,30 +36,30 @@ describe Account do
     it { should     allow_value('john@test.co').for(:email) } # Allow the suffix with two characters
     it { should     allow_value('john@test-test.com').for(:email) } # Allow the host name with "-"
     it { should     allow_value('john@test123.com').for(:email) } # Allow the host name with number
-    it { should     allow_value(" john@test.com").for(:email) } # Devise atuo stripe whitespace before validation
+    it { should     allow_value(' john@test.com').for(:email) } # Devise atuo stripe whitespace before validation
     it { should     allow_value("\njohn@test.com").for(:email) } # Devise atuo stripe whitespace before validation
-    it { should_not allow_value("john@test.c").for(:email) } # Disallow suffix with one character
-    it { should_not allow_value("john@testcom").for(:email) } # Disallow host without "."
-    it { should_not allow_value("j@hn@testcom").for(:email) } # Disallow name with "@"
+    it { should_not allow_value('john@test.c').for(:email) } # Disallow suffix with one character
+    it { should_not allow_value('john@testcom').for(:email) } # Disallow host without "."
+    it { should_not allow_value('j@hn@testcom').for(:email) } # Disallow name with "@"
 
-    it "auto stripe whitespace for email before validation" do
+    it 'auto stripe whitespace for email before validation' do
       account = Account.new(email: " john@test.com\n")
       account.validate
       expect(account.email).to eq('john@test.com')
     end
   end
 
-  describe "#password" do
+  describe '#password' do
     it { should validate_length_of(:password).is_at_least(8) }
     it { should validate_presence_of(:password) }
     it { should validate_confirmation_of(:password) }
   end
 
-  ['email2', 'email_billing'].each do |field|
+  %w[email2 email_billing].each do |field|
     describe "##{field}" do
       it { should     allow_value(nil).for(:email2) } # Allow blank
-      it { should     allow_value("").for(:email2) } # Allow blank
-      it { should     allow_value(" ").for(:email2) } # Allow blank
+      it { should     allow_value('').for(:email2) } # Allow blank
+      it { should     allow_value(' ').for(:email2) } # Allow blank
       it { should     allow_value('john@test.com').for(:email2) }
       it { should     allow_value('JOHN@TEST.COM').for(:email2) } # Allow upper case
       it { should     allow_value('john@test.co').for(:email2) } # Allow the suffix with two characters
@@ -68,9 +67,9 @@ describe Account do
       it { should     allow_value('john@test123.com').for(:email2) } # Allow the host name with number
       it { should_not allow_value(' john@test.com').for(:email2) } # Disallow space
       it { should_not allow_value("\njohn@test.com").for(:email2) } # Disallow "\n"
-      it { should_not allow_value("john@test.c").for(:email2) } # Disallow suffix with one character
-      it { should_not allow_value("john@testcom").for(:email2) } # Disallow host without "."
-      it { should_not allow_value("j@hn@testcom").for(:email2) } # Disallow name with "@"
+      it { should_not allow_value('john@test.c').for(:email2) } # Disallow suffix with one character
+      it { should_not allow_value('john@testcom').for(:email2) } # Disallow host without "."
+      it { should_not allow_value('j@hn@testcom').for(:email2) } # Disallow name with "@"
     end
   end
 
@@ -296,7 +295,7 @@ describe Account do
       it 'should bootstrap our Stripe subscription' do
         @stripe_subscription = double(StripeSubscriptionWithoutValidation)
         expect(StripeSubscriptionWithoutValidation).to receive(:new).with(account)\
-          .and_return @stripe_subscription
+                                                                    .and_return @stripe_subscription
         expect(@stripe_subscription).to receive(:bootstrap!)
         account.bootstrap_stripe!
       end
@@ -398,7 +397,6 @@ describe Account do
     end
 
     describe 'owns_dns_record?()' do
-
       specify 'should return true if dns_record is a PTR and belongs to account' do
         @dns_record_for_me = create :dns_record, :the_10_block, name: '2.0.0.10.in-addr.arpa',
                                                                 content: 'example.com'
@@ -530,7 +528,54 @@ describe Account do
       qrcode = account.otp_qrcode
 
       assert qrcode.is_a?(RQRCode::QRCode)
-      assert_match /svg version="1\.1"/, qrcode.as_svg
+      assert_match(/svg version="1\.1"/, qrcode.as_svg)
+    end
+  end
+
+  describe '.create_from_new_order!' do
+    let(:customer) do
+      {
+        first_name: 'John',
+        last_name: 'Lidström',
+        email: 'john@example.com',
+        company: 'Hockey Corp',
+        address1: '123 Main St',
+        address2: 'Suite 100',
+        city: 'Detroit',
+        state: 'MI',
+        postal_code: '48201',
+        country: 'US'
+      }
+    end
+
+    before do
+      # Stub save to return self (the account instance) without actually saving
+      allow_any_instance_of(Account).to receive(:save) { |account| account }
+      # Stub exists? to control the uniqueness check
+      allow(Account).to receive(:exists?).and_return(false)
+      # Stub mailer to do nothing
+      mailer = double('Mailer')
+      allow(mailer).to receive(:deliver_later)
+      allow(Mailer).to receive(:welcome_new_customer).and_return(mailer)
+    end
+
+    it 'creates login by transliterating Unicode characters' do
+      account = Account.create_from_new_order!(customer)
+      expect(account.login).to eq('johnlidstrom')
+    end
+
+    it 'handles multiple Unicode characters' do
+      customer[:first_name] = 'José'
+      customer[:last_name] = 'Señor'
+      account = Account.create_from_new_order!(customer)
+      expect(account.login).to eq('josesenor')
+    end
+
+    it 'appends number to login if already taken' do
+      # Mock first check to return true (login exists) then false (login with number doesn't exist)
+      allow(Account).to receive(:exists?).and_return(true, false)
+      account = Account.create_from_new_order!(customer)
+      expect(account.login).to eq('johnlidstrom1')
     end
   end
 end
