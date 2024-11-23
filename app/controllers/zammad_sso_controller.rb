@@ -9,7 +9,17 @@ class ZammadSsoController < ApplicationController
 
     return head :unauthorized if uri.blank?
 
-    params = URI.decode_www_form(URI(uri).query).to_h
+    begin
+      query = URI(uri).query
+      Rails.logger.info("[ZammadSSO] Query string: #{query}")
+
+      return head :unauthorized if query.blank?
+
+      params = URI.decode_www_form(query).to_h
+    rescue StandardError
+      Rails.logger.error('[ZammadSSO] Error decoding query string')
+      return head :unauthorized
+    end
 
     Rails.logger.info("[ZammadSSO] Params: #{params}")
 
