@@ -1,0 +1,54 @@
+<div class="container">
+  <h1 class="title is-2 arp-header">Help Desk</h1>
+
+  <div class="content">
+    <div class="box">
+      <div class="notification is-warning">
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-bullhorn"></i>
+          </span>
+        </span>
+        &nbsp;We're transitioning to a new customer support system
+      </div>
+      <p>We have installed a new customer support system that greatly improves reliability and performance, better integration with our billing and sales channels, and a real-time communications architecture.
+      We've also moved over our entire Knowledge Base.</p>
+      <p>Support by email is always available at <a href="mailto:support@arpnetworks.com">support@arpnetworks.com</a> if you prefer not to use the new system.</p>
+      <p>By clicking the button below, you will be redirected to our new help desk system and a new user will be created automatically for you.</p>
+
+      <div class="has-text-centered mt-5">
+        <a href="<%= @zammad_link %>" class="button is-link is-medium">
+          <span class="icon">
+            <i class="fas fa-life-ring"></i>
+          </span>
+          <span>Access New Help Desk</span>
+        </a>
+      </div>
+    </div>
+
+    <br/><br/>
+
+    <div class="box has-background-light">
+          <div class="notification is-danger">
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </span>
+        </span>
+        &nbsp;Please don't open new tickets in the legacy system.
+      </div>
+
+      <h3 class="title is-5">Legacy Support System</h3>
+      <p>Our previous support system remains available in (soon to be) read-only mode for accessing historical tickets, but we will no longer be monitoring it for new tickets.</p>
+      
+      <div class="has-text-centered mt-4">
+        <a href="<%= @tender_link %>" class="button">
+          <span class="icon">
+            <i class="fas fa-archive"></i>
+          </span>
+          <span>Legacy Help Desk</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -1,7 +1,6 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-
   devise_scope :account do
     root to: 'accounts/sessions#new'
 
@@ -204,6 +203,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/help', to: 'static_pages#help', as: 'help'
   get '/auth/zammad/verify', to: 'zammad_sso#verify'
 
   # The priority is based upon order of creation: first created -> highest priority.
