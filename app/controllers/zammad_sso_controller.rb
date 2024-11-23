@@ -31,7 +31,13 @@ class ZammadSsoController < ApplicationController
 
     return head :unauthorized if current - expires > 300 # 5 minutes
 
-    digest_string = Zammad.digest_string(Zammad::ZAMMAD_HOST, params['email'], params['expires'])
+    digest_string = Zammad.digest_string(
+      Zammad::ZAMMAD_HOST,
+      params['email'],
+      params['expires'],
+      params['fn'],
+      params['ln']
+    )
 
     # Verify token
     expected_token = OpenSSL::HMAC.hexdigest(
@@ -54,8 +60,10 @@ class ZammadSsoController < ApplicationController
 
     Rails.logger.info("[ZammadSSO] Account: #{account.email}")
 
-    # Set authenticated user header
+    # Set authenticated user headers
     response.headers['X-Forwarded-User'] = account.email
+    response.headers['X-Forwarded-First-Name'] = Base64.strict_decode64(params['fn'])
+    response.headers['X-Forwarded-Last-Name'] = Base64.strict_decode64(params['ln'])
     head :ok
   end
 
