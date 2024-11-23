@@ -1,6 +1,8 @@
 class Account < ApplicationRecord
   include MigrateToDevisePassword
   include Tender
+  include Zammad
+
   include BillingSystemModels::CreditCards
   include BillingSystemModels::Invoices
 
