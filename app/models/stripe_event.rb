@@ -244,6 +244,8 @@ class StripeEvent < ApplicationRecord
         customer[:existing_account] = true
         # We are just going to flag this order as coming from an existing account
         # and it'll appear in our notification at the bottom
+
+        @account = Account.find_by(email: customer[:email])
       else
         # Create the account
         begin
@@ -283,9 +285,9 @@ class StripeEvent < ApplicationRecord
             ).deliver_later
           end
         end
-
-        customer[:login] = @account.login
       end
+
+      customer[:login] = @account.login
 
       # puts "The product that we are sending to Mailer is: #{product}"
 
