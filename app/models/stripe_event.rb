@@ -17,7 +17,7 @@ class StripeEvent < ApplicationRecord
     raise StandardError, 'Attempt to handle event already processed' if processed?
 
     unless supported_events.include?(event_type)
-      puts "Unsupported event '#{event_type}'"
+      puts "Unsupported event '#{event_type}'" unless Rails.env.test?
       return
     end
 
@@ -135,7 +135,7 @@ class StripeEvent < ApplicationRecord
 
     begin
       hosted_invoice_url = invoice['hosted_invoice_url']
-      Mailers::Stripe.sales_receipt(stripe_invoice, hosted_invoice_url: hosted_invoice_url).deliver_later
+      Mailers::Stripe.sales_receipt(stripe_invoice.id, hosted_invoice_url: hosted_invoice_url).deliver_later
     rescue StandardError => e
       Mailer.simple_notification("CC: Was unable to send sales receipt email to #{account.display_account_name}",
                                  e.message).deliver_later

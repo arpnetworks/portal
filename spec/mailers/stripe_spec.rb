@@ -67,10 +67,15 @@ RSpec.describe Mailers::Stripe, type: :mailer do
                                      amount: 10.00,
                                      description: 'VPS')
         @invoice = double(StripeInvoice,
+                          id: 123,
                           account: @account,
                           line_items: [@invoice_line_items],
                           payments: [@payment])
-        @mailer = Mailers::Stripe.sales_receipt(@invoice)
+
+        # Add expectation for find
+        allow(StripeInvoice).to receive(:find).with(123).and_return(@invoice)
+
+        @mailer = Mailers::Stripe.sales_receipt(@invoice.id)
       end
 
       describe 'sales_receipt' do
@@ -95,7 +100,7 @@ RSpec.describe Mailers::Stripe, type: :mailer do
             @opts = {
               hosted_invoice_url: 'https://invoice.stripe.com/i/something-something-something'
             }
-            @mailer = Mailers::Stripe.sales_receipt(@invoice, @opts)
+            @mailer = Mailers::Stripe.sales_receipt(123, @opts)
           end
 
           it 'should render Stripe invoice link' do
