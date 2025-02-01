@@ -17,7 +17,7 @@ class StripeEvent < ApplicationRecord
     raise StandardError, 'Attempt to handle event already processed' if processed?
 
     unless supported_events.include?(event_type)
-      puts "Unsupported event '#{event_type}'"
+      puts "Unsupported event '#{event_type}'" unless Rails.env.test?
       return
     end
 

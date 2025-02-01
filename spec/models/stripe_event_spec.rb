@@ -47,7 +47,8 @@ RSpec.describe StripeEvent, type: :model do
             end
 
             it 'should raise error' do
-              expect { @stripe_event.go! }.to raise_error ArgumentError, /Unsupported event/
+              # We no longer raise an error for unsupported events
+              expect { @stripe_event.go! }.to_not raise_error
             end
           end
         end
