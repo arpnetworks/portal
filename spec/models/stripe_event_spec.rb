@@ -283,12 +283,12 @@ RSpec.describe StripeEvent, type: :model do
           end
 
           it 'should send a sales receipt email' do
-            @stripe_invoice = double(StripeInvoice)
+            @stripe_invoice = double(StripeInvoice, id: 123)
             allow(StripeInvoice).to receive(:create_payment).with(@account, @invoice) { @stripe_invoice }
             mailer = double(:mailer)
             expect(mailer).to receive(:deliver_later)
             expect(Mailers::Stripe).to receive(:sales_receipt)\
-              .with(@stripe_invoice, hosted_invoice_url: @invoice['hosted_invoice_url'])\
+              .with(123, hosted_invoice_url: @invoice['hosted_invoice_url'])\
               .and_return mailer
             @stripe_event.handle_invoice_paid!
           end

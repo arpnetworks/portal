@@ -13,7 +13,7 @@ class Mailers::Stripe < ApplicationMailer
     mail(to: @recipients, from: @from, subject: @subject, bcc: @bcc)
   end
 
-  def sales_receipt(invoice, opts = {})
+  def sales_receipt(invoice_id, opts = {})
     begin
       @config = YAML.load(File.read(Rails.root + "config/arp/globals.yml"))
       subject_addition = "; " + @config[Rails.env]['sr_subject']
@@ -21,9 +21,9 @@ class Mailers::Stripe < ApplicationMailer
       subject_addition = ""
     end
 
-    @invoice = invoice
-    @account = invoice.account
-    @payment = invoice.payments.first # We assume the first one holds the info we need
+    @invoice = StripeInvoice.find(invoice_id)
+    @account = @invoice.account
+    @payment = @invoice.payments.first # We assume the first one holds the info we need
     @hosted_invoice_url = opts[:hosted_invoice_url]
 
     @subject    = "Sales Receipt (#{Time.new.strftime("%b. %Y")})" + subject_addition
