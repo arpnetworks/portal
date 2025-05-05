@@ -128,4 +128,4 @@ To preview some templates in ActionMailer, visit::
 Copyright
 ---------
 
-Copyright (c) 2008 - 2024 `ARP Networks, Inc. <https://arpnetworks.com>`_
+Copyright (c) 2008 - 2025 `ARP Networks, Inc. <https://arpnetworks.com>`_
