@@ -44,5 +44,5 @@ Additional
 Provisioning Helper
 -------------------
 
-<%= @customer[:login] %> $(pwgen -c -n) '' '' '' '' '' '' '' '' '' '' '<%= @plan_details[:os_label] %>' <%= @plan_details[:os_version] %> <%= @plan_details[:bandwidth] %> <%= @plan_details[:ram] %> <%= @plan_details[:storage] %> <%= @plan_details[:mrc] %> <%= @ip_block_price %> __VM_HOST__ auto <%= "'#{@product[:os_code]}' '#{@location_code}'" %>
+<%= @customer[:login] %> $(pwgen -c -n) '' '' '' '' '' '' '' '' '' '' '<%= @plan_details[:os_label] %>' <%= @plan_details[:os_version] %> <%= @plan_details[:bandwidth] %> <%= @plan_details[:ram] %> <%= @plan_details[:storage] %> <%= @plan_details[:mrc] %> <%= @ip_block_price %> <%= @location_code == 'fra' ? 'kzt04' : 'kct14' %> auto <%= "'#{@product[:os_code]}' '#{@location_code}'" %>
 
