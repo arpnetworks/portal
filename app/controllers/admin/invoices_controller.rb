@@ -15,6 +15,7 @@ class Admin::InvoicesController < Admin::HeadQuartersController
   def new
     @invoice = Invoice.new
     @invoice.date = Date.today
+    @invoice.line_items.build  # Build at least one empty line item for new invoices
     render 'form', layout: 'responsive'
   end
 
@@ -99,6 +100,9 @@ class Admin::InvoicesController < Admin::HeadQuartersController
   private
 
   def invoice_params
-    params.require(:invoice).permit(:account_id, :date, :terms, :bill_to, :message)
+    params.require(:invoice).permit(
+      :account_id, :date, :terms, :bill_to, :message,
+      line_items_attributes: [:id, :date, :code, :description, :amount, :_destroy]
+    )
   end
 end

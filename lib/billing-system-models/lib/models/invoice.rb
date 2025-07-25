@@ -4,6 +4,8 @@ class Invoice < ActiveRecord::Base
   has_many :invoices_payments, :dependent => :destroy
   has_many :payments, :through => :invoices_payments, :dependent => :destroy
 
+  accepts_nested_attributes_for :line_items, allow_destroy: true, reject_if: :all_blank
+
   scope :paid,     -> { where("paid = true  and archived = false and (pending IS NULL or pending = false)") }
   scope :unpaid,   -> { where("paid = false and archived = false and (pending IS NULL or pending = false)") }
   scope :active,   -> { where("archived = false and (pending IS NULL or pending = false)") }
