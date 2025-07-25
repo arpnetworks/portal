@@ -1,7 +1,7 @@
 class Admin::InvoicesController < Admin::HeadQuartersController
   before_action :is_arp_admin?,     except: [:show]
   before_action :is_arp_sub_admin?, only:   [:show]
-  before_action :find_invoice,      only: %i[show edit update destroy mark_paid mark_unpaid]
+  before_action :find_invoice,      only: %i[show edit update destroy mark_paid mark_unpaid duplicate]
 
   def index
     @invoices = Invoice.paginate(page: params[:page],
@@ -95,6 +95,30 @@ class Admin::InvoicesController < Admin::HeadQuartersController
     redirect_to admin_invoice_path @invoice
   end
 
+  def duplicate
+    # Create a new invoice with the same attributes
+    new_invoice = @invoice.dup
+    new_invoice.pending = true
+    new_invoice.paid = false
+    new_invoice.date = Date.today
+    
+    if new_invoice.save
+      # Duplicate all line items
+      @invoice.line_items.each do |line_item|
+        new_line_item = line_item.dup
+        new_line_item.invoice_id = new_invoice.id
+        new_line_item.date = Date.today
+        new_line_item.save
+      end
+      
+      flash[:notice] = "Invoice duplicated successfully. This is a pending invoice that won't be visible to the customer until published."
+      redirect_to edit_admin_invoice_path(new_invoice)
+    else
+      flash[:error] = "Failed to duplicate invoice."
+      redirect_to admin_invoice_path(@invoice)
+    end
+  end
+
   protected
 
   def find_invoice
@@ -108,7 +132,7 @@ class Admin::InvoicesController < Admin::HeadQuartersController
 
   def invoice_params
     params.require(:invoice).permit(
-      :account_id, :date, :terms, :bill_to, :message,
+      :account_id, :date, :terms, :bill_to, :message, :pending, :archived,
       line_items_attributes: [:id, :date, :code, :description, :amount, :_destroy]
     )
   end

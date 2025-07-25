@@ -59,6 +59,31 @@
             </div>
           </div>
 
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <%= f.check_box :pending %>
+                    Pending
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <%= f.check_box :archived %>
+                    Archived
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+            </div>
+          </div>
+
           <div class="field">
             <label class="label">Line Items</label>
             <div class="control">
