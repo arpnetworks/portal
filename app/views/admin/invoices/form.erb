@@ -1,0 +1,134 @@
+<div class="error">
+  <%= error_messages_for :invoice %>
+</div>
+
+<div class="columns is-centered">
+  <div class="column is-three-fifths">
+    <h2 class="title arp-header"><%= @invoice.new_record? ? 'New Invoice' : 'Edit Invoice' %></h2>
+    <div class="box">
+      <div class="container">
+
+        <%= form_for [:admin, @invoice] do |f| %>
+          <div class="field">
+            <label class="label">Account</label>
+            <div class="control">
+              <% if @invoice.new_record? %>
+                <div class="select is-small">
+                  <%= f.collection_select :account_id, Account.order(:login), :id, :display_account_name_with_login, { prompt: 'Select an account' }, class: 'input is-small' %>
+                </div>
+              <% else %>
+                <%= @invoice.account.display_account_name_with_login %>
+                <%= f.hidden_field :account_id %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label">Date</label>
+                <div class="control">
+                  <%= f.date_field :date, class: 'input is-small' %>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+            </div>
+            <div class="column">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Terms</label>
+            <div class="control">
+              <%= f.text_field :terms, class: 'input is-small' %>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Bill To</label>
+            <div class="control">
+              <%= f.text_area :bill_to, class: 'textarea is-small', rows: 5 %>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Message</label>
+            <div class="control">
+              <%= f.text_area :message, class: 'textarea is-small', rows: 3 %>
+            </div>
+          </div>
+
+          <% if !@invoice.new_record? && @invoice.line_items.any? %>
+            <div class="field">
+              <label class="label">Line Items</label>
+              <div class="control">
+                <table class="table is-striped is-fullwidth">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Code</th>
+                      <th>Description</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @invoice.line_items.each do |item| %>
+                      <tr>
+                        <td><%= item.date %></td>
+                        <td><%= item.code %></td>
+                        <td><%= item.description %></td>
+                        <td><%= money(item.amount) %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th colspan="3">Total</th>
+                      <th><%= money(@invoice.total) %></th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          <% end %>
+
+          <nav class="level">
+            <div class="left-level">
+              <div class="level-item">
+                <div class="field is-grouped">
+                  <div class="control">
+                    <input type='submit' value="Save" class='button is-link' />
+                  </div>
+                  <div class="control">
+                    <button class='button is-link is-light' id='cancel-button'
+                            onClick="location.href='<%= @invoice.new_record? ? admin_invoices_path : admin_invoice_path(@invoice) %>'">
+                            Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% if !@invoice.new_record? %>
+              <div class="right-level">
+                <div class="level-item">
+                  <div class="field">
+                    <div class="control">
+                      <%= link_to('Delete Invoice', admin_invoice_path(@invoice), method: :delete, data: { confirm: "Are you sure you want to delete this invoice?" }, class: 'button is-danger') %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </nav>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :js do %>
+  $("#cancel-button").click(function(e) {
+  e.preventDefault();
+  })
+<% end %>
