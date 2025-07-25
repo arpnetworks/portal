@@ -16,6 +16,7 @@ class Admin::InvoicesController < Admin::HeadQuartersController
     @invoice = Invoice.new
     @invoice.date = Date.today
     @invoice.line_items.build  # Build at least one empty line item for new invoices
+    @service_codes = ServiceCode.all.pluck(:name)
     render 'form', layout: 'responsive'
   end
 
@@ -31,11 +32,13 @@ class Admin::InvoicesController < Admin::HeadQuartersController
       flash[:notice] = "Invoice ##{@invoice.id} was created."
       redirect_to admin_invoice_path(@invoice)
     else
+      @service_codes = ServiceCode.all.pluck(:name)
       render 'form', layout: 'responsive'
     end
   end
 
   def edit
+    @service_codes = ServiceCode.all.pluck(:name)
     render 'form', layout: 'responsive'
   end
 
@@ -44,6 +47,7 @@ class Admin::InvoicesController < Admin::HeadQuartersController
       flash[:notice] = "Invoice ##{@invoice.id} was updated."
       redirect_to admin_invoice_path(@invoice)
     else
+      @service_codes = ServiceCode.all.pluck(:name)
       render 'form', layout: 'responsive'
     end
   end

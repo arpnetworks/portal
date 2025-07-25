@@ -3,7 +3,7 @@
 </div>
 
 <div class="columns is-centered">
-  <div class="column is-three-fifths">
+  <div class="column is-four-fifths">
     <h2 class="title arp-header"><%= @invoice.new_record? ? 'New Invoice' : 'Edit Invoice' %></h2>
     <div class="box">
       <div class="container">
@@ -80,7 +80,9 @@
                         <%= line_item_form.date_field :date, class: 'input is-small', value: line_item_form.object.date || @invoice.date %>
                       </td>
                       <td>
-                        <%= line_item_form.text_field :code, class: 'input is-small' %>
+                        <div class="select is-small">
+                          <%= line_item_form.select :code, options_for_select(ServiceCode.all.pluck(:name), line_item_form.object.code), { include_blank: true }, class: 'input is-small' %>
+                        </div>
                       </td>
                       <td>
                         <%= line_item_form.text_field :description, class: 'input is-small' %>
@@ -152,6 +154,16 @@
 
   // Line items management
   var lineItemIndex = <%= @invoice.line_items.size %>;
+  var serviceCodes = <%= @service_codes.to_json.html_safe %>;
+  
+  // Build options HTML for service codes
+  function buildServiceCodeOptions() {
+    var options = '<option value=""></option>';
+    serviceCodes.forEach(function(code) {
+      options += `<option value="${code}">${code}</option>`;
+    });
+    return options;
+  }
   
   // Add new line item
   $('#add-line-item').click(function() {
@@ -163,8 +175,12 @@
                  class="input is-small" value="${invoiceDate}">
         </td>
         <td>
-          <input type="text" name="invoice[line_items_attributes][${lineItemIndex}][code]" 
-                 class="input is-small">
+          <div class="select is-small">
+            <select name="invoice[line_items_attributes][${lineItemIndex}][code]" 
+                    class="input is-small">
+              ${buildServiceCodeOptions()}
+            </select>
+          </div>
         </td>
         <td>
           <input type="text" name="invoice[line_items_attributes][${lineItemIndex}][description]" 
