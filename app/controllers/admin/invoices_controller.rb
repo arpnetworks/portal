@@ -21,6 +21,7 @@ class Admin::InvoicesController < Admin::HeadQuartersController
   end
 
   def create
+    normalize_blank_amounts
     @invoice = Invoice.new(invoice_params)
     
     # If bill_to is blank on a new invoice, set it to nil so the model callback can auto-assign it
@@ -43,6 +44,8 @@ class Admin::InvoicesController < Admin::HeadQuartersController
   end
 
   def update
+    normalize_blank_amounts
+    
     if @invoice.update(invoice_params)
       flash[:notice] = "Invoice ##{@invoice.id} was updated."
       redirect_to admin_invoice_path(@invoice)
@@ -108,5 +111,15 @@ class Admin::InvoicesController < Admin::HeadQuartersController
       :account_id, :date, :terms, :bill_to, :message,
       line_items_attributes: [:id, :date, :code, :description, :amount, :_destroy]
     )
+  end
+
+  def normalize_blank_amounts
+    if params[:invoice][:line_items_attributes]
+      params[:invoice][:line_items_attributes].each do |key, line_item_attrs|
+        if line_item_attrs[:amount].blank?
+          line_item_attrs[:amount] = "0"
+        end
+      end
+    end
   end
 end
