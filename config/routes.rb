@@ -96,6 +96,7 @@ Rails.application.routes.draw do
       member do
         put 'mark_paid'
         put 'mark_unpaid'
+        post 'duplicate'
       end
       resources :payments do
       end

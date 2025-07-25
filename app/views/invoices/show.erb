@@ -120,7 +120,7 @@ West Hollywood, CA 90069-4109
   <nav class="level">
     <div class="left-level">
       <div class="level-item">
-        <div class="field">
+        <div class="field is-grouped">
           <% if !@invoice.paid? %>
             <div class="control">
               <button class="button is-info"
@@ -129,6 +129,18 @@ West Hollywood, CA 90069-4109
               </button>
             </div>
           <% end %>
+          <div class="control">
+            <button class="button is-primary"
+                    onClick="location.href='<%= edit_admin_invoice_path(@invoice) %>'">
+                    Edit Invoice
+            </button>
+          </div>
+          <div class="control">
+            <%= button_to "Duplicate Invoice", duplicate_admin_invoice_path(@invoice), 
+                method: :post, 
+                class: "button is-info",
+                data: { confirm: "This will create a pending copy of this invoice. Continue?" } %>
+          </div>
         </div>
       </div>
     </div>

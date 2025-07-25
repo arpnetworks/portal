@@ -1,0 +1,264 @@
+<div class="error">
+  <%= error_messages_for :invoice %>
+</div>
+
+<div class="columns is-centered">
+  <div class="column is-four-fifths">
+    <h2 class="title arp-header"><%= @invoice.new_record? ? 'New Invoice' : 'Edit Invoice' %></h2>
+    <div class="box">
+      <div class="container">
+
+        <%= form_for [:admin, @invoice] do |f| %>
+          <div class="field">
+            <label class="label">Account</label>
+            <div class="control">
+              <% if @invoice.new_record? %>
+                <div class="select is-small">
+                  <%= f.collection_select :account_id, Account.order(:login), :id, :display_account_name_with_login, { prompt: 'Select an account' }, class: 'input is-small' %>
+                </div>
+              <% else %>
+                <%= @invoice.account.display_account_name_with_login %>
+                <%= f.hidden_field :account_id %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label">Date</label>
+                <div class="control">
+                  <%= f.date_field :date, class: 'input is-small' %>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+            </div>
+            <div class="column">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Terms</label>
+            <div class="control">
+              <%= f.text_field :terms, class: 'input is-small' %>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Bill To</label>
+            <div class="control">
+              <%= f.text_area :bill_to, class: 'textarea is-small', rows: 5 %>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Message</label>
+            <div class="control">
+              <%= f.text_area :message, class: 'textarea is-small', rows: 3 %>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <%= f.check_box :pending %>
+                    Pending
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <%= f.check_box :archived %>
+                    Archived
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Line Items</label>
+            <div class="control">
+              <table class="table is-striped is-fullwidth" id="line-items-table">
+                <thead>
+                  <tr>
+                    <th style="width: 15%">Date</th>
+                    <th style="width: 15%">Code</th>
+                    <th style="width: 40%">Description</th>
+                    <th style="width: 15%">Amount</th>
+                    <th style="width: 15%">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="line-items-container">
+                  <%= f.fields_for :line_items do |line_item_form| %>
+                    <tr class="line-item-row">
+                      <td>
+                        <%= line_item_form.hidden_field :id if line_item_form.object.persisted? %>
+                        <%= line_item_form.date_field :date, class: 'input is-small', value: line_item_form.object.date || @invoice.date %>
+                      </td>
+                      <td>
+                        <div class="select is-small">
+                          <%= line_item_form.select :code, options_for_select(ServiceCode.all.pluck(:name), line_item_form.object.code), { include_blank: true }, class: 'input is-small' %>
+                        </div>
+                      </td>
+                      <td>
+                        <%= line_item_form.text_field :description, class: 'input is-small' %>
+                      </td>
+                      <td>
+                        <%= line_item_form.number_field :amount, class: 'input is-small', step: '0.01' %>
+                      </td>
+                      <td>
+                        <%= line_item_form.hidden_field :_destroy, class: 'destroy-field' %>
+                        <button type="button" class="button is-small is-danger remove-line-item">Remove</button>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="5">
+                      <button type="button" class="button is-small is-info" id="add-line-item">Add Line Item</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th colspan="3">Total</th>
+                    <th id="invoice-total"><%= money(@invoice.total) %></th>
+                    <th></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+          <nav class="level">
+            <div class="left-level">
+              <div class="level-item">
+                <div class="field is-grouped">
+                  <div class="control">
+                    <input type='submit' value="Save" class='button is-link' />
+                  </div>
+                  <div class="control">
+                    <button class='button is-link is-light' id='cancel-button'
+                            onClick="location.href='<%= @invoice.new_record? ? admin_invoices_path : admin_invoice_path(@invoice) %>'">
+                            Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% if !@invoice.new_record? %>
+              <div class="right-level">
+                <div class="level-item">
+                  <div class="field">
+                    <div class="control">
+                      <%= link_to('Delete Invoice', admin_invoice_path(@invoice), method: :delete, data: { confirm: "Are you sure you want to delete this invoice?" }, class: 'button is-danger') %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </nav>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :js do %>
+  $("#cancel-button").click(function(e) {
+    e.preventDefault();
+  });
+
+  // Line items management
+  var lineItemIndex = <%= @invoice.line_items.size %>;
+  var serviceCodes = <%= @service_codes.to_json.html_safe %>;
+  
+  // Build options HTML for service codes
+  function buildServiceCodeOptions() {
+    var options = '<option value=""></option>';
+    serviceCodes.forEach(function(code) {
+      options += `<option value="${code}">${code}</option>`;
+    });
+    return options;
+  }
+  
+  // Add new line item
+  $('#add-line-item').click(function() {
+    var invoiceDate = $('#invoice_date').val();
+    var newRow = `
+      <tr class="line-item-row">
+        <td>
+          <input type="date" name="invoice[line_items_attributes][${lineItemIndex}][date]" 
+                 class="input is-small" value="${invoiceDate}">
+        </td>
+        <td>
+          <div class="select is-small">
+            <select name="invoice[line_items_attributes][${lineItemIndex}][code]" 
+                    class="input is-small">
+              ${buildServiceCodeOptions()}
+            </select>
+          </div>
+        </td>
+        <td>
+          <input type="text" name="invoice[line_items_attributes][${lineItemIndex}][description]" 
+                 class="input is-small">
+        </td>
+        <td>
+          <input type="number" name="invoice[line_items_attributes][${lineItemIndex}][amount]" 
+                 class="input is-small" step="0.01">
+        </td>
+        <td>
+          <input type="hidden" name="invoice[line_items_attributes][${lineItemIndex}][_destroy]" 
+                 class="destroy-field" value="false">
+          <button type="button" class="button is-small is-danger remove-line-item">Remove</button>
+        </td>
+      </tr>
+    `;
+    
+    $('#line-items-container').append(newRow);
+    lineItemIndex++;
+    updateTotal();
+  });
+  
+  // Remove line item
+  $(document).on('click', '.remove-line-item', function() {
+    var row = $(this).closest('tr');
+    var destroyField = row.find('.destroy-field');
+    
+    if (row.find('input[name*="[id]"]').length > 0) {
+      // Existing record - mark for destruction
+      destroyField.val('true');
+      row.hide();
+    } else {
+      // New record - remove from DOM
+      row.remove();
+    }
+    updateTotal();
+  });
+  
+  // Update total when amount changes
+  $(document).on('input', 'input[name*="[amount]"]', function() {
+    updateTotal();
+  });
+  
+  // Function to calculate and update total
+  function updateTotal() {
+    var total = 0;
+    $('#line-items-container tr:visible').each(function() {
+      var amount = parseFloat($(this).find('input[name*="[amount]"]').val()) || 0;
+      total += amount;
+    });
+    $('#invoice-total').text('$' + total.toFixed(2));
+  }
+  
+  // Initialize total on page load
+  updateTotal();
+<% end %>
