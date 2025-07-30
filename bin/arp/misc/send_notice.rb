@@ -11,9 +11,10 @@ require 'mail'
 
 def usage
   puts <<-HELP
-  -n <node> REQUIRED
+  -n <node> REQUIRED (can be specified multiple times)
 
             Example: kvr03.arpnetworks.com
+            Example: -n kvr03.arpnetworks.com -n kvr04.arpnetworks.com
   -f <file> REQUIRED
   -t <type> REQUIRED
 
@@ -47,7 +48,7 @@ HELP
 end
 
 # Defaults
-node = nil
+nodes = []
 file = nil
 type = nil
 dry  = nil
@@ -57,7 +58,7 @@ everyone = nil
 
 # Parse args
 opts = OptionParser.new
-opts.on("-n", "--node HOST", 'Notify customers on this HOST') { |o| node = o }
+opts.on("-n", "--node HOST", 'Notify customers on this HOST (can be specified multiple times)') { |o| nodes << o }
 opts.on("-f", "--file FILE", 'Send notice in FILE to customers') { |o| file = o }
 opts.on("-t", "--type scheduled|emergency|outage", 'Set notice type') { |o| type = o }
 opts.on("-d", "--dry-run", 'Do not actually send emails') { |o| dry = o }
@@ -66,7 +67,7 @@ opts.on("-s", "--subject-additional TEXT", 'Append extra text to the subject') {
 opts.on("--everyone", 'Send notice to ALL active customers; overrides --node') { |o| everyone = o }
 opts.parse(ARGV) rescue usage && exit
 
-if node.nil? || file.nil? || type.nil?
+if nodes.empty? || file.nil? || type.nil?
   usage
   exit
 end
@@ -93,17 +94,19 @@ if everyone
     email2 = email2 =~ /@/ ? email2 : nil
 
     [email, email2]
-  end.flatten.compact.uniq
+  end.flatten.compact.uniq.sort
 else
-  emails = VirtualMachine.where(host: node).map do |o|
-    email  = o.resource.service.account.email
-    email2 = o.resource.service.account.email2
+  emails = nodes.map do |node|
+    VirtualMachine.where(host: node).map do |o|
+      email  = o.resource.service.account.email
+      email2 = o.resource.service.account.email2
 
-    email  = email  =~ /@/ ? email  : nil
-    email2 = email2 =~ /@/ ? email2 : nil
+      email  = email  =~ /@/ ? email  : nil
+      email2 = email2 =~ /@/ ? email2 : nil
 
-    [email, email2]
-  end.flatten.compact.uniq
+      [email, email2]
+    end
+  end.flatten.compact.uniq.sort
 end
 
 @subject = nil
