@@ -94,7 +94,7 @@ if everyone
     email2 = email2 =~ /@/ ? email2 : nil
 
     [email, email2]
-  end.flatten.compact.uniq
+  end.flatten.compact.uniq.sort
 else
   emails = nodes.map do |node|
     VirtualMachine.where(host: node).map do |o|
@@ -106,7 +106,7 @@ else
 
       [email, email2]
     end
-  end.flatten.compact.uniq
+  end.flatten.compact.uniq.sort
 end
 
 @subject = nil
