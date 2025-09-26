@@ -62,10 +62,26 @@ class StripeSubscription
     end
   end
 
-  # We assume only one subscription per customer, so, return the first one
+  # Returns the current subscription for the customer
+  # If multiple subscriptions exist, prioritizes monthly subscriptions
+  # to ensure new services are added to the monthly subscription
   def current_subscription
     subscriptions = Stripe::Subscription.list(customer: @account.stripe_customer_id)
-    subscriptions.data.first
+
+    return nil if subscriptions.data.empty?
+    return subscriptions.data.first if subscriptions.data.size == 1
+
+    # Multiple subscriptions exist - prioritize monthly subscriptions
+    monthly_subscription = subscriptions.data.find do |subscription|
+      # Check if any item in the subscription has a monthly interval
+      subscription['items']['data'].any? do |item|
+        item.dig('price', 'recurring', 'interval') == 'month' &&
+        item.dig('price', 'recurring', 'interval_count') == 1
+      end
+    end
+
+    # Return monthly subscription if found, otherwise return the first one
+    monthly_subscription || subscriptions.data.first
   end
 
   # If our service has a Stripe Price ID set, but not the corresponding Subscription Item ID,
