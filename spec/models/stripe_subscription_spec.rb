@@ -307,6 +307,126 @@ RSpec.describe StripeSubscription, type: :model do
           expect(@ss.send(:current_subscription)).to be_nil
         end
       end
+
+      context 'with multiple subscriptions' do
+        before :each do
+          @monthly_subscription = {
+            'id' => 'sub_monthly',
+            'items' => {
+              'data' => [{
+                'price' => {
+                  'recurring' => {
+                    'interval' => 'month',
+                    'interval_count' => 1
+                  }
+                }
+              }]
+            }
+          }
+
+          @annual_subscription = {
+            'id' => 'sub_annual',
+            'items' => {
+              'data' => [{
+                'price' => {
+                  'recurring' => {
+                    'interval' => 'year',
+                    'interval_count' => 1
+                  }
+                }
+              }]
+            }
+          }
+
+          @semi_annual_subscription = {
+            'id' => 'sub_semi_annual',
+            'items' => {
+              'data' => [{
+                'price' => {
+                  'recurring' => {
+                    'interval' => 'month',
+                    'interval_count' => 6
+                  }
+                }
+              }]
+            }
+          }
+        end
+
+        context 'with annual and monthly subscriptions' do
+          before :each do
+            # Order matters - annual is first, monthly is second
+            @stripe_subs = double(Stripe::ListObject, data: [@annual_subscription, @monthly_subscription])
+            allow(Stripe::Subscription).to receive(:list).with(customer: @account.stripe_customer_id)\
+                                                         .and_return @stripe_subs
+          end
+
+          it 'should prioritize and return the monthly subscription' do
+            expect(@ss.send(:current_subscription)).to eq @monthly_subscription
+          end
+        end
+
+        context 'with semi-annual and monthly subscriptions' do
+          before :each do
+            # Order matters - semi-annual is first, monthly is second
+            @stripe_subs = double(Stripe::ListObject, data: [@semi_annual_subscription, @monthly_subscription])
+            allow(Stripe::Subscription).to receive(:list).with(customer: @account.stripe_customer_id)\
+                                                         .and_return @stripe_subs
+          end
+
+          it 'should prioritize and return the monthly subscription' do
+            expect(@ss.send(:current_subscription)).to eq @monthly_subscription
+          end
+        end
+
+        context 'with only non-monthly subscriptions' do
+          before :each do
+            @stripe_subs = double(Stripe::ListObject, data: [@annual_subscription, @semi_annual_subscription])
+            allow(Stripe::Subscription).to receive(:list).with(customer: @account.stripe_customer_id)\
+                                                         .and_return @stripe_subs
+          end
+
+          it 'should return the first subscription when no monthly exists' do
+            expect(@ss.send(:current_subscription)).to eq @annual_subscription
+          end
+        end
+
+        context 'with mixed items in a single subscription' do
+          before :each do
+            @mixed_subscription = {
+              'id' => 'sub_mixed',
+              'items' => {
+                'data' => [
+                  {
+                    'price' => {
+                      'recurring' => {
+                        'interval' => 'year',
+                        'interval_count' => 1
+                      }
+                    }
+                  },
+                  {
+                    'price' => {
+                      'recurring' => {
+                        'interval' => 'month',
+                        'interval_count' => 1
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+
+            @stripe_subs = double(Stripe::ListObject, data: [@annual_subscription, @mixed_subscription])
+            allow(Stripe::Subscription).to receive(:list).with(customer: @account.stripe_customer_id)\
+                                                         .and_return @stripe_subs
+          end
+
+          it 'should return subscription containing any monthly items' do
+            expect(@ss.send(:current_subscription)).to eq @mixed_subscription
+          end
+        end
+      end
     end
 
     describe 'set_subscription_item_id!()' do
