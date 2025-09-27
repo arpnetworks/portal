@@ -75,8 +75,8 @@ class StripeSubscription
     monthly_subscription = subscriptions.data.find do |subscription|
       # Check if any item in the subscription has a monthly interval
       subscription['items']['data'].any? do |item|
-        item.dig('price', 'recurring', 'interval') == 'month' &&
-        item.dig('price', 'recurring', 'interval_count') == 1
+        item['price']['recurring']['interval'] == 'month' &&
+        item['price']['recurring']['interval_count'] == 1
       end
     end
 
