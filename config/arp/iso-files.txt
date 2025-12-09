@@ -1,2 +1,0 @@
-FreeBSD-11.2-RELEASE-i386-disc1.iso
-FreeBSD-11.2-RELEASE-amd64-disc1.iso

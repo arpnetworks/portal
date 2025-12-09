@@ -54,7 +54,7 @@ class StripeInvoice < Invoice
       inv.payments.create(
         account: account,
         reference_number: invoice['id'],
-        date: Time.at(invoice['status_transitions']['paid_at']),
+        date: Time.zone.at(invoice['status_transitions']['paid_at']),
         method: 'Stripe',
         amount: invoice['total'] / 100.0
       )
@@ -83,7 +83,7 @@ class StripeInvoice < Invoice
 
     inv.payments.each do |payment|
       payment.amount = 0
-      payment.notes = 'Refunded on ' + charge_refunded_on(charge)
+      payment.notes = "Refunded on #{charge_refunded_on(charge)}"
       payment.save
     end
 
@@ -91,7 +91,7 @@ class StripeInvoice < Invoice
   end
 
   def self.charge_refunded_on(charge)
-    Time.at(charge['refunds']['data'].first['created']).to_s
+    Time.zone.at(charge['refunds']['data'].first['created']).to_s
   rescue StandardError
     ''
   end
@@ -134,8 +134,8 @@ class StripeInvoice < Invoice
       end
     rescue StandardError => e
       unless Rails.env.test?
-        puts "Warning: Could not retrieve all line items for invoice #{invoice['id']}, " \
-             "may be incomplete: #{e.message}"
+        Rails.logger.warn "Could not retrieve all line items for invoice #{invoice['id']}, " \
+                          "may be incomplete: #{e.message}"
       end
       all_line_items = invoice['lines']['data']
     end
