@@ -10,9 +10,7 @@ class StripeInvoice < Invoice
 
       # When we create an invoice manually, Stripe doesn't append the quantity
       # to the description
-      if opts[:billing_reason] == 'manual'
-        li['description'] = "#{li['quantity']} × #{li['description']}"
-      end
+      li['description'] = "#{li['quantity']} × #{li['description']}" if opts[:billing_reason] == 'manual'
 
       line_items.create(code: @code,
                         description: li['description'],
@@ -33,7 +31,8 @@ class StripeInvoice < Invoice
 
   def self.create_for_account(account, invoice)
     inv = create(account: account, stripe_invoice_id: invoice['id'])
-    inv.create_line_items(invoice['lines']['data'], billing_reason: invoice['billing_reason'])
+    all_line_items = fetch_all_line_items(invoice)
+    inv.create_line_items(all_line_items, billing_reason: invoice['billing_reason'])
   end
 
   def self.link_to_invoice(arp_invoice_id, invoice)
@@ -104,4 +103,44 @@ class StripeInvoice < Invoice
 
     total / 100.00
   end
+
+  # Private helper methods
+
+  def self.fetch_all_line_items(invoice)
+    # Retrieve all line items, handling pagination if needed
+    # Stripe webhook payloads include max 10 items; invoices can have unlimited items
+    if invoice['lines']['has_more']
+      # Invoice has more than 10 items, need to retrieve all via API
+      fetch_line_items_from_api(invoice)
+    else
+      # Invoice has 10 or fewer items, use embedded data (no API call needed)
+      invoice['lines']['data']
+    end
+  end
+  private_class_method :fetch_all_line_items
+
+  def self.fetch_line_items_from_api(invoice)
+    all_line_items = []
+
+    begin
+      full_invoice = Stripe::Invoice.retrieve(
+        invoice['id'],
+        expand: ['lines']
+      )
+
+      # Use auto_paging_each to automatically handle pagination
+      full_invoice.lines.auto_paging_each do |line_item|
+        all_line_items << line_item
+      end
+    rescue StandardError => e
+      unless Rails.env.test?
+        puts "Warning: Could not retrieve all line items for invoice #{invoice['id']}, " \
+             "may be incomplete: #{e.message}"
+      end
+      all_line_items = invoice['lines']['data']
+    end
+
+    all_line_items
+  end
+  private_class_method :fetch_line_items_from_api
 end

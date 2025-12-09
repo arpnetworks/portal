@@ -19,6 +19,102 @@ RSpec.describe StripeInvoice, type: :model do
         StripeInvoice.create_for_account(@account, @stripe_invoice)
       end
     end
+
+    context 'with invoice containing more than 10 line items' do
+      before :each do
+        @account = build(:account)
+        @stripe_event = build(:stripe_event, :invoice_finalized)
+        @stripe_invoice = JSON.parse(@stripe_event.body)['data']['object']
+
+        # Simulate invoice with 15 line items
+        @stripe_invoice['lines']['has_more'] = true
+        @stripe_invoice['lines']['total_count'] = 15
+
+        # Create mock full invoice with all 15 line items
+        @mock_full_invoice = double('Stripe::Invoice')
+        @mock_lines = double('lines')
+
+        @all_line_items = (1..15).map do |i|
+          {
+            'id' => "il_test_#{i}",
+            'amount' => 1000,
+            'description' => "Line item #{i}",
+            'price' => { 'product' => 'prod_test' },
+            'quantity' => 1,
+            'discount_amounts' => []
+          }
+        end
+
+        allow(Stripe::Invoice).to receive(:retrieve)
+          .with(@stripe_invoice['id'], expand: ['lines'])
+          .and_return(@mock_full_invoice)
+
+        allow(@mock_full_invoice).to receive(:lines).and_return(@mock_lines)
+        allow(@mock_lines).to receive(:auto_paging_each) do |&block|
+          @all_line_items.each(&block)
+        end
+      end
+
+      it 'should retrieve and create all 15 line items' do
+        @inv = mock_model Invoice
+
+        expect(StripeInvoice).to receive(:create)
+          .with(account: @account, stripe_invoice_id: @stripe_invoice['id'])
+          .and_return(@inv)
+
+        expect(@inv).to receive(:create_line_items) do |line_items, opts|
+          expect(line_items.length).to eq(15)
+          expect(opts[:billing_reason]).to eq(@stripe_invoice['billing_reason'])
+        end
+
+        StripeInvoice.create_for_account(@account, @stripe_invoice)
+      end
+    end
+
+    context 'when Stripe API retrieval fails for large invoice' do
+      before :each do
+        @account = build(:account)
+        @stripe_event = build(:stripe_event, :invoice_finalized)
+        @stripe_invoice = JSON.parse(@stripe_event.body)['data']['object']
+        @stripe_invoice['lines']['has_more'] = true
+
+        allow(Stripe::Invoice).to receive(:retrieve)
+          .and_raise(StandardError.new('API Error'))
+      end
+
+      it 'should fallback to embedded line items data' do
+        @inv = mock_model Invoice
+
+        expect(StripeInvoice).to receive(:create)
+          .with(account: @account, stripe_invoice_id: @stripe_invoice['id'])
+          .and_return(@inv)
+
+        expect(@inv).to receive(:create_line_items)
+          .with(@stripe_invoice['lines']['data'], billing_reason: @stripe_invoice['billing_reason'])
+
+        StripeInvoice.create_for_account(@account, @stripe_invoice)
+      end
+    end
+
+    context 'with invoice containing exactly 10 line items' do
+      before :each do
+        @account = build(:account)
+        @stripe_event = build(:stripe_event, :invoice_finalized)
+        @stripe_invoice = JSON.parse(@stripe_event.body)['data']['object']
+        @stripe_invoice['lines']['has_more'] = false
+        @inv = mock_model Invoice
+      end
+
+      it 'should use embedded data without making API call' do
+        expect(Stripe::Invoice).not_to receive(:retrieve)
+
+        expect(StripeInvoice).to receive(:create).and_return(@inv)
+        expect(@inv).to receive(:create_line_items)
+          .with(@stripe_invoice['lines']['data'], billing_reason: anything)
+
+        StripeInvoice.create_for_account(@account, @stripe_invoice)
+      end
+    end
   end
 
   describe 'self.link_to_invoice()' do
