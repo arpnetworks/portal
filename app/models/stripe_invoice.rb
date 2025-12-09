@@ -1,3 +1,5 @@
+# Handles Stripe invoice creation and synchronization with the ARP billing system.
+# Supports pagination for invoices with more than 10 line items using Stripe's auto_paging_each API.
 class StripeInvoice < Invoice
   def create_line_items(stripe_line_items, opts = {})
     stripe_line_items.each do |li|
