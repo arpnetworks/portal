@@ -44,7 +44,7 @@ class StripeInvoice < Invoice
       inv = Invoice.find(arp_invoice_id)
       inv.stripe_invoice_id = invoice['id']
       inv.save
-    rescue ActiveRecord::RecordNotFound => e
+    rescue ActiveRecord::RecordNotFound
       raise ArgumentError, "Provided Invoice ID #{arp_invoice_id} does not exist, cannot link Stripe invoice"
     end
   end
