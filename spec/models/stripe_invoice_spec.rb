@@ -46,7 +46,7 @@ RSpec.describe StripeInvoice, type: :model do
         end
 
         allow(Stripe::Invoice).to receive(:retrieve)
-          .with(@stripe_invoice['id'], expand: ['lines'])
+          .with(@stripe_invoice['id'])
           .and_return(@mock_full_invoice)
 
         allow(@mock_full_invoice).to receive(:lines).and_return(@mock_lines)
