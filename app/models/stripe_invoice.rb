@@ -125,12 +125,10 @@ class StripeInvoice < Invoice
     all_line_items = []
 
     begin
-      full_invoice = Stripe::Invoice.retrieve(
-        invoice['id'],
-        expand: ['lines']
-      )
+      # Retrieve the invoice (no expand needed - we'll paginate lines separately)
+      full_invoice = Stripe::Invoice.retrieve(invoice['id'])
 
-      # Use auto_paging_each to automatically handle pagination
+      # Use auto_paging_each to automatically handle pagination through all line items
       full_invoice.lines.auto_paging_each do |line_item|
         all_line_items << line_item
       end

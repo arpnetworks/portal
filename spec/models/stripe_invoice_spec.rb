@@ -207,7 +207,7 @@ RSpec.describe StripeInvoice, type: :model do
 
       context 'when refunded' do
         it 'should return timestamp as string' do
-          expect(StripeInvoice.charge_refunded_on(@stripe_charge)).to eq '2022-01-03 08:31:19 +0000'
+          expect(StripeInvoice.charge_refunded_on(@stripe_charge)).to eq '2022-01-03 08:31:19 UTC'
         end
       end
 
