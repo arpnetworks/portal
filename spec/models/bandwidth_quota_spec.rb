@@ -44,19 +44,19 @@ context 'BandwidthQuota class' do
         local_graph_id = 1000
         @bandwidth_quota.cacti_local_graph_id = local_graph_id
         expect(@bandwidth_quota.graph_url).to eq \
-          "https://cacti.arpnetworks.com/cacti/graph.php?local_graph_id=#{local_graph_id}&rra_id=all"
+          "https://cacti.arpnetworks.com/graph.php?local_graph_id=#{local_graph_id}&rra_id=all"
       end
 
       specify 'should use cacti.arpnetworks.com for generic link when cacti_local_graph_id nil' do
         @bandwidth_quota.cacti_local_graph_id = nil
         expect(@bandwidth_quota.graph_url).to eq \
-          'https://cacti.arpnetworks.com/cacti'
+          'https://cacti.arpnetworks.com/'
       end
 
       specify 'should use cacti.arpnetworks.com for generic link when cacti_local_graph_id is empty' do
         @bandwidth_quota.cacti_local_graph_id = ''
         expect(@bandwidth_quota.graph_url).to eq \
-          'https://cacti.arpnetworks.com/cacti'
+          'https://cacti.arpnetworks.com/'
       end
     end
 

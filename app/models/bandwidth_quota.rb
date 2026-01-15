@@ -9,11 +9,20 @@ class BandwidthQuota < ApplicationRecord
 
   def graph_url
     domain = graph_domain
+    use_new_cacti = (domain == "cacti.arpnetworks.com")
 
     if cacti_local_graph_id.to_s.empty?
-      "https://#{domain}/cacti"
+      if use_new_cacti
+        "https://#{domain}/"
+      else
+        "https://#{domain}/cacti"
+      end
     else
-      "https://#{domain}/cacti/graph.php?local_graph_id=#{cacti_local_graph_id}&rra_id=all"
+      if use_new_cacti
+        "https://#{domain}/graph.php?local_graph_id=#{cacti_local_graph_id}&rra_id=all"
+      else
+        "https://#{domain}/cacti/graph.php?local_graph_id=#{cacti_local_graph_id}&rra_id=all"
+      end
     end
   end
 
