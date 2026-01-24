@@ -161,9 +161,9 @@ class Mailer < ApplicationMailer
 
   def calculate_ip_block_price(block)
     case block
-    when '/29' then 5
-    when '/28' then 13
-    when '/27' then 48
+    when '/29' then 10
+    when '/28' then 26
+    when '/27' then 58
     else 0
     end
   end
