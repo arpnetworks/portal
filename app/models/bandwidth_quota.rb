@@ -29,12 +29,19 @@ class BandwidthQuota < ApplicationRecord
   private
 
   def graph_domain
-    cutoff_date = Date.new(2026, 1, 14)
-
-    if resource&.service&.created_at && resource.service.created_at.to_date > cutoff_date
+    # If this record has been migrated to the new Cacti server, use new domain
+    if cacti_migrated_at.present?
       "cacti.arpnetworks.com"
     else
-      "graphs.arpnetworks.com"
+      # Otherwise, use old Cacti server for pre-migration records
+      # New records created after cutoff also use new server
+      cutoff_date = Date.new(2026, 1, 14)
+
+      if resource&.service&.created_at && resource.service.created_at.to_date > cutoff_date
+        "cacti.arpnetworks.com"
+      else
+        "graphs.arpnetworks.com"
+      end
     end
   end
 end
