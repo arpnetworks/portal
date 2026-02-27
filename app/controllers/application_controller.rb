@@ -17,7 +17,13 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource_or_scope)
-    stored_location_for(resource_or_scope) || dashboard_path
+    if resource_or_scope.respond_to?(:migrated?) && resource_or_scope.migrated? && resource_or_scope.migration_token.present?
+      sign_out(resource_or_scope)
+      phoenix_host = Rails.env.production? ? "phoenix.arpnetworks.com" : "phoenix-staging.arpnetworks.com"
+      "https://#{phoenix_host}/welcome/#{resource_or_scope.migration_token}"
+    else
+      stored_location_for(resource_or_scope) || dashboard_path
+    end
   end
 
   def after_sign_out_path_for(resource_or_scope)
