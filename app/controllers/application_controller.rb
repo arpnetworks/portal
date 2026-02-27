@@ -29,8 +29,9 @@ class ApplicationController < ActionController::Base
   def redirect_if_migrated
     return unless current_account&.migrated? && current_account&.migration_token.present?
 
+    token = current_account.migration_token
     sign_out(current_account)
-    redirect_to phoenix_welcome_url(current_account.migration_token), allow_other_host: true
+    redirect_to phoenix_welcome_url(token), allow_other_host: true
   end
 
   def phoenix_welcome_url(token)
