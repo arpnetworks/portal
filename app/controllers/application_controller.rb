@@ -1,11 +1,18 @@
 class ApplicationController < ActionController::Base
+  # Prevent CSRF attacks by raising an exception.
+  # For APIs, you may want to use :null_session instead.
+  #
+  # IMPORTANT: This MUST be declared before any before_action that calls
+  # current_account/current_user, because in Rails 6 protect_from_forgery
+  # appends (not prepends) verify_authenticity_token. If a before_action
+  # triggers Warden authentication before CSRF is checked, Devise's
+  # clean_up_csrf_token_on_authentication hook regenerates the token,
+  # causing InvalidAuthenticityToken.
+  protect_from_forgery with: :exception
+
   before_action :clean_slate
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :redirect_if_migrated
-
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
 
   protected
 
