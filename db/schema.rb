@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_22_010211) do
+ActiveRecord::Schema.define(version: 2026_02_27_000000) do
 
   create_table "accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "login", default: "", null: false
@@ -52,8 +52,11 @@ ActiveRecord::Schema.define(version: 2022_05_22_010211) do
     t.integer "consumed_timestep"
     t.boolean "otp_required_for_login", default: false, null: false
     t.text "otp_backup_codes"
+    t.boolean "migrated", default: false, null: false
+    t.string "migration_token"
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["login"], name: "index_accounts_on_login", unique: true
+    t.index ["migration_token"], name: "index_accounts_on_migration_token", unique: true
     t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
   end
 
@@ -80,6 +83,8 @@ ActiveRecord::Schema.define(version: 2022_05_22_010211) do
     t.text "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "cacti_migrated_at"
+    t.index ["cacti_migrated_at"], name: "index_bandwidth_quotas_on_cacti_migrated_at"
   end
 
   create_table "bgp_sessions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
@@ -343,13 +348,13 @@ ActiveRecord::Schema.define(version: 2022_05_22_010211) do
     t.index ["account_id"], name: "index_ssh_keys_on_account_id"
   end
 
-  create_table "stripe_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "stripe_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "event_id"
     t.string "event_type", limit: 128
     t.string "status", limit: 64
-    t.text "body"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.text "body", size: :medium
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "virtual_machines", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
