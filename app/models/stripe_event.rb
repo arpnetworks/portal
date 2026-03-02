@@ -86,11 +86,13 @@ class StripeEvent < ApplicationRecord
 
     refunded_amount = StripeInvoice.process_refund(charge)
 
-    begin
-      Mailers::Stripe.refund(account, refunded_amount, receipt_url: receipt_url).deliver_later
-    rescue StandardError => e
-      Mailer.simple_notification("CC: Was unable to send refund receipt email to #{account.display_account_name}",
-                                 e.message).deliver_later
+    unless account&.migrated?
+      begin
+        Mailers::Stripe.refund(account, refunded_amount, receipt_url: receipt_url).deliver_later
+      rescue StandardError => e
+        Mailer.simple_notification("CC: Was unable to send refund receipt email to #{account.display_account_name}",
+                                   e.message).deliver_later
+      end
     end
   end
 
@@ -133,13 +135,15 @@ class StripeEvent < ApplicationRecord
 
     stripe_invoice = StripeInvoice.create_payment(account, invoice)
 
-    begin
-      hosted_invoice_url = invoice['hosted_invoice_url']
-      Mailers::Stripe.sales_receipt(stripe_invoice.id,
-                                    hosted_invoice_url: hosted_invoice_url).deliver_later(wait: 1.minute)
-    rescue StandardError => e
-      Mailer.simple_notification("CC: Was unable to send sales receipt email to #{account.display_account_name}",
-                                 e.message).deliver_later
+    unless account.migrated?
+      begin
+        hosted_invoice_url = invoice['hosted_invoice_url']
+        Mailers::Stripe.sales_receipt(stripe_invoice.id,
+                                      hosted_invoice_url: hosted_invoice_url).deliver_later(wait: 1.minute)
+      rescue StandardError => e
+        Mailer.simple_notification("CC: Was unable to send sales receipt email to #{account.display_account_name}",
+                                   e.message).deliver_later
+      end
     end
   end
 
@@ -149,7 +153,9 @@ class StripeEvent < ApplicationRecord
     account, invoice = get_account_and_invoice(body)
     hosted_invoice_url = invoice['hosted_invoice_url']
 
-    Mailers::Stripe.payment_failed(account, hosted_invoice_url: hosted_invoice_url).deliver_later
+    unless account.migrated?
+      Mailers::Stripe.payment_failed(account, hosted_invoice_url: hosted_invoice_url).deliver_later
+    end
   end
 
   def handle_payment_method_attached!
